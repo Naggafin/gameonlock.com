@@ -1,0 +1,13 @@
+{% extends 'admin/change_form.html' %}
+
+{% block object-tools %}
+<div>
+	<h4>Change the ticket by reuploading a ticket spreadsheet</h4>
+	<form enctype="multipart/form-data" action="{% url 'admin:change_ticket' %}" method="post">
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type="submit" value="Upload">
+	</form>
+	<hr style="margin-top: 2rem;">
+</div>
+{% endblock %}

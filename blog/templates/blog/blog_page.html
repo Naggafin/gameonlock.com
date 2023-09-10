@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+<div class="container-fluid page">
+	<div class="row">
+		<h1>{{ page.title }}</h1>
+		<small class="d-block text-muted meta">By {{ page.specific.author }}</small>
+		<small class="d-block text-muted meta">{{ page.date }}</small>
+	{% comment %}
+		{% with categories=page.categories.all %}
+			{% if categories %}
+				<h3>Posted in:</h3>
+				<ul>
+					{% for category in categories %}
+						<li style="display: inline">
+							{% image category.icon fill-32x32 style="vertical-align: middle" %}
+							{{ category.name }}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endwith %}
+	{% endcomment %}
+		
+		{% for item in page.gallery_images.all %}
+			<div class="rounded float-start">
+				{% image item.image fill-320x240 %}
+				<p>{{ item.caption }}</p>
+			</div>
+		{% endfor %}
+	
+		<div class="mt-3">
+			{{ page.body|richtext }}
+		</div>
+		
+		{% if page.tags.all.count %}
+			<div class="tags text-left">
+				<h6 class="d-inline text-muted">Tags</h6>
+				{% for tag in page.tags.all %}
+					<a class="text-muted d-inline" href="{% slugurl 'tags' %}?tag={{ tag }}"><button type="button">{{ tag }}</button></a>
+				{% endfor %}
+			</div>
+		{% endif %}
+	
+		<p><a href="{{ page.get_parent.url }}">Return to news</a></p>
+	</div>
+</div>
+{% endblock %}

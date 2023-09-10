@@ -1,0 +1,129 @@
+{% load sekizai_tags tz %}
+
+{% if messages %}
+<ul class="messages">
+	{% for message in messages %}
+	<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+	{% endfor %}
+</ul>
+{% endif %}
+
+<form action="{% url 'sportsbetting:index' %}" method="post" class="row">
+	<input type="hidden" name="pk" value="{{ ticket.pk }}">
+	{% csrf_token %}
+	<div class="col-xs-12 col-md-6">
+		<h2 class="mx-auto text-center">{{ ticket.name|upper }}</h3>
+		<div class="accordion" id="ticket_{{ ticket.pk }}">
+			{% for sport in sports %}
+				<div class="accordion-item">
+					<h3 class="accordion-header" id="ticket_{{ ticket.pk }}_{{ sport.name }}_heading">
+						<button class="accordion-button collapsed text-center fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#ticket_{{ ticket.pk }}_{{ sport.name }}_collapse" aria-expanded="false" aria-controls="ticket_{{ ticket.pk }}_{{ sport.name }}_collapse">
+							{{ sport.name }}
+						</button>
+					</h3>
+					<div id="ticket_{{ ticket.pk }}_{{ sport.name }}_collapse" class="accordion-collapse collapse" aria-labelledby="ticket_{{ ticket.pk }}_{{ sport.name }}_heading" data-bs-parent="#ticket_{{ ticket.pk }}">
+						<div class="accordion-body m-0 p-0">
+							<table class="table table-dark table-striped table-hover text-center">
+								{% for gameset in sport.gamesets %}
+									{% for game in gameset.games %}
+										{% if game in gameset.day_heads %}<tr class="table-primary"><th colspan="5" class="text-uppercase" style="letter-spacing: 0.2rem;">{{ game.start_datetime|date:"l - F d" }}</th></tr>{% endif %}
+										{% if game in gameset.time_heads %}<tr><th colspan="5">{{ game.start_datetime|date:"g:i A" }}</th></tr>{% endif %}
+										<tr>
+											{% if not game.isPreview %}
+												<td><input type="checkbox" id="{{ game.sport.name }}_{{ game.first_team }}_picked" name="{{ game.sport.name }}_{{ game.first_team }}_picked"  value="True"></td>
+												<td class="text-left">{{ game.first_team }}</td>
+												<td class="text-center">{% if game.spreadIsPick %}P{% endif %}{{ game.spread }}</td>
+												<td class="text-right">{{ game.second_team }}</td>
+												<td><input type="checkbox" id="{{ game.sport.name }}_{{ game.second_team }}_picked" name="{{ game.sport.name }}_{{ game.second_team }}_picked" value="True"></td>
+												
+												{% if game.under_over %}
+													<tr>
+														<td><input type="checkbox" id="{{ game.sport.name }}_{{ game.first_team }}_under" name="{{ game.sport.name }}_{{ game.first_team }}_under" value="True"></td>
+														<td class="text-left"><small>un{{ game.under_over.under }}</small></td>
+														<td class="text-center"></td>
+														<td class="text-right"><small>ov{{ game.under_over.over }}</small></td>
+														<td><input type="checkbox" id="{{ game.sport.name }}_{{ game.first_team }}_over" name="{{ game.sport.name }}_{{ game.first_team }}_over" value="True"></td>
+													</tr>
+												{% endif %}
+											{% else %}
+												<td></td>
+												<td class="text-left">{{ game.first_team }}</td>
+												<td></td>
+												<td class="text-right">{{ game.second_team }}</td>
+												<td></td>
+											{% endif %}
+										</tr>
+										{% addtoblock "js" %}
+											document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_picked").addEventListener('change', (e) => {
+												if( e.target.checked )
+												{
+													document.getElementById("{{ game.sport.name }}_{{ game.second_team }}_picked").checked = false;
+												}
+											});
+											
+											document.getElementById("{{ game.sport.name }}_{{ game.second_team }}_picked").addEventListener('change', (e) => {
+												if( e.target.checked )
+												{
+													document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_picked").checked = false;
+												}
+											});
+											
+											{% if game.under_over %}
+												document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_under").addEventListener('change', (e) => {
+													if( e.target.checked )
+													{
+														document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_over").checked = false;
+													}
+												});
+												
+												document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_over").addEventListener('change', (e) => {
+													if( e.target.checked )
+													{
+														document.getElementById("{{ game.sport.name }}_{{ game.first_team }}_under").checked = false;
+													}
+												});
+											{% endif %}
+										{% endaddtoblock %}
+									{% endfor %}
+								{% endfor %}
+							</table>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="col-xs-12 col-md-6">
+		<table class="table">
+			<thead>
+				<tr><th colspan="2">Enter your information</th></tr>
+			</thead>
+			<tr>
+				<td><label for="ticket_form_name">Name:</label></td>
+				<td><input type="text" id="ticket_form_name" name="purchaser_name" required></td>
+			</tr>
+			<tr>
+				<td><label for="ticket_form_email">Email address:</label></td>
+				<td><input type="email" id="ticket_form_email" name="email" required></td>
+			</tr>
+			<tr>
+				<td><label for="ticket_form_phone">Phone number:<br><small>(optional)</small></label></td>
+				<td>
+					<input type="tel" id="ticket_form_phone" name="phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" minlength="12" maxlength="12"><br>
+					<small>Format: 123-456-7890</small>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="ticket_form_bet">Wager amount:</label></td>
+				<td><input type="number" id="ticket_form_bet" name="bet_amount" min="5" required></td>
+			</tr>
+			<tr><td colspan="2" class="text-right align-items-right"><input type="submit" value="Submit"></td></tr>
+		</table>
+	</div>
+</form>
+
+{% addtoblock "js" %}
+$('#ticket_form_phone').keyup(function() {
+	$(this).val($(this).val().replace(/(\d{3})\-?(\d{3})\-?(\d{4})/,'$1-$2-$3'))
+});
+{% endaddtoblock %}

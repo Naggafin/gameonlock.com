@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+{% block content %}
+<div class="container-fluid">
+	<div class="row text-center text-white-shadow">
+			{% wagtail_site as current_site %}
+			{% if current_site and current_site.site_name %}<h1>{{ current_site.site_name }}</h1>{% endif %}
+			{{ page.body|richtext }}
+	</div>
+	<div class="row justify-content-center">
+		{% for blogpage in blogpages %}
+		{% with blogpage.specific as post %}
+		<div class="col-xs-12 col-lg-4 my-4" style="justify-content: center;">
+			<a href="{% pageurl post %}">
+				<div class="card bg-dark text-white shadow-sm d-block mx-auto" style="width: 18rem; overflow: hidden;">
+					<img class="card-img" src="{% image_url post.main_image 'original' %}" style="filter: brightness(75%);">
+					<div class="card-img-overlay px-0">
+						<h5 class="card-title fw-bold text-uppercase text-center border-bottom mb-0">{{ post.title }}</h5>
+						<p class="card-text text-center w-100 h-100" style="background-color: rgba(0,0,0,0.4); padding: 0.25rem; box-decoration-break: clone; border: 1px solid black; border-radius: 2px;">{{ post.intro }}</p>
+					</div>
+				</div>
+			</a>
+		</div>
+		{% endwith %}
+		{% endfor %}
+	</div>
+</div>
+{% endblock %}

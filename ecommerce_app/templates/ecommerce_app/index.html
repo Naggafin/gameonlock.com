@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title_suffix %}
+	| Shop
+{% endblock %}
+
+
+{% block content %}
+<p>
+	<a href="{% url 'ecommerce:index' %}">All Products</a> |
+	<a href="{% url 'ecommerce:show_cart' %}">Cart: {{ cart_item_count }} item</a>
+</p>
+
+	<div class="container">
+		<div class="row">
+			<h2>Available Products</h2>
+
+			{% for product in all_products %}
+				<div class="col-lg-4">
+					<h3><a href="{% url 'product_detail' product.pk product.slug %}">{{ product.name }}</a></h3>
+					<p>Price ${{ product.price }}</p>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+
+{% endblock %}

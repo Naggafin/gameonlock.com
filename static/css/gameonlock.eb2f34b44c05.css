@@ -1,0 +1,39 @@
+.jumbotron {
+	background-attachment: fixed;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+footer > ul {
+	list-style-type: none;
+	margin: 0 0 0 0.5rem;
+	padding: 0;
+}
+
+footer > ul > li {
+	padding-bottom: 0.40rem;
+}
+
+.min-75vh {
+	min-height: 75vh;
+}
+
+.text-background-blended {
+	background: inherit;
+	-webkit-background-clip: text;
+		background-clip: text;
+	color: transparent;
+	filter: invert(1) grayscale(1) contrast(9);
+}
+
+.textbox {
+	margin: 2rem;
+	background-color: lightgrey;
+	opacity: 0.8;
+	border: 2px solid silver;
+}
+
+.text-white-shadow {
+	text-shadow: #fff 0 0 3px;
+}

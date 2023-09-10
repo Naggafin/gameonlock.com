@@ -1,0 +1,6 @@
+User-Agent: *
+Disallow: /admin/
+Disallow: /cms/
+
+# Sitemap files
+Sitemap: /sitemap.xml
