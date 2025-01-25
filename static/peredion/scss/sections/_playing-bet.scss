@@ -1,0 +1,2052 @@
+// global 
+.flying-shadow {
+    position: fixed;   
+    z-index: 99999;
+    @include transition(.6s);
+    transition-property: left, top;
+    left: 0;
+    top: 0;
+    font-size: 20px;
+
+    &.hide {
+        opacity: 0;
+    }
+}
+
+// playing-bet 
+.scrollable-menu .os-scrollbar {
+    display: none!important;
+}
+.scrollable-menu .os-scrollbar-track {
+    display: none!important;
+}
+.playing-bet {
+    padding: 120px 0 60px;
+    position: relative;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0 50px;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0 40px;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0 30px;
+    }
+    &.placing-bet-page {
+        padding: 120px 0;
+        @include media-breakpoint-down(xxl) {
+            padding: 100px 0;
+        }
+        @include media-breakpoint-down(lg) {
+            padding: 80px 0;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 60px 0;
+        }
+    }
+    .sports-menu {
+        margin-bottom: 46px;
+        overflow: hidden;
+        
+        @include media-breakpoint-down(md) {
+            margin-bottom: 36px;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 37px;
+        }
+        @include media-breakpoint-down(mobile) {
+            margin-bottom: 27px;
+        }
+        .nav {
+            justify-content: center;
+            gap: 50px;
+            display: flex;
+            width: 100%;
+            flex-wrap: nowrap;
+            @include media-breakpoint-up(lg) {
+                transform: none!important;
+            }
+            @include media-breakpoint-down(xxl) {
+                gap: 45px;
+            }
+            @include media-breakpoint-down(xl) {
+                gap: 40px;
+            }
+            @include media-breakpoint-down(lg) {
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                gap: 30px;
+            }
+            @include media-breakpoint-down(mobile) {
+                gap: 25px;
+            }
+            .nav-item {
+                .nav-link {
+                    background: none;   
+                    padding: 0;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    span {
+                        display: block;
+                        &.sport-icon {
+                            width: 100px;
+                            height: 100px;
+                            background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(144.14deg, rgba(77, 35, 63, 0.08) -11.44%, rgba(48, 91, 159, 0.08) 123.42%);
+                            box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.1);
+                            border-radius: 50%;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            margin-bottom: 16px;
+                            position: relative;
+                            @include transition($transition);
+                            @include media-breakpoint-down(xxl) {
+                                width: 90px;
+                                height: 90px;
+                            }
+                            @include media-breakpoint-down(xl) {
+                                width: 80px;
+                                height: 80px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                width: 70px;
+                                height: 70px;
+                                margin-bottom: 11px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                width: 60px;
+                                height: 60px;
+                                margin-bottom: 6px;
+                            }
+                            img {
+                                position: absolute;
+                                right: calc(24px / 2);
+                                bottom:calc(24px / 2);
+                                width: 76px;
+                                height: auto;
+                                max-width: none;
+                                @include media-breakpoint-down(xxl) {
+                                    width: 70px;
+                                    right: calc(20px / 2);
+                                    bottom:calc(20px / 2);
+                                }
+                                @include media-breakpoint-down(xl) {
+                                    width: 60px;
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    width: 50px;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    width: 45px;
+                                    right: calc(15px / 2);
+                                    bottom:calc(15px / 2);
+                                }
+                            }
+                        }
+                        &.sport-name {
+                            font-weight: 700;
+                            font-size: 19px;
+                            line-height: 29px;
+                            letter-spacing: 0.02em;
+                            text-transform: capitalize;
+                            @include text-gradient-1;
+                            background-image: linear-gradient(144.14deg, rgba(77, 35, 63, 0.8) -11.44%, rgba(48, 91, 159, 0.8) 123.42%);
+                            margin-bottom: -4px;
+                            @include media-breakpoint-down(xxl) {
+                                font-size: 17.5px;
+                                line-height: 28.5px;
+                                margin-bottom: -5px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                font-size: 15.5px;
+                                line-height: 26.5px;
+                                margin-bottom: -6px;
+                            }
+                        }
+                    }
+                    &.active {
+                        span {
+                            &.sport-icon {
+                                box-shadow: 0px 4px 5px rgba(255, 15, 0, 0.2);
+                            }
+                            &.sport-name {
+                                @include text-gradient-1;
+                                animation: opacity-to-hover 0.4s cubic-bezier(0.5, 0, 0.5, 1);
+                                white-space: nowrap;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .sports-accordion {
+       
+    }
+    .accordion-item {
+        border: none;
+        margin-bottom: 30px;
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 20px;
+        }
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+    
+    .sports-header {
+        padding: 20px 30px;
+        border: none;
+        box-shadow: none;
+        background: $gradient-2;
+        border-radius: 10px 10px 0 0 !important;
+        position: relative;
+        overflow: hidden;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        @include media-breakpoint-down(xxl) {
+            padding: 17px 30px 18px;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 15px 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 10px 20px;
+        }
+        &:after {
+            all: unset;
+            position: absolute;
+            content: '';
+            top: 0;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: #FB355E;
+            filter: blur(100px) opacity(.25);
+            top: 50%;
+            transform: translateY(-50%);
+            right: 150px;
+            @include media-breakpoint-down(lg) {
+                width: 400px;
+                height: 400px;
+            }
+            @include media-breakpoint-down(md) {
+                width: 300px;
+                height: 300px;
+            }
+            @include media-breakpoint-down(sm) {
+                width: 200px;
+                height: 200px;
+            }
+        }
+        span {
+            &.single-sports-icon {
+                width: 40px;
+                margin-right: 25px;
+                @include media-breakpoint-down(xxl) {
+                    width: 35px;
+                    margin-right: 20px;
+                }
+                @include media-breakpoint-down(md) {
+                    width: 30px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    width: 25px;
+                    margin-right: 15px;
+                }
+                img {
+                    width: 100%;
+                }
+            }
+            &.single-sports-name {
+                font-weight: 500;
+                font-size: 22px;
+                line-height: 32px;
+                letter-spacing: 0.02em;
+                text-transform: capitalize;
+                color: $white;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 20px;
+                    line-height: 30px;
+                }
+                @include media-breakpoint-down(md) {
+                    font-size: 18px;
+                    line-height: 28px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 17px;
+                    line-height: 27px;
+                }
+            }
+            &.single-sports-img {
+                height: 80px;
+                max-width: none;
+                width: auto;
+                position: absolute;
+                left: 45%;
+                top: 50%;
+                transform: translateY(-50%);
+                opacity: .2;
+                mix-blend-mode: lighten;
+                z-index: 1;
+                @include media-breakpoint-down(lg) {
+                    height: 70px;
+                }
+                @include media-breakpoint-down(md) {
+                    left: 35%;
+                }
+                img {
+                    height: 100%;
+                    width: auto;
+                }
+                &.tennis-bg {
+                    mix-blend-mode: luminosity;
+                }
+                &.basket-bg {
+                    mix-blend-mode: color-dodge;
+                    left: 43%;
+                }
+                &.rugby-bg {
+                    mix-blend-mode: lighten;
+                    opacity: .3;
+                    left: 41%;
+                }
+            }
+        }
+        a.see-all-sports-btn {
+            color: rgba($white, 0.9);
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 0.02em;
+            display: inline-block;
+            top: 50%;
+            transform: translateY(-50%);
+            position: absolute;
+            right: 30px;
+            z-index: 22;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            opacity: 1;
+            @include transition($transition);
+            @include media-breakpoint-down(xxl) {
+                font-size: 16px;
+            }
+            @include media-breakpoint-down(mobile) {
+                display: none;
+            }
+        }
+        &.collapsed {
+            border-radius: 10px!important;
+            a.see-all-sports-btn {
+                opacity: 0;
+            }
+        }
+    }
+    .sports-expanded-list {
+        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 0px 0px 15px 15px;
+        .sports-body {
+            padding: 40px;
+            padding-top: 30px;
+            @include media-breakpoint-down(xxl) {
+                padding: 30px;
+                padding-top: 30px;
+            }
+            @include media-breakpoint-down(mobile) {
+                padding: 20px;
+                padding-top: 20px;
+            }
+            .playing-sports-all {
+                .single-tournament {
+                    .tournament-title {
+                        font-weight: 600;
+                        font-size: 20px;
+                        line-height: 30px;
+                        letter-spacing: 0.02em;
+                        text-transform: capitalize;
+                        margin: -7px 0 22px;
+                        color: $descr-color;
+                        position: relative;
+                        z-index: 2;
+                        @include media-breakpoint-down(xl) {
+                            font-size: 18px;
+                            line-height: 28px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            font-size: 16px;
+                            line-height: 26px;
+                            margin-bottom: 12px;
+                        }
+                        &:after {
+                            position: absolute;
+                            content: '';
+                            left: 0;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            width: 100%;
+                            height: 2px;
+                            background: url('../img/playing-bet/shape/line-shape-1.png') left top repeat-x;
+                            background-position: 1px;
+                            z-index: -1;
+                            @include media-breakpoint-down(mobile) {
+                                display: none;
+                            }
+                        }
+                        span.title-text {
+                            background: $white;
+                            padding-right: 30px;
+                            @include media-breakpoint-down(mobile) {
+                                padding-right: 0;
+                            }
+                        }
+                        span.match-quantity {
+                            float: right;
+                            background: $white;
+                            padding-left: 30px;
+                            @include media-breakpoint-down(mobile) {
+                                padding-left: 0;
+                            }
+                        }
+                    }
+                    .all-tournament-match {
+                        .single-t-match {
+                            display: flex;
+                            justify-content: space-between;
+                            border: 1px solid rgba($base-color, 0.2);
+                            border-radius: 10px;
+                            padding: 10px 45px 10px 30px;
+                            align-items: center;
+                            margin-bottom: 20px;
+                            @include media-breakpoint-down(xxl) {
+                                padding: 10px 30px 10px 30px;
+                            }
+                            @include media-breakpoint-down(xl) {
+                                padding: 10px 25px 10px 25px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                flex-wrap: wrap;
+                                row-gap: 15px;
+                                padding: 20px;
+                                justify-content: space-around;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                padding: 15px;
+                                justify-content: space-between;
+                                padding-top: 10px;
+                            }
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                            &.finished {
+                                .placing-bet {
+                                    cursor: no-drop;
+                                    a.single-bet-place {
+                                        position: relative;
+                                        pointer-events: none;
+                                        &:before {
+                                            content: '';
+                                            position: absolute;
+                                            background: url('../img/playing-bet/lock-icon.png') center center no-repeat;
+                                            background-size: contain;
+                                            width: 25px;
+                                            height: 25px;
+                                            border-radius: 50%;
+                                            right: -10px;
+                                            top: -10px;
+                                        }
+                                    }
+                                }
+                            }
+                            .match-time {
+                                text-align: center;
+                                position: relative;
+                                padding-right: 30px;
+                                @include media-breakpoint-down(xl) {
+                                    padding-right: 20px;
+                                }
+                                @include media-breakpoint-down(lg) {
+                                    display: flex;
+                                    gap: 10px;
+                                    width: 90%;
+                                    align-items: baseline;
+                                }
+                                @include media-breakpoint-down(md) {
+                                    width: 87%;
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    width: 85%;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    width: auto;
+                                    gap: 5px;
+                                }
+                                &:after {
+                                    position: absolute;
+                                    content: '';
+                                    right: 0;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    width: 1px;
+                                    height: 50px;
+                                    background: $descr-color;
+                                    opacity: .5;
+                                    @include media-breakpoint-down(lg) {
+                                        width: 110%;
+                                        height: 1px;
+                                        transform: none;
+                                        right: auto;
+                                        left: 0;
+                                        top: 30px;
+                                        opacity: .2;
+                                        background: none;
+                                        border-bottom: 1px double $descr-color;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        display: none;
+                                    }
+                                }
+                                span {
+                                    display: block;
+                                    &.time-icon {
+                                        font-size: 15px;
+                                        color: $base-color;
+                                        opacity: 0.4;
+                                        margin-bottom: -2px;
+                                        margin-top: -2px;
+                                        @include media-breakpoint-down(lg) {
+                                            margin-top: 2px;
+                                            margin-bottom: 0;
+                                        }
+                                        @include media-breakpoint-down(mobile) {
+                                            display: none;
+                                        }
+                                    }
+                                    &.m-date {
+                                        font-weight: 500;
+                                        font-size: 14px;
+                                        line-height: 24px;
+                                        letter-spacing: 0.02em;
+                                        text-transform: uppercase;
+                                        color: rgba($base-color, 0.5);
+                                        margin-bottom: -4px;
+                                        @include media-breakpoint-down(lg) {
+                                            margin-bottom: 0;
+                                        }
+                                        @include media-breakpoint-down(mobile) {
+                                            font-size: 13px;
+                                            line-height: 23px;
+                                        }
+                                    }
+                                    &.m-time {
+                                        font-weight: 600;
+                                        font-size: 14px;
+                                        line-height: 24px;
+                                        letter-spacing: 0.02em;
+                                        text-transform: uppercase;
+                                        color: $normal-green;
+                                        margin-bottom: -7px;
+                                        @include media-breakpoint-down(lg) {
+                                            margin-bottom: 0;
+                                        }
+                                        @include media-breakpoint-down(mobile) {
+                                            font-size: 13px;
+                                            line-height: 23px;
+                                        }
+                                    }
+                                    &.m-in-play {
+                                        background: $gradient-1;
+                                        color: $white;
+                                        font-weight: 600;
+                                        font-size: 11px;
+                                        line-height: 16px;
+                                        letter-spacing: 0.02em;
+                                        text-transform: uppercase;
+                                        margin: 3px 0 0;
+                                        @include media-breakpoint-down(lg) {
+                                            height: 15px;
+                                            margin: 0;
+                                            padding: 0 5px;
+                                            position: relative;
+                                            top: -1px;
+                                        }
+                                        @include media-breakpoint-down(mobile) {
+                                            font-size: 10px;
+                                            line-height: 15px;
+                                        }
+                                    }
+                                }
+                            }
+                            .playing-teams {
+                                width: 369px;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 10px;
+                                padding: 0 20px;
+                                position: relative;
+                                &:after {
+                                    width: 100%;
+                                    content: '';
+                                    height: 1px;
+                                    transform: none;
+                                    right: auto;
+                                    left: 0;
+                                    top: -10px;
+                                    opacity: .2;
+                                    background: none;
+                                    border-bottom: 1px double $descr-color;
+                                    display: none;
+                                    position: absolute;
+                                }
+                                @include media-breakpoint-down(xxl) {
+                                    width: 260px;
+                                }
+                                @include media-breakpoint-down(lg) {
+                                    width: 32%;
+                                    padding: 0;
+                                    order: 5;
+                                }
+                                @include media-breakpoint-between(mobile, md) {
+                                    width: 100%;
+                                    justify-content: space-evenly;
+                                    flex-direction: row;
+                                    margin-top: 5px;
+                                    &:after {
+                                        display: block;
+                                    }
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    justify-content: space-between;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    width: 100%;
+                                    &:after {
+                                        display: block;
+                                    }
+                                }
+                                
+                                .single-team {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    margin: -3px 0 -1px;
+                                    @include media-breakpoint-between(mobile, md) {
+                                        gap: 10px;
+                                        &:last-child {
+                                            flex-direction: row-reverse;
+                                            .team-descr {
+                                                flex-direction: row-reverse;
+                                            }
+                                        }
+                                    }
+                                    .team-descr {
+                                        display: flex;
+                                        align-items: center;
+                                        gap: 10px;
+                                        span {
+                                            display: inline-block;
+                                            &.team-icon {
+                                                width: 25px;
+                                                display: flex;
+                                                justify-content: center;
+                                                @include media-breakpoint-down(lg) {
+                                                    width: 20px;
+                                                }
+                                                img {
+                                                    width: auto;
+                                                    max-width: none;
+                                                    height: 22px;
+                                                    @include media-breakpoint-down(lg) {
+                                                        height: 20px;
+                                                    }
+                                                }
+                                            }
+                                            &.team-name {
+                                                font-weight: 600;
+                                                font-size: 16px;
+                                                line-height: 26px;
+                                                letter-spacing: 0.01em;
+                                                text-transform: capitalize;
+                                                @include text-gradient-3;
+                                                opacity: .8;
+                                                @include media-breakpoint-down(sm) {
+                                                    font-size: 15px;
+                                                    line-height: 25px;
+                                                }
+                                                @include media-breakpoint-down(mobile) {
+                                                    font-size: 14px;
+                                                    line-height: 24px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    .team-score {
+                                        font-weight: 700;
+                                        font-size: 17px;
+                                        line-height: 27px;
+                                        letter-spacing: 0.02em;
+                                        text-transform: capitalize;
+                                        opacity: 0.3;
+                                        @include text-gradient-3;
+                                        position: relative;
+                                        bottom: -2px;
+                                        @include media-breakpoint-down(md) {
+                                            font-size: 20px;
+                                            line-height: 30px;
+                                            bottom: 0;
+                                        }
+                                        @include media-breakpoint-down(sm) {
+                                            font-size: 18px;
+                                            line-height: 28px;
+                                        }
+                                    }
+                                }
+                            }
+                            .placing-bet {
+                                display: flex;
+                                gap: 20px;
+                                position: relative;
+                                padding: 0 20px;
+                                @include media-breakpoint-down(xl) {
+                                    gap: 10px;
+                                }
+                                @include media-breakpoint-down(lg) {
+                                    order: 6;
+                                    width: 68%;
+                                    width: auto;
+                                    padding-right: 0;
+                                } 
+                                @include media-breakpoint-down(md) {
+                                    padding: 0;
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    width: 100%;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    gap: 5px;
+                                }
+                                &:after {
+                                    position: absolute;
+                                    content: '';
+                                    left: 0;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    width: 1px;
+                                    height: 50px;
+                                    background: $descr-color;
+                                    opacity: .5;
+                                    @include media-breakpoint-down(lg) {
+                                        display: none;
+                                    }
+                                }
+                                &:before {
+                                    position: absolute;
+                                    content: '';
+                                    right: 0;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                    width: 1px;
+                                    height: 50px;
+                                    background: $descr-color;
+                                    opacity: .5;
+                                    @include media-breakpoint-down(lg) {
+                                        display: none;
+                                    }
+                                }
+                                a.single-bet-place {
+                                    display: inline-block;
+                                    background: linear-gradient(144.14deg, rgba(77, 35, 63, 0.05) -11.44%, rgba(48, 91, 159, 0.05) 123.42%);
+                                    border-radius: 5px;
+                                    border: 1px solid #EDECF0;
+                                    width: 180px;
+                                    text-align: center;
+                                    padding: 16px 0;
+                                    @include media-breakpoint-down(xl) {
+                                        width: 140px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        width: 140px;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        width: 150px;
+                                        padding: 11px 0;
+                                    }
+                                    @include media-breakpoint-down(sm) {
+                                        width: 100%;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        padding: 6px 0;
+                                    }
+                                    
+                                    &.draw-box {
+                                        width: 120px;
+                                        @include media-breakpoint-down(xl) {
+                                            width: 100px;
+                                        }
+                                        @include media-breakpoint-down(lg) {
+                                            width: 80px;
+                                        }
+                                        @include media-breakpoint-down(md) {
+                                            width: 90px;
+                                        }
+                                        @include media-breakpoint-down(sm) {
+                                            width: 60%;
+                                        }
+                                        @include media-breakpoint-down(mobile) {
+                                            width: 100%;
+                                        }
+                                    }
+                                    &.placed {
+                                        position: relative;
+                                        z-index: 2;
+                                        &:after {
+                                            position: absolute;
+                                            content: '';
+                                            left: 0;
+                                            top: 0;
+                                            width: 100%;
+                                            height: 100%;
+                                            background: $gradient-1;
+                                            z-index: -1;
+                                            border-radius: 5px;
+                                        }
+                                        span {
+                                            display: block;
+                                            &.bet-ratio {
+                                                @include text-gradient-clear;
+                                                color: $white;
+                                                font-weight: 600;
+                                            }
+                                            &.team-name {
+                                                color: $white;
+                                            }
+                                        }
+                                    }
+                                    span {
+                                        display: block;
+                                        &.bet-ratio {
+                                            font-weight: 700;
+                                            font-size: 16px;
+                                            line-height: 26px;
+                                            letter-spacing: 0.02em;
+                                            text-transform: capitalize;
+                                            @include text-gradient-3;
+                                            margin: -8px 0 5px;
+                                            @include media-breakpoint-down(sm) {
+                                                font-size: 15px;
+                                                line-height: 25px;
+                                                margin-bottom: 0;
+                                            }
+                                            @include media-breakpoint-down(mobile) {
+                                                margin: 0;
+                                            }
+                                        }
+                                        &.team-name {
+                                            font-weight: 500;
+                                            font-size: 14px;
+                                            line-height: 16px;
+                                            letter-spacing: 0.01em;
+                                            text-transform: capitalize;
+                                            color: rgba($base-color, 0.5);
+                                            margin: 0 0 -3px;
+                                            @include media-breakpoint-down(sm) {
+                                                font-size: 13px;
+                                                line-height: 15px;
+                                            }
+                                            @include media-breakpoint-down(mobile) {
+                                                display: none;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            span.bet-ratio-details {
+                                a {
+                                    display: inline-block;
+                                    font-weight: 600;
+                                    font-size: 14px;
+                                    line-height: 24px;
+                                    letter-spacing: 0.02em;
+                                    text-transform: uppercase;
+                                    color: $normal-green;
+                                    padding-left: 50px;
+                                    width: 81px;
+                                    text-align: right;
+                                    @include media-breakpoint-down(xxl) {
+                                        padding-left: 20px;
+                                        width: 51px;
+                                    }
+                                }
+                                @include media-breakpoint-down(lg) {
+                                    display: inline-flex;
+                                }
+                            }
+                            &.match-in-play {
+                                .match-time {
+                                    width: 81px;
+                                    @include media-breakpoint-down(xl) {
+                                        width: 71px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        width: 90%;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        width: 87%;
+                                    }
+                                    @include media-breakpoint-down(sm) {
+                                        width: 85%;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        width: auto;
+                                    }
+                                }
+                                .playing-teams {
+                                    .single-team {
+                                        .team-score {
+                                            opacity: 1;
+                                            &.up {
+                                                color: $normal-green;
+                                                background: unset;
+                                                -webkit-text-fill-color: unset;
+                                                -webkit-background-clip: unset;
+                                            }
+                                            &.down {
+                                                @include text-gradient-1;
+                                            }
+                                        }
+                                    }
+                                }
+                                .placing-bet {
+                                    a.single-bet-place {
+                                        position: relative;
+                                        &:before {
+                                            position: absolute;
+                                            content: '';
+                                            width: 15px;
+                                            height: 15px;
+                                            background-size: 15px 15px;
+                                            animation: opacity-to-hover 2s infinite;
+                                        }
+                                        &.up {
+                                            &:before { 
+                                                right: 2px;
+                                                top: 2px;
+                                                background: url('../img/playing-bet/shape/up.png') right top no-repeat;
+                                                background-size: 15px 15px;
+                                                @include media-breakpoint-down(lg) {
+                                                    background-size: 10px 10px;
+                                                }
+                                            }
+                                            span {
+                                                &.bet-ratio {
+                                                    color: $normal-green;
+                                                    font-weight: 600;
+                                                    @include text-gradient-clear;
+                                                }
+                                            }
+                                        }
+                                        &.down {
+                                            &:before { 
+                                                right: 2px;
+                                                bottom: 2px;
+                                                background: url('../img/playing-bet/shape/down.png') right bottom no-repeat;
+                                                animation-delay: 1s;
+                                                background-size: 15px 15px;
+                                                @include media-breakpoint-down(lg) {
+                                                    background-size: 10px 10px;
+                                                }
+                                            }
+                                            span {
+                                                &.bet-ratio {
+                                                    @include text-gradient-1;
+                                                    font-weight: 700;
+                                                }
+                                            }
+                                        }
+                                        &.placed {
+                                            &.up {
+                                                &:before { 
+                                                    background: url('../img/playing-bet/shape/up-placed.png') right top no-repeat;
+                                                    background-size: 15px 15px;
+                                                    @include media-breakpoint-down(lg) {
+                                                        background-size: 10px 10px;
+                                                    }
+                                                }
+                                                span {
+                                                    &.bet-ratio {
+                                                        color: #72ff7f;
+                                                    }
+                                                }
+                                            }
+                                            &.down {
+                                                &:before {
+                                                    background: url('../img/playing-bet/shape/down-placed.png') right bottom no-repeat;
+                                                    background-size: 15px 15px;
+                                                    @include media-breakpoint-down(lg) {
+                                                        background-size: 10px 10px;
+                                                    }
+                                                }
+                                                span {
+                                                    &.bet-ratio {
+                                                        @include text-gradient-clear;
+                                                        color: #fff700;
+                                                        font-weight: 600;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }   
+                }
+                &.no-tabs-here {
+                    .single-tournament {
+                        margin-bottom: 30px;
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .see-all-sports-btn-cover {
+        text-align: center;
+        margin-top: 50px;
+        @include media-breakpoint-down(xxl) {
+            margin-top: 40px;
+        }
+        @include media-breakpoint-down(xl) {
+            margin-top: 30px;
+        }
+    }
+}
+
+
+.item-slider {
+    display: flex;
+    gap: 15px;
+    width: 500px;
+    height: 100px;
+    overflow: scroll;
+    .item-wrapperr {
+        display: flex;
+        flex-wrap: nowrap;
+    }
+    .single-item {
+        border-radius: 50%;
+        background: red;
+        .goal {
+            width: 100px;
+            height: 100px;
+        }
+        &:nth-child(2) {
+            background: green;
+        }
+        &:nth-child(3) {
+            background: purple;
+        }
+        &:nth-child(4) {
+            background: #FB355E;
+        }
+        &:nth-child(5) {
+            background: aqua;
+        }
+        &:nth-child(6) {
+            background: lightcoral;
+        }
+        &:nth-child(7) {
+            background: gold;
+        }
+        &:nth-child(8) {
+            background: blue;
+        }
+    }
+}
+
+
+// placin bet modal
+.modal-dialog {
+    pointer-events: visible;
+    @include media-breakpoint-down(xxl) {
+        max-width: 480px;
+    }    
+    @include media-breakpoint-down(xl) {
+        max-width: 400px;
+    }
+    @include media-breakpoint-down(lg) {
+        max-width: 380px;
+    }
+    @include media-breakpoint-down(md) {
+        max-width: 360px;
+    }
+    @include media-breakpoint-down(sm) {
+        margin: .5rem auto;
+    }
+    @include media-breakpoint-down(mobile) {
+        max-width: 300px;
+    }
+}
+.placing-bet-modal {
+    background: $white;
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    .pb-modal-header {
+        background: $gradient-2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+        @include media-breakpoint-down(xxl) {
+            padding: 15px 40px;
+        }
+        @include media-breakpoint-down(xl) {
+            padding: 15px 30px;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 10px 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 5px 20px;
+        }
+        span.modal-title {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 34px;
+            letter-spacing: 0.02em;
+            text-transform: capitalize;
+            color: $white;
+            @include media-breakpoint-down(xxl) {
+                font-size: 22px;
+                line-height: 32px;
+            }
+            @include media-breakpoint-down(xl) {
+                font-size: 20px;
+                line-height: 30px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 18px;
+                line-height: 28px;
+            }
+        }
+        button.prd-close-btn {
+            color: $white;
+            background: none;
+            border: none;
+            font-size: 24px;
+        }
+    }
+    .pb-modal-body {
+        .selected-team {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 34px;
+            span {
+                margin: 23px 0 22px;
+                @include media-breakpoint-down(xxl) {
+                    margin: 18px 0 17px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    margin: 13px 0 12px;
+                }
+                &.slct-team-name {
+                    font-weight: 700;
+                    font-size: 20px;
+                    line-height: 30px;
+                    letter-spacing: 0.01em;
+                    text-transform: capitalize;
+                    @include text-gradient-1;
+                    position: relative;
+                    @include media-breakpoint-down(xl) {
+                        font-size: 18px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 17px;
+                        line-height: 27px;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        right: -19px;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        background: $base-color;
+                        opacity: .5;
+                        width: 4px;
+                        height: 4px;
+                        border-radius: 50%;
+                    }
+                }
+                &.slct-bet-ratio {
+                    font-weight: 700;
+                    font-size: 20px;
+                    line-height: 30px;
+                    letter-spacing: 0.02em;
+                    text-transform: capitalize;
+                    @include text-gradient-3;
+                    @include media-breakpoint-down(xl) {
+                        font-size: 18px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 17px;
+                        line-height: 27px;
+                    }
+                }
+            }
+        }
+        .selected-match {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+            padding: 15px 0;
+            background: $white;
+            border-radius: 10px;
+            z-index: 2;
+            position: relative;
+            background: url('../img/playing-bet/modal/selected-match-bg.jpg') center center no-repeat;
+            background-size: cover;
+            @include media-breakpoint-down(xxl) {
+                gap: 20px;
+            }
+            @include media-breakpoint-down(mobile) {
+                gap: 15px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 3px;
+                height: 0;
+                background: $gradient-1;
+                border-radius: 10px;
+                z-index: -1;
+                opacity: 0;
+                @include transition($transition);
+            }
+            .single-team {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                .team-icon {
+                    position: relative;
+                    text-align: center;
+                    padding-bottom: 10px;
+                    @include media-breakpoint-down(xl) {
+                        display: none;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 50%;
+                        bottom: 0;
+                        transform: translateX(-50%);
+                        width: 80px;
+                        height: 34.78px;
+                        background: url('../img/playing-bet/modal/team-logo-bg.png') no-repeat;
+                        background-position: bottom center;
+                        background-size: auto 34.78px;
+                        filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
+                        z-index: -1;
+                    }
+                    img {
+                        height: 34.78px;
+                        width: auto;
+                        max-width: none;
+                    }
+                }
+                span.team-name {
+                    font-weight: 700;
+                    font-size: 18px;
+                    line-height: 28px;
+                    letter-spacing: 0.01em;
+                    text-transform: capitalize;
+                    @include text-gradient-3;
+                    display: block;
+                    margin: -6px 0 -8px;
+                    @include media-breakpoint-down(md) {
+                        font-size: 17px;
+                        line-height: 27px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 16px;
+                        line-height: 26px;
+                    }
+                }
+            }
+            img.versace-icon {
+                width: 25.56px;
+                @include media-breakpoint-down(mobile) {
+                    width: 15.56px;
+                }
+            }
+        }
+        .scrores-line {
+            font-weight: 500;
+            font-size: 18px;
+            line-height: 28px;
+            letter-spacing: 0.01em;
+            text-transform: capitalize;
+            color: rgba($base-color, 0.6);
+            margin: 23px 0 -8px;
+            @include media-breakpoint-down(xxl) {
+                margin: 18px 0 -8px;
+                font-size: 17px;
+                line-height: 27px;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin: 13px 0 -8px;
+                font-size: 16px;
+                line-height: 26px;
+            }
+        }
+    }
+    .pb-ctrl-stake {
+        margin: 30px 0;
+        @include media-breakpoint-down(xxl) {
+            margin: 25px 0;
+        }
+        @include media-breakpoint-down(mobile) {
+            margin: 20px 0;    
+        }
+        .prd-btn-group {
+            display: inline-flex;
+            align-items: center;
+            height: 50px;
+            border-radius: 50px;
+            position: relative;
+            z-index: 2;
+            overflow: hidden;
+            @include media-breakpoint-down(xxl) {
+                height: 45px;
+            }
+            @include media-breakpoint-down(xl) {
+                height: 40px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: $gradient-2;
+                z-index: -2;
+                border-radius: 50px;
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                left: 2px;
+                top: 1px;
+                right: 2px;
+                bottom: 1px;
+                background: $white;
+                z-index: -1;
+                border-radius: 50px;
+            }
+            button.ctrl-btn {
+                border: none;
+                background: none;
+                padding: 0 25px;
+                @include text-gradient-3;
+                font-size: 16px;    
+                height: 100%;
+                @include media-breakpoint-down(xxl) {
+                    padding: 0 20px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    padding: 0 15px;
+                }
+                &:active {
+                    @include text-gradient-clear;
+                    background: $gradient-2;
+                    color: $white;
+                }
+            }
+            span.stake-digit {
+                padding: 0 25px;
+                line-height: 50px;
+                border-left: 1px solid rgba($base-color, 0.2);
+                border-right: 1px solid rgba($base-color, 0.2);
+                font-weight: 600;
+                font-size: 18px;
+                letter-spacing: 0.02em;
+                @include media-breakpoint-down(xxl) {
+                    padding: 0 20px
+                }
+                @include media-breakpoint-down(mobile) {
+                    padding: 0 15px;
+                }
+                @include text-gradient-2;
+            }
+        }
+    }
+    .pb-calc {
+        background: $gradient-2;
+        padding: 12px 0 13px;
+        span {
+            color: rgba($white, 0.8);
+            display: block;
+            font-weight: 500;
+            font-size: 18px;
+            line-height: inherit;
+            letter-spacing: 0.02em;
+            text-transform: capitalize;
+            @include media-breakpoint-down(xxl) {
+                font-size: 17px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+            }
+            &.stake-line {
+                margin: 0 0 6px;
+                @include media-breakpoint-down(mobile) {
+                    margin: 0 0 1px;
+                }
+                .stk-num {
+                    display: inline;
+                }
+            }
+            &.total-return {
+                .ret-num {
+                    display: inline;
+                }
+            }
+        }
+    }
+    .pb-modal-footer {
+        padding: 30px 0 40px;
+        @include media-breakpoint-down(xxl) {
+            padding: 25px 0 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 20px 0 25px;
+        }
+    }
+}
+
+
+// bfilter control
+.bfilter-control {
+    margin-bottom: 60px;
+    @include media-breakpoint-down(md) {
+        margin-bottom: 50px;
+    }
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 40px;
+    }
+    @include media-breakpoint-down(mobile) {
+        margin-bottom: 30px;
+    }
+    .nav-pills {
+        justify-content: center;
+        gap: 5px;
+        .nav-item {
+            .nav-link {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 50px;
+                letter-spacing: 0.01em;
+                color: rgba($base-color, 0.7);
+                text-transform: capitalize;
+                background: transparent;
+                position: relative;
+                z-index: 2;
+                @include transition($transition);
+                height: 50px;
+                padding: 0 30px;
+                &:after {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                    background: $gradient-2;
+                    opacity: .1;
+                    @include transition($transition);
+                }
+                &:before {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: -1;
+                    background: $gradient-1;
+                    opacity: 0;
+                    @include transition($transition);
+                }
+                i {
+                    @include text-gradient-1;
+                    font-size: 20px;
+                    position: relative;
+                    top: 3px;
+                    margin-right: 5px;
+                    @include transition($transition);
+                }
+                @include media-breakpoint-down(lg) {
+                    line-height: 45px;
+                    height: 45px;
+                    padding: 0 25px;
+                }
+                @include media-breakpoint-down(md) {
+                    line-height: 40px;
+                    height: 40px;
+                    padding: 0 25px;
+                    font-size: 15px;
+                }
+                &.active {
+                    color: $white;
+                    box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+                    &:after {
+                        opacity: 0;
+                    }
+                    &:before {
+                        opacity: 1;
+                    }
+                    i {
+                        filter: brightness(100);
+                    }
+                }
+            }
+            &:first-child {
+                .nav-link, .nav-link:after, .nav-link:before {
+                    border-radius: 50px 0 0 50px;
+                }
+            }
+            &:last-child {
+                .nav-link, .nav-link:after, .nav-link:before {
+                    border-radius: 0 50px 50px 0;
+                }
+            }
+            @include media-breakpoint-down(mobile) {
+                .nav-link, .nav-link:after, .nav-link:before {
+                    border-radius: 50px!important;
+                }
+            }
+        }
+    }
+}
+
+
+.playing-bet.placing-bet-page {
+    .sports-schedule-elem {
+        padding-top: 30px;
+        @include media-breakpoint-down(xxl) {
+            padding-top: 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding-top: 20px;
+        }
+        @include media-breakpoint-down(mobile) {
+            .g-3 {
+                margin-right: 0;
+                margin-left: 0;
+                width: 100%;
+                .col-xl-6 {
+                    padding: 0;
+                }
+            }
+        }
+        .tournament-title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: 0.02em;
+            text-transform: capitalize;
+            margin: -7px 0 22px;
+            color: $descr-color;
+            position: relative;
+            z-index: 2;
+            @include media-breakpoint-down(xl) {
+                font-size: 18px;
+                line-height: 28px;
+            }
+            @include media-breakpoint-down(mobile) {
+                font-size: 16px;
+                line-height: 26px;
+                margin-bottom: 12px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 100%;
+                height: 2px;
+                background: url('../img/playing-bet/shape/line-shape-1.png') left top repeat-x;
+                background-position: 1px;
+                z-index: -1;
+                @include media-breakpoint-down(mobile) {
+                    display: none;
+                }
+            }
+            span.title-text {
+                background: $white;
+                padding-right: 30px;
+                @include media-breakpoint-down(mobile) {
+                    padding-right: 0;
+                }
+            }
+            span.match-quantity {
+                float: right;
+                background: $white;
+                padding-left: 30px;
+                @include media-breakpoint-down(mobile) {
+                    padding-left: 0;
+                }
+            }
+        }
+        .single-view-schedule{
+            box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            .schedue-header {
+                background: $base-color;
+                position: relative;
+                overflow: hidden;
+                z-index: 2;
+                padding: 23px 0 23px;
+                @include media-breakpoint-down(lg) {
+                    padding: 18px 0;
+                }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 435px;
+                    height: 435px;
+                    left: -145px;
+                    top: 67px;
+                    background: #29589A;
+                    filter: blur(100px) opacity(40%);
+                    z-index: -1;
+                }
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 318px;
+                    height: 318px;
+                    left: calc(100% - 250px);
+                    top: -238px;
+                    background: #FB355E;
+                    filter: blur(100px) opacity(30%);
+                    z-index: -1;
+                }
+                span {
+                    display: block;
+                    text-align: center;
+                    &.tournament-name {
+                        font-weight: 600;
+                        font-size: 23px;
+                        line-height: 33px;
+                        letter-spacing: 0.02em;
+                        text-transform: capitalize;
+                        color: $white;
+                        margin-bottom: 4px;
+                        @include media-breakpoint-down(lg) {
+                            font-size: 22px;
+                            line-height: 32px;
+                        }
+                        @include media-breakpoint-down(sm) {
+                            font-size: 20px;
+                            line-height: 30px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            font-size: 17px;
+                            line-height: 27px;
+                            margin-bottom: 1px
+                        }
+                    }
+                    &.stadium-name {
+                        font-weight: 400;
+                        font-size: 16px;
+                        line-height: 26px;
+                        letter-spacing: 0.01em;
+                        text-transform: capitalize;
+                        color: rgba($white, 0.8);
+                        @include media-breakpoint-down(mobile) {
+                            font-size: 14px;
+                            line-height: 24px;
+                        }
+                    }
+                }
+            }
+            .schedule-body {
+                padding: 40px 75px;
+                @include media-breakpoint-down(xxl) {
+                    padding: 30px 75px;
+                }
+                @include media-breakpoint-down(xl) {
+                    padding: 40px 75px;
+                }
+                @include media-breakpoint-only(lg) {
+                    padding: 30px 40px;
+                }
+                @include media-breakpoint-only(md) {
+                    padding: 30px 130px;
+                }
+                @include media-breakpoint-down(md) {
+                    padding: 30px 60px;
+                }
+                @include media-breakpoint-down(sm) {
+                    padding: 30px 40px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    padding: 25px 30px 30px;
+                }
+                .schedule-stats {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 40px;
+                    @include media-breakpoint-down(xxl) {
+                        margin-bottom: 30px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        margin-bottom: 40px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        margin-bottom: 30px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        margin-bottom: 20px;
+                    }
+                    .single-team {
+                        @include media-breakpoint-down(mobile) {
+                            order: 1;
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            margin-bottom: 10px;
+                            &:last-child {
+                                margin-bottom: 0;
+                            }
+                        }
+                        .team-icon {
+                            position: relative;
+                            text-align: center;
+                            padding-bottom: 12px;
+                            margin-bottom: 20px;
+                            @include media-breakpoint-down(mobile) {
+                                padding-bottom: 0;
+                                margin-bottom: 0;
+                            }
+                            &:after {
+                                position: absolute;
+                                content: '';
+                                left: 50%;
+                                bottom: 0;
+                                transform: translateX(-50%);
+                                width: 80px;
+                                height: 73.39px;
+                                background: url('../img/sports-schedule/team-icon-bg.png') no-repeat;
+                                background-position: bottom center;
+                                background-size: 80px 73.39px;
+                                @include media-breakpoint-down(xxl) {
+                                    width: 70px;
+                                    height: 63.39px;
+                                    background-size: 70px 63.39px;
+                                }
+                                @include media-breakpoint-down(xl) {
+                                    width: 60px;
+                                    height: 53.39px;
+                                    background-size: 60px 53.39px;
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    width: 50px;
+                                    height: 43.39px;
+                                    background-size: 50px 43.39px;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    display: none;
+                                }
+                            }
+                            img {
+                                height: 80px;
+                                width: auto;
+                                max-width: none;
+                                @include media-breakpoint-down(xxl) {
+                                    height: 70px;
+                                }
+                                @include media-breakpoint-down(xl) {
+                                    height: 50px;
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    height: 50px;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    height: 25px;
+                                }
+                            }
+                        }
+                        span.team-name {
+                            font-weight: 600;
+                            font-size: 18px;
+                            line-height: 28px;
+                            letter-spacing: 0.01em;
+                            text-transform: capitalize;
+                            @include text-gradient-3;
+                            display: block;
+                            margin: -6px 0 -8px;
+                            @include media-breakpoint-down(sm) {
+                                text-align: center;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                font-size: 16px;
+                                line-height: 26px;
+                            }
+                        }
+                    }
+                    .date-times-vs {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        @include media-breakpoint-down(mobile) {
+                            align-items: flex-start;
+                            margin-bottom: 17px;
+                            flex-direction: row;
+                            justify-content: space-between;
+                            width: 100%;
+                            border-bottom: 1px double #5C6172;
+                            padding-bottom: 7px;
+                        }
+                        span {
+                            display: block;
+                            &.time {
+                                font-weight: 500;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.02em;
+                                text-transform: uppercase;
+                                color: rgba($base-color, 0.8);
+                                display: flex;
+                                align-items: center;
+                                gap: 8px;
+                                margin: -5px 0 2px;
+                                @include media-breakpoint-down(mobile) {
+                                    margin: 0;
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                            }
+                            &.date {
+                                font-weight: 500;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.02em;
+                                text-transform: uppercase;
+                                color: rgba($normal-green, 0.8);
+                                margin-bottom: -7px;
+                                @include media-breakpoint-down(sm) {
+                                    text-align: center;
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                            }
+                        }
+                        img.versace-icon {
+                            width: 100px;
+                            margin-top: 30px;
+                            @include media-breakpoint-down(xxl) {
+                                width: 90px;
+                            }
+                            @include media-breakpoint-only(lg) {
+                                width: 60px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                width: 70px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                .placing-bet {
+                    display: flex;
+                    justify-content: center;
+                    gap: 35px;
+                    @include media-breakpoint-down(lg) {
+                        gap: 30px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        gap: 10px;
+                    }
+                    a.place-a-bet {
+                        display: inline-block;
+                        @include text-gradient-3;
+                        font-weight: 600;
+                        font-size: 16px;
+                        letter-spacing: 0.02em;
+                        text-transform: capitalize;
+                        border: 1px solid rgba($base-color, 0.2);
+                        height: 40px;
+                        line-height: 38px;
+                        border-radius: 5px;
+                        width: 100%;
+                        text-align: center;
+                        @include media-breakpoint-down(mobile) {
+                            height: 30px;
+                            line-height: 28px;
+                        }
+                        &.placed {
+                            @include text-gradient-clear;
+                            background: $gradient-1;
+                            color: $white;
+                            font-weight: 500;
+                            border: none;
+                        }
+                    }
+                }
+            }
+            .schedue-timer {
+                display: flex;
+                z-index: 2;
+                position: relative;
+                overflow: hidden;
+                background: $base-color;
+                justify-content: space-between;
+                @include media-breakpoint-only(md) {
+                    justify-content: space-evenly;
+                }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 435px;
+                    height: 435px;
+                    left: -145px;
+                    top: 67px;
+                    background: #29589A;
+                    filter: blur(100px) opacity(50%);
+                    z-index: -1;
+                }
+                &:before {
+                    content: '';
+                    position: absolute;
+                    width: 544px;
+                    height: 544px;
+                    left: 127px;
+                    top: -238px;
+                    background: #FB355E;
+                    filter: blur(100px);
+                    z-index: -1;
+                    opacity: 0.3;
+                }
+                .time-starting-text {
+                    display: flex;
+                    flex-direction: column;    
+                    justify-content: center;
+                    gap: 10px;
+                    align-items: center;
+                    @include media-breakpoint-only(lg) {
+                        display: none;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        display: none;
+                    }
+                    span {
+                        &.txt {
+                            display: inline-block;
+                            font-weight: 500;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.01em;
+                            text-transform: capitalize;
+                            color: #D9D9D9;
+                            margin: -7px 0 -5px;
+                        }
+                    }
+                    img.icon {
+                        width: 136px;
+                    }
+                }
+                .all-timer-task {
+                    display: flex;
+                    justify-content: flex-end;
+                    @include media-breakpoint-down(mobile) {
+                        width: 100%;
+                    }
+                    .single-time {
+                        width: 117px;
+                        border-right: 1px solid rgba(255, 242, 242, 0.2);
+                        padding: 20px 0;
+                        @include media-breakpoint-down(xxl) {
+                            width: 107px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            width: 117px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            width: 87px;
+                        }
+                        @include media-breakpoint-down(md) {
+                            width: 97px;
+                        }
+                        @include media-breakpoint-down(sm) {
+                            width: 87px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            width: 100%;
+                            padding: 15px 0;
+                        }
+                        span {
+                            display: block;
+                            text-align: center;
+                            &.number {
+                                color: $white;
+                                font-weight: 500;
+                                font-size: 28px;
+                                line-height: 38px;
+                                letter-spacing: 0.02em;
+                                text-transform: capitalize;
+                                margin: -9px 0 -6px;
+                                @include media-breakpoint-down(xxl) {
+                                    font-size: 24px;
+                                    line-height: 34px;
+                                }
+                                @include media-breakpoint-down(lg) {
+                                    font-size: 20px;
+                                    line-height: 30px;
+                                }
+                            }
+                            &.title {
+                                color: rgba($white, 0.8);
+                                font-weight: 400;
+                                font-size: 15px;
+                                line-height: 25px;
+                                letter-spacing: 0.02em;
+                                text-transform: capitalize;
+                                margin: 0 0 -7px;
+                                @include media-breakpoint-down(mobile) {
+                                    font-size: 14px;
+                                    line-height: 24px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

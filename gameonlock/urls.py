@@ -1,46 +1,53 @@
-"""gameonlock URL Configuration
+"""
+URL configuration for airplane_site project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-\thttps://docs.djangoproject.com/en/3.1/topics/http/urls/
+    https://docs.djangoproject.com/en/5.0/topics/http/urls/
 Examples:
 Function views
-\t1. Add an import:  from my_app import views
-\t2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    1. Add an import:  from my_app import views
+    2. Add a URL to urlpatterns:  path('', views.home, name='home')
 Class-based views
-\t1. Add an import:  from other_app.views import Home
-\t2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    1. Add an import:  from other_app.views import Home
+    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
 Including another URLconf
-\t1. Import the include() function: from django.urls import include, path
-\t2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    1. Import the include() function: from django.urls import include, path
+    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from allauth.account.decorators import secure_admin_login
 from django.conf import settings
+from django.conf.urls import handler400, handler403, handler404, handler500
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-from django.urls import include, path, re_path
+from django.urls import include, path
+from django.utils.translation import gettext_lazy as _
+from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.contrib.sitemaps.views import sitemap
-from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-from wagtail.images.views.serve import ServeView
 
 from . import views
 
+admin.autodiscover()
+admin.site.login = secure_admin_login(admin.site.login)
+
+internatonalized_patterns = i18n_patterns(
+	path(_("accounts/"), include("allauth.urls")),
+	path(_("ticket/"), include("sportsbetting.urls")),
+	path("", views.home, name="index"),
+	prefix_default_language=False,
+)
+
 urlpatterns = [
-	path("cs50/", views.cs50),  # TODO: Delete later
 	path("admin/", admin.site.urls),
-	path("ticket/", include("sportsbetting.urls")),
-	# path('shop/', include('ecommerce_app.urls')),
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
-	path("robots.txt", views.robots),
-	re_path(
-		r"^images/([^/]*)/(\d*)/([^/]*)/[^/]*$",
-		ServeView.as_view(),
-		name="wagtailimages_serve",
-	),
-	re_path(r"^sitemap\.xml$", sitemap),
-	re_path(r"", include(wagtail_urls)),
+	path("pages/", include(wagtail_urls)),
+	include(internatonalized_patterns),
 ]
+
+if not settings.DEBUG:
+	urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))
 
 if settings.DEBUG:
 	import debug_toolbar
@@ -52,10 +59,8 @@ if settings.DEBUG:
 	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 	urlpatterns = [
 		path("__debug__/", include(debug_toolbar.urls)),
-		path(
-			"404/",
-			views.page_not_found,
-			kwargs={"exception": Exception("Page not Found")},
-		),
-		path("500/", views.server_error),
+		path("400/", handler400, kwargs={"exception": Exception("Bad request")}),
+		path("403/", handler403, kwargs={"exception": Exception("Forbidden")}),
+		path("404/", handler404, kwargs={"exception": Exception("Page not found")}),
+		path("500/", handler500, kwargs={"exception": Exception("Server error")}),
 	] + urlpatterns

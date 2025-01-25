@@ -1,0 +1,98 @@
+/* =================================
+   Template Information:
+================================= */
+/* Template Name: PerediOn - Sports Prediction HTML Template
+   Author Name: Autworks
+   Author Account URL: https://themeforest.net/user/autworks
+   Date: 7th August 2023
+   Version: 2.0
+================================= */
+
+/* =================================
+   Index of CSS Sections:
+================================= */
+/* 1. Breakpoints
+   2. Variables
+   3. Global Styles
+   4. Normalize
+   5. Animation
+   6. Shapes
+   7. Glitch Effects
+   8. Header Styles
+   9. Banner Styles
+   10. Get-Live Section Styles
+   11. About Section Styles
+   12. Playing Bet Styles
+   13. Bet Slip Styles
+   14. Sports Schedule Styles
+   15. Call-to-Action Styles
+   16. Working Process Styles
+   17. Feature Styles
+   18. Testimonial Styles
+   19. Footer Styles
+   20. Mobile Navigation Styles
+   21. Affiliate Percentage Styles
+   22. Promotion Styles
+   23. Match Details Styles
+   24. Authority Section Styles
+   25. Newsletter Styles
+   26. Blog Styles
+   27. Blog Details Styles
+   28. FAQ Section Styles
+   29. Contact Styles
+   30. Sign-In Styles
+   31. Sign-Up Styles
+   32. Error Page Styles
+   33. Bettor Ranking Styles
+================================= */
+
+
+// global assets scss
+@import "main/_breakpoints";
+@import "main/_variables";
+@import "main/_mixins";
+@import "main/_global";
+@import "main/_normalize";
+@import "main/_animation";
+@import "main/_shapes";
+@import "main/_glitch";
+
+//=Section scss
+
+/*========================================== 
+    01. Header 
+==========================================*/
+@import "sections/_header";
+@import "sections/_banner";
+@import "sections/_get-live";
+@import "sections/_about";
+@import "sections/_playing-bet";
+@import "sections/_bet-slip";
+@import "sections/_sports-schedule";
+@import "sections/_call-to-action";
+@import "sections/_working-process";
+@import "sections/_feature";
+@import "sections/_testimonial";
+@import "sections/_footer";
+@import "sections/_mobile-navigation";
+
+
+//=inner pages scss
+
+/*========================================== 
+    01. Breadcrumb
+==========================================*/
+@import "inner_pages_section/_breadcrumb";
+@import "inner_pages_section/_affiliate-percentage";
+@import "inner_pages_section/_promotion";
+@import "inner_pages_section/_match-details";
+@import "inner_pages_section/_authority";
+@import "inner_pages_section/_newsletter";
+@import "inner_pages_section/_blog";
+@import "inner_pages_section/_blog-details";
+@import "inner_pages_section/_faq";
+@import "inner_pages_section/_contact";
+@import "inner_pages_section/_sign-in";
+@import "inner_pages_section/_sign-up";
+@import "inner_pages_section/_error";
+@import "inner_pages_section/_bettor-ranking";

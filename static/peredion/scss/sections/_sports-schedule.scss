@@ -1,0 +1,607 @@
+// sports schedule
+.sports-schedule {
+    padding: 60px 0 120px;
+    position: relative; 
+    @include media-breakpoint-down(xxl) {
+        padding: 50px 0 100px;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 40px 0 80px;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 30px 0 60px;
+    }
+    .single-view-schedule{
+        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
+        .schedue-header {
+            background: $base-color;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+            padding: 23px 0 23px;
+            @include media-breakpoint-down(lg) {
+                padding: 18px 0;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                width: 435px;
+                height: 435px;
+                left: -145px;
+                top: 67px;
+                background: #29589A;
+                filter: blur(100px) opacity(40%);
+                z-index: -1;
+            }
+            &:before {
+                content: '';
+                position: absolute;
+                width: 318px;
+                height: 318px;
+                left: calc(100% - 250px);
+                top: -238px;
+                background: #FB355E;
+                filter: blur(100px) opacity(30%);
+                z-index: -1;
+            }
+            span {
+                display: block;
+                text-align: center;
+                &.tournament-name {
+                    font-weight: 600;
+                    font-size: 23px;
+                    line-height: 33px;
+                    letter-spacing: 0.02em;
+                    text-transform: capitalize;
+                    color: $white;
+                    margin-bottom: 4px;
+                    @include media-breakpoint-down(lg) {
+                        font-size: 22px;
+                        line-height: 32px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        font-size: 20px;
+                        line-height: 30px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 17px;
+                        line-height: 27px;
+                        margin-bottom: 1px
+                    }
+                }
+                &.stadium-name {
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 26px;
+                    letter-spacing: 0.01em;
+                    text-transform: capitalize;
+                    color: rgba($white, 0.8);
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 14px;
+                        line-height: 24px;
+                    }
+                }
+            }
+        }
+        .schedule-body {
+            padding: 40px 75px;
+            @include media-breakpoint-down(xxl) {
+                padding: 30px 75px;
+            }
+            @include media-breakpoint-down(xl) {
+                padding: 40px 75px;
+            }
+            @include media-breakpoint-down(lg) {
+                padding: 30px 40px;
+            }
+            @include media-breakpoint-down(md) {
+                padding: 30px 60px;
+            }
+            @include media-breakpoint-down(sm) {
+                padding: 30px 40px;
+            }
+            @include media-breakpoint-down(mobile) {
+                padding: 25px 30px 30px;
+            }
+            .schedule-stats {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 40px;
+                @include media-breakpoint-down(xxl) {
+                    margin-bottom: 30px;
+                }
+                @include media-breakpoint-down(xl) {
+                    margin-bottom: 40px;
+                }
+                @include media-breakpoint-down(lg) {
+                    margin-bottom: 30px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    margin-bottom: 20px;
+                }
+                .single-team {
+                    @include media-breakpoint-down(mobile) {
+                        order: 1;
+                        display: flex;
+                        align-items: center;
+                        gap: 10px;
+                        margin-bottom: 10px;
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                    }
+                    .team-icon {
+                        position: relative;
+                        text-align: center;
+                        padding-bottom: 12px;
+                        margin-bottom: 20px;
+                        @include media-breakpoint-down(mobile) {
+                            padding-bottom: 0;
+                            margin-bottom: 0;
+                        }
+                        &:after {
+                            position: absolute;
+                            content: '';
+                            left: 50%;
+                            bottom: 0;
+                            transform: translateX(-50%);
+                            width: 80px;
+                            height: 73.39px;
+                            background: url('../img/sports-schedule/team-icon-bg.png') no-repeat;
+                            background-position: bottom center;
+                            background-size: 80px 73.39px;
+                            @include media-breakpoint-down(xxl) {
+                                width: 70px;
+                                height: 63.39px;
+                                background-size: 70px 63.39px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                width: 60px;
+                                height: 53.39px;
+                                background-size: 60px 53.39px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                width: 50px;
+                                height: 43.39px;
+                                background-size: 50px 43.39px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                display: none;
+                            }
+                        }
+                        img {
+                            height: 80px;
+                            width: auto;
+                            max-width: none;
+                            @include media-breakpoint-down(xxl) {
+                                height: 70px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                height: 60px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                height: 50px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                height: 25px;
+                            }
+                        }
+                    }
+                    span.team-name {
+                        font-weight: 600;
+                        font-size: 18px;
+                        line-height: 28px;
+                        letter-spacing: 0.01em;
+                        text-transform: capitalize;
+                        @include text-gradient-3;
+                        display: block;
+                        margin: -6px 0 -8px;
+                        @include media-breakpoint-down(sm) {
+                            text-align: center;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            font-size: 16px;
+                            line-height: 26px;
+                        }
+                    }
+                }
+                .date-times-vs {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    @include media-breakpoint-down(mobile) {
+                        align-items: flex-start;
+                        margin-bottom: 17px;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        width: 100%;
+                        border-bottom: 1px double #5C6172;
+                        padding-bottom: 7px;
+                    }
+                    span {
+                        display: block;
+                        &.time {
+                            font-weight: 500;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.02em;
+                            text-transform: uppercase;
+                            color: rgba($base-color, 0.8);
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            margin: -5px 0 2px;
+                            @include media-breakpoint-down(mobile) {
+                                margin: 0;
+                                font-size: 15px;
+                                line-height: 25px;
+                            }
+                        }
+                        &.date {
+                            font-weight: 500;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.02em;
+                            text-transform: uppercase;
+                            color: rgba($normal-green, 0.8);
+                            margin-bottom: -7px;
+                            @include media-breakpoint-down(sm) {
+                                text-align: center;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                font-size: 15px;
+                                line-height: 25px;
+                            }
+                        }
+                    }
+                    img.versace-icon {
+                        width: 100px;
+                        margin-top: 30px;
+                        @include media-breakpoint-down(xxl) {
+                            width: 90px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            width: 70px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            .placing-bet {
+                display: flex;
+                justify-content: center;
+                gap: 35px;
+                @include media-breakpoint-down(lg) {
+                    gap: 30px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    gap: 10px;
+                }
+                a.place-a-bet {
+                    display: inline-block;
+                    @include text-gradient-3;
+                    font-weight: 600;
+                    font-size: 16px;
+                    letter-spacing: 0.02em;
+                    text-transform: capitalize;
+                    border: 1px solid rgba($base-color, 0.2);
+                    height: 40px;
+                    line-height: 38px;
+                    border-radius: 5px;
+                    width: 100%;
+                    text-align: center;
+                    @include media-breakpoint-down(mobile) {
+                        height: 30px;
+                        line-height: 28px;
+                    }
+                    &.placed {
+                        @include text-gradient-clear;
+                        background: $gradient-1;
+                        color: $white;
+                        font-weight: 500;
+                        border: none;
+                    }
+                }
+            }
+        }
+        .schedue-timer {
+            display: flex;
+            z-index: 2;
+            position: relative;
+            overflow: hidden;
+            background: $base-color;
+            justify-content: space-between;
+            &:after {
+                position: absolute;
+                content: '';
+                width: 435px;
+                height: 435px;
+                left: -145px;
+                top: 67px;
+                background: #29589A;
+                filter: blur(100px) opacity(50%);
+                z-index: -1;
+            }
+            &:before {
+                content: '';
+                position: absolute;
+                width: 544px;
+                height: 544px;
+                left: 127px;
+                top: -238px;
+                background: #FB355E;
+                filter: blur(100px);
+                z-index: -1;
+                opacity: 0.3;
+            }
+            .time-starting-text {
+                display: flex;
+                flex-direction: column;    
+                justify-content: center;
+                gap: 10px;
+                align-items: center;
+                @include media-breakpoint-down(mobile) {
+                    display: none;
+                }
+                span {
+                    &.txt {
+                        display: inline-block;
+                        font-weight: 500;
+                        font-size: 16px;
+                        line-height: 26px;
+                        letter-spacing: 0.01em;
+                        text-transform: capitalize;
+                        color: #D9D9D9;
+                        margin: -7px 0 -5px;
+                    }
+                }
+                img.icon {
+                    width: 136px;
+                }
+            }
+            .all-timer-task {
+                display: flex;
+                justify-content: flex-end;
+                @include media-breakpoint-down(mobile) {
+                    width: 100%;
+                }
+                .single-time {
+                    width: 117px;
+                    border-right: 1px solid rgba(255, 242, 242, 0.2);
+                    padding: 20px 0;
+                    @include media-breakpoint-down(xxl) {
+                        width: 107px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        width: 117px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        width: 87px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        width: 97px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        width: 87px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        width: 100%;
+                        padding: 15px 0;
+                    }
+                    span {
+                        display: block;
+                        text-align: center;
+                        &.number {
+                            color: $white;
+                            font-weight: 500;
+                            font-size: 28px;
+                            line-height: 38px;
+                            letter-spacing: 0.02em;
+                            text-transform: capitalize;
+                            margin: -9px 0 -6px;
+                            @include media-breakpoint-down(xxl) {
+                                font-size: 24px;
+                                line-height: 34px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                font-size: 20px;
+                                line-height: 30px;
+                            }
+                        }
+                        &.title {
+                            color: rgba($white, 0.8);
+                            font-weight: 400;
+                            font-size: 15px;
+                            line-height: 25px;
+                            letter-spacing: 0.02em;
+                            text-transform: capitalize;
+                            margin: 0 0 -7px;
+                            @include media-breakpoint-down(mobile) {
+                                font-size: 14px;
+                                line-height: 24px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .all-schedule-list {
+        height: 100%;
+        .nav {
+            height: 100%;
+            justify-content: space-between;
+            @include media-breakpoint-down(md) {
+                flex-direction: row!important;
+                gap: 20px;
+                margin-bottom: 30px;
+                height: auto;
+            }
+            @include media-breakpoint-down(sm) {
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin-bottom: 20px;
+            }
+        }
+        button.nav-link {
+            background: none;
+            padding: 0;
+            border-radius: 10px;
+            outline: none;
+            @include media-breakpoint-down(md) {
+                width: calc(50% - 10px);
+            }
+            @include media-breakpoint-down(sm) {
+                width: calc(50% - 5px);
+            }
+            @include media-breakpoint-down(mobile) {
+                width: 100%;
+            }
+            &.active {
+                .single-list-schedule {
+                    &:after {
+                        opacity: 1;
+                        height: 60%;
+                    }
+                }
+            }
+        }
+        .single-list-schedule {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background: $white;
+            border-radius: 10px;
+            z-index: 2;
+            position: relative;
+            box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+            @include media-breakpoint-down(xl) {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            @include media-breakpoint-down(lg) {
+                padding: 15px 20px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 3px;
+                height: 0;
+                background: $gradient-1;
+                border-radius: 10px;
+                z-index: -1;
+                opacity: 0;
+                @include transition($transition);
+            }
+            .single-team {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                @include media-breakpoint-down(xxl) {
+                    gap: 25px;
+                }
+                @include media-breakpoint-down(xl) {
+                    gap: 20px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    gap: 15px;
+                }
+                .team-icon {
+                    position: relative;
+                    text-align: center;
+                    padding-bottom: 10px;
+                    @include media-breakpoint-down(xl) {
+                        padding-bottom: 0;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 50%;
+                        bottom: 0;
+                        transform: translateX(-50%);
+                        width: 80px;
+                        height: 52.17px;
+                        background: url('../img/sports-schedule/team-icon-bg.png') no-repeat;
+                        background-position: bottom center;
+                        background-size: auto 52.17px;
+                        @include media-breakpoint-down(xxl) {
+                            height: 47.17px;
+                            background-size: auto 47.17px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            display: none;
+                        }
+                    }
+                    img {
+                        height: 52.17px;
+                        width: auto;
+                        max-width: none;
+                        @include media-breakpoint-down(xxl) {
+                            height: 47.17px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            height: 27.17px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            height: 22.17px;
+                        }
+                    }
+                }
+                span.team-name {
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 28px;
+                    letter-spacing: 0.01em;
+                    text-transform: capitalize;
+                    @include text-gradient-3;
+                    display: block;
+                    margin: -6px 0 -8px;
+                    @include media-breakpoint-down(lg) {
+                        font-size: 16px;
+                        line-height: 26px;
+                    }
+                }
+                &:last-child {
+                    @include media-breakpoint-down(xl) {
+                        flex-direction: row-reverse;
+                    }
+                }
+            }
+            img.versace-icon {
+                width: 80px;
+                @include media-breakpoint-down(xxl) {
+                    width: 70px;
+                }
+                @include media-breakpoint-down(xl) {
+                    display: none;
+                }
+            }
+        }
+    }
+    .see-all-schedule-btn-cover {
+        text-align: center;
+        margin-top: 50px;
+        @include media-breakpoint-down(xxl) {
+            margin-top: 40px;
+        }
+        @include media-breakpoint-down(xl) {
+            margin-top: 30px;
+        }
+    }
+}

@@ -40,7 +40,7 @@ __pycache__/
 env/
 build/
 develop-eggs/
-dist/
+# dist/
 downloads/
 eggs/
 lib/
@@ -84,14 +84,15 @@ target/
 ### Django ###
 *.log
 *.pot
+*.prof
 *.pyc
 node_modules/
 __pycache__/
-staticfiles/
-mediafiles/
+public/
 local_settings.py
 
 .env
 *.sqlite3
 *.log
 *.bak
+schema.yml

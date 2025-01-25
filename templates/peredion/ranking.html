@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="zxx">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PerediOn - Sports Prediction HTML Template</title>
+        <!-- favicon -->
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <!-- animate css -->
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <!-- load all Font Awesome styles -->
+        <link rel="stylesheet" href="assets/css/all.min.css">
+        <!-- owl carousel css -->
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+        <!-- odometer css -->
+        <link rel="stylesheet" href="assets/css/odometer.min.css">
+        <!-- overlay scrollbar css -->
+        <link rel="stylesheet" href="assets/css/OverlayScrollbars.min.css">
+        <!-- aos css -->
+        <link href="assets/css/aos.css" rel="stylesheet">
+        <!-- main css -->
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+    <body>
+        <!-- preloader begin -->
+        <div class="preloader">
+            <div class="icon">
+                <img src="assets/img/preloader/preload-1.gif" alt="">
+                <img src="assets/img/preloader/preload-2.gif" alt="">
+                <img src="assets/img/preloader/preload-5.gif" alt="">
+                <img src="assets/img/preloader/preload-4.gif" alt="">
+                <img src="assets/img/preloader/preload-3.gif" alt="">
+            </div>
+            <span class="text">peredion is loading</span>
+        </div>
+        <!-- preloader end -->
+        <!-- bet-slip begin -->
+        <div class="bet-slip">
+            <button class="bet-slip-header collapsed type="button" data-bs-toggle="collapse" data-bs-target="#collapseBetSlip" aria-expanded="false" aria-controls="collapseBetSlip">
+                <span class="icon"><i class="fa-light fa-clipboard-list"></i></span>
+                <span class="text">betslip</span>
+                <span class="slip-quantity-badge">3</span>
+            </button>
+            <div class="collapse" id="collapseBetSlip">
+                <div class="bet-slip-body">
+                    <ul class="nav nav-pills bet-slip-category"
+                        id="bsCategory-tab"
+                        role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active"
+                                    id="bsCat-single-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#bsCategory-home"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="bsCategory-home"
+                                    aria-selected="true">Single</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="bsCat-combo-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#bsCategory-profile"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="bsCategory-profile"
+                                    aria-selected="false">Combo</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="bsCat-system-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#bsCategory-contact"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="bsCategory-contact"
+                                    aria-selected="false">System</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="bsCategory-tabContent">
+                        <div class="tab-pane fade show active"
+                             id="bsCategory-home"
+                             role="tabpanel"
+                             aria-labelledby="bsCat-single-tab">
+                            <div class="part-slip-header">
+                                <div class="all-bs-card">
+                                    <div class="empty-card">
+                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
+                                        <h4 class="empty-title">Your bet slip is empty!</h4>
+                                        <p>
+                                            looks like you haven’t placed
+                                            <br />
+                                            a bet yet to your bet slip.
+                                        </p>
+                                    </div>
+                                    <div class="successfull-card">
+                                        <svg version="1.1"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 130.2 130.2"
+                                             style="display: inline-block">
+                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
+                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
+                                        </svg>
+                                        <h4 class="empty-title">Bet is placed successfully!</h4>
+                                        <p>
+                                            so, you can check your placed
+                                            <br />
+                                            bets in dashboard.
+                                        </p>
+                                    </div>
+                                    <div class="single-bs-card singleBS hidden"></div>
+                                </div>
+                                <div class="form-check form-switch odd-changing">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade"
+                             id="bsCategory-profile"
+                             role="tabpanel"
+                             aria-labelledby="bsCat-combo-tab">
+                            <div class="part-slip-header">
+                                <div class="all-bs-card">
+                                    <div class="successfull-card combo-system-empty">
+                                        <svg version="1.1"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 130.2 130.2"
+                                             style="display: inline-block">
+                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
+                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
+                                        </svg>
+                                        <h4 class="empty-title">Bet is placed successfully!</h4>
+                                        <p>
+                                            so, you can check your placed
+                                            <br />
+                                            bets in dashboard.
+                                        </p>
+                                    </div>
+                                    <div class="empty-card combo-system-empty">
+                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
+                                        <h4 class="empty-title">Your bet slip is empty!</h4>
+                                        <p>
+                                            looks like you haven’t placed
+                                            <br />
+                                            a bet yet to your bet slip.
+                                        </p>
+                                    </div>
+                                    <div class="single-bs-card card-combo hidden"></div>
+                                </div>
+                            </div>
+                            <div class="bet-quantity">
+                                <div class="title">
+                                    <span class="title-text">multy bet</span>
+                                </div>
+                                <div class="single-list">
+                                    <span class="text">overall odds :</span>
+                                    <span class="number">1</span>
+                                </div>
+                                <div class="single-list">
+                                    <span class="text">Combo (1x) :</span>
+                                    <div class="inc-dec-bet">
+                                        <button class="dec-btn">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <span class="result-num"></span>
+                                        <button class="inc-btn">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch odd-changing oc-for-combo">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            </div>
+                        </div>
+                        <div class="tab-pane fade"
+                             id="bsCategory-contact"
+                             role="tabpanel"
+                             aria-labelledby="bsCat-system-tab">
+                            <div class="part-slip-header">
+                                <div class="all-bs-card">
+                                    <div class="successfull-card combo-system-empty">
+                                        <svg version="1.1"
+                                             xmlns="http://www.w3.org/2000/svg"
+                                             viewBox="0 0 130.2 130.2"
+                                             style="display: inline-block">
+                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
+                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
+                                        </svg>
+                                        <h4 class="empty-title">Bet is placed successfully!</h4>
+                                        <p>
+                                            so, you can check your placed
+                                            <br />
+                                            bets in dashboard.
+                                        </p>
+                                    </div>
+                                    <div class="empty-card combo-system-empty">
+                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
+                                        <h4 class="empty-title">Your bet slip is empty!</h4>
+                                        <p>
+                                            looks like you haven’t placed
+                                            <br />
+                                            a bet yet to your bet slip.
+                                        </p>
+                                    </div>
+                                    <div class="single-bs-card card-system hidden"></div>
+                                </div>
+                            </div>
+                            <div class="bet-quantity">
+                                <div class="title sytem-title">
+                                    <span class="title-text">multy bet</span>
+                                    <div class="system-bet-option">
+                                        <div class="btn-group">
+                                            <button type="button"
+                                                    class="bet-option-btn"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">2/3 (3 Bets)</button>
+                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                <li>
+                                                    <button class="dropdown-item" data-bet-add="3" type="button">2/3 (3 Bets)</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" data-bet-add="4" type="button">Trixie (4 Bets)</button>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item" data-bet-add="7" type="button">Patent (7 Bets)</button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="single-list">
+                                    <span class="text">overall odds :</span>
+                                    <span class="number">1</span>
+                                </div>
+                                <div class="single-list">
+                                    <span class="text">Combo (1x) :</span>
+                                    <div class="inc-dec-bet">
+                                        <button class="dec-btn">
+                                            <i class="fa-solid fa-minus"></i>
+                                        </button>
+                                        <span class="result-num">0</span>
+                                        <button class="inc-btn">
+                                            <i class="fa-solid fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-check form-switch odd-changing oc-for-combo">
+                                <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
+                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bet-slip-calculation">
+                        <div class="total-calc">
+                            <div class="single-calc">
+                                <span class="text">Total stake :</span>
+                                <span class="number total-stake">1</span>
+                            </div>
+                            <div class="single-calc">
+                                <span class="text">Total est. return :</span>
+                                <span class="number total-est-return">1.00</span>
+                            </div>
+                        </div>
+                        <div class="calc-finish">
+                            <button class="prd-btn-1 medium placed-to-dashboard" id="btn1">
+                                place your bet <i class="fa-duotone fa-arrow-right"></i>
+                            </button>
+                            <button class="calc-dlt">
+                                <i class="fa-light fa-trash-can"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bet-slip end -->
+        <!-- comming soon Modal -->
+        <div class="modal fade"
+             id="comming_soon"
+             tabindex="-1"
+             aria-labelledby="comming_soon"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attention!</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center bg-dark text-white">
+                        <h4>Dark Version is comming soon</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header begin -->
+        <div class="header animated">
+            <div class="top-bar">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-xl-5 col-lg-5 col-md-7">
+                            <div class="left-side">
+                                <div class="single-bar">
+                                    <a class="dashboard-overview" href="dashboard-overview.html">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-circle-user"></i>
+                                        </span>
+                                        <span class="part-text">hi, <span class="user-name">john doe</span></span>
+                                    </a>
+                                </div>
+                                <div class="single-bar">
+                                    <a class="dashboard-overview" href="mailto: abc@example.com">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-envelope"></i>
+                                        </span>
+                                        <span class="part-text">predion@mail.co</span>
+                                    </a>
+                                </div>
+                                <div class="single-bar dropdown">
+                                    <a href="#"
+                                       role="button"
+                                       id="dropdownMenuLink"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
+                                       class="dashboard-overview">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-globe"></i>
+                                        </span>
+                                        <span class="part-text lang-display">eng</span>
+                                    </a>
+                                    <ul class="dropdown-menu lang-item" aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item" href="#">ENG</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">বাংলা</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">عربي</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">हिन्दी</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Español</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">贛語</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Հայերեն</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Ўзбек</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5">
+                            <div class="right-side">
+                                <div class="single-bar">
+                                    <span class="part-icon">
+                                        <i class="fa-regular fa-calendars"></i>
+                                    </span>
+                                    <span class="part-text">
+                                        <span id="date"></span>
+                                        <span id="month"></span>
+                                        <span id="year"></span>
+                                    </span>
+                                </div>
+                                <div class="single-bar">
+                                    <span class="part-icon">
+                                        <i class="fa-solid fa-timer"></i>
+                                    </span>
+                                    <span class="part-text"><span class="timer" id="hours"></span>:<span class="timer" id="minutes"></span>:<span class="timer" id="seconds"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-navbar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
+                            <a href="index.html" class="mobile-logo">
+                                <img src="assets/img/logo/mobile-logo.png" alt="">
+                            </a>
+                        </div>
+                        <div class="col-6 col-xl-none col-lg-none col-lg-block">
+                            <button class="navbar-toggler"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent"
+                                    aria-controls="navbarSupportedContent"
+                                    aria-expanded="false"
+                                    aria-label="Toggle navigation">
+                                <i class="fa-light fa-bars"></i>
+                            </button>
+                            <a href="#" class="changing-version">
+                                <i class="fa-solid fa-moon-stars"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mainmenu">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="scalation">
+                                <div class="row">
+                                    <div class="col-xl-5 col-lg-5">
+                                        <ul class="navbar-nav nn-left">
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="home-dropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">Home</a>
+                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="home-dropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="index.html">Homepage 01</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-2.html">Homepage 02</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-3.html">Homepage 03</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-4.html">Homepage 04</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-5.html">Homepage 05</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-6.html">Homepage 06</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-7.html">Homepage 07</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-8.html">Homepage 08</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-9.html">Homepage 09</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-10.html">Homepage 10</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="about.html">about us</a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="betDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">all bets</a>
+                                                <ul class="dropdown-menu" aria-labelledby="betDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet.html">all bets</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-in-play.html">in-play</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-upcoming.html">upcoming</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-finished.html">finished</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="match-details.html">bet details</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="contact.html">contact us</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
+                                        <div class="logo">
+                                            <a href="index.html">
+                                                <img src="assets/img/logo/logo-1.png" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 col-lg-5">
+                                        <ul class="navbar-nav nn-right">
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle active"
+                                                   href="#"
+                                                   id="pagesDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">pages</a>
+                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="pagesDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="blog-posts.html">blog post</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="blog-details.html">blog details</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="sign-in.html">login</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="register.html">register</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="error.html">error 404</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="affiliate.html">affiliate</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="promotion.html">promotion</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="promotion-details.html">promo details</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item active" href="ranking.html">ranking</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">bracket</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="faq.html">faq</a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="dashboardDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">dashboard</a>
+                                                <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="peredion-dashboard/index.html">overview <small>(index)</small></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-bet-history.html">bet history</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-transaction-history.html">transaction</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-deposit.html">deposit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-withdraw.html">withdrawal</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-referral.html">referral</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-settings.html">settings</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item version-changing-button">
+                                                <button class="nav-link"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#comming_soon">dark mode</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- header end -->
+        <!-- breadcrumb begin -->
+        <div class="prd-breadcrumb">
+            <div class="brd-shape">
+                <div class="brd-img brd-img-1"
+                     data-aos="fade-right"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <img src="assets/img/breadcrumb/brd-img-1.png" alt="">
+                </div>
+                <div class="brd-img brd-img-2"
+                     data-aos="fade-left"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <img src="assets/img/breadcrumb/brd-img-2.png" alt="">
+                </div>
+            </div>
+            <div class="container">
+                <div class="brd-content">
+                    <div data-aos="fade-up"
+                         data-aos-delay="200"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <span class="sub-title">bettors ranking</span>
+                    </div>
+                    <h2 class="title"
+                        data-aos="fade-up"
+                        data-aos-delay="350"
+                        data-aos-duration="500"
+                        data-aos-easing="ease-in">Check Out Our Bettor Ranking</h2>
+                    <div class="page-direction">
+                        <ul>
+                            <li>
+                                <span class="icon"><i class="fa-solid fa-house"></i></span>
+                                <span class="text">Home</span>
+                            </li>
+                            <li>
+                                <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                                <span class="text">bettors ranking</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb end -->
+        <!-- bettor ranking begin -->
+        <div class="authority bettor-ranking">
+            <div class="global-shape style-3">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="500"
+                     data-aos-offset="200"
+                     data-aos-easing="ease-in"
+                     data-aos-delay="400">
+            </div>
+            <div class="container">
+                <div class="section-title">
+                    <h3 class="sub-title">bettors ranking</h3>
+                    <h2 class="title">Bettors Ranking By Their Implementation</h2>
+                </div>
+            </div>
+            <div class="ranking-control">
+                <ul class="nav nav-pills" id="rank-tab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active"
+                                id="rank-all-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#rank-all"
+                                type="button"
+                                role="tab"
+                                aria-controls="rank-all"
+                                aria-selected="true">all</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="rank-win-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#rank-win"
+                                type="button"
+                                role="tab"
+                                aria-controls="rank-win"
+                                aria-selected="false">top win</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="rank-lose-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#rank-lose"
+                                type="button"
+                                role="tab"
+                                aria-controls="rank-lose"
+                                aria-selected="false">top lose</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="container ran-cont">
+                <div class="tab-content" id="rank-tabContent">
+                    <div class="tab-pane fade show active"
+                         id="rank-all"
+                         role="tabpanel"
+                         aria-labelledby="rank-all-tab">
+                        <div class="all-members">
+                            <div class="row g-lg-0 g-5">
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-1.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Kai Clayton</span>
+                                            <span class="member-designation"><span class="winning-number">+9,095.08</span> <span class="prc">| 99.5%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Hayden Rees</span>
+                                            <span class="member-designation"><span class="winning-number">+7,003.11</span> <span class="prc">| 87.0%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-2.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-3.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ben Bentley</span>
+                                            <span class="member-designation"><span class="winning-number">+3,195.08</span> <span class="prc">| 73.1%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Spencer Morton</span>
+                                            <span class="member-designation"><span class="winning-number">+412.10</span> <span class="prc">|  68.5%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-4.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-5.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ellis Norton</span>
+                                            <span class="member-designation"><span class="winning-number">+244.21</span> <span class="prc">| 65.0%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Bradley Edwards</span>
+                                            <span class="member-designation"><span class="losing-number">-1304.22</span> <span class="prc">| 13.1%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-6.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-7.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Natasha Mellor</span>
+                                            <span class="member-designation"><span class="losing-number">-511.95</span> <span class="prc">| 20.9%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Scarlett Peters</span>
+                                            <span class="member-designation"><span class="losing-number">-97.03</span> <span class="prc">| 33.3%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-8.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade"
+                         id="rank-win"
+                         role="tabpanel"
+                         aria-labelledby="rank-win-tab">
+                        <div class="all-members">
+                            <div class="row g-lg-0 g-5">
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-5.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ellis Norton</span>
+                                            <span class="member-designation"><span class="winning-number">+244.21</span> <span class="prc">| 65.0%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Bradley Edwards</span>
+                                            <span class="member-designation"><span class="losing-number">-1304.22</span> <span class="prc">| 13.1%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-6.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-7.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Natasha Mellor</span>
+                                            <span class="member-designation"><span class="losing-number">-511.95</span> <span class="prc">| 20.9%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Scarlett Peters</span>
+                                            <span class="member-designation"><span class="losing-number">-97.03</span> <span class="prc">| 33.3%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-8.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-1.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Kai Clayton</span>
+                                            <span class="member-designation"><span class="winning-number">+9,095.08</span> <span class="prc">| 99.5%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Hayden Rees</span>
+                                            <span class="member-designation"><span class="winning-number">+7,003.11</span> <span class="prc">| 87.0%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-2.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-3.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ben Bentley</span>
+                                            <span class="member-designation"><span class="winning-number">+3,195.08</span> <span class="prc">| 73.1%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Spencer Morton</span>
+                                            <span class="member-designation"><span class="winning-number">+412.10</span> <span class="prc">|  68.5%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-4.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade"
+                         id="rank-lose"
+                         role="tabpanel"
+                         aria-labelledby="rank-lose-tab">
+                        <div class="all-members">
+                            <div class="row g-lg-0 g-5">
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-3.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ben Bentley</span>
+                                            <span class="member-designation"><span class="winning-number">+3,195.08</span> <span class="prc">| 73.1%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Spencer Morton</span>
+                                            <span class="member-designation"><span class="winning-number">+412.10</span> <span class="prc">|  68.5%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-4.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-1.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Kai Clayton</span>
+                                            <span class="member-designation"><span class="winning-number">+9,095.08</span> <span class="prc">| 99.5%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Hayden Rees</span>
+                                            <span class="member-designation"><span class="winning-number">+7,003.11</span> <span class="prc">| 87.0%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-2.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-7.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Natasha Mellor</span>
+                                            <span class="member-designation"><span class="losing-number">-511.95</span> <span class="prc">| 20.9%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Scarlett Peters</span>
+                                            <span class="member-designation"><span class="losing-number">-97.03</span> <span class="prc">| 33.3%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-8.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-5.png" alt="">
+                                        </div>
+                                        <div class="part-info">
+                                            <span class="member-name">Ellis Norton</span>
+                                            <span class="member-designation"><span class="winning-number">+244.21</span> <span class="prc">| 65.0%</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-authority-member">
+                                        <div class="part-info">
+                                            <span class="member-name">Bradley Edwards</span>
+                                            <span class="member-designation"><span class="losing-number">-1304.22</span> <span class="prc">| 13.1%</span></span>
+                                        </div>
+                                        <div class="part-pic">
+                                            <img src="assets/img/authority/rank-pic-6.png" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="sports-body"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="playing-sports-all no-tabs-here">
+                        <div class="single-tournament">
+                            <div class="tournament-title"></div>
+                            <div class="all-tournament-match">
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-1.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="lost">L</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text lost">$452.0</span>
+                                    </div>
+                                </div>
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-2.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="win">W</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text win">$152.0</span>
+                                    </div>
+                                </div>
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-3.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="win">W</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text win">$350.0</span>
+                                    </div>
+                                </div>
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-4.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="lost">L</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text lost">$452.0</span>
+                                    </div>
+                                </div>
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-5.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="lost">L</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text lost">$452.0</span>
+                                    </div>
+                                </div>
+                                <div class="single-t-match">
+                                    <div class="flag-img">
+                                        <img src="assets/img/activity/flag-6.png" alt="">
+                                    </div>
+                                    <div class="event">
+                                        <div class="part-team">
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-5.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">S.S.La</span>
+                                            </div>
+                                            <div class="s-team">
+                                                <img src="assets/img/playing-bet/team-icon/team-6.png"
+                                                     alt=""
+                                                     class="team-icon">
+                                                <span class="team-name">BAY</span>
+                                            </div>
+                                        </div>
+                                        <span class="event-name">2020–21 UEFA Champions League</span>
+                                    </div>
+                                    <div class="b-slip">
+                                        <span class="slip-number">BS3432589941</span>
+                                    </div>
+                                    <div class="date-n-time">
+                                        <span class="date">1 dec 2022</span>
+                                        <span class="time">5:15 am</span>
+                                    </div>
+                                    <div class="bet-type">
+                                        <span class="text">Single bet</span>
+                                    </div>
+                                    <div class="bet-amount">
+                                        <span class="text">$350.22</span>
+                                    </div>
+                                    <div class="b-odd">
+                                        <span class="text">7.20</span>
+                                    </div>
+                                    <div class="status">
+                                        <span class="lost">L</span>
+                                    </div>
+                                    <div class="profit">
+                                        <span class="text lost">$452.0</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- bettor ranking end -->
+        <!-- footer begin -->
+        <div class="footer">
+            <div class="global-shape style-4">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="500"
+                     data-aos-offset="200"
+                     data-aos-easing="ease-in"
+                     data-aos-delay="500">
+            </div>
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-9">
+                            <div class="part-about">
+                                <div class="footer-logo"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <a href="index.html">
+                                        <img src="assets/img/logo/mobile-logo.png" alt="" class="logo">
+                                    </a>
+                                </div>
+                                <p data-aos="fade-up"
+                                   data-aos-delay="150"
+                                   data-aos-duration="500"
+                                   data-aos-easing="ease-in">
+                                    This allows bettors to bet over or under the bookmaker's score,
+                                    <br />
+                                    and indicate what they believe the difference in points will be.
+                                </p>
+                                <ul class="importants-links">
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="200"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">policy</a>
+                                    </li>
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="250"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">Terms</a>
+                                    </li>
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="300"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">license</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="footer-bottom-content">
+                        <p class="copyright-text">Copyright © 2023. All Right Reserved By Peredion</p>
+                        <ul class="social-link">
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-pinterest-p"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="footer-menu">
+                            <ul>
+                                <li>
+                                    <a href="index.html" class="single-menu">homepage</a>
+                                </li>
+                                <li>
+                                    <a href="about.html" class="single-menu">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="lotteries.html" class="single-menu">Lotteries</a>
+                                </li>
+                                <li>
+                                    <a href="blog-posts.html" class="single-menu">Blog</a>
+                                </li>
+                                <li>
+                                    <a href="contact.html" class="single-menu">contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer end -->
+        <!-- back to button begin -->
+        <div class="back-to-top-btn">
+            <a href="#">
+                <i class="fa-light fa-turn-up"></i>
+            </a>
+        </div>
+        <!-- back to top button end -->
+        <!-- jQuery js -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <!-- owl carousel js -->
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <!-- live clock js -->
+        <script src="assets/js/clock.min.js"></script>
+        <!-- appear js -->
+        <script src="assets/js/jquery.appear.min.js"></script>
+        <!-- odometer js -->
+        <script src="assets/js/odometer.min.js"></script>
+        <!-- overlayScrollbars js -->
+        <script src="assets/js/jquery.overlayScrollbars.min.js"></script>
+        <!-- main script js -->
+        <script src="assets/js/main.js"></script>
+        <!-- aos js -->
+        <script src="assets/js/aos.js"></script>
+        <!-- placing bet js -->
+        <script src="assets/js/placing-bet.js"></script>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+{% load i18n partials %}
+<div class="preloader">
+    <div class="icon">
+        <img src="{% static 'peredion/img/preloader/preload-1.gif' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+        <img src="{% static 'peredion/img/preloader/preload-2.gif' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+        <img src="{% static 'peredion/img/preloader/preload-5.gif' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+        <img src="{% static 'peredion/img/preloader/preload-4.gif' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+        <img src="{% static 'peredion/img/preloader/preload-3.gif' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <span class="text">{% trans 'Game-on-Lock is loading' %}</span>
+</div>

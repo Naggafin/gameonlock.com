@@ -1,0 +1,234 @@
+[data-aos="new-animation"] {
+  opacity: 0;
+  transition-property: transform, opacity;
+
+  &.aos-animate {
+    opacity: 1;
+  }
+
+  // @media screen and (min-width: 768px) {
+  //   transform: translateX(100px);
+
+  //   &.aos-animate {
+  //     transform: translateX(0);
+  //   }
+  // }
+}
+
+[data-aos="prd-left"] {
+  left: -50px;
+  opacity: 0;
+  transition-property: left, opacity;
+
+  &.aos-animate {
+    left: 0;
+    opacity: 1;
+  }
+
+  // @media screen and (min-width: 768px) {
+  //   transform: translateX(100px);
+
+  //   &.aos-animate {
+  //     transform: translateX(0);
+  //   }
+  // }
+}
+.about .part-img img.main-img[data-aos^=zoom][data-aos^=zoom].aos-animate {
+  transform: translateY(-50%) translateZ(0) scale(1);
+  @include media-breakpoint-down(xl) {
+    transform: translateY(0) translateY(0) scale(1)!important;
+  }
+}
+.about .part-img img.main-img[data-aos=zoom-in-right] {
+  transform: translate3d(-40px, 0, 0) scale(1) translateY(calc(-35% - 30px));
+  @include media-breakpoint-down(xl) {
+    transform: translateY(30px) translateX(-30px) scale(1)!important;
+  }
+}
+.feature .part-left .part-img img.main-img[data-aos=zoom-in-right].aos-animate{
+  transform: translate3d(0,0,0) scale(1)!important;
+}
+.feature .part-left .part-img img.main-img[data-aos=zoom-in-right] {
+  transform: translate3d(-40px,50px,0) scale(0.9)!important;
+}
+
+.about.affiliate-about .part-img img.main-img[data-aos^=zoom][data-aos^=zoom].aos-animate {
+  transform: translateY(0) translateZ(0) scale(1);
+}
+.about.affiliate-about .part-img img.main-img[data-aos=zoom-in-right] {
+  transform: translate3d(-40px, 0, 0) scale(1) translateY(calc(-0% - 0px));
+}
+
+
+
+[data-aos=fade-up] {
+  transform: translate3d(0,30px,0);
+}
+[data-aos=fade-left] {
+  transform: translate3d(30px,0,0);
+}
+[data-aos=fade-right] {
+  transform: translate3d(-30px,0,0);
+}
+
+@keyframes opacity-to-hover {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+// animation for scroll down button
+@keyframes auto-opacity-magic-1 {
+    0% {
+      opacity: 0.1;
+    }
+    35% {
+      opacity: 0.5;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.1;
+    }
+}
+@keyframes auto-opacity-magic-2 {
+  0% {
+    opacity: 5;
+  }
+  35% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.1;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+@keyframes auto-opacity-magic-3 {
+  0% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 0.1;
+  }
+  70% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes ex-ray {
+  0% {
+    margin-right: -30px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 1;
+  }
+  50% {
+    margin-right: -20px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 0.5;
+  }
+  100% {
+    margin-right: -30px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 1;
+  }
+}
+
+@keyframes ex-ray-2 {
+  0% {
+    margin-left: -30px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 1;
+  }
+  50% {
+    margin-left: -20px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 0.5;
+  }
+  100% {
+    margin-left: -30px;
+    filter: blur(10px) invert(0);
+    mix-blend-mode: difference; 
+    opacity: 1;
+  }
+}
+
+// rotating
+@keyframes element-rotating {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+// kicking ball
+@keyframes ball-kicking {
+  0% {
+    right: 50px;
+    top: 50px;
+  }
+  25% {
+    top: -300px;
+    right: -400px;
+  }
+  50% {
+    top: -600px;
+    right: -200px;
+  }
+  75% {
+    top: 100px;
+    right: 100px;
+  }
+  100% {
+    right: 50px;
+    top: 50px;
+  }
+}
+
+// kicking ball || down || xxl
+@keyframes ball-kicking_down_xxl {
+  0% {
+    right: 200px;
+    top: 40px;
+  }
+  25% {
+    right: -150px;
+    top: -200px;
+  }
+  50% {
+    right: 0;
+    top: -400px;
+  }
+  100% {
+    right: 200px;
+    top: 40px;
+  }
+}
+
+// bet slip counting badge
+@keyframes bet-slip-counting-badge {
+  0% {
+    left: 4px;
+  }
+  50% {
+    left: 0px;
+  }
+  100% {
+    left: 4px;
+  }
+}

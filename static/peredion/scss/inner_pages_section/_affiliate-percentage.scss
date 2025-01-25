@@ -1,0 +1,376 @@
+// affiliate percentage
+.affiliate {
+    padding: 120px 0 96px;
+    overflow: hidden;
+    position: relative;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0 76px;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0 56px;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0 36px;
+    }
+    @include media-breakpoint-down(sm) {
+        padding-bottom: 50px;
+    }
+    &:after {
+        position: absolute;
+        content: '';
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 1px;
+        background: #4d233f;
+        opacity: .1;
+    }
+    .affiliate-row {
+        @include media-breakpoint-down(mobile) {
+            [class*="col"] {
+                width: 50%;
+            }
+        }
+    }
+}
+.single-level {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(144.14deg, rgb(77 35 63 / 10%) -11.44%, rgb(48 91 159 / 10%) 123.42%);
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    padding: 30px 0;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 24px;
+    @include media-breakpoint-down(sm) {
+        margin-bottom: 10px;
+    }
+    &:after {
+        position: absolute;
+        content: '';
+        left: 1px;
+        top: 1px;
+        right: 1px;
+        bottom: 1px;
+        background: $white;
+        z-index: -1;
+        border-radius: 20px;
+    }
+    .circle {
+        width: 100px;
+        display: inline-block;
+        position: relative;
+        text-align: center;
+        line-height: 1.2;
+        margin-bottom: 23px;
+        transform: rotate(90deg);
+        @include media-breakpoint-down(xl) {
+            margin-bottom: 18px;
+        }
+        @include media-breakpoint-down(mobile) {
+            margin-bottom: 15px;
+        }
+    }
+    .circle canvas {
+        vertical-align: top;
+        @include media-breakpoint-down(xxl) {
+            width: 90px!important;
+            height: 90px!important;
+        }
+        @include media-breakpoint-down(lg) {
+            width: 80px!important;
+            height: 80px!important;
+        }
+    }
+    .circle .parcentage-text {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%) rotate(-90deg);
+        left: 0;
+        width: 100%;
+        font-weight: 700;
+        font-size: 22px;
+        line-height: 25px;
+        text-align: center;
+        letter-spacing: 0.02em;
+        text-transform: capitalize;
+        @include text-gradient-3;
+        opacity: .8;
+        @include media-breakpoint-down(xxl) {
+            font-size: 20px;
+            line-height: 23px;
+        }
+        @include media-breakpoint-down(mobile) {
+            font-size: 18px;
+            line-height: 21px;
+        }
+    }
+    span {
+        &.text {
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            @include text-gradient-3;
+            opacity: .7;
+            margin-bottom: -8px;
+            @include media-breakpoint-down(xxl) {
+                font-size: 18px;
+                line-height: 28px;
+            }
+            @include media-breakpoint-down(mobile) {
+                font-size: 16px;
+                line-height: 26px;
+            }
+        }
+    }
+}
+
+// referral 
+.referral {
+    background: url('../img/affiliate/reffer-bg.jpg') center center no-repeat;
+    background-size: cover;
+    position: relative;
+    z-index: 2;
+    &:after {
+        position: absolute;
+        content: '';
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: $base-color;
+        z-index: -1;
+        opacity: .9;
+    }
+    .part-text {
+        padding: 80px 0;
+        @include media-breakpoint-down(xxl) {
+            padding: 60px 0;
+        }
+        @include media-breakpoint-down(sm) {
+            padding: 50px 0;
+        }
+        h2.title {
+            font-weight: 700;
+            font-size: 40px;
+            line-height: 55px;
+            letter-spacing: 0.03em;
+            color: $white;
+            margin: -11px 0 20px;
+            @include media-breakpoint-down(xxl) {
+                font-size: 38px;
+                line-height: 52px;
+                margin: -10px 0 20px;
+            }
+            @include media-breakpoint-down(xl) {
+                font-size: 36px;
+                line-height: 48px;
+            }
+            @include media-breakpoint-down(lg) {
+                margin: -9px 0 12px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 32px;
+                line-height: 44px;
+                margin: -8px 0 12px;
+            }
+            @include media-breakpoint-down(sm) {
+                font-size: 28px;
+                line-height: 40px;
+                margin: -8px 0 14px;
+            }
+            @include media-breakpoint-down(mobile) {
+                font-size: 26px;
+                line-height: 36px;
+                margin: -7px 0 15px;
+                br {
+                    display: none;
+                }
+            }
+        }
+        p.descr {
+            font-weight: 400;
+            font-size: 24px;
+            line-height: 34px;
+            color: $white;
+            letter-spacing: 0.06em;   
+            margin-bottom: 31px;      
+            @include media-breakpoint-down(xxl) {
+                font-size: 22px;
+                line-height: 32px;
+                margin-bottom: 32px;
+            }
+            @include media-breakpoint-down(lg) {
+                font-size: 20px;
+                line-height: 30px;
+                margin-bottom: 22px;
+            }
+            @include media-breakpoint-down(sm) {
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 0.03em; 
+            }
+            @include media-breakpoint-down(mobile) {
+                font-size: 17px;
+                line-height: 27px;
+            }
+        }
+    }
+    .part-img {
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+        img {
+            width: auto;
+            max-width: none;
+            height: 340px;
+            background-blend-mode: luminosity;
+            mix-blend-mode: luminosity;
+            @include media-breakpoint-down(xxl) {
+                height: 300px;
+            }
+        }
+    }
+}
+
+// affiliate-how-it-works
+.affiliate-how-it-works {
+    padding: 120px 0;
+    position: relative;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0;
+    }
+    @include media-breakpoint-down(mobile) {
+        padding: 60px 0 30px;
+    }
+    .col {
+        @include media-breakpoint-down(lg) {
+            flex: 0 0 auto;
+            width: 33.3333333333%;
+        }
+        @include media-breakpoint-down(sm) {
+            flex: 0 0 auto;
+            width: 50%;
+        }
+        @include media-breakpoint-down(mobile) {
+            flex: 0 0 auto;
+            width: 100%;
+        }
+        &:last-child {
+            .single-step {
+                &:after {
+                    display: none;
+                }
+            }        
+        }
+    }
+    .single-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        @include media-breakpoint-down(lg) {
+            margin-bottom: 40px;
+        }
+        @include media-breakpoint-down(md) {
+            margin-bottom: 30px;
+        }
+        &:after {
+            position: absolute;
+            content: '';
+            left: calc(100% - 20px);
+            top: 60px;
+            background: url('../img/affiliate/icon/arrow.png') center center no-repeat;
+            background-size: contain;
+            width: 70px;
+            height: 50px;
+            @include media-breakpoint-down(xxl) {
+                top: 50px;
+            }
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+        &.down {
+            margin-top: 100px;
+            @include media-breakpoint-down(lg) {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin-bottom: 30px;
+            }
+            &:after {
+                background: url('../img/affiliate/icon/arrow-2.png') center center no-repeat;
+                background-size: contain;
+                width: 77px;
+                height: 34px;
+                top: -40px;
+                left: auto;
+                right: -40px;
+                @include media-breakpoint-down(xxl) {
+                    top: -50px;
+                }
+                @include media-breakpoint-down(lg) {
+                    display: none;
+                }
+            }
+        }
+        .part-icon {
+            margin-bottom: 31px;
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 21px;
+            }
+            img {
+                height: 90px;
+                width: auto;
+                max-width: none;
+                @include media-breakpoint-down(xxl) {
+                    height: 80px;
+                }
+                @include media-breakpoint-down(md) {
+                    height: 70px;
+                }
+            }
+        }
+        span.part-text {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 34px;
+            color: $descr-color;
+            margin-bottom: -10px;
+            text-align: center;
+            @include media-breakpoint-down(xxl) {
+                font-size: 18px;
+                line-height: 32px;
+            }
+            @include media-breakpoint-down(xl) {
+                margin-left: -12px;
+                margin-right: -12px;
+                font-size: 17px;
+                line-height: 34px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+                line-height: 26px;
+                margin-bottom: -7px;
+            }
+            @include media-breakpoint-only(sm) {
+                br {
+                    display: none;
+                }
+            }
+        }
+    }
+}

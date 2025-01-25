@@ -1,0 +1,444 @@
+// FAQ
+.faq {
+    padding: 120px 0;
+    position: relative;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0 40px;
+    }
+    @include media-breakpoint-down(xl) {
+        padding-bottom: 100px;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0;
+    }
+    .search-bar-element {
+        @include media-breakpoint-down(md) {
+            margin-bottom: 60px;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 50px;
+        }
+        form {
+            position: relative;
+            margin: 5px 0;
+            input {
+                width: 100%;
+                border: 1px solid rgba($descr-color, 0.3);
+                height: 60px;
+                border-radius: 60px;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 48px;
+                color: rgba($descr-color, 0.8);
+                padding: 0 120px 0 40px;
+                &::placeholder {
+                    color: rgba($descr-color, 0.6);
+                }
+                @include media-breakpoint-down(lg) {
+                    height: 50px;
+                    font-size: 16px;
+                }
+                @include media-breakpoint-down(sm) {
+                    height: 45px;
+                    line-height: 43px;
+                    font-size: 16px;
+                    padding: 0 70px 0 20px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 15px;
+                }
+            }
+            button {
+                width: 70px;
+                height: 70px;
+                color: $white;
+                background: $gradient-2;
+                border-radius: 50%;
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                border: none;
+                outline: none;
+                font-size: 18px;
+                @include media-breakpoint-down(lg) {
+                    width: 60px;
+                    height: 60px;
+                }
+                @include media-breakpoint-down(sm) {
+                    width: 50px;
+                    height: 50px;
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+    .faq-menu {
+        padding: 60px 0 120px;
+        position: relative;
+        overflow: hidden;
+        @include media-breakpoint-down(xxl) {
+            padding-bottom: 100px;
+        }
+        @include media-breakpoint-down(lg) {
+            padding-bottom: 80px;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 60px 0px;
+        }
+        @include media-breakpoint-down(sm) {
+            padding: 50px 0px;
+        }
+        &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 250px;
+            background: $gradient-2;
+            transform: matrix(-1, 0, 0, 1, 0, 0);
+            @include media-breakpoint-down(xxl) {
+                height: 220px;
+            }
+            @include media-breakpoint-down(lg) {
+                height: 170px;
+            }
+            @include media-breakpoint-down(md) {
+                height: 100%;
+            }
+        }
+        .container {
+            position: relative;
+            .support-man-img {
+                width: 153px;
+                position: absolute;
+                z-index: 2;            
+                right: -255px;
+                bottom: -120px;
+                @include media-breakpoint-down(xxl) {
+                    bottom: -100px;
+                    right: -75px;
+                    width: 133px;
+                }
+                @include media-breakpoint-down(lg) {
+                    display: none;
+                }
+            }
+        }
+        .nav {
+            .nav-item {
+                .nav-link {
+                    background: #FFFFFF;
+                    box-shadow: 0px 12px 19px rgba(0, 0, 0, 0.05);
+                    border-radius: 15px;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    border: 1px solid rgba($base-color, 0.1);
+                    width: 100%;
+                    padding: 40px 40px 31px;
+                    position: relative;
+                    z-index: 2;
+                    overflow: hidden;
+                    @include transition($transition);
+                    @include media-breakpoint-down(lg) {
+                        padding: 30px 30px 21px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        flex-direction: row;
+                        margin-bottom: 20px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        flex-direction: column;
+                    }
+                    span {
+                        display: block;
+                        &.faq-menu-img-icon {
+                            height: 100px;
+                            margin-bottom: 21px;
+                            @include transition($transition);
+                            position: relative;
+                            z-index: 2;
+                            @include media-breakpoint-down(xxl) {
+                                height: 90px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                height: 80px;
+                            }
+                            @include media-breakpoint-down(md) {
+                                height: 60px;
+                                margin-bottom: 0;
+                                margin-right: 30px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                height: 55px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                margin-right: 0;
+                                margin-bottom: 16px;
+                            }
+                            &:after {
+                                position: absolute;
+                                content: '';
+                                left: 50%;
+                                top: 50%;
+                                width: 100px;
+                                height: 100px;
+                                background: url('/assets/img/faq/shape.png') center center no-repeat;
+                                background-size: cover;
+                                z-index: -1;
+                                transform: translateX(-50%) translateY(-50%);
+                                filter: blur(50px);
+                                @include transition($transition);
+                            }
+                            img {
+                                width: auto;
+                                max-width: none;
+                                height: 100%;
+                            }
+                        }
+                        &.faq-menu-title {
+                            font-weight: 600;
+                            font-size: 22px;
+                            line-height: 32px;
+                            @include text-gradient-3;
+                            opacity: .9;
+                            @include media-breakpoint-down(lg) {
+                                font-size: 20px;
+                                line-height: 30px;
+                            }
+                        }
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 10px;
+                        top: 10px;
+                        right: 10px;
+                        bottom: 10px;
+                        background: $gradient-2;
+                        z-index: -2;
+                        border-radius: 12px;
+                        opacity: 0;
+                        @include transition($transition);
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 11px;
+                        top: 11px;
+                        bottom: 11px;
+                        right: 11px;
+                        background: $white;
+                        z-index: -1;
+                        border-radius: 10px;
+                    }
+                    &.active {
+                        border: 1px solid rgba($base-color, 0.05);
+                        span.faq-menu-img-icon {
+                            &:after {
+                                width: 80px;
+                                height: 80px;
+                                filter: blur(10px);
+                                background: url('/assets/img/faq/shape-2.png') center center no-repeat;
+                                background-size: cover;
+                            }
+                            @include media-breakpoint-down(md) {
+                                height: 60px;
+                                &:after {
+                                    filter: blur(50px);
+                                }
+                            }
+                            @include media-breakpoint-down(sm) {
+                                height: 55px;
+                            }
+                        }
+                        &:after {
+                            opacity: .3;
+                        }
+                    }
+                }
+                &:last-child {
+                    .nav-link {
+                        @include media-breakpoint-down(md) {
+                            margin-bottom: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .faq-content {
+        padding-top: 120px;
+        @include media-breakpoint-down(xxl) {
+            padding-top: 100px;
+        }
+        @include media-breakpoint-down(lg) {
+            padding-top: 80px;
+        }
+        @include media-breakpoint-down(md) {
+            padding-top: 60px;
+        }
+        @include media-breakpoint-down(sm) {
+            padding-top: 50px;
+        }
+        .single-faq {
+            margin-bottom: 60px;
+            @include media-breakpoint-down(md) {
+                margin-bottom: 40px;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin-bottom: 42px;
+            }
+            h3.faq-que {
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 34px;
+                position: relative;
+                margin: -7px 0 21px;
+                padding-bottom: 20px;
+                border-bottom: 1px solid rgba(13, 59, 84, 0.1);
+                @include text-gradient-3;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 22px;
+                    line-height: 32px;
+                    margin: -7px 0 20px;
+                    padding-bottom: 21px;
+                }
+                &:before {
+                    content: 'Q.';
+                    @include text-gradient-2;
+                    margin-right: 10px;
+                }
+                @include media-breakpoint-down(md) {
+                        font-size: 20px;
+                        line-height: 30px;
+                        margin: -7px 0 10px;
+                        padding-bottom: 11px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 18px;
+                    line-height: 28px;
+                    margin: -6px 0 13px;
+                    padding-bottom: 12px;
+                }
+            }
+            p {
+                font-weight: 400;
+                font-size: 17px;
+                line-height: 33px;
+                color: $descr-color;
+                margin-bottom: -11px;
+                &:before {
+                    content: 'Ans.';
+                    @include text-gradient-1;
+                    font-weight: 600;
+                    margin-right: 5px;
+                    opacity: .8;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 15px;
+                    line-height: 26px;
+                }
+            }
+        }
+        .faq-submit-form {
+            margin-right: -45px;
+            @include media-breakpoint-down(xl) {
+                margin-right: 0;
+            }
+            @include media-breakpoint-down(md) {
+                margin-top: 10px;
+            }
+            @include media-breakpoint-down(sm) {
+                margin-top: 0;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin-top: 11px;
+            }
+            .form-header {
+                background: $gradient-2;
+                border-radius: 15px;
+                padding: 30px;
+                padding-top: 22px;
+                padding-bottom: 23px;
+                position: relative;
+                .pen-img {
+                    position: absolute;
+                    width: 75px;
+                    top: 40%;
+                    transform: rotate(20deg);
+                    right: 10px;
+                    @include media-breakpoint-down(mobile) {
+                        display: none;
+                    }
+                }
+                h3.title {
+                    color: $white;
+                    font-weight: 700;
+                    font-size: 24px;
+                    line-height: 34px;
+                    margin-bottom: 4px;
+                    @include media-breakpoint-down(mobile) {
+                            font-weight: 600;
+                            font-size: 22px;
+                            line-height: 32px;
+                    }
+                }
+                p {
+                    font-weight: 400;
+                    font-size: 15px;    
+                    line-height: 25px;
+                    color: rgba($white, 0.9);
+                    margin-bottom: 0;
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 15px;
+                    }
+                }
+            }
+            form {
+                box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+                border-radius: 15px;
+                padding: 30px;
+                @include media-breakpoint-down(mobile) {
+                    padding: 25px;
+                }
+                input, textarea {
+                    width: 100%;
+                    border: 1px solid rgba($descr-color, 0.5);
+                    border-radius: 50px;
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 100%;
+                    padding: 0 25px;
+                    margin-bottom: 20px;
+                    color: rgba($descr-color, 0.9);
+                    @include transition($transition);
+                    &::placeholder {
+                        color: rgba($descr-color, 0.7);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 15px;
+                    }
+                }
+                input {
+                    height: 50px;
+                    @include media-breakpoint-down(sm) {
+                        height: 45px;
+                    }
+                }
+                textarea {
+                    height: 140px;
+                    padding: 16px 25px;
+                    display: grid;
+                    border-radius: 15px;
+                }
+            }
+        }
+    }
+}

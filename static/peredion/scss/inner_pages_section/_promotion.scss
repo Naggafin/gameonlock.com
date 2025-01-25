@@ -1,0 +1,647 @@
+// promotion
+.promotion {
+    padding: 120px 0;
+    position: relative;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0;
+    }
+    .promocode-area {
+        background: $white;
+        box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.05);
+        border-radius: 100px;
+        border: 1px solid rgba(11, 52, 72, 0.1);
+        padding: 20px 20px 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 60px;
+        @include media-breakpoint-down(xxl) {
+            padding: 15px 15px 15px 30px;
+        }
+        @include media-breakpoint-down(xl) {
+            margin-bottom: 40px;
+        }
+        @include media-breakpoint-down(lg) {
+            border-radius: 10px;
+            flex-direction: column;
+            gap: 20px;
+            padding: 12px 15px 20px 30px;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 12px 15px 20px 20px;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            gap: 10px;
+        }
+        .promo-content {
+            @include media-breakpoint-down(md) {
+                display: flex;
+                text-align: center;
+            }
+            span.promo-icon {
+                font-size: 22px;
+                line-height: 32px;
+                @include text-gradient-3;
+                margin-right: 15px;
+                position: relative;
+                bottom: -1px;
+                @include media-breakpoint-down(xl) {
+                    margin-right: 7px;
+                    bottom: -2px;
+                }
+                @include media-breakpoint-down(md) {
+                    display: none;
+                }
+            }
+            span.promo-text {
+                font-weight: 600;
+                font-size: 22px;
+                line-height: 32px;
+                letter-spacing: 0.02em;
+                @include text-gradient-3;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 20px;
+                    line-height: 30px;
+                }
+                @include media-breakpoint-down(xl) {
+                    font-size: 18px;
+                    line-height: 28px;
+                }
+                @include media-breakpoint-down(md) {
+                    font-size: 16.5px;
+                    line-height: 26px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    text-align: left;
+                }
+            }
+        }
+        
+        form.promo-form {
+            border-radius: 50px;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            @include media-breakpoint-down(mobile) {
+                border-radius: 0;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0px;
+                top: 0px;
+                right: 0px;
+                bottom: 0px;
+                border: 1px solid rgba(11, 52, 72, 0.3);
+                border-radius: 50px;
+                z-index: -1;
+                @include media-breakpoint-down(mobile) {
+                    display: none;
+                }
+            }
+            input {
+                font-weight: 400;
+                font-size: 17.5px;
+                line-height: 100%;
+                letter-spacing: 0.01em;
+                text-transform: capitalize;     
+                border: none;
+                background: transparent; 
+                color: rgba(92, 97, 114, 1);
+                padding-left: 30px;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 16px;
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 176px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    border-radius: 50px;
+                    height: 40px;
+                    border: 1px solid rgba(11, 52, 72, 0.3);
+                    width: 100%;
+                    padding: 0 25px;
+                    margin-bottom: 10px;
+                }
+                &:placeholder {
+                    color: rgba(92, 97, 114, 0.7);
+                    text-transform: unset; 
+                }          
+            }
+        }
+    }
+    .single-promotion {
+        height: 580px;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-size: 100% auto;
+        position: relative;
+        z-index: 2;
+        border-radius: 10px;
+        overflow: hidden;
+        @include media-breakpoint-down(xxl) {
+            height: 500px;
+        }
+        @include media-breakpoint-down(xl) {
+            height: 420px;
+        }
+        @include media-breakpoint-down(lg) {
+            background-size: cover;
+        }
+        @include media-breakpoint-down(md) {
+            height: 320px;
+        }
+        &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 97px;
+            width: 100%;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(217, 217, 217, 0) 0%, rgba(63, 62, 110, 0.56) 33.29%, #463157 61.97%);
+            z-index: -1;
+            @include media-breakpoint-down(xl) {
+                top: 0;
+            }
+        }
+        &.offered {
+            .offer {
+                &.black-friday {
+                    width: 270px;
+                    top: 70px;
+                    position: relative;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    mix-blend-mode: normal;
+                    @include media-breakpoint-down(xxl) {
+                        width: 240px;
+                        top: 50px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        width: 200px;
+                        top: 30px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        width: 230px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        top: 0px;
+                        left: 30px;
+                        transform: none;
+                        width: 200px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        top: 10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        width: 170px;
+                    }
+                }
+                &.get20 {
+                    left: 30px;
+                    top: 30px;
+                    position: relative;
+                    width: 120px;
+                    @include media-breakpoint-down(xxl) {
+                        width: 110px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        width: 90px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        width: 70px;
+                    }
+                }
+                &.cashback {
+                    position: relative;
+                    left: 40px;
+                    top: 40px;
+                    height: 90px;
+                    @include media-breakpoint-down(xxl) {
+                        height: 80px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        height: 70px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        height: 60px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        left: 30px;
+                        top: 30px;
+                        height: 50px;
+                    }
+                }
+            }
+        }
+        .part-text {
+            position: absolute;
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            @include media-breakpoint-down(xl) {
+                bottom: 30px;
+                left: 30px;
+                right: 30px;
+            }
+            @include media-breakpoint-down(mobile) {
+                bottom: 25px;
+                left: 25px;
+                right: 25px;
+            }
+            span.sub-title {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 18px;
+                letter-spacing: 0.06em;
+                text-transform: uppercase;
+                color: #E6FF4F;
+                display: block;
+                margin-top: -4px;
+                margin-bottom: 10px;
+                @include media-breakpoint-down(xl) {
+                    font-size: 15px;
+                    margin-bottom: 9px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+            }
+            h3.title {
+                font-weight: 700;
+                font-size: 34px;
+                line-height: 42px;
+                letter-spacing: 0.02em;
+                color: $white;
+                margin-bottom: 21px;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 30px;
+                    line-height: 38px;
+                    margin-bottom: 22px;
+                }
+                @include media-breakpoint-down(xl) {
+                    font-size: 26px;
+                    line-height: 36px;
+                    margin-bottom: 21px;
+                }
+                @include media-breakpoint-down(lg) {
+                    font-size: 24px;
+                    line-height: 34px;
+                }
+                @include media-breakpoint-down(md) {
+                    font-size: 22px;
+                    line-height: 32px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 20px;
+                    line-height: 30px;
+                    margin-bottom: 22px;
+                }
+            }
+        }
+    }
+    &.promotion-details {
+        .single-promotion {
+            margin-right: -40px;
+            height: 528px;
+            @include media-breakpoint-down(xxl) {
+                height: 470px;
+            }
+            @include media-breakpoint-down(xl) {
+                height: 460px;
+                margin-right: 0;
+            }
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 40px;
+            }
+            @include media-breakpoint-down(md) {
+                height: 320px;
+                background-size: 100% auto;
+            }
+            @include media-breakpoint-down(sm) {
+                margin-bottom: 28px;
+            }
+            .part-text {
+                h3.title {
+                    margin-bottom: 1px;
+                }
+            }
+        }
+        .how-to-get-bonus {
+            padding-left: 81px;
+            @include media-breakpoint-down(xl) {
+                padding-left: 20px;
+            }
+            @include media-breakpoint-down(lg) {
+                padding-left: 0;
+            }
+            h4.title {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 34px;
+                @include text-gradient-3;
+                text-transform: capitalize;
+                display: inline-block;
+                margin: -7px 0 23px;
+                @include media-breakpoint-down(lg) {
+                    margin: -7px 0 14px;
+                }
+                @include media-breakpoint-down(md) {
+                    margin: -7px 0 15px;
+                    font-size: 22px;
+                    line-height: 32px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 20px;
+                    line-height: 30px;
+                    margin: -7px 0 9px;
+                }
+            }
+            ul.all-get-steps {
+                counter-reset: LIST-ITEMS;
+                li {
+                    font-weight: 500;
+                    font-size: 20px;
+                    line-height: 32px;
+                    color: $descr-color;
+                    margin-bottom: 33px;
+                    @include media-breakpoint-down(xxl) {
+                        font-size: 18px;
+                        line-height: 30px;
+                        margin-bottom: 23px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        font-size: 17px;
+                        line-height: 29px;
+                        margin-bottom: 24px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        margin-bottom: 15px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        margin-bottom: 9px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        font-size: 16px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 15px;
+                        line-height: 26px;
+                        margin-bottom: 10px;
+                    }
+                    &:before {
+                        content: counter( LIST-ITEMS ) ".";
+                        counter-increment: LIST-ITEMS;
+                        font-weight: 700;
+                        @include text-gradient-1;
+                        margin-right: 10px;
+                    }
+                    &:last-child {
+                        margin-bottom: -17px;
+                        @include media-breakpoint-down(lg) {
+                            margin-bottom: -19px;
+                        }
+                    }
+                }
+            }
+        }
+        .deposit-limitation {
+            position: relative;
+            margin: 40px 0;
+            text-align: center;
+            padding: 17px 0 16px;
+            @include media-breakpoint-down(xxl) {
+                padding: 17px 0 17px;
+            }
+            @include media-breakpoint-down(lg) {
+                margin: 50px 0 40px;
+                padding: 12px 0 12px;
+            }
+            @include media-breakpoint-down(md) {
+                padding: 8px 0 8px;
+            }
+            @include media-breakpoint-down(sm) {
+                margin: 40px 0 28px;
+            }
+            @include media-breakpoint-down(mobile) {
+                padding: 3px 0 3px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 1px;
+                background: $gradient-2;
+                opacity: .2;
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 1px;
+                background: $gradient-2;
+                opacity: .2;
+            }
+            span {
+                display: inline-block;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 44px;
+                letter-spacing: 0.03em;
+                text-transform: capitalize;
+                @include text-gradient-3;
+                position: relative;
+                padding: 0 30px;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 22px;
+                    line-height: 42px;
+                }
+                @include media-breakpoint-down(lg) {
+                    font-size: 20px;
+                    line-height: 40px;
+                }
+                @include media-breakpoint-down(md) {
+                    font-size: 18px;
+                    line-height: 38px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 16px;
+                    line-height: 36px;
+                }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    right: 0;
+                    top: 0;
+                    width: 1px;
+                    height: 100%;
+                    background: $gradient-2;
+                    opacity: .2;
+                    @include media-breakpoint-down(md) {
+                        bottom: 0;
+                        width: 100%;
+                        height: 1px;
+                        top: auto;
+                    }
+                }
+                &:last-child {
+                    &:after {
+                        display: none;
+                    }
+                }
+            }
+        }
+        .promo-terms {
+            margin-bottom: 49px;
+            @include media-breakpoint-down(sm) {
+                margin-bottom: 39px;
+            }
+            h4.title {
+                font-weight: 700;
+                font-size: 24px;
+                line-height: 34px;
+                @include text-gradient-3;
+                text-transform: capitalize;
+                display: inline-block;
+                margin: -7px 0 23px;
+                @include media-breakpoint-down(lg) {
+                    margin: -7px 0 14px;
+                }
+                @include media-breakpoint-down(md) {
+                    margin: -7px 0 15px;
+                    font-size: 22px;
+                    line-height: 32px;
+                }
+            }
+            ul.all-terms {
+                counter-reset: LIST-ITEMS;
+                li {
+                    font-weight: 500;
+                    font-size: 20px;
+                    line-height: 32px;
+                    color: $descr-color;
+                    margin-bottom: 33px;
+                    @include media-breakpoint-down(xxl) {
+                        font-size: 18px;
+                        line-height: 30px;
+                        margin-bottom: 23px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        font-size: 17px;
+                        line-height: 29px;
+                        margin-bottom: 24px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        margin-bottom: 15px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        margin-bottom: 9px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        font-size: 16px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 15px;
+                        line-height: 26px;
+                        margin-bottom: 10px;
+                    }
+                    &:before {
+                        content: counter( LIST-ITEMS ) ".";
+                        counter-increment: LIST-ITEMS;
+                        font-weight: 700;
+                        @include text-gradient-1;
+                        margin-right: 10px;
+                    }
+                    &:last-child {
+                        margin-bottom: -17px;
+                    }
+                }
+            }
+        }
+        .line {
+            position: relative;
+            &:before {
+                position: absolute;
+                content: '';
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 1px;
+                background: $gradient-2;
+                opacity: .2;
+            }
+        }
+        form.promo-form {
+            border-radius: 50px;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+            margin-top: 40px;
+            @include media-breakpoint-down(sm) {
+                margin-top: 30px;
+            }
+            @include media-breakpoint-down(mobile) {
+                border-radius: 0;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0px;
+                top: 0px;
+                right: 0px;
+                bottom: 0px;
+                border: 1px solid rgba(11, 52, 72, 0.3);
+                border-radius: 50px;
+                z-index: -1;
+                @include media-breakpoint-down(mobile) {
+                    display: none;
+                }
+            }
+            input {
+                font-weight: 400;
+                font-size: 17.5px;
+                line-height: 100%;
+                letter-spacing: 0.01em;
+                text-transform: capitalize;     
+                border: none;
+                background: transparent; 
+                color: rgba(92, 97, 114, 1);
+                padding-left: 30px;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 16px;
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 176px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    border-radius: 50px;
+                    height: 40px;
+                    border: 1px solid rgba(11, 52, 72, 0.3);
+                    width: 100%;
+                    padding: 0 25px;
+                    margin-bottom: 10px;
+                }
+                &:placeholder {
+                    color: rgba(92, 97, 114, 0.7);
+                    text-transform: unset; 
+                }          
+            }
+        }
+    }
+}

@@ -1,0 +1,261 @@
+// breadcrumb
+.prd-breadcrumb {
+    background-image: url('../img/breadcrumb/breadcrumb-bg.png');
+    background-color: $base-color;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    .brd-content {
+        padding: 100px 0px 90px;
+        margin-top: 120px;
+        text-align: center;
+        position: relative;
+        z-index: 2;
+        @include media-breakpoint-down(xxl) {
+            padding: 90px 0px 80px;
+            margin-top: 100px;
+        }
+        @include media-breakpoint-down(xl) {
+            padding: 80px 0px 70px;
+            margin-top: 98px;
+        }
+        @include media-breakpoint-down(lg) {
+            padding: 60px 0px 60px;
+            margin-top: 0;
+        }
+        @include media-breakpoint-down(md) {
+            padding: 50px 0px 50px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding-top: 40px;
+        }
+        &:after {
+            position: absolute;
+            content: '';
+            left: 50%;
+            top: 50%;
+            transform: translateX(-50%) translateY(-50%);
+            background: url('../img/breadcrumb/bg-shadow.png') center center no-repeat;
+            background-size: contain;
+            height: 100%;
+            width: 100%;
+            z-index: -1;
+        }
+        span.sub-title {
+            color: $white;
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 13px;
+            display: table;
+            left: 50%;
+            transform: translateX(-50%);
+            position: relative;
+            margin-top: -8px;
+            @include media-breakpoint-down(xxl) {
+                font-size: 18px;
+                line-height: 28px;
+                margin-top: -7px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 16px;
+                line-height: 26px;
+                margin-bottom: 8px;
+            }
+            @include media-breakpoint-down(mobile) {
+                
+            }
+        }
+        h2.title {
+            font-weight: 700;
+            font-size: 46px;
+            line-height: 56px;
+            letter-spacing: 0.03em;
+            color: #FFFFFF;
+            position: relative;
+            padding-bottom: 44px;
+            margin-bottom: 0;
+            @include media-breakpoint-down(xxl) {
+                font-size: 42px;
+                line-height: 52px;
+            }
+            @include media-breakpoint-down(xl) {
+                font-size: 38px;
+                line-height: 48px;
+            }
+            @include media-breakpoint-down(lg) {
+                font-size: 34px;
+                line-height: 44px;
+            }
+            @include media-breakpoint-down(md) {
+                font-size: 30px;
+                line-height: 40px;
+                padding-bottom: 34px;
+            }
+            @include media-breakpoint-down(sm) {
+                font-size: 26px;
+                line-height: 36px;
+            }
+            @include media-breakpoint-down(mobile) {
+                font-size: 22px;
+                line-height: 32px;
+                padding-bottom: 3px;
+            }
+            &:after {
+                content: '';
+                height: 26px;
+                width: 153px;
+                background: url('../img/breadcrumb/line.png') left center no-repeat;
+                background-size: contain;
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                @include media-breakpoint-down(xxl) {
+                    height: 24px;
+                    width: 133px;
+                }
+                @include media-breakpoint-down(lg) {
+                    height: 21px;
+                    width: 120px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    display: none;
+                }
+            }
+        }
+        .page-direction {
+            background: $gradient-2;
+            display: inline-block;
+            padding: 12px 25px 11px;
+            border-radius: 50px;
+            position: absolute;
+            border: 8px solid $white;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(50%);
+            @include media-breakpoint-down(lg) {
+                padding: 10px 25px 9px;
+            }
+            @include media-breakpoint-down(sm) {
+                padding: 8px 25px 7px;
+                border-width: 4px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: -4px;
+                top: -4px;
+                right: -4px;
+                bottom: -4px;
+                border-radius: 50px;
+                border: 1px solid rgb(34 42 75 / 40%);
+            }
+            ul {
+                display: flex;
+                justify-content: center;
+                gap: 10px;
+                white-space: nowrap;
+                li {
+                    text-transform: uppercase;
+                    font-size: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    @include media-breakpoint-down(lg) {
+                        font-size: 13px;
+                    }
+                    &:first-child {
+                        span.icon {
+                            font-size: 12.5px;
+                            @include text-gradient-2;
+                        }
+                    }
+                    span {
+                        color: $white;
+                        &.icon {
+                            font-size: 13px;
+                        }
+                        &.text {
+                            font-weight: 500;
+                            letter-spacing: 0.03em;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .brd-shape {
+        position: absolute;
+        overflow: hidden;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        bottom: 0;
+        @include media-breakpoint-down(sm) {
+            display: none;
+        }
+        .brd-img {
+            position: absolute;
+            bottom: 0;
+            z-index: 2;
+            &.brd-img-1 {
+                left: 0;
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 455px;
+                    height: 455px;
+                    left: -145px;
+                    bottom: -211px;
+                    background: #29589A;
+                    opacity: 0.6;
+                    filter: blur(100px);
+                    z-index: -1;
+                }
+                img {
+                    width: 359px;
+                    @include media-breakpoint-down(xl) {
+                        width: 259px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        width: 189px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        width: 149px;
+                    }
+                }
+            }
+            &.brd-img-2 {
+                right: 0;
+                &:after {
+                    position: absolute;
+                    content: '';
+                    width: 392px;
+                    height: 411px;
+                    right: -75px;
+                    top: -244px;
+                    background: #FB355E;
+                    opacity: 0.3;
+                    filter: blur(100px);
+                    z-index: -1;
+                }
+                img {
+                    width: 451px;
+                    @include media-breakpoint-down(xl) {
+                        width: 351px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        width: 251px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        width: 211px;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,753 @@
+// bet slip
+.bet-slip {
+    position: fixed;
+    bottom: 0;
+    right: 100px;
+    z-index: 555;
+    width: 330px;
+    box-shadow: 0px -2px 30px rgba(0, 0, 0, 0.1);
+    background: $white;
+    border-radius: 10px 10px 0 0;
+    overflow: hidden;
+    @include media-breakpoint-down(md) {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    // @include media-breakpoint-down(md) {
+    //     height: calc(100% - 10%);
+    // }
+    @media (max-width: 479.98px) {
+        width: 350px;
+    }
+    @media (max-width: 419.98px) {
+        width: 320px;
+    }
+    button.bet-slip-header {
+        background: $gradient-2;
+        width: 100%;
+        border: none;
+        text-align: left;
+        color: $white;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        height: 50px;
+        padding: 0 20px;
+        position: relative;
+        &:after {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%) rotate(180deg);
+            @include transition($transition);
+            content: "\f078";
+            font-family: "Font Awesome 6 Pro";
+            font-weight: 300;
+        }
+        &.collapsed {
+            &:after {
+                transform: translateY(-50%) rotate(0deg);
+            }
+        }
+        span {
+            display: inline-block;
+            &.icon {
+                font-size: 20px;
+            }
+            &.text {
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 28px;
+                letter-spacing: 0.02em;
+                text-transform: capitalize;
+                color: $white;
+            }
+            &.slip-quantity-badge {
+                height: 20px;
+                background: $gradient-1;
+                border-radius: 10px;
+                color: $white;
+                padding: 0 7px;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 14px;
+                letter-spacing: 0.02em;
+                text-transform: capitalize;
+                text-align: center;
+                line-height: 20px;
+                position: relative;
+                &.animated {
+                    animation: bet-slip-counting-badge .1s 2;
+                }
+            }
+        }
+    }
+    .bet-slip-body {
+        @include media-breakpoint-down(md) {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            .tab-content {
+                height: 100%;
+                .tab-pane {
+                    &#bsCategory-home {
+                        height: 100%;
+                        .part-slip-header {
+                            height: 100%;
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: space-between;
+                        }
+                        @include media-breakpoint-down(md) {
+                            .all-bs-card {
+                                height: 288px!important;
+                            }
+                        }
+                    }
+                    &#bsCategory-profile, &#bsCategory-contact {
+                        height: 100%;
+                        .mobile-wrapper {
+                            display: flex;
+                            flex-direction: column;
+                            height: 100%;
+                            justify-content: end;
+                        }
+                        .part-slip-header {
+                            height: 100%;
+                        }
+                    }
+                    .part-slip-header {
+                        .all-bs-card {
+                            height: 100%;
+                            .empty-card {
+                                height: 100%;
+                            }
+                            .successfull-card {
+                                height: 100%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .bet-slip-category {
+            justify-content: space-between;
+            gap: 8px;
+            margin: 15px;
+            margin-bottom: 0;
+            .nav-item {
+                flex: 1;
+                .nav-link {
+                    padding: 0 20px;
+                    height: 30px;
+                    background: #EFEFF1;
+                    font-weight: 400;
+                    font-size: 13px;
+                    line-height: 14px;
+                    letter-spacing: 0.03em;
+                    text-transform: capitalize;
+                    color: #8B8E9A;
+                    border-radius: 30px;
+                    width: 100%;
+                    @include transition($transition);
+                    outline: none;
+                    &.active {
+                        background: #5C6172;
+                        color: $white;
+                    }
+                }
+            }
+        }
+        .part-slip-header {
+            padding: 15px;
+            .os-host-overflow {
+                overflow: visible!important;
+                .os-scrollbar-vertical {
+                    right: -12px;
+                }
+            }
+            @keyframes dash {
+                0% {
+                    stroke-dashoffset: 1000;
+                }
+                100% {
+                    stroke-dashoffset: 0;
+                }
+            }
+            @keyframes dash-check {
+                0% {
+                    stroke-dashoffset: -100;
+                }
+                100% {
+                    stroke-dashoffset: 900;
+                }
+            }
+            .all-bs-card {
+                .single-bs-card {
+                    padding: 20px;
+                    position: relative;
+                    z-index: 2;
+                    margin-bottom: 5px;
+                    &.hidden {
+                        all: unset;
+                        height: 0;
+                        overflow: hidden;
+                        width: 0;
+                        visibility: hidden;
+                    }
+                    &.card-combo, &.card-system {
+                        padding-bottom: 6px;
+                    }
+                    &:nth-last-child(2) {
+                        margin-bottom: 0;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/bs-card-bg.png') center center no-repeat;
+                        background-position-y: top;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/bs-card-bg.png') center center no-repeat;
+                        background-position-y: bottom;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                    .bs-card-header {
+                        border-bottom: 1px solid rgba(92, 97, 114, 0.1);;
+                        span.tournament-name {
+                            font-weight: 400;
+                            font-size: 13px;
+                            line-height: 23px;
+                            text-transform: capitalize;
+                            color: rgba(22, 29, 53, 0.5);
+                            display: table;
+                            margin: -6px 0 -4px;
+                        }
+                        .slct-place {
+                            display: flex;
+                            gap: 6px;
+                            margin-bottom: 3px;
+                            span.live-icon img {
+                                margin-bottom: -4px;
+                                margin-right: -3px;
+                            }
+                            span.team-name, span.bet-ratio {
+                                font-weight: 600;
+                                font-size: 15px;
+                                line-height: 18px;
+                                display: flex;
+                                align-items: center;
+                                letter-spacing: 0.02em;
+                                text-transform: capitalize;
+                                @include text-gradient-3;
+                            }
+                            span.attherate {
+                                font-weight: 600;
+                                font-size: 20px;
+                                line-height: 30px;
+                                letter-spacing: 0.02em;
+                                text-transform: capitalize;
+                                color: rgba($base-color, 0.5);
+                            }
+                        }
+                        button.slip-dlt {
+                            outline: none;
+                            border: none;
+                            background: transparent;
+                            padding: 0;
+                            width: 40px;
+                            height: 40px;
+                            position: absolute;
+                            top: 15px;
+                            right: 15px;
+                            @include text-gradient-2;
+                            &:after {
+                                position: absolute;
+                                content: '';
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: $gradient-1;
+                                opacity: 0.1;
+                                border-radius: 2px;
+                            }
+                        }
+                    }
+                    .slct-match {
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 24px;
+                        color: rgba(22, 29, 53, 0.6);
+                        display: flex;
+                        gap: 5px;
+                        margin: 5px 0 9px;
+                        span.sports-category-icon {
+                            width: 14px;
+                            top: -1px;
+                            position: relative;
+                        }
+                    }
+                    .bs-card-footer {    
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        button.prd-btn-1 {
+                            line-height: 30px;
+                            height: 30px;
+                            font-size: 14px;
+                            line-height: 24px;
+                            text-transform: capitalize;
+                            font-weight: 500;
+                            span.stake-number {
+                                margin-left: 3px;
+                            }
+                        }
+                        .return-amount {
+                            span {
+                                display: inline-block;
+                                &.text {
+                                    font-weight: 500;
+                                    font-size: 14px;
+                                    line-height: 24px;
+                                    text-transform: capitalize;
+                                    color: rgba(22, 29, 53, 0.5);
+                                }
+                                &.number {
+                                    font-weight: 600;
+                                    font-size: 14px;
+                                    line-height: 24px;
+                                    text-transform: lowercase;
+                                    @include text-gradient-3;
+                                }
+                            }
+                        }
+                    }
+                }
+                .empty-card {
+                    padding: 20px;
+                    position: relative;
+                    z-index: 2;
+                    text-align: center;
+                    height: 475px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    @include media-breakpoint-down(xxl) {
+                        height: 359px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        height: 319px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        height: 314px;
+                    }
+                    &.combo-system-empty {
+                        height: 343px;
+                        @include media-breakpoint-down(xxl) {
+                            height: 227px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            height: 187px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            height: 182px;
+                        }
+                    }
+                    img {
+                        width: 70px;
+                        height: 70px;
+                        @include media-breakpoint-down(xl) {
+                            width: 60px;
+                            height: 60px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            width: 55px;
+                            height: 55px;
+                        }
+                    }
+                    h4.empty-title {
+                        font-weight: 700;
+                        font-size: 17px;
+                        line-height: 21px;
+                        color: rgba(22, 29, 53, 0.5);
+                        margin: 16px 0 11px;
+                        letter-spacing: 0.01em;
+                    }
+                    p {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 22px;
+                        color: rgba(22, 29, 53, 0.6);
+                        margin-bottom: -5px;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/empty-card-bg.png') center center no-repeat;
+                        background-position-y: top;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/empty-card-bg.png') center center no-repeat;
+                        background-position-y: bottom;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                }
+                .successfull-card {
+                    padding: 20px;
+                    position: relative;
+                    z-index: 2;
+                    text-align: center;
+                    height: 475px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    @include media-breakpoint-down(xxl) {
+                        height: 359px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        height: 319px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        height: 314px;
+                    }
+                    svg {
+                        width: 60px;
+                        display: inline-block;
+                        background: #73af55;
+                        border-radius: 50%;
+                        padding: 5px;
+                        @include media-breakpoint-down(xl) {
+                            width: 50px;
+                        }
+                        .path {
+                            stroke-dasharray: 1000;
+                            stroke-dashoffset: 0;
+                            stroke: #fff;
+                        }
+                        .path.circle {
+                            animation: dash 0.9s ease-in-out;
+                        }
+                        .path.line {
+                            stroke-dashoffset: 1000;
+                            animation: dash 0.9s 0.35s ease-in-out forwards;
+                        }
+                        .path.check {
+                            stroke-dashoffset: -100;
+                            animation: dash-check 0.9s 0.35s ease-in-out forwards;
+                        }
+                    }
+                    &.combo-system-empty {
+                        height: 343px;
+                        @include media-breakpoint-down(xxl) {
+                            height: 227px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            height: 187px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            height: 182px;
+                        }
+                    }
+                    img {
+                        width: 80px;
+                        height: 80px;
+                    }
+                    h4.empty-title {
+                        font-weight: 700;
+                        font-size: 17px;
+                        line-height: 21px;
+                        color: rgba(22, 29, 53, 0.5);
+                        margin: 16px 0 11px;
+                        letter-spacing: 0.01em;
+                    }
+                    p {
+                        font-weight: 400;
+                        font-size: 15px;
+                        line-height: 22px;
+                        color: rgba(22, 29, 53, 0.6);
+                        margin-bottom: -5px;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/empty-card-bg.png') center center no-repeat;
+                        background-position-y: top;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        bottom: 0;
+                        width: 100%;
+                        height: 50%;
+                        background: url('../img/playing-bet/bet-slip/empty-card-bg.png') center center no-repeat;
+                        background-position-y: bottom;
+                        background-size: cover;
+                        z-index: -1;
+                    }
+                }
+            }
+        }
+        .odd-changing {
+            padding-left: 0;
+            margin: 11px 15px 0;
+            &.oc-for-combo {
+                margin: 11px 30px 12px;
+            }
+            .form-check-input {
+                float: right;
+                border: 1px solid rgb(62, 63, 111, 0.5);
+                background-image: url('../img/playing-bet/bet-slip/radio.svg');
+                box-shadow: none;
+                cursor: pointer;
+                user-select: none;
+                &:checked {
+                    background-color: transparent;
+                    background-image: url('../img/playing-bet/bet-slip/radio-2.svg');
+                    border: 1px solid rgb(229 86 96 / 68%);
+                }
+            }
+            .form-check-label {
+                font-weight: 400;
+                font-size: 14px;
+                line-height: 24px;
+                text-transform: capitalize;
+                color: rgba(92, 97, 114, 0.9);
+                cursor: pointer;
+                user-select: none;
+            }
+        } 
+        .bet-quantity {
+            background: rgba(217, 217, 217, 0.5);
+            padding: 20px;
+            padding-top: 8px;
+            padding-bottom: 3px;
+            .title {
+                border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+                &.sytem-title {
+                    display: flex;
+                    justify-content: space-between;
+                    .system-bet-option {
+                        button.bet-option-btn {
+                            font-weight: 500;
+                            font-size: 14px;
+                            line-height: 28px;
+                            text-transform: capitalize;
+                            color: rgba(92, 97, 114, 0.9);
+                            height: 30px;
+                            border: 1px solid #FFFFFF;
+                            border-radius: 5px;
+                            padding: 0 15px;
+                            &.show {
+                                background: $gradient-1;
+                                color: $white;
+                            }
+                        }
+                        .dropdown-menu {
+                            background: #FFFFFF;
+                            box-shadow: 0px -2px 30px rgba(0, 0, 0, 0.1);
+                            border-radius: 4px;
+                            padding: 0;
+                            border: none;
+                            top: -2px!important;
+                            overflow: hidden;
+                            min-width: 100%;
+                            li {
+                                .dropdown-item {
+                                    font-weight: 400;
+                                    font-size: 14px;
+                                    line-height: 24px;
+                                    text-transform: capitalize;
+                                    color: rgba(92, 97, 114, 0.9);
+                                    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+                                    background: $white;
+                                    @include transition($transition);
+                                    padding: 1px 20px;
+                                    text-align: right;
+                                    &:hover {
+                                        color: #ec6163;
+                                    }
+                                }
+                                &:last-child {
+                                    .dropdown-item {
+                                        border-bottom: none;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                span.title-text {
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 26px;
+                    letter-spacing: 0.01em;
+                    text-transform: capitalize;
+                    color: rgba(22, 29, 53, 0.8);
+                    margin-bottom: 7px;
+                    @include media-breakpoint-down(lg) {
+                        margin-bottom: 5px;
+                    }
+                }
+            }
+            .single-list {
+                display: flex;
+                justify-content: space-between;
+                position: relative;    
+                padding: 5px 0 5px;
+                @include media-breakpoint-down(lg) {
+                    padding: 3px 0 3px;
+                }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    bottom: 0;
+                    width: 45%;
+                    height: 1px;
+                    border-bottom: 0.5px solid rgba(0, 0, 0, 0.1);
+
+                }
+                &:last-child {
+                    &:after {
+                        display: none;
+                    }
+                }
+                span {
+                    &.text {
+                        font-weight: 500;
+                        font-size: 15px;
+                        line-height: 25px;
+                        text-transform: capitalize;
+                        color: rgba(22, 29, 53, 0.5);
+                    }
+                    &.number {
+                        font-weight: 500;
+                        font-size: 15px;
+                        line-height: 25px;
+                        text-transform: capitalize;
+                        color: rgba(22, 29, 53, 0.5);
+                    }
+                }
+                .inc-dec-bet {
+                    display: flex;
+                    background: $white;
+                    border-radius: 50px;
+                    button {
+                        background: $gradient-1;
+                        color: $white;
+                        border: none;
+                        height: 30px;
+                        padding: 0 12px;
+                        line-height: 31px;
+                        font-size: 13px;
+                        &.dec-btn {
+                            border-radius: 50px 0 0 50px;
+                        }
+                        &.inc-btn {
+                            border-radius: 0 50px 50px 0;
+                        }
+                    }
+                    span.result-num {
+                        font-weight: 600;
+                        font-size: 15px;
+                        line-height: 30px;
+                        height: 30px;
+                        @include text-gradient-3;
+                        width: 70px;
+                        text-align: center;
+                    }
+                }
+            }
+        }
+        .bet-slip-calculation {
+            background: $gradient-2;
+            padding: 0 15px;
+            .total-calc {
+                padding: 13px 0 13px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                .single-calc {
+                    display: flex;
+                    justify-content: space-between;
+                    &:first-child {
+                        margin-bottom: 3px;
+                    }
+                    span {
+                        &.text {
+                            font-weight: 400;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.01em;
+                            text-transform: capitalize;
+                            color: $white;
+                        }
+                        &.number {
+                            font-weight: 500;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.01em;
+                            text-transform: lowercase;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+            .calc-finish {
+                display: flex;
+                justify-content: space-between;
+                padding: 20px 0;
+                button.prd-btn-1 {
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0 25px;
+                    text-transform: capitalize;
+                }
+                .calc-dlt {
+                    background: transparent;
+                    border: none;
+                    outline: none;
+                    color: $white;
+                    opacity: .8;
+                    font-size: 19px;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}

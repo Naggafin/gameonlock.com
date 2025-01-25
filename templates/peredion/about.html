@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="zxx">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>PerediOn - Sports Prediction HTML Template</title>
+        <!-- favicon -->
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <!-- bootstrap -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <!-- animate css -->
+        <link rel="stylesheet" href="assets/css/animate.css">
+        <link rel="stylesheet" href="assets/css/animate.min.css">
+        <!-- load all Font Awesome styles -->
+        <link rel="stylesheet" href="assets/css/all.min.css">
+        <!-- owl carousel css -->
+        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
+        <!-- odometer css -->
+        <link rel="stylesheet" href="assets/css/odometer.min.css">
+        <!-- aos css -->
+        <link href="assets/css/aos.css" rel="stylesheet">
+        <!-- main css -->
+        <link rel="stylesheet" href="assets/css/style.css">
+    </head>
+    <body>
+        <!-- preloader begin -->
+        <div class="preloader">
+            <div class="icon">
+                <img src="assets/img/preloader/preload-1.gif" alt="">
+                <img src="assets/img/preloader/preload-2.gif" alt="">
+                <img src="assets/img/preloader/preload-5.gif" alt="">
+                <img src="assets/img/preloader/preload-4.gif" alt="">
+                <img src="assets/img/preloader/preload-3.gif" alt="">
+            </div>
+            <span class="text">peredion is loading</span>
+        </div>
+        <!-- preloader end -->
+        <!-- comming soon Modal -->
+        <div class="modal fade"
+             id="comming_soon"
+             tabindex="-1"
+             aria-labelledby="comming_soon"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Attention!</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body text-center bg-dark text-white">
+                        <h4>Dark Version is comming soon</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- header begin -->
+        <div class="header animated">
+            <div class="top-bar">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col-xl-5 col-lg-5 col-md-7">
+                            <div class="left-side">
+                                <div class="single-bar">
+                                    <a class="dashboard-overview" href="dashboard-overview.html">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-circle-user"></i>
+                                        </span>
+                                        <span class="part-text">hi, <span class="user-name">john doe</span></span>
+                                    </a>
+                                </div>
+                                <div class="single-bar">
+                                    <a class="dashboard-overview" href="mailto: abc@example.com">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-envelope"></i>
+                                        </span>
+                                        <span class="part-text">predion@mail.co</span>
+                                    </a>
+                                </div>
+                                <div class="single-bar dropdown">
+                                    <a href="#"
+                                       role="button"
+                                       id="dropdownMenuLink"
+                                       data-bs-toggle="dropdown"
+                                       aria-expanded="false"
+                                       class="dashboard-overview">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-globe"></i>
+                                        </span>
+                                        <span class="part-text lang-display">eng</span>
+                                    </a>
+                                    <ul class="dropdown-menu lang-item" aria-labelledby="dropdownMenuLink">
+                                        <li>
+                                            <a class="dropdown-item" href="#">ENG</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">বাংলা</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">عربي</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">हिन्दी</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Español</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">贛語</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Հայերեն</a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item" href="#">Ўзбек</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-5 col-lg-5 col-md-5">
+                            <div class="right-side">
+                                <div class="single-bar">
+                                    <span class="part-icon">
+                                        <i class="fa-regular fa-calendars"></i>
+                                    </span>
+                                    <span class="part-text">
+                                        <span id="date"></span>
+                                        <span id="month"></span>
+                                        <span id="year"></span>
+                                    </span>
+                                </div>
+                                <div class="single-bar">
+                                    <span class="part-icon">
+                                        <i class="fa-solid fa-timer"></i>
+                                    </span>
+                                    <span class="part-text"><span class="timer" id="hours"></span>:<span class="timer" id="minutes"></span>:<span class="timer" id="seconds"></span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile-navbar">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
+                            <a href="index.html" class="mobile-logo">
+                                <img src="assets/img/logo/mobile-logo.png" alt="">
+                            </a>
+                        </div>
+                        <div class="col-6 col-xl-none col-lg-none col-lg-block">
+                            <button class="navbar-toggler"
+                                    type="button"
+                                    data-bs-toggle="collapse"
+                                    data-bs-target="#navbarSupportedContent"
+                                    aria-controls="navbarSupportedContent"
+                                    aria-expanded="false"
+                                    aria-label="Toggle navigation">
+                                <i class="fa-light fa-bars"></i>
+                            </button>
+                            <a href="#" class="changing-version">
+                                <i class="fa-solid fa-moon-stars"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mainmenu">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg">
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <div class="scalation">
+                                <div class="row">
+                                    <div class="col-xl-5 col-lg-5">
+                                        <ul class="navbar-nav nn-left">
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="home-dropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">Home</a>
+                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="home-dropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="index.html">Homepage 01</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-2.html">Homepage 02</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-3.html">Homepage 03</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-4.html">Homepage 04</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-5.html">Homepage 05</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-6.html">Homepage 06</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-7.html">Homepage 07</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-8.html">Homepage 08</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-9.html">Homepage 09</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="index-10.html">Homepage 10</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link active" href="about.html">about us</a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="betDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">all bets</a>
+                                                <ul class="dropdown-menu" aria-labelledby="betDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet.html">all bets</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-in-play.html">in-play</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-upcoming.html">upcoming</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="playing-bet-finished.html">finished</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="match-details.html">bet details</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="contact.html">contact us</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
+                                        <div class="logo">
+                                            <a href="index.html">
+                                                <img src="assets/img/logo/logo-1.png" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-5 col-lg-5">
+                                        <ul class="navbar-nav nn-right">
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="pagesDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">pages</a>
+                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="pagesDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="blog-posts.html">blog post</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="blog-details.html">blog details</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="sign-in.html">login</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="register.html">register</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="error.html">error 404</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="affiliate.html">affiliate</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="promotion.html">promotion</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="promotion-details.html">promo details</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="ranking.html">ranking</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="#">bracket</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="faq.html">faq</a>
+                                            </li>
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="#"
+                                                   id="dashboardDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">dashboard</a>
+                                                <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="peredion-dashboard/index.html">overview <small>(index)</small></a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-bet-history.html">bet history</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-transaction-history.html">transaction</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-deposit.html">deposit</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-withdraw.html">withdrawal</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-referral.html">referral</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item"
+                                                           href="peredion-dashboard/dashboard-settings.html">settings</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                            <li class="nav-item version-changing-button">
+                                                <button class="nav-link"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#comming_soon">dark mode</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- header end -->
+        <!-- breadcrumb begin -->
+        <div class="prd-breadcrumb">
+            <div class="brd-shape">
+                <div class="brd-img brd-img-1"
+                     data-aos="fade-right"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <img src="assets/img/breadcrumb/brd-img-1.png" alt="">
+                </div>
+                <div class="brd-img brd-img-2"
+                     data-aos="fade-left"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <img src="assets/img/breadcrumb/brd-img-2.png" alt="">
+                </div>
+            </div>
+            <div class="container">
+                <div class="brd-content">
+                    <div data-aos="fade-up"
+                         data-aos-delay="200"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <span class="sub-title">About us</span>
+                    </div>
+                    <h2 class="title"
+                        data-aos="fade-up"
+                        data-aos-delay="350"
+                        data-aos-duration="500"
+                        data-aos-easing="ease-in">We Offer a Wide Variety of betting</h2>
+                    <div class="page-direction">
+                        <ul>
+                            <li>
+                                <span class="icon"><i class="fa-solid fa-house"></i></span>
+                                <span class="text">Home</span>
+                            </li>
+                            <li>
+                                <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                                <span class="text">About us</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- breadcrumb end -->
+        <!-- about begin -->
+        <div class="about" id="aboutUs">
+            <div class="global-shape"
+                 data-aos="fade-left"
+                 data-aos-duration="700"
+                 data-aos-delay="200">
+                <img src="assets/img/shapes/shape-1.png" alt="">
+            </div>
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-xxl-4 col-xl-5 col-lg-5 d-xl-flex d-lg-flex d-block align-items-end justify-content-end">
+                        <div class="part-img">
+                            <img src="assets/img/about/about-img-shape.png"
+                                 alt=""
+                                 class="img-shape"
+                                 data-aos="fade-up-right"
+                                 data-aos-easing="ease-in"
+                                 data-aos-duration="500"
+                                 data-aos-delay="200">
+                            <img src="assets/img/about/about-img.png"
+                                 alt=""
+                                 class="main-img"
+                                 data-aos="zoom-in-right"
+                                 data-aos-easing="ease-in"
+                                 data-aos-duration="500"
+                                 data-aos-delay="400"
+                                 data-aos-offset="0">
+                        </div>
+                    </div>
+                    <div class="col-xxl-7 col-xl-7 col-lg-7 d-xl-flex d-lg-flex align-items-center">
+                        <div class="about-text">
+                            <div class="section-title if-lines-break"
+                                 data-aos="fade-up"
+                                 data-aos-delay="100"
+                                 data-aos-duration="500"
+                                 data-aos-easing="ease-in">
+                                <h3 class="sub-title">About us</h3>
+                                <h2 class="title">
+                                    We provide the most
+                                    <br />
+                                    reliable & legal betting
+                                </h2>
+                            </div>
+                            <div class="part-bottom">
+                                <div class="part-statics">
+                                    <div class="single-statics"
+                                         data-aos="fade-up"
+                                         data-aos-delay="150"
+                                         data-aos-duration="500"
+                                         data-aos-easing="ease-in">
+                                        <div class="part-icon">
+                                            <img src="assets/img/about/icon-1.png" alt="">
+                                        </div>
+                                        <div class="part-txt">
+                                            <span class="number odometer" id="bet_player" data-count="25.1">00.0</span>
+                                            <span class="text">Bet Player</span>
+                                        </div>
+                                    </div>
+                                    <div class="single-statics"
+                                         data-aos="fade-up"
+                                         data-aos-delay="200"
+                                         data-aos-duration="500"
+                                         data-aos-easing="ease-in">
+                                        <div class="part-icon">
+                                            <img src="assets/img/about/icon-2.png" alt="">
+                                        </div>
+                                        <div class="part-txt">
+                                            <span class="number odometer" id="all-sports" data-count="574">0000</span>
+                                            <span class="text">All Sports</span>
+                                        </div>
+                                    </div>
+                                    <div class="single-statics"
+                                         data-aos="fade-up"
+                                         data-aos-delay="250"
+                                         data-aos-duration="500"
+                                         data-aos-easing="ease-in">
+                                        <div class="part-icon">
+                                            <img src="assets/img/about/icon-3.png" alt="">
+                                        </div>
+                                        <div class="part-txt">
+                                            <span class="number odometer" id="streaming" data-count="3201">0000</span>
+                                            <span class="text">Streaming</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="part-descr"
+                                     data-aos="fade-up"
+                                     data-aos-delay="150"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <p>
+                                        We provide our services to our millions of customers extremely seriously. They play with <span class="txt-bold">Peredion</span>   because they enjoy the social experiences that sports and games bring to their lives and the <u>freedom that following your instincts</u> gives you.
+                                    </p>
+                                    <ul>
+                                        <li>We analyze offers on its size, and the wagering requirements.</li>
+                                        <li>we recommend is completely secure and trustworthy.</li>
+                                        <li>Our customers are our most valued asset.</li>
+                                    </ul>
+                                    <a href="playing-bet.html" class="prd-btn-1">Bet NOW <i class="fa-duotone fa-arrow-right"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- about end -->
+        <!-- authority begin -->
+        <div class="authority">
+            <div class="global-shape style-2">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="700"
+                     data-aos-delay="200">
+            </div>
+            <div class="container">
+                <div class="section-title"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <h3 class="sub-title">our authoriity</h3>
+                    <h2 class="title">We have a Betting Expert Team</h2>
+                </div>
+                <div class="all-members">
+                    <div class="row">
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                             data-aos-offset="200"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-authority-member">
+                                <div class="part-pic">
+                                    <img src="assets/img/authority/member-pic-1.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <span class="member-name">genelia kaur</span>
+                                    <span class="member-designation">Business analyst</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                             data-aos-offset="200"
+                             data-aos="fade-up"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-authority-member">
+                                <div class="part-info">
+                                    <span class="member-name">Mason Smart</span>
+                                    <span class="member-designation">CEO/Head of ideas</span>
+                                </div>
+                                <div class="part-pic">
+                                    <img src="assets/img/authority/member-pic-2.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                             data-aos-offset="200"
+                             data-aos="fade-up"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-authority-member">
+                                <div class="part-pic">
+                                    <img src="assets/img/authority/member-pic-3.png" alt="">
+                                </div>
+                                <div class="part-info">
+                                    <span class="member-name">Isabel Wheeler</span>
+                                    <span class="member-designation">Maint. technician</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-3 col-md-6 col-6"
+                             data-aos-offset="200"
+                             data-aos="fade-up"
+                             data-aos-delay="300"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-authority-member">
+                                <div class="part-info">
+                                    <span class="member-name">Tegan Barker</span>
+                                    <span class="member-designation">Identification clerk</span>
+                                </div>
+                                <div class="part-pic">
+                                    <img src="assets/img/authority/member-pic-4.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- authority end -->
+        <!-- call to action begin -->
+        <div class="call-to-action">
+            <div class="container">
+                <div class="row justify-content-center"
+                     data-aos="fade-up"
+                     data-aos-delay="50"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="col-xl-9 col-lg-9 col-md-7 col-sm-10 d-xl-flex d-lg-flex d-block align-items-center">
+                        <div class="part-text">
+                            <h4 class="title">Still Need Help or Confused to Placing A Bet?</h4>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-3 col-md-5 d-xl-flex d-lg-flex d-md-flex d-block align-items-center">
+                        <div class="part-btn">
+                            <a href="faq.html" class="prd-btn-1">Get Help <i class="fa-regular fa-circle-info"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- call to action end -->
+        <!-- newsletter begin -->
+        <div class="newsletter">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-12 col-sm-12 d-xl-flex d-lg-flex d-block align-items-end order-lg-first order-2">
+                        <div class="part-img">
+                            <img src="assets/img/newsletter/newsletter-img-bg.png"
+                                 alt=""
+                                 class="bg"
+                                 data-aos="fade-up"
+                                 data-aos-delay="150"
+                                 data-aos-duration="500"
+                                 data-aos-easing="ease-in">
+                            <img src="assets/img/newsletter/newsletter-img.png"
+                                 alt=""
+                                 class="main-img"
+                                 data-aos="fade-up"
+                                 data-aos-delay="300"
+                                 data-aos-duration="500"
+                                 data-aos-easing="ease-in">
+                        </div>
+                    </div>
+                    <div class="col-xxl-7 col-xl-6 col-lg-6 col-md-8 col-sm-10 d-xl-flex d-lg-flex d-block align-items-center">
+                        <div class="part-newsletter">
+                            <div class="section-title"
+                                 data-aos="fade-up"
+                                 data-aos-delay="100"
+                                 data-aos-duration="500"
+                                 data-aos-easing="ease-in">
+                                <h3 class="sub-title">get our newsletter</h3>
+                                <h2 class="title">Stay Tuned with Us</h2>
+                            </div>
+                            <p data-aos="fade-up"
+                               data-aos-delay="200"
+                               data-aos-duration="500"
+                               data-aos-easing="ease-in">
+                                Subscribe to <span class="p-bold">PerediON‘</span>‘s newsletter and never miss
+                                <br />
+                                our latest business newses.
+                                Our newsletter is sent once a week, every monday.
+                            </p>
+                            <form data-aos="fade-up"
+                                  data-aos-delay="250"
+                                  data-aos-duration="500"
+                                  data-aos-easing="ease-in">
+                                <input type="text" placeholder="Ex: yourmail@address">
+                                <button class="prd-btn-1 submit-btn">
+                                    Subscribe <i class="fa-sharp fa-light fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- newsletter end -->
+        <!-- feature begin -->
+        <div class="feature">
+            <div class="global-shape style-2">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="500"
+                     data-aos-offset="200"
+                     data-aos-easing="ease-in"
+                     data-aos-delay="500">
+            </div>
+            <div class="container">
+                <div class="row justify-content-xl-center justify-content-lg-start">
+                    <div class="col-xl-5 col-lg-8 col-md-8">
+                        <div class="part-left"
+                             data-aos="fade-up"
+                             data-aos-delay="100"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="section-title if-lines-break title-white">
+                                <h3 class="sub-title">Why we are best</h3>
+                                <h2 class="title">We're proud to provide best services to our clients</h2>
+                            </div>
+                            <div class="part-img">
+                                <img class="img-shape"
+                                     src="assets/img/about/about-img-shape.png"
+                                     alt=""
+                                     class="img-shape"
+                                     data-aos="fade-up-right"
+                                     data-aos-easing="ease-in"
+                                     data-aos-duration="500"
+                                     data-aos-delay="200">
+                                <img class="main-img"
+                                     src="assets/img/feature/feature-img.png"
+                                     alt=""
+                                     data-aos="zoom-in-right"
+                                     data-aos-easing="ease-in"
+                                     data-aos-duration="500"
+                                     data-aos-delay="400">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-7 col-lg-12">
+                        <div class="feature-list">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-1.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">Reasonable odds</span>
+                                            <p>
+                                                The odds offered in a Betting
+                                                Exchange are relatively better than odds given by bookmakers.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="150"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-2.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">Live Betting</span>
+                                            <p>live streaming allows you to watch the games you’re betting on, bringing you closer to the action.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="200"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-3.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">Plenty of Options</span>
+                                            <p>we offer more than just betting options., Most of them allow you to stream games in real-time.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="250"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-4.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">Easyest to Deposit</span>
+                                            <p>When you are looking to bet online you need to fund your account before you can place your bets.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="300"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-5.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">Fastest Withdrawal</span>
+                                            <p>
+                                                It's easy to get retrieve your balance at a fast withdrawal, and you won't
+                                                be left waiting.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="350"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <div class="single-feature">
+                                        <div class="part-icon">
+                                            <img src="assets/img/feature/icon-6.png" alt="">
+                                        </div>
+                                        <div class="part-text">
+                                            <span class="title">24/7 Friendly Support</span>
+                                            <p>Our customer care team are ready to deal with betting issues and are available to talk to you 24/7.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- feature end -->
+        <!-- testimonial begin -->
+        <div class="testimonial">
+            <div class="global-shape style-3">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="500"
+                     data-aos-offset="200"
+                     data-aos-easing="ease-in"
+                     data-aos-delay="400">
+            </div>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-8"
+                         data-aos="fade-up"
+                         data-aos-delay="100"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <div class="section-title">
+                            <h3 class="sub-title">testimonials</h3>
+                            <h2 class="title">Client’s Valuable Feedback</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-carousel owl-carousel owl-theme"
+                     data-aos="fade-up"
+                     data-aos-delay="150"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="single-testimonial">
+                        <div class="testi-user-info">
+                            <div class="part-user-info">
+                                <span class="user-name">ruhio S albert</span>
+                                <span class="lottery-category">Est. Returns : $205.20</span>
+                                <span class="winning-date">( apr - 2022 )</span>
+                            </div>
+                            <div class="user-img-cover">
+                                <div class="part-img">
+                                    <img src="assets/img/testimonial/user-1.jpg" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="part-feedback">
+                            <p>
+                                <img class="quot-1" src="assets/img/testimonial/quot-icon-1.png" alt="">
+                                Since it’s all by chance, enjoy picking your numbers or seeing what the
+                                lottery terminal generates Since it’s all by chance.
+                                <img class="quot-2" src="assets/img/testimonial/quot-icon-2.png" alt="">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="single-testimonial">
+                        <div class="testi-user-info">
+                            <div class="part-user-info">
+                                <span class="user-name">Leah Stanley</span>
+                                <span class="lottery-category">Est. Returns : $425.20</span>
+                                <span class="winning-date">( Jan - 2022 )</span>
+                            </div>
+                            <div class="user-img-cover">
+                                <div class="part-img">
+                                    <img src="assets/img/testimonial/user-2.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="part-feedback">
+                            <p>
+                                <img class="quot-1" src="assets/img/testimonial/quot-icon-1.png" alt="">
+                                Since it’s all by chance, enjoy picking your numbers or seeing what the
+                                lottery terminal generates Since it’s all by chance.
+                                <img class="quot-2" src="assets/img/testimonial/quot-icon-2.png" alt="">
+                            </p>
+                        </div>
+                    </div>
+                    <div class="single-testimonial">
+                        <div class="testi-user-info">
+                            <div class="part-user-info">
+                                <span class="user-name">Megan Clayton</span>
+                                <span class="lottery-category">Est. Returns : $99.51</span>
+                                <span class="winning-date">( Dec - 2021 )</span>
+                            </div>
+                            <div class="user-img-cover">
+                                <div class="part-img">
+                                    <img src="assets/img/testimonial/user-3.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="part-feedback">
+                            <p>
+                                <img class="quot-1" src="assets/img/testimonial/quot-icon-1.png" alt="">
+                                Since it’s all by chance, enjoy picking your numbers or seeing what the
+                                lottery terminal generates Since it’s all by chance.
+                                <img class="quot-2" src="assets/img/testimonial/quot-icon-2.png" alt="">
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- testimonial end -->
+        <!-- footer begin -->
+        <div class="footer">
+            <div class="global-shape style-4">
+                <img src="assets/img/shapes/shape-1.png"
+                     alt=""
+                     data-aos="fade-left"
+                     data-aos-duration="500"
+                     data-aos-offset="200"
+                     data-aos-easing="ease-in"
+                     data-aos-delay="500">
+            </div>
+            <div class="footer-top">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-9">
+                            <div class="part-about">
+                                <div class="footer-logo"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                    <a href="index.html">
+                                        <img src="assets/img/logo/mobile-logo.png" alt="" class="logo">
+                                    </a>
+                                </div>
+                                <p data-aos="fade-up"
+                                   data-aos-delay="150"
+                                   data-aos-duration="500"
+                                   data-aos-easing="ease-in">
+                                    This allows bettors to bet over or under the bookmaker's score,
+                                    <br />
+                                    and indicate what they believe the difference in points will be.
+                                </p>
+                                <ul class="importants-links">
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="200"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">policy</a>
+                                    </li>
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="250"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">Terms</a>
+                                    </li>
+                                    <li class="single-link"
+                                        data-aos="fade-up"
+                                        data-aos-delay="300"
+                                        data-aos-duration="500"
+                                        data-aos-easing="ease-in">
+                                        <a href="#0">license</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="footer-bottom-content">
+                        <p class="copyright-text">Copyright © 2023. All Right Reserved By Peredion</p>
+                        <ul class="social-link">
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="single-social">
+                                <a href="#0">
+                                    <i class="fa-brands fa-pinterest-p"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="footer-menu">
+                            <ul>
+                                <li>
+                                    <a href="index.html" class="single-menu">homepage</a>
+                                </li>
+                                <li>
+                                    <a href="about.html" class="single-menu">About Us</a>
+                                </li>
+                                <li>
+                                    <a href="lotteries.html" class="single-menu">Lotteries</a>
+                                </li>
+                                <li>
+                                    <a href="blog-posts.html" class="single-menu">Blog</a>
+                                </li>
+                                <li>
+                                    <a href="contact.html" class="single-menu">contact</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- footer end -->
+        <!-- back to button begin -->
+        <div class="back-to-top-btn">
+            <a href="#">
+                <i class="fa-light fa-turn-up"></i>
+            </a>
+        </div>
+        <!-- back to top button end -->
+        <!-- jQuery js -->
+        <script src="assets/js/jquery-3.6.0.min.js"></script>
+        <!-- bootstrap js -->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+        <!-- owl carousel js -->
+        <script src="assets/js/owl.carousel.min.js"></script>
+        <!-- live clock js -->
+        <script src="assets/js/clock.min.js"></script>
+        <!-- appear js -->
+        <script src="assets/js/jquery.appear.min.js"></script>
+        <!-- odometer js -->
+        <script src="assets/js/odometer.min.js"></script>
+        <!-- main script js -->
+        <script src="assets/js/main.js"></script>
+        <!-- aos js -->
+        <script src="assets/js/aos.js"></script>
+    </body>
+</html>

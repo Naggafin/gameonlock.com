@@ -1,0 +1,180 @@
+// authority
+.authority {
+    padding: 120px 0;
+    position: relative;
+    z-index: 2;
+    overflow: hidden;
+    @include media-breakpoint-down(xxl) {
+        padding: 100px 0;
+    }
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0 40px;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0 30px;
+    }
+    &:after {
+        position: absolute;
+        content: '';
+        left: 50%;
+        transform: translateX(-50%);
+        top: 0;
+        width: 1920px;
+        height: 100%;
+        background: url('../img/authority/shape-3.png') center center no-repeat;
+        background-size: cover;
+        z-index: -1;
+        @include media-breakpoint-down(xl) {
+            width: 1199px;
+        }
+        @include media-breakpoint-down(lg) {
+            display: none;
+        }
+    }
+    .all-members {
+        margin: 0 -40px;
+        @include media-breakpoint-down(xl) {
+            margin: 0 -30px;
+        }
+        @include media-breakpoint-down(lg) {
+            margin: 0;
+        }
+        @include media-breakpoint-down(mobile) {
+            [class*="col-6"] {
+                width: 100%;
+                flex: 100%;
+            }
+        }
+        .single-authority-member {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            @include media-breakpoint-down(lg) {
+                margin-bottom: 40px;
+            }
+            @include media-breakpoint-down(md) {
+                margin-bottom: 30px;
+            }
+            .part-pic {
+                img {
+                    width: 190px;
+                    @include media-breakpoint-down(xxl) {
+                        width: 180px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        width: 170px;
+                    }
+                    @include media-breakpoint-only(md) {
+                        width: 190px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        width: 160px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        width: 170px;
+                    }
+                }
+            }
+            .part-info {
+                background: url('../img/authority/shape-1.png') center center no-repeat;
+                background-size: contain;
+                padding: 42px 0 25px;
+                display: inline-block;
+                width: 225px;
+                text-align: center;
+                margin-top: 30px;
+                @include media-breakpoint-down(xl) {
+                    width: 190px;
+                    padding: 34px 0 20px;
+                }
+                @include media-breakpoint-only(md) {
+                    width: 225px;
+                    padding: 39px 0 25px;
+                }
+                @include media-breakpoint-down(md) {
+                    padding: 32px 0 19px;
+                    margin-top: 20px;
+                }
+                span {
+                    display: block;
+                    &.member-name {
+                        font-weight: 600;
+                        font-size: 23px;
+                        line-height: 33px;
+                        letter-spacing: 0.01em;
+                        @include text-gradient-3;
+                        text-transform: capitalize;
+                        margin-bottom: 5px;
+                        @include media-breakpoint-down(xxl) {
+                            font-size: 21px;
+                            line-height: 31px;
+                            margin-bottom: 6px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            font-size: 20px;
+                            line-height: 30px;
+                            margin-bottom: 1px;
+                        }
+                        @include media-breakpoint-down(md) {
+                            font-size: 18px;
+                            line-height: 28px;
+                            margin-bottom: 0;
+                        }
+                    }
+                    &.member-designation {
+                        font-weight: 400;
+                        font-size: 17px;
+                        line-height: 27px;
+                        color: rgba(92, 97, 114, 0.8);
+                        @include media-breakpoint-down(xl) {
+                            font-size: 16px;
+                            line-height: 26px;
+                        }
+                        @include media-breakpoint-down(md) {
+                            font-size: 15px;
+                            line-height: 25px;
+                        }
+                    }
+                }
+            }
+        }
+        .row {
+            .col-xl-3 {
+                display: flex;
+                justify-content: center;
+                &:nth-child(2), &:last-child {
+                    .single-authority-member {
+                        .part-info {
+                            background: url('../img/authority/shape-2.png') center center no-repeat;
+                            background-size: contain;
+                            padding: 25px 0 41px;
+                            margin-top: 0;
+                            margin-bottom: 30px;
+                            @include media-breakpoint-down(xl) {
+                                padding: 19px 0 34px;
+                            }
+                            @include media-breakpoint-only(md) {
+                                padding: 24px 0 40px;
+                            }
+                            @include media-breakpoint-down(md) {
+                                padding: 19px 0 33px;
+                                
+                                margin-bottom: 20px;
+                            }
+                        }
+                        @include media-breakpoint-down(sm) {
+                            flex-direction: column-reverse;
+                            .part-info {
+                                background: url('../img/authority/shape-1.png') center center no-repeat;
+                                background-size: contain;
+                                padding: 29px 0 20px;
+                                margin-top: 20px;
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

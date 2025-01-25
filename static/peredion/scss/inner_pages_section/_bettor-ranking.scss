@@ -1,0 +1,683 @@
+// bettor ranking 
+.bettor-ranking {
+    position: relative;
+    overflow: hidden;
+    @include media-breakpoint-down(lg) {
+        padding: 80px 0;
+    }
+    @include media-breakpoint-down(md) {
+        padding: 60px 0;
+    }
+    &:after {
+        display: none;
+    }
+    .ranking-control {
+        margin-bottom: 60px;
+        @include media-breakpoint-down(md) {
+            margin-bottom: 50px;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-bottom: 40px;
+        }
+        @include media-breakpoint-down(mobile) {
+            margin-bottom: 30px;
+        }
+        .nav-pills {
+            justify-content: center;
+            gap: 5px;
+            .nav-item {
+                .nav-link {
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 50px;
+                    letter-spacing: 0.01em;
+                    color: rgba($base-color, 0.7);
+                    text-transform: capitalize;
+                    background: transparent;
+                    position: relative;
+                    z-index: 2;
+                    @include transition($transition);
+                    height: 50px;
+                    padding: 0 30px;
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: -1;
+                        background: $gradient-2;
+                        opacity: .1;
+                        @include transition($transition);
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: -1;
+                        background: $gradient-1;
+                        opacity: 0;
+                        @include transition($transition);
+                    }
+                    @include media-breakpoint-down(lg) {
+                        line-height: 45px;
+                        height: 45px;
+                        padding: 0 25px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        line-height: 40px;
+                        height: 40px;
+                        padding: 0 25px;
+                        font-size: 15px;
+                    }
+                    &.active {
+                        color: $white;
+                        box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+                        &:after {
+                            opacity: 0;
+                        }
+                        &:before {
+                            opacity: 1;
+                        }
+                    }
+                }
+                &:first-child {
+                    .nav-link, .nav-link:after, .nav-link:before {
+                        border-radius: 50px 0 0 50px;
+                    }
+                }
+                &:last-child {
+                    .nav-link, .nav-link:after, .nav-link:before {
+                        border-radius: 0 50px 50px 0;
+                    }
+                }
+            }
+        }
+    }
+    .ran-cont {
+        position: relative;
+        &:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            border-bottom: 1px solid rgba($base-color, 0.2);
+            width: 99999px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 1px;
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+        &:before {
+            position: absolute;
+            content: '';
+            bottom: 0;
+            border-bottom: 1px solid rgba($base-color, 0.2);
+            width: 99999px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 1px;
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+    }
+    .all-members {
+        position: relative;
+        &:after {
+            position: absolute;
+            content: '';
+            top: 50%;
+            border-bottom: 1px solid rgba($base-color, 0.2);
+            width: 99999px;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 1px;
+            @include media-breakpoint-down(lg) {
+                display: none;
+            }
+        }
+        .single-authority-member {
+            .part-info {
+                @include media-breakpoint-down(md) {
+                    padding: 33px 0 19px;
+                }
+            }
+        }
+        .row {
+            .col-xl-3 {
+                &:nth-child(4n+2) {
+                    border-right: 1px solid rgba($base-color, 0.2);
+                    border-left: 1px solid rgba($base-color, 0.2);
+                    @include media-breakpoint-down(lg) {
+                        border: none;
+                    }
+                }
+                &:nth-child(4n+3) {
+                    border-right: 1px solid rgba($base-color, 0.2);
+                    @include media-breakpoint-down(lg) {
+                        border: none;
+                    }
+                }
+                &:nth-child(2n+2) {
+                    .single-authority-member {
+                        .part-info {
+                            background: url('../img/authority/shape-2.png') center center no-repeat;
+                            background-size: contain;
+                            padding: 25px 0 41px;
+                            margin-top: 0;
+                            margin-bottom: 30px;
+                            @include media-breakpoint-down(xl) {
+                                padding: 19px 0 34px;
+                                margin-bottom: 30px;
+                            }
+                            @include media-breakpoint-only(md) {
+                                padding: 24px 0 40px;
+                            }
+                            @include media-breakpoint-down(md) {
+                                padding: 19px 0 33px;
+                                margin-bottom: 20px;
+                            }
+                        }
+                        @include media-breakpoint-down(sm) {
+                            flex-direction: column-reverse;
+                            .part-info {
+                                background: url('../img/authority/shape-1.png') center center no-repeat;
+                                background-size: contain;
+                                padding: 33px 0 19px;
+                                margin-top: 20px;
+                                margin-bottom: 0;
+                            }
+                        }
+                    } 
+                }
+                .single-authority-member {
+                    margin: 50px 0;
+                    @include media-breakpoint-down(xl) {
+                        margin: 40px 0;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        margin: 0;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        margin-bottom: -18px;
+                    }
+                    .part-info {
+                        span.member-designation {
+                            font-weight: 500;
+                            font-size: 18px;
+                            line-height: 28px;
+                            letter-spacing: .5px;
+                            @include media-breakpoint-down(xl) {
+                                font-size: 16px;
+                                line-height: 26px;
+                            }
+                            span.winning-number {
+                                display: inline-block;
+                                color: $normal-green;
+                            }
+                            span.losing-number {
+                                display: inline-block;
+                                @include text-gradient-1;
+                                font-weight: 600;
+                            }
+                            span.prc {
+                                display: inline-block;
+                                opacity: .7;
+                            }
+                        }
+                    }
+                }
+                
+                .row {
+                    .col-xl-3 {
+                        display: flex;
+                        justify-content: center;
+                        &:nth-child(2n+2){
+                            .single-authority-member {
+                                .part-info {
+                                    background: url('../img/authority/shape-2.png') center center no-repeat;
+                                    background-size: contain;
+                                    padding: 25px 0 41px;
+                                    margin-top: 0;
+                                    margin-bottom: 30px;
+                                    @include media-breakpoint-down(xl) {
+                                        padding: 19px 0 34px;
+                                    }
+                                    @include media-breakpoint-only(md) {
+                                        padding: 24px 0 40px;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        padding: 19px 0 33px;
+                                        
+                                        margin-bottom: 20px;
+                                    }
+                                }
+                                @include media-breakpoint-down(sm) {
+                                    flex-direction: column-reverse;
+                                    .part-info {
+                                        background: url('../img/authority/shape-1.png') center center no-repeat;
+                                        background-size: contain;
+                                        padding: 29px 0 20px;
+                                        margin-top: 20px;
+                                        margin-bottom: 0;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                
+            }
+        }
+    }
+
+
+    .sports-body {
+        margin-top: 80px;
+        padding: 40px;
+        padding-top: 0;
+        box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        @include media-breakpoint-down(xxl) {
+            padding: 30px;
+            padding-top: 0;
+        }
+        @include media-breakpoint-down(xl) {
+            border-radius: 0;
+            overflow: scroll;
+            &::-webkit-scrollbar {
+                width: 0px!important;
+                height: 6px;
+            }
+        }
+        @include media-breakpoint-down(lg) {
+            margin-top: 60px;
+        }
+        @include media-breakpoint-down(md) {
+            margin-top: 50px;
+        }
+        @include media-breakpoint-down(sm) {
+            margin-top: 40px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 20px;
+            padding-top: 0;
+            margin-top: 49px;
+        }
+        .playing-sports-all {
+            @include media-breakpoint-down(xl) {
+                width: 1056px;
+            } 
+            @include media-breakpoint-down(lg) {
+                width: 984px;
+            }
+            .single-tournament {
+                .tournament-title {
+                    padding: 40px 0;
+                    position: relative;
+                    z-index: 2;
+                    @include media-breakpoint-down(xl) {
+                        font-size: 18px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        padding: 30px 0;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 16px;
+                        line-height: 26px;
+                        margin-bottom: 0;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 100%;
+                        height: 2px;
+                        background: url('../img/playing-bet/shape/line-shape-1.png') left top repeat-x;
+                        background-position: 1px;
+                        z-index: -1;
+                        @include media-breakpoint-down(mobile) {
+                            display: none;
+                        }
+                    }
+                    span.title-text {
+                        background: $white;
+                        padding-right: 30px;
+                        @include media-breakpoint-down(mobile) {
+                            padding-right: 0;
+                        }
+                    }
+                    span.match-quantity {
+                        float: right;
+                        background: $white;
+                        padding-left: 30px;
+                        @include media-breakpoint-down(mobile) {
+                            padding-left: 0;
+                        }
+                    }
+                }
+                .all-tournament-match {
+                    .single-t-match {
+                        display: flex;
+                        justify-content: space-between;
+                        border: 1px solid rgba($base-color, 0.2);
+                        border-radius: 10px;
+                        padding: 10px 45px 10px 30px;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        @include media-breakpoint-down(xxl) {
+                            padding: 10px 30px 10px 30px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            padding: 10px 25px 10px 25px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            flex-wrap: wrap;
+                            padding: 15px;
+                            justify-content: flex-start;
+                            margin-bottom: 15px;
+                            column-gap: 35px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            padding: 15px;
+                            justify-content: space-between;
+                            padding-top: 10px;
+                        }
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                        &:first-child {
+                            .flag-img, .event, .b-slip, .bet-type, .bet-amount, .b-odd,
+                            .date-n-time, .status {
+                                position: relative;
+                                &:after {
+                                    content: 'Country';
+                                    font-weight: 600;
+                                    font-size: 17px;
+                                    line-height: 19px;
+                                    color: $descr-color;
+                                    letter-spacing: 0.02em;  
+                                    position: absolute;  
+                                    top: -60px;
+                                    background: #fff;
+                                    z-index: 2;
+                                    padding: 0 10px;
+                                    left: -10px;
+                                    @include media-breakpoint-down(lg) {
+                                        top: -56px;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        font-size: 16px;
+                                        line-height: 18px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -50px;
+                                    }
+                                }
+                            }    
+                            .event {
+                                &:after {
+                                    content: 'Event';
+                                    top: -66px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -61px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -57px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -50px;
+                                    }
+                                }
+                            }
+                            .b-slip {
+                                &:after {
+                                    content: 'Bet Slip';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -66px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .bet-type {
+                                &:after {
+                                    content: 'Type';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -66px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .bet-amount {
+                                &:after {
+                                    content: 'Bet';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -66px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .b-odd {
+                                &:after {
+                                    content: 'Odd';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -66px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .date-n-time {
+                                &:after {
+                                    content: 'Date';    
+                                    top: -69px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -64px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -57px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -51px;
+                                    }
+                                }
+                            }
+                            .status {
+                                &:after {
+                                    content: 'Status';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -66px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                        }
+                        .flag-img {
+                            height: 60px;
+                            @include media-breakpoint-down(xxl) {
+                                height: 50px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                height: 45px;
+                            }
+                            img {
+                                height: 100%;
+                                width: auto;
+                                border-radius: 50%;
+                            }
+                        }
+                        .event {
+                            .part-team {
+                                display: flex;
+                                gap: 30px;
+                                .s-team {
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    gap: 10px;
+                                    &:first-child {
+                                        position: relative;
+                                        &:after {
+                                            position: absolute;
+                                            content: '';
+                                            right: -20px;
+                                            height: 1px;
+                                            width: 10px;
+                                            background: $gradient-2;
+                                            opacity: .5;
+                                        }
+                                    }
+                                    img.team-icon {
+                                        height: 22px;
+                                        width: auto;
+                                    }
+                                    span.team-name {
+                                        font-weight: 600;
+                                        font-size: 14px;
+                                        line-height: 24px;
+                                        letter-spacing: 0.01em;
+                                        @include text-gradient-3;
+                                        opacity: .8;
+                                    }
+                                }
+                            }
+                            .event-name {
+                                font-weight: 500;
+                                font-size: 14px;
+                                line-height: 24px;
+                                color: rgba($descr-color, 0.5);
+                                display: block;
+                                margin-bottom: -6px;
+                                margin-top: 7px;
+                                @include media-breakpoint-down(lg) {
+                                    margin-top: 2px;
+                                }
+                            }
+                        }
+                        .b-slip span.slip-number, .bet-type span.text,
+                        .bet-amount span.text, .b-odd span.text{
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                @include text-gradient-3;
+                                @include media-breakpoint-down(lg) {              
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                        }
+                        .date-n-time {
+                            margin: -6px 0 -7px;
+                            span {
+                                display: block;
+                                font-weight: 600;
+                                font-size: 14px;
+                                line-height: 24px;;
+                                text-align: center;
+                                letter-spacing: 0.02em;
+                                text-transform: uppercase;
+                                &.date {
+                                    color: rgba($descr-color, 0.5);
+                                    margin-bottom: -4px;
+                                }
+                                &.time {
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                        .status {
+                            span {
+                                display: inline-block;
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                &.lost {
+                                    @include text-gradient-1;
+                                }
+                                &.win {
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                        .profit {
+                            span.text{
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                @include text-gradient-3;
+                                @include media-breakpoint-down(lg) {
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                                &.lost {
+                                    position: relative;
+                                    &:after {
+                                        position: absolute;
+                                        content: '';
+                                        left: 0;
+                                        top: 50%;
+                                        width: 100%;
+                                        height: 1px;
+                                        background: $gradient-2;
+                                    }
+                                }
+                                &.win {
+                                    @include text-gradient-clear;
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                    }
+                }   
+            }
+            &.no-tabs-here {
+                .single-tournament {
+                    margin-bottom: 30px;
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+} 

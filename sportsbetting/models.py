@@ -1,6 +1,8 @@
 import datetime
 
+import auto_prefetch
 from django.conf import settings
+from django.core.functional import cached_property
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.utils.translation import gettext_lazy as _
@@ -8,111 +10,155 @@ from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from djmoney.money import Money
 from model_utils import Choices
-from phonenumber_field.modelfields import PhoneNumberField
+from slugify import slugify
 
 
 class Sport(models.Model):
-	name = models.CharField(max_length=255, unique=True)
-	short_name = models.CharField(max_length=32, blank=True, null=True)
+	icon = models.ImageField()
+	name = models.CharField(max_length=100, unique=True)
+	description = models.TextField(blank=True, null=True)
+
+	@cached_property
+	def slug_name(self):
+		return slugify(self.name)
 
 	def __str__(self):
-		return _("%(name)s") % {"name": self.name}
+		return self.name
 
 
-class Participant(models.Model):
+class GoverningBody(auto_prefetch.Model):
 	TYPES = Choices(
-		("TM", "team", _("Team")),
-		("PL", "player", _("Player")),
+		("pro", "professional", _("Professional")),
+		("col", "collegiate", _("Collegiate")),
+		("ama", "amateur", _("Amateur")),
+		("int", "international", _("International")),
+		("clb", "club", _("Club")),
 	)
 
-	type = models.CharField(max_length=2, choices=TYPES, default=TYPES.team)
-	sport = models.ForeignKey(
-		Sport, on_delete=models.CASCADE, related_name="participants"
+	icon = models.ImageField(blank=True, null=True)
+	sport = auto_prefetch.ForeignKey(
+		Sport, on_delete=models.CASCADE, related_name="governing_bodies"
 	)
-	name = models.CharField(max_length=255)
-	short_name = models.CharField(max_length=32, blank=True, null=True)
-	member_of = models.ForeignKey(
-		"self", on_delete=models.CASCADE, related_name="players", blank=True, null=True
+	name = models.CharField(max_length=100, unique=True)
+	description = models.TextField(blank=True, null=True)
+	type = models.CharField(
+		max_length=3,
+		choices=TYPES,
+		verbose_name=_("type of competition"),
 	)
 
 	def __str__(self):
-		if not self.short_name:
-			return _("%(name)s") % {"name": self.name}
-		else:
-			return _("%(name)s - %(short_name)s") % {
-				"name": self.name,
-				"short_name": self.short_name,
-			}
+		return f"{self.name} ({self.sport.name})"
+
+	class Meta(auto_prefetch.Model.Meta):
+		verbose_name = _("governing body")
+		verbose_name_plural = _("governing bodies")
+
+
+class League(auto_prefetch.Model):
+	REGIONS = Choices(
+		("wd", "world", _("World-wide")),
+		("eu", "europe", _("Europe")),
+		("as", "asia", _("Asia")),
+		("af", "africa", _("Africa")),
+		("na", "north_merica", _("North America")),
+		("sa", "south_america", _("South America")),
+		("oc", "oceania", _("Oceania")),
+	)
+
+	icon = models.ImageField(blank=True, null=True)
+	governing_body = auto_prefetch.ForeignKey(
+		GoverningBody, on_delete=models.CASCADE, related_name="leagues"
+	)
+	name = models.CharField(max_length=100)
+	level_of_play = models.CharField(max_length=100, blank=True, null=True)
+	season = models.CharField(max_length=50, blank=True, null=True)
+	region = models.CharField(max_length=2, choices=REGIONS, blank=True, null=True)
+
+	def __str__(self):
+		return f"{self.name} ({self.governing_body.name})"
+
+
+class Division(auto_prefetch.Model):
+	icon = models.ImageField(blank=True, null=True)
+	league = auto_prefetch.ForeignKey(
+		League, on_delete=models.CASCADE, related_name="divisions"
+	)
+	name = models.CharField(max_length=100)
+	hierarchy_level = models.PositiveIntegerField(default=1)
+
+	def __str__(self):
+		return f"{self.name} ({self.league.name})"
+
+
+class Team(auto_prefetch.Model):
+	icon = models.ImageField()
+	league = auto_prefetch.ForeignKey(
+		League, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
+	)
+	division = auto_prefetch.ForeignKey(
+		Division, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
+	)
+	name = models.CharField(max_length=100)
+	location = models.CharField(max_length=100, blank=True, null=True)
+	founding_year = models.PositiveIntegerField(blank=True, null=True)
+
+	def __str__(self):
+		if self.division:
+			return f"{self.name} ({self.division.name})"
+		return self.name
+
+
+class Player(auto_prefetch.Model):
+	icon = models.ImageField(blank=True, null=True)
+	team = auto_prefetch.ForeignKey(
+		Team, on_delete=models.CASCADE, related_name="players"
+	)
+	name = models.CharField(max_length=100)
+	position = models.CharField(max_length=100, blank=True, null=True)
+	jersey_number = models.PositiveIntegerField(blank=True, null=True)
+
+	def __str__(self):
+		return f"{self.name} ({self.team.name})"
+
+
+class ScheduledGame(auto_prefetch.Model):
+	league = auto_prefetch.ForeignKey(
+		League, on_delete=models.CASCADE, related_name="schedule_games"
+	)
+	home_team = auto_prefetch.ForeignKey(
+		Team, on_delete=models.CASCADE, related_name="schedule_games_home_team"
+	)
+	away_team = auto_prefetch.ForeignKey(
+		Team, on_delete=models.CASCADE, related_name="schedule_games_away_team"
+	)
+	location = models.CharField(max_length=100)
+	datetime = models.DateTimeField()
 
 
 class Ticket(models.Model):
-	name = models.CharField(
-		max_length=255, default=settings.SPORTS["default_ticket_name"]
-	)
 	pub_date = models.DateField(default=datetime.date.today, unique=True)
-	end_date = models.DateField(default=datetime.date.today)
-	sports = models.ManyToManyField(Sport, related_name="tickets")
+	end_date = models.DateField()
 
-	def __str__(self):
-		return _("%(name)s") % {"name": self.name}
+	def save(self, *args, **kwargs):
+		if self.end_date is None:
+			self.end_date = self.pub_date + datetime.timedelta(days=1)
+		return super().save(*args, **kwargs)
 
 	class Meta:
+		verbose_name = _("ticket")
+		verbose_name_plural = _("tickets")
 		get_latest_by = "pub_date"
 
 
-class SpreadEntry(models.Model):
-	ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="spreads")
-	sport = models.ForeignKey(Sport, on_delete=models.CASCADE, related_name="spreads")
-	first_team = models.CharField(max_length=255)
-	second_team = models.CharField(max_length=255)
-	spread = models.IntegerField(blank=True, null=True)
-	spread_is_pick = models.BooleanField(blank=True, null=True)
-	is_preview = models.BooleanField(default=False)
-	start_datetime = models.DateTimeField()
-	winner = models.CharField(max_length=255, blank=True, null=True)
-
-	def __str__(self):
-		if self.spread_is_pick:
-			return _("%(sport_name)s %(first_team)s P%(spread)s %(second_team)s") % {
-				"sport_name": self.sport.name,
-				"first_team": self.first_team,
-				"spread": self.spread,
-				"second_team": self.second_team,
-			}
-		else:
-			return _("%(sport_name)s %(first_team)s %(spread)s %(second_team)s") % {
-				"sport_name": self.sport.name,
-				"first_team": self.first_team,
-				"spread": self.spread,
-				"second_team": self.second_team,
-			}
-
-
-class UnderOverEntry(models.Model):
-	ticket = models.ForeignKey(
-		Ticket, on_delete=models.CASCADE, related_name="under_overs"
+class TicketPlay(auto_prefetch.Model):
+	ticket = auto_prefetch.ForeignKey(
+		Ticket, on_delete=models.CASCADE, related_name="plays"
 	)
-	spread = models.OneToOneField(
-		SpreadEntry, on_delete=models.CASCADE, related_name="under_over"
+	purchaser = auto_prefetch.ForeignKey(
+		settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="ticket_plays"
 	)
-	under = models.IntegerField()
-	over = models.IntegerField()
-	under_or_over = models.BooleanField(blank=True, null=True)
-
-	def __str__(self):
-		return _("%(sport_name)s : Un %(under)s - Ov %(over)s") % {
-			"sport_name": self.spread.sport.name,
-			"under": self.under,
-			"over": self.over,
-		}
-
-
-class TicketPlay(models.Model):
-	ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="plays")
-	purchaser_name = models.CharField(max_length=255)
-	email = models.EmailField()
-	phone = PhoneNumberField(blank=True, null=True)
-	bet_amount = MoneyField(
+	amount = MoneyField(
 		max_digits=10, decimal_places=2, validators=[MinMoneyValidator(Money("USD", 5))]
 	)
 	date = models.DateTimeField(auto_now=True)
@@ -120,64 +166,121 @@ class TicketPlay(models.Model):
 	won = models.BooleanField(default=False)
 
 	def __str__(self):
-		return _("%(id)d : %(email)s (Paid: %(paid)s; Won: %(won)s)") % {
+		return _("Play %(id)d : %(email)s (Paid: %(paid)s; Won: %(won)s)") % {
 			"id": self.id,
 			"email": self.email,
 			"paid": self.paid,
 			"won": self.won,
 		}
 
+	class Meta(auto_prefetch.Model.Meta):
+		verbose_name = _("play")
+		verbose_name_plural = _("plays")
 
-class SpreadPick(models.Model):
-	play = models.ForeignKey(
-		TicketPlay, on_delete=models.CASCADE, related_name="spread_picks"
+
+class TicketEntry(auto_prefetch.Model):
+	ticket = auto_prefetch.ForeignKey(
+		Ticket, on_delete=models.CASCADE, related_name="entries"
 	)
-	picked = models.CharField(max_length=255)
-	spread_entry = models.ForeignKey(
-		SpreadEntry, on_delete=models.CASCADE, related_name="picks"
+	league = auto_prefetch.ForeignKey(
+		League, on_delete=models.CASCADE, related_name="ticket_entries"
+	)
+	home_team = auto_prefetch.ForeignKey(
+		Team, on_delete=models.CASCADE, related_name="ticket_entry_home_team"
+	)
+	away_team = auto_prefetch.ForeignKey(
+		Team, on_delete=models.CASCADE, related_name="ticket_entry_away_team"
+	)
+	spread = models.DecimalField(max_digits=5, decimal_places=2)
+	is_pick = models.BooleanField(blank=True, default=False)
+	over = models.IntegerField(blank=True, null=True)
+	under = models.IntegerField(blank=True, null=True)
+	start_datetime = models.DateTimeField()
+	winner = auto_prefetch.ForeignKey(
+		Team,
+		on_delete=models.SET_NULL,
+		null=True,
+		blank=True,
+		related_name="ticket_entry_wins",
 	)
 
 	def __str__(self):
-		return _("%(first_team)s/%(second_team)s - %(picked)s") % {
-			"first_team": self.spread_entry.first_team,
-			"second_team": self.spread_entry.second_team,
-			"picked": self.picked,
+		return _(
+			"%(sport)s: %(home_team)s vs %(away_team)s (%(spread)s) - un%(under)d/%(over)dov"
+		) % {
+			"sport": self.sport.name,
+			"home_team": self.home_team,
+			"away_team": self.away_team,
+			"spread": self.spread if not self.is_pick else "P" + str(self.spread),
+			"under": self.under,
+			"over": self.over,
 		}
 
-	class Meta:
-		constraints = [
-			UniqueConstraint(
-				name="unique_spread_pick", fields=["play", "spread_entry"]
-			),
-		]
+	class Meta(auto_prefetch.Model.Meta):
+		verbose_name = _("ticket entry")
+		verbose_name_plural = _("ticket entries")
 
 
-class UnderOverPick(models.Model):
-	play = models.ForeignKey(
-		TicketPlay, on_delete=models.CASCADE, related_name="under_over_picks"
+class TicketEntryPick(auto_prefetch.Model):
+	TYPES = Choices(
+		("sp", "spread", _("Spread")),
+		("uo", "under_over", _("Under/Over")),
+		("pl", "player", _("Player")),
 	)
-	under_or_over = models.BooleanField()
-	under_over_entry = models.ForeignKey(
-		UnderOverEntry, on_delete=models.CASCADE, related_name="picks"
+
+	play = auto_prefetch.ForeignKey(
+		TicketPlay, on_delete=models.CASCADE, related_name="picks"
 	)
+	ticket_entry = auto_prefetch.ForeignKey(
+		TicketEntry, on_delete=models.CASCADE, related_name="picks"
+	)
+	type = models.CharField(max_length=2, choices=TYPES)
+	team = auto_prefetch.ForeignKey(
+		Team,
+		on_delete=models.SET_NULL,
+		related_name="ticket_entry_picks",
+		null=True,
+		blank=True,
+	)
+	player = auto_prefetch.ForeignKey(
+		Player,
+		on_delete=models.SET_NULL,
+		related_name="ticket_entry_picks",
+		null=True,
+		blank=True,
+	)
+	stat_type = None  # TODO
+	target_value = None  # TODO
+	is_over = models.BooleanField(null=True, blank=True)
 
 	def __str__(self):
-		if self.under_or_over is False:
-			return _("%(first_team)s/%(second_team)s - un%(under)s") % {
-				"first_team": self.under_over_entry.spread.first_team,
-				"second_team": self.under_over_entry.spread.second_team,
-				"under": self.under_over_entry.under,
+		if self.type == type(self).TYPES.spread:
+			return _("%(home_team)s/%(away_team)s - %(picked)s") % {
+				"home_team": self.ticket_entry.home_team,
+				"away_team": self.ticket_entry.away_team,
+				"picked": self.team,
 			}
-		else:
-			return _("%(first_team)s/%(second_team)s - ov%(over)s") % {
-				"first_team": self.under_over_entry.spread.first_team,
-				"second_team": self.under_over_entry.spread.second_team,
-				"over": self.under_over_entry.over,
-			}
+		elif self.type == type(self).TYPES.under_over:
+			if self.is_over:
+				return _("%(home_team)s/%(away_team)s - ov%(over)s") % {
+					"home_team": self.ticket_entry.spread.home_team,
+					"away_team": self.ticket_entry.spread.away_team,
+					"over": self.ticket_entry.over,
+				}
+			else:
+				return _("%(home_team)s/%(away_team)s - un%(under)s") % {
+					"home_team": self.ticket_entry.spread.home_team,
+					"away_team": self.ticket_entry.spread.away_team,
+					"under": self.ticket_entry.under,
+				}
+		elif self.type == type(self).TYPES.player:
+			return f"{self.player.name} - {self.stat_type} ({'Over' if self.is_over else 'Under'} {self.target_value})"
 
-	class Meta:
+	class Meta(auto_prefetch.Model.Meta):
+		verbose_name = _("pick")
+		verbose_name_plural = _("picks")
 		constraints = [
 			UniqueConstraint(
-				name="unique_under_over_pick", fields=["play", "under_over_entry"]
+				name="unique_ticket_entry_pick", fields=["play", "ticket_entry", "type"]
 			),
 		]

@@ -1,0 +1,895 @@
+{% extends 'base.html' %}
+{% load static i18n humanize partials %}
+{% load wagtailcore_tags %}
+{% load sportsbetting_tags %}
+{% partialdef banner-section %}
+<section class="banner">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xxl-2 col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-none align-items-end">
+                <div class="part-img img-1">
+                    <img class="img-shape img-shape-1"
+                         src="{% static 'peredion/images/banner/img-shape-1.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                    <img class="main-img"
+                         src="{% static 'peredion/images/banner/banner-img-2.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                </div>
+            </div>
+            <div class="col-xxl-8 col-xl-7 col-lg-8 col-md-8 col-sm-9">
+                <div class="banner-content">
+                    <h3 class="sub-title"
+                        data-aos="fade-up"
+                        data-aos-delay="150"
+                        data-aos-duration="500"
+                        data-aos-easing="ease-in">{% trans 'Place your bet online' %}</h3>
+                    <h1 class="title"
+                        data-aos="fade-up"
+                        data-aos-delay="300"
+                        data-aos-duration="500"
+                        data-aos-easing="ease-in">{% trans 'BET ON SPORTS AND WIN.' %}</h1>
+                    <div class="all-btn"
+                         data-aos="fade-up"
+                         data-aos-delay="350"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                        <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 d-xl-flex d-lg-flex d-md-flex d-sm-none d-none align-items-end">
+                <div class="part-img img-2">
+                    <img class="img-shape img-shape-2"
+                         src="{% static 'peredion/images/banner/img-shape-1.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                    <img class="main-img"
+                         src="{% static 'peredion/images/banner/banner-img-1.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="banner-bottom-img">
+        <img src="{% static 'peredion/images/banner/banner-img-3.png' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <div class="shape-1 banner-shape"></div>
+    <div class="shape-2 banner-shape"></div>
+</section>
+{% endpartialdef %}
+{% partialdef about-section %}
+<section class="about" id="aboutUs">
+    <div class="global-shape"
+         data-aos="fade-left"
+         data-aos-duration="700"
+         data-aos-delay="200">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-xxl-4 col-xl-5 col-lg-5 d-xl-flex d-lg-flex d-block align-items-end justify-content-end">
+                <div class="part-img">
+                    <img src="{% static 'peredion/images/about/about-img-shape.png' %}"
+                         alt=""
+                         class="img-shape"
+                         data-aos="fade-up-right"
+                         data-aos-easing="ease-in"
+                         data-aos-duration="500"
+                         data-aos-delay="200"
+                         nonce="{{ request.csp_nonce }}">
+                    <img src="{% static 'peredion/images/about/about-img.png' %}"
+                         alt=""
+                         class="main-img"
+                         data-aos="zoom-in-right"
+                         data-aos-easing="ease-in"
+                         data-aos-duration="500"
+                         data-aos-delay="400"
+                         nonce="{{ request.csp_nonce }}">
+                </div>
+            </div>
+            <div class="col-xxl-7 col-xl-7 col-lg-7 d-xl-flex d-lg-flex align-items-center">
+                <div class="about-text">
+                    <div class="section-title if-lines-break"
+                         data-aos="fade-up"
+                         data-aos-delay="100"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <h3 class="sub-title">{{ page.about_title }}</h3>
+                        <h2 class="title">{{ page.about_subtitle }}</h2>
+                    </div>
+                    <div class="part-bottom">
+                        <div class="part-descr"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            {{ page.about_content|richtext }}
+                            <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef bet-section-tab-content %}
+<div class="tab-pane fade"
+     id="sports-{{ sport.slug_name }}"
+     role="tabpanel"
+     aria-labelledby="sports-{{ sport.sport.slug_name }}-tab">
+    <div class="single-sports-item">
+        <h2 class="accordion-header" id="{{ sport.sport.slug_name }}-matches">
+            <div class="sports-header">
+                <span class="single-sports-icon">
+                    <img src="{{ sport.icon.url }}" alt="" nonce="{{ request.csp_nonce }}">
+                </span>
+                <span class="single-sports-name">{{ sport.name }} ({% num_entries ticket sport %})</span>
+                <span class="single-sports-img">
+                    <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
+                </span>
+                <a href="#TODO" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+            </div>
+        </h2>
+        <div class="sports-expanded-list">
+            <div class="sports-body">
+                <div class="playing-sports-all no-tabs-here">
+                    {% for governing_body in sport.governing_bodies.all %}
+                        {% for league in governing_body.leagues.all %}
+                            <div class="single-tournament">
+                                <div class="tournament-title">
+                                    <span class="title-text">{{ league.name }}</span>
+                                    <span class="match-quantity">({{ league.ticket_entries.all|length }})</span>
+                                </div>
+                                <div class="all-tournament-match">
+                                    {% for ticket_entry in league.ticket_entries.all %}
+                                        <div class="single-t-match
+                                                    {% if ticket_entry|game_has_started %}match-in-play{% endif %}">
+                                            <div class="match-time">
+                                                <span class="time-icon">
+                                                    <i class="fa-regular fa-clock"></i>
+                                                </span>
+                                                <span class="m-date">{{ ticket_entry.start_datetime|naturalday }}</span>
+                                                <span class="m-time">{{ ticket_entry.start_datetime|time }}</span>
+                                            </div>
+                                            <div class="playing-teams">
+                                                <div class="single-team">
+                                                    <div class="team-descr">
+                                                        <span class="team-icon">
+                                                            <img src="{{ ticket_entry.home_team.icon.url }}"
+                                                                 alt="{{ ticket_entry.home_team.name }}">
+                                                        </span>
+                                                        <span class="team-name">{{ ticket_entry.home_team.name }}</span>
+                                                    </div>
+                                                    <div class="team-score">0</div>
+                                                </div>
+                                                <div class="single-team">
+                                                    <div class="team-descr">
+                                                        <span class="team-icon">
+                                                            <img src="{{ ticket_entry.away_team.icon.url }}"
+                                                                 alt="{{ ticket_entry.away_team.name }}">
+                                                        </span>
+                                                        <span class="team-name">{{ ticket_entry.away_team.name }}</span>
+                                                    </div>
+                                                    <div class="team-score">0</div>
+                                                </div>
+                                            </div>
+                                            <div class="placing-bet">
+                                                <a href="#0" class="single-bet-place">
+                                                    <span class="bet-ratio">0.25</span>
+                                                    <span class="team-name">Dinamo Zagreb</span>
+                                                </a>
+                                                <a href="#0" class="single-bet-place draw-box">
+                                                    <span class="bet-ratio">1.42</span>
+                                                    <span class="team-name">draw</span>
+                                                </a>
+                                                <a href="#0" class="single-bet-place">
+                                                    <span class="bet-ratio">4.32</span>
+                                                    <span class="team-name">Bodo-Glimt</span>
+                                                </a>
+                                            </div>
+                                            <span class="bet-ratio-details">
+                                                <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
+                                            </span>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endpartialdef
+{% partialdef bet-section %}
+<section class="playing-bet">
+    <div class="global-shape style-2">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="700"
+             data-aos-delay="200"
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <div class="global-shape style-3">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="700"
+             data-aos-delay="200"
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <div class="container">
+        <div class="section-title"
+             data-aos="fade-up"
+             data-aos-delay="100"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <h3 class="sub-title">{{ page.bet_title }}</h3>
+            <h2 class="title">{{ page.bet_subtitle }}</h2>
+        </div>
+        <div class="sports-menu scrollable-menu"
+             data-aos="fade-up"
+             data-aos-delay="150"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <ul class="nav nav-pills" id="sports-tab" role="tablist">
+                {% for sport in sports %}
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link"
+                                id="sports-{{ sport.short_name }}-tab"
+                                data-bs-toggle="pill"
+                                data-bs-target="#sports-{{ sport.short_name }}"
+                                type="button"
+                                role="tab"
+                                aria-controls="sports-{{ sport.short_name }}"
+                                aria-selected="false">
+                            <span class="sport-icon">
+                                <img src="{{ sport.icon.url }}"
+                                     alt="{{ sport.name }}"
+                                     nonce="{{ request.csp_nonce }}">
+                            </span>
+                            <span class="sport-name">{{ sport.name }}</span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="tab-content"
+             id="sports-tabContent"
+             data-aos="fade-up"
+             data-aos-delay="200"
+             data-aos-duration="500"
+             data-aos-easing="ease-in"></div>
+        <div class="see-all-sports-btn-cover"
+             data-aos="fade-up"
+             data-aos-delay="150"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef sports-schedule-section-schedule-content %}
+<div class="single-view-schedule-content">
+    <div class="tab-content" id="schedule-tab-content">
+        {% for game in scheduled_games %}
+            <div class="tab-pane fade show active"
+                 id="v-schedule-{{ forloop.counter|apnumber }}"
+                 role="tabpanel"
+                 aria-labelledby="schedule-{{ forloop.counter|apnumber }}-tab">
+                <div class="single-view-schedule">
+                    <div class="schedue-header">
+                        <span class="tournament-name">{{ game.league }}</span>
+                        <span class="stadium-name">{{ game.location }}</span>
+                    </div>
+                    <div class="schedule-body">
+                        <div class="schedule-stats">
+                            <div class="single-team">
+                                <div class="team-icon">
+                                    <img src="{{ game.home_team.icon.url }}"
+                                         alt="{{ game.home_team.name }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </div>
+                                <span class="team-name">{{ game.home_team.name }}</span>
+                            </div>
+                            <div class="date-times-vs">
+                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.datetime|time }}</span>
+                                <span class="date">{{ game.datetime|naturalday }}</span>
+                                <img class="versace-icon"
+                                     src="{% static 'peredion/images/sports-schedule/vs.png' %}"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="single-team">
+                                <div class="team-icon">
+                                    <img src="{{ game.away_team.icon.url }}"
+                                         alt="{{ game.away_team.name }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </div>
+                                <span class="team-name">{{ game.away_team.name }}</span>
+                            </div>
+                        </div>
+                        {% comment %}
+                                    TODO: maybe?
+                                    <div class="placing-bet">
+                                        <a href="#0" class="place-a-bet placed">0.25</a>
+                                        <a href="#0" class="place-a-bet">1.42</a>
+                                        <a href="#0" class="place-a-bet">4.32</a>
+                                    </div>
+                        {% endcomment %}
+                    </div>
+                    <div class="schedue-timer timer" data-date="30 Feb 2023 9:56:00 GMT+01:00">
+                        <div class="time-starting-text">
+                            <span class="txt">{% trans 'starting in' %}</span>
+                            <img class="icon"
+                                 src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
+                                 alt=""
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="all-timer-task">
+                            <div class="single-time">
+                                <span class="number day">01</span>
+                                <span class="title">Days</span>
+                            </div>
+                            <div class="single-time">
+                                <span class="number hour">24</span>
+                                <span class="title">Hours</span>
+                            </div>
+                            <div class="single-time">
+                                <span class="number minute">60</span>
+                                <span class="title">Minutes</span>
+                            </div>
+                            <div class="single-time">
+                                <span class="number second">60</span>
+                                <span class="title">Seconds</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endpartialdef %}
+{% partialdef sports-schedule-section-schedule-list %}
+<div class="all-schedule-list">
+    <div class="nav flex-column nav-pills"
+         id="v-schedule-tab"
+         role="tablist"
+         aria-orientation="vertical">
+        {% for game in scheduled_games %}
+            <button class="nav-link active"
+                    id="schedule-one-tab"
+                    data-bs-toggle="pill"
+                    data-bs-target="#v-schedule-{{ forloop.counter|apnumber }}"
+                    type="button"
+                    role="tab"
+                    aria-controls="v-schedule-{{ forloop.counter|apnumber }}"
+                    aria-selected="true"
+                    data-aos="fade-left"
+                    data-aos-delay="150"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in">
+                <div class="single-list-schedule">
+                    <div class="single-team">
+                        <div class="team-icon">
+                            <img src="{{ game.home_team.icon.url }}"
+                                 alt="{{ game.home_team.name }}"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <span class="team-name">{{ game.home_team.name }}</span>
+                    </div>
+                    <img class="versace-icon"
+                         src="{% static 'peredion/images/sports-schedule/vs-sm.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                    <div class="single-team">
+                        <span class="team-name">{{ game.away_team.name }}</span>
+                        <div class="team-icon">
+                            <img src="{{ game.away_team.icon.url }}"
+                                 alt=""
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                    </div>
+                </div>
+            </button>
+        {% endfor %}
+    </div>
+</div>
+{% endpartialdef %}
+{% partialdef sports-schedule-section %}
+<section class="sports-schedule">
+    <div class="global-shape style-4">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="1500"
+             data-aos-delay="500"
+             nonce="{{ request.csp_nonce }}">
+    </div>
+    <div class="container">
+        <div class="section-title"
+             data-aos="fade-up"
+             data-aos-delay="100"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <h3 class="sub-title">{{ page.schedule_title }}</h3>
+            <h2 class="title">{{ page.schedule_subtitle }}</h2>
+        </div>
+        <div class="row">
+            <div class="col-xl-6 col-lg-8 col-md-8 order-md-1 order-2"
+                 data-aos="fade-up"
+                 data-aos-delay="150"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">{% partial sports-schedule-section-schedule-content %}</div>
+            <div class="col-xl-6 col-lg-4 col-md-4 order-md-2 order-1">{% partial sports-schedule-section-schedule-list %}</div>
+        </div>
+        <div class="see-all-schedule-btn-cover"
+             data-aos="fade-up"
+             data-aos-delay="200"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef call-to-action-section %}
+<section class="call-to-action">
+    <div class="container">
+        <div class="row justify-content-center"
+             data-aos="fade-up"
+             data-aos-delay="50"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <div class="col-xl-9 col-lg-9 col-md-7 col-sm-10 d-xl-flex d-lg-flex d-block align-items-center">
+                <div class="part-text">
+                    <h4 class="title">{% trans 'Confused? Learn how it works' %}</h4>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-5 d-xl-flex d-lg-flex d-md-flex d-block align-items-center">
+                <div class="part-btn">
+                    <a href="#TODO" class="prd-btn-1">{% trans 'How It Works' %} <i class="fa-regular fa-circle-info"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef working-process-section %}
+<section class="working-process">
+    <div class="global-shape">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="500"
+             data-aos-offset="200"
+             data-aos-easing="ease-in"
+             data-aos-delay="400">
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8"
+                 data-aos="fade-up"
+                 data-aos-delay="100"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <div class="section-title">
+                    <h3 class="sub-title">How it works</h3>
+                    <h2 class="title">Easiest Step To Placing A Bet</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-lg-3 col-sm-6">
+                <div class="single-process">
+                    <div class="part-icon"
+                         data-aos="fade-up"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in"
+                         data-aos-delay="100">
+                        <img src="{% static 'peredion/images/working-process/icon-1.png' %}"
+                             alt="">
+                    </div>
+                    <div class="part-text">
+                        <span class="step-number"
+                              data-aos="fade"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="300"><span class="gradient-number">1.</span></span>
+                        <span class="step-title"
+                              data-aos="fade-up"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="150">Open an  account.</span>
+                        <p data-aos="fade-up"
+                           data-aos-duration="500"
+                           data-aos-easing="ease-in"
+                           data-aos-delay="200">
+                            Create an account. Enter your
+                            <br />
+                            personal details into the sign-up form & click the 'Register' button.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-sm-6">
+                <div class="single-process pp-2">
+                    <div class="part-text">
+                        <span class="step-title"
+                              data-aos="fade-up"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="250">Make your deposit.</span>
+                        <p data-aos="fade-up"
+                           data-aos-duration="500"
+                           data-aos-easing="ease-in"
+                           data-aos-delay="300">
+                            Before you can make to placing bet, you’ll need to deposit some cash in your account.
+                        </p>
+                        <span class="step-number two"
+                              data-aos="fade"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="450"><span class="gradient-number">2.</span></span>
+                    </div>
+                    <div class="part-icon"
+                         data-aos="fade-up"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in"
+                         data-aos-delay="350">
+                        <img src="{% static 'peredion/images/working-process/icon-2.png' %}"
+                             alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-sm-6">
+                <div class="single-process">
+                    <div class="part-icon"
+                         data-aos="fade-up"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in"
+                         data-aos-delay="400">
+                        <img src="{% static 'peredion/images/working-process/icon-3.png' %}"
+                             alt="">
+                    </div>
+                    <div class="part-text">
+                        <span class="step-number"
+                              data-aos="fade"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="600"><span class="gradient-number">3.</span></span>
+                        <span class="step-title"
+                              data-aos="fade-up"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="450">Place your wagers.</span>
+                        <p data-aos="fade-up"
+                           data-aos-duration="500"
+                           data-aos-easing="ease-in"
+                           data-aos-delay="500">
+                            Now you’re ready to start placing
+                            <br />
+                            your bets online, so it’s time to make your selections.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-sm-6">
+                <div class="single-process pp-2">
+                    <div class="part-text">
+                        <span class="step-title"
+                              data-aos="fade-up"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="550">Withdraw your winnings.</span>
+                        <p data-aos="fade-up"
+                           data-aos-duration="500"
+                           data-aos-easing="ease-in"
+                           data-aos-delay="600">
+                            If you are a winner, claim your prize:
+                            <br />
+                            Be sure to visit a retailer before your prize expires in 12 months.
+                        </p>
+                        <span class="step-number four"
+                              data-aos="fade"
+                              data-aos-duration="500"
+                              data-aos-easing="ease-in"
+                              data-aos-delay="700"><span class="gradient-number">4.</span></span>
+                    </div>
+                    <div class="part-icon"
+                         data-aos="fade-up"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in"
+                         data-aos-delay="600">
+                        <img src="{% static 'peredion/images/working-process/icon-4.png' %}"
+                             alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef feature-section %}
+<section class="feature">
+    <div class="global-shape style-2">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="500"
+             data-aos-offset="200"
+             data-aos-easing="ease-in"
+             data-aos-delay="500">
+    </div>
+    <div class="container">
+        <div class="row justify-content-xl-center justify-content-lg-start">
+            <div class="col-xl-5 col-lg-8 col-md-8">
+                <div class="part-left"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="section-title if-lines-break title-white">
+                        <h3 class="sub-title">Why we are best</h3>
+                        <h2 class="title">We're proud to provide best services to our clients</h2>
+                    </div>
+                    <div class="part-img">
+                        <img class="img-shape"
+                             src="{% static 'peredion/images/about/about-img-shape.png' %}"
+                             alt=""
+                             data-aos="fade-up-right"
+                             data-aos-easing="ease-in"
+                             data-aos-duration="500"
+                             data-aos-delay="200">
+                        <img class="main-img"
+                             src="{% static 'peredion/images/feature/feature-img.png' %}"
+                             alt=""
+                             data-aos="zoom-in-right"
+                             data-aos-easing="ease-in"
+                             data-aos-duration="500"
+                             data-aos-delay="400">
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-7 col-lg-12">
+                <div class="feature-list">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="100"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-1.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">Reasonable odds</span>
+                                    <p>
+                                        The odds offered in a Betting
+                                        Exchange are relatively better than odds given by bookmakers.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-2.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">Live Betting</span>
+                                    <p>live streaming allows you to watch the games you’re betting on, bringing you closer to the action.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-3.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">Plenty of Options</span>
+                                    <p>we offer more than just betting options., Most of them allow you to stream games in real-time.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-4.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">Easyest to Deposit</span>
+                                    <p>When you are looking to bet online you need to fund your account before you can place your bets.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="300"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-5.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">Fastest Withdrawal</span>
+                                    <p>
+                                        It's easy to get retrieve your balance at a fast withdrawal, and you won't
+                                        be left waiting.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6"
+                             data-aos="fade-up"
+                             data-aos-delay="350"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="single-feature">
+                                <div class="part-icon">
+                                    <img src="{% static 'peredion/images/feature/icon-6.png' %}" alt="">
+                                </div>
+                                <div class="part-text">
+                                    <span class="title">24/7 Friendly Support</span>
+                                    <p>Our customer care team are ready to deal with betting issues and are available to talk to you 24/7.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% partialdef testimonial-section %}
+<section class="testimonial">
+    <div class="global-shape style-3">
+        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+             alt=""
+             data-aos="fade-left"
+             data-aos-duration="500"
+             data-aos-offset="200"
+             data-aos-easing="ease-in"
+             data-aos-delay="400">
+    </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-8"
+                 data-aos="fade-up"
+                 data-aos-delay="100"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <div class="section-title">
+                    <h3 class="sub-title">testimonials</h3>
+                    <h2 class="title">Client’s Valuable Feedback</h2>
+                </div>
+            </div>
+        </div>
+        <div class="testimonial-carousel owl-carousel owl-theme"
+             data-aos="fade-up"
+             data-aos-delay="150"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <div class="single-testimonial">
+                <div class="testi-user-info">
+                    <div class="part-user-info">
+                        <span class="user-name">ruhio S albert</span>
+                        <span class="lottery-category">Est. Returns : $205.20</span>
+                        <span class="winning-date">( apr - 2022 )</span>
+                    </div>
+                    <div class="user-img-cover">
+                        <div class="part-img">
+                            <img src="{% static 'peredion/images/testimonial/user-1.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="part-feedback">
+                    <p>
+                        <img class="quot-1"
+                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
+                             alt="">
+                        Since it’s all by chance, enjoy picking your numbers or seeing what the
+                        lottery terminal generates Since it’s all by chance.
+                        <img class="quot-2"
+                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
+                             alt="">
+                    </p>
+                </div>
+            </div>
+            <div class="single-testimonial">
+                <div class="testi-user-info">
+                    <div class="part-user-info">
+                        <span class="user-name">Leah Stanley</span>
+                        <span class="lottery-category">Est. Returns : $425.20</span>
+                        <span class="winning-date">( Jan - 2022 )</span>
+                    </div>
+                    <div class="user-img-cover">
+                        <div class="part-img">
+                            <img src="{% static 'peredion/images/testimonial/user-2.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="part-feedback">
+                    <p>
+                        <img class="quot-1"
+                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
+                             alt="">
+                        Since it’s all by chance, enjoy picking your numbers or seeing what the
+                        lottery terminal generates Since it’s all by chance.
+                        <img class="quot-2"
+                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
+                             alt="">
+                    </p>
+                </div>
+            </div>
+            <div class="single-testimonial">
+                <div class="testi-user-info">
+                    <div class="part-user-info">
+                        <span class="user-name">Megan Clayton</span>
+                        <span class="lottery-category">Est. Returns : $99.51</span>
+                        <span class="winning-date">( Dec - 2021 )</span>
+                    </div>
+                    <div class="user-img-cover">
+                        <div class="part-img">
+                            <img src="{% static 'peredion/images/testimonial/user-3.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="part-feedback">
+                    <p>
+                        <img class="quot-1"
+                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
+                             alt="">
+                        Since it’s all by chance, enjoy picking your numbers or seeing what the
+                        lottery terminal generates Since it’s all by chance.
+                        <img class="quot-2"
+                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
+                             alt="">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endpartialdef %}
+{% block banner %}
+    {% partial banner-section %}
+{% endblock %}
+{% block content %}
+    {% partial about-section %}
+    {% partial bet-section %}
+    {% partial sports-schedule-section %}
+    {% partial call-to-action-section %}
+    {% partial working-process-section %}
+    {% partial feature-section %}
+    {% partial testimonial-section %}
+{% endblock %}
