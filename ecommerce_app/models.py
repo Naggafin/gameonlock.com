@@ -6,7 +6,7 @@ class Product(models.Model):
 	price = models.DecimalField(max_digits=7, decimal_places=2)
 	slug = models.SlugField()
 	description = models.TextField()
-	image = models.ImageField(upload_to='products_images/', blank=True)
+	image = models.ImageField(upload_to="products_images/", blank=True)
 
 	def __str__(self):
 		return self.name
@@ -42,7 +42,7 @@ class Order(models.Model):
 		return "{}:{}".format(self.id, self.email)
 
 	def total_cost(self):
-		return sum([ li.cost() for li in self.lineitem_set.all() ] )
+		return sum([li.cost() for li in self.lineitem_set.all()])
 
 
 class LineItem(models.Model):

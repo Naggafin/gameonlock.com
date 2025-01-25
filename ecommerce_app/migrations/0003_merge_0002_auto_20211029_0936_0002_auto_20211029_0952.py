@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		("ecommerce_app", "0002_auto_20211029_0936"),
+		("ecommerce_app", "0002_auto_20211029_0952"),
+	]
 
-    dependencies = [
-        ('ecommerce_app', '0002_auto_20211029_0936'),
-        ('ecommerce_app', '0002_auto_20211029_0952'),
-    ]
-
-    operations = [
-    ]
+	operations = []

@@ -1,23 +1,24 @@
 from django.contrib import admin
-from .models import Product, Order, CartItem, LineItem
+
+from .models import CartItem, LineItem, Order, Product
 
 # Register your models here.
 
 
 class ProductAdmin(admin.ModelAdmin):
-	list_display =['id', 'name', 'price']
+	list_display = ["id", "name", "price"]
 
 
 class OrderAdmin(admin.ModelAdmin):
-	list_display = ['id', 'name', 'email', 'date', 'paid']
+	list_display = ["id", "name", "email", "date", "paid"]
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-	list_display = ['id', 'price', 'quantity', 'product']
+	list_display = ["id", "price", "quantity", "product"]
 
 
 class LineItemAdmin(admin.ModelAdmin):
-	list_display = ['id', 'price', 'quantity', 'date_added', 'order']
+	list_display = ["id", "price", "quantity", "date_added", "order"]
 
 
 admin.site.register(Product, ProductAdmin)

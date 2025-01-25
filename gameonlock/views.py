@@ -1,6 +1,7 @@
-from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
+from django.shortcuts import render
+
 
 # TODO: Delete later
 def cs50(request):
@@ -9,19 +10,23 @@ def cs50(request):
 	<br>
 	Sincerely,<br>
 	Nevin Coutu (naggafin)</p>""")
-	
+
 	return response
+
 
 def sportsbook(request):
 	return render(request, "gameonlock/sportsbook_login.html")
 
+
 def robots(request):
-	with open(settings.BASE_DIR+"/static/robots.txt", 'r') as f:
+	with open(settings.BASE_DIR + "/static/robots.txt", "r") as f:
 		text_robots = f.read()
 		return HttpResponse(text_robots, content_type="text/plain")
 
+
 def page_not_found(request, **kwargs):
 	pass
+
 
 def server_error(request):
 	pass

@@ -1,1 +1,1 @@
-default_app_config = 'sportsbetting.apps.SportsbettingConfig'
+default_app_config = "sportsbetting.apps.SportsbettingConfig"

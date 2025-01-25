@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
-from pathlib import Path
 
 from dotenv import load_dotenv
 
@@ -27,20 +26,20 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
-#Email stuff
-EMAIL_HOST = 'localhost'
+# Email stuff
+EMAIL_HOST = "localhost"
 EMAIL_PORT = 25
-SALES_EMAIL = 'sales@gameonlock.com'
-SALES_EMAIL_USER = os.eniron.get('SALES_EMAIL_USER')
-SALES_EMAIL_PASSWORD = os.environ.get('SALES_EMAIL_PASSWORD')
-WEBADMIN_EMAIL = 'webadmin@gameonlock.com'
-WEBADMIN_EMAIL_USER = os.environ.get('WEBADMIN_EMAIL_USER')
-WEBADMIN_EMAIL_PASSWORD = os.environ.get('WEBADMIN_EMAIL_PASSWORD')
+SALES_EMAIL = "sales@gameonlock.com"
+SALES_EMAIL_USER = os.eniron.get("SALES_EMAIL_USER")
+SALES_EMAIL_PASSWORD = os.environ.get("SALES_EMAIL_PASSWORD")
+WEBADMIN_EMAIL = "webadmin@gameonlock.com"
+WEBADMIN_EMAIL_USER = os.environ.get("WEBADMIN_EMAIL_USER")
+WEBADMIN_EMAIL_PASSWORD = os.environ.get("WEBADMIN_EMAIL_PASSWORD")
 NOTIFY_EMAILS = [
-	'rmayberry@gameonlock.com',
+	"rmayberry@gameonlock.com",
 ]
 
 SITE_NAME = "GAME-on-LOCK"
@@ -49,85 +48,80 @@ SITE_NAME = "GAME-on-LOCK"
 # Application definition
 
 INSTALLED_APPS = [
-	'gameonlock',
-	'sportsbetting',
-	'blog',
-	'ecommerce_app',
-	
-	'django.contrib.admin',
-	'django.contrib.auth',
-	'django.contrib.contenttypes',
-	'django.contrib.sessions',
-	'django.contrib.messages',
-	'django.contrib.staticfiles',
-	'django.contrib.sitemaps',
-	
-	'wagtail.contrib.forms',
-	'wagtail.contrib.redirects',
-	'wagtail.embeds',
-	'wagtail.sites',
-	'wagtail.users',
-	'wagtail.snippets',
-	'wagtail.documents',
-	'wagtail.images',
-	'wagtail.search',
-	'wagtail.admin',
-	'wagtail.core',
-	
-	'wagtailmetadata',
+	"gameonlock",
+	"sportsbetting",
+	"blog",
+	"ecommerce_app",
+	"django.contrib.admin",
+	"django.contrib.auth",
+	"django.contrib.contenttypes",
+	"django.contrib.sessions",
+	"django.contrib.messages",
+	"django.contrib.staticfiles",
+	"django.contrib.sitemaps",
+	"wagtail.contrib.forms",
+	"wagtail.contrib.redirects",
+	"wagtail.embeds",
+	"wagtail.sites",
+	"wagtail.users",
+	"wagtail.snippets",
+	"wagtail.documents",
+	"wagtail.images",
+	"wagtail.search",
+	"wagtail.admin",
+	"wagtail.core",
+	"wagtailmetadata",
 	#'wagtailcolourpicker', #TODO
-	'modelcluster',
-	'taggit',
-	'paypal.standard.ipn',
-	'sekizai',
-	'debug_toolbar',
+	"modelcluster",
+	"taggit",
+	"paypal.standard.ipn",
+	"sekizai",
+	"debug_toolbar",
 ]
 
 MIDDLEWARE = [
-	'debug_toolbar.middleware.DebugToolbarMiddleware',
-	
-	'django.middleware.security.SecurityMiddleware',
-	'django.contrib.sessions.middleware.SessionMiddleware',
-	'django.middleware.common.CommonMiddleware',
-	'django.middleware.csrf.CsrfViewMiddleware',
-	'django.contrib.auth.middleware.AuthenticationMiddleware',
-	'django.contrib.messages.middleware.MessageMiddleware',
-	'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	
-	'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+	"debug_toolbar.middleware.DebugToolbarMiddleware",
+	"django.middleware.security.SecurityMiddleware",
+	"django.contrib.sessions.middleware.SessionMiddleware",
+	"django.middleware.common.CommonMiddleware",
+	"django.middleware.csrf.CsrfViewMiddleware",
+	"django.contrib.auth.middleware.AuthenticationMiddleware",
+	"django.contrib.messages.middleware.MessageMiddleware",
+	"django.middleware.clickjacking.XFrameOptionsMiddleware",
+	"wagtail.contrib.redirects.middleware.RedirectMiddleware",
 ]
 
-ROOT_URLCONF = 'gameonlock.urls'
+ROOT_URLCONF = "gameonlock.urls"
 
 TEMPLATES = [
 	{
-		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [
-			os.path.join(BASE_DIR, 'templates'),
+		"BACKEND": "django.template.backends.django.DjangoTemplates",
+		"DIRS": [
+			os.path.join(BASE_DIR, "templates"),
 		],
-		'APP_DIRS': True,
-		'OPTIONS': {
-			'context_processors': [
-				'django.template.context_processors.debug',
-				'django.template.context_processors.request',
-				'django.contrib.auth.context_processors.auth',
-				'django.contrib.messages.context_processors.messages',
-				'sekizai.context_processors.sekizai',
+		"APP_DIRS": True,
+		"OPTIONS": {
+			"context_processors": [
+				"django.template.context_processors.debug",
+				"django.template.context_processors.request",
+				"django.contrib.auth.context_processors.auth",
+				"django.contrib.messages.context_processors.messages",
+				"sekizai.context_processors.sekizai",
 			],
 		},
 	},
 ]
 
-WSGI_APPLICATION = 'gameonlock.wsgi.application'
+WSGI_APPLICATION = "gameonlock.wsgi.application"
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-	'default': {
-		'ENGINE': 'django.db.backends.sqlite3',
-		'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+	"default": {
+		"ENGINE": "django.db.backends.sqlite3",
+		"NAME": os.path.join(BASE_DIR, "db.sqlite3"),
 	}
 }
 
@@ -137,16 +131,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
 	{
-		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+		"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
 	},
 	{
-		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+		"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
 	},
 	{
-		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+		"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
 	},
 	{
-		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+		"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
 	},
 ]
 
@@ -154,9 +148,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'America/New_York'
+TIME_ZONE = "America/New_York"
 
 USE_I18N = True
 
@@ -164,27 +158,27 @@ USE_L10N = True
 
 USE_TZ = True
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATICFILES_FINDERS = [
-	'django.contrib.staticfiles.finders.FileSystemFinder',
-	'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+	"django.contrib.staticfiles.finders.FileSystemFinder",
+	"django.contrib.staticfiles.finders.AppDirectoriesFinder",
 ]
 
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+STATIC_URL = "/static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
 
 # Wagtail settings
 
@@ -193,23 +187,23 @@ WAGTAIL_SITE_NAME = "GAME-on-LOCK"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'http://www.gameonlock.com'
+BASE_URL = "http://www.gameonlock.com"
 
 # Debug toolbar settings
 INTERNAL_IPS = [
-	'127.0.0.1',
+	"127.0.0.1",
 ]
 
 SPORTS = {
-	'default_ticket_name': 'GOL SPORTS TICKET',
-	'SPORTS_API_PROVIDER_URL': "https://api.the-odds-api.com/v4/sports",
-	'SPORTS_API_KEY': "5ed47c5e81db044905626ee9bb0ba019",
-	'UNIX_TIME': True,
-	'ROUND_SPREADS': True,
-	'ROUND_TOTALS': True,
-	'TOTALS_SPREAD': 2,
-	'PAIR_PROMINENCE': "unfavored",
-	'LONG_NAMES_PREFERRED': [
-		'NCAAF',
+	"default_ticket_name": "GOL SPORTS TICKET",
+	"SPORTS_API_PROVIDER_URL": "https://api.the-odds-api.com/v4/sports",
+	"SPORTS_API_KEY": "5ed47c5e81db044905626ee9bb0ba019",
+	"UNIX_TIME": True,
+	"ROUND_SPREADS": True,
+	"ROUND_TOTALS": True,
+	"TOTALS_SPREAD": 2,
+	"PAIR_PROMINENCE": "unfavored",
+	"LONG_NAMES_PREFERRED": [
+		"NCAAF",
 	],
 }

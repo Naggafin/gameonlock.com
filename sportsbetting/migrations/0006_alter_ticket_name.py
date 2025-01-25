@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		("sportsbetting", "0005_alter_ticket_name"),
+	]
 
-    dependencies = [
-        ('sportsbetting', '0005_alter_ticket_name'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='ticket',
-            name='name',
-            field=models.CharField(default='GOL SPORTS TICKET', max_length=255),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name="ticket",
+			name="name",
+			field=models.CharField(default="GOL SPORTS TICKET", max_length=255),
+		),
+	]
