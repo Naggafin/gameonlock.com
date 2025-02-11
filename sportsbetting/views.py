@@ -1,92 +1,62 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.timezone import localdate
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, FormView, TemplateView
 from django.views.generic.edit import FormMixin
 from paypal.standard.forms import PayPalPaymentsForm
 
-from .forms import SpreadPickFormSet, TicketPlayForm, UnderOverPickFormSet
-from .models import Ticket, TicketPlay
+from .forms import PlayForm, PlayPickFormSet
+from .models import BettingLine, Play, PlayPick
+from .munger import BettingLineMunger
 
 
 class IndexView(FormView):
 	template_name = "sportsbetting/index.html"
-	form_class = TicketPlayForm
+	form_class = PlayForm
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		try:
-			ticket = Ticket.objects.filter(
-				pub_date__lte=timezone.now().date(), end_date__gte=timezone.now().date()
-			).first()
-			if not ticket:
-				raise Ticket.DoesNotExist
-
-			sports = []
-			for sport in ticket.sports.all().order_by("name"):
-				gamesets = []
-				date = ticket.pub_date
-				while date <= ticket.end_date:
-					games = ticket.spreads.filter(
-						start_datetime__date=date,
-						start_datetime__gte=timezone.now(),
-						sport=sport,
-					)
-					if games.exists():
-						gamesets.append({"date": date, "games": games})
-					date += timezone.timedelta(days=1)
-
-				if gamesets:
-					sports.append({"name": sport.name, "gamesets": gamesets})
-
-			context["ticket"] = ticket
-			context["sports"] = sports
-		except Ticket.DoesNotExist:
-			context["ticket"] = None
-			context["sports"] = None
-
+		betting_lines = BettingLine.objects.select_related("game__sport").filter(
+			start_datetime__lt=timezone.now()
+		)
+		plays = Play.objects.prefetch_related("picks").get(
+			purchaser=self.request.user, date__gte=localdate()
+		)
+		munger = BettingLineMunger(betting_lines, plays)
+		context["lines_and_picks"] = munger.categorize_and_sort()
 		return context
 
 	def form_valid(self, form):
-		ticket = get_object_or_404(
-			Ticket,
-			pk=self.request.POST.get("pk"),
-			pub_date__lte=timezone.now().date(),
-			end_date__gte=timezone.now().date(),
-		)
-
 		play = form.save(commit=False)
-		play.ticket = ticket
+		play.user = self.request.user
 		play.save()
 
-		# Process formsets
-		spread_formset = SpreadPickFormSet(
-			self.request.POST, queryset=ticket.spreads.filter(isPreview=False)
-		)
-		under_over_formset = UnderOverPickFormSet(
+		play_picks_formset = PlayPickFormSet(
 			self.request.POST,
-			queryset=ticket.under_overs.filter(linked_spread__isPreview=False),
+			queryset=PlayPick.objects.filter(
+				play__user_id=self.request.user.pk,
+				betting_line__game__start_datetime__gt=timezone.now(),
+			),
 		)
 
-		if spread_formset.is_valid() and under_over_formset.is_valid():
-			spread_formset.save(commit=False)
-			under_over_formset.save(commit=False)
-			spread_formset.save()
-			under_over_formset.save()
+		if play_picks_formset.is_valid():
+			picks = play_picks_formset.save(commit=False)
+			for pick in picks:
+				pick.play = play
+			play_picks_formset.save()
 		else:
-			play.delete()
-			messages.error(self.request, "Error processing picks.")
+			messages.error(self.request, _("Error processing picks."))
 			return self.form_invalid(form)
 
-		# Email notifications
 		self.send_email_confirmation(play)
 		self.send_admin_notification(play)
-
-		self.request.session["play_pk"] = play.pk
 		return redirect("sportsbetting:play")
 
 	def send_email_confirmation(self, play):

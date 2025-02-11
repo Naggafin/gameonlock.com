@@ -27,6 +27,7 @@ if "test" not in sys.argv and os.environ.get("DB_HOST"):
 			"PASSWORD": os.environ.get("DB_PASSWORD"),
 			"HOST": os.environ.get("DB_HOST"),
 			"PORT": os.environ.get("DB_PORT"),
+			"ATOMIC_REQUESTS": True,
 		},
 	}
 elif "test" in sys.argv and os.environ.get("TEST_DB_HOST"):
@@ -38,6 +39,7 @@ elif "test" in sys.argv and os.environ.get("TEST_DB_HOST"):
 			"PASSWORD": os.environ.get("TEST_DB_PASSWORD"),
 			"HOST": os.environ.get("TEST_DB_HOST"),
 			"PORT": os.environ.get("TEST_DB_PORT"),
+			"ATOMIC_REQUESTS": True,
 		},
 	}
 else:
@@ -45,6 +47,7 @@ else:
 		"default": {
 			"ENGINE": "django.db.backends.sqlite3",
 			"NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
+			"ATOMIC_REQUESTS": True,
 		},
 	}
 

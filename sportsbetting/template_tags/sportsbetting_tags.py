@@ -1,21 +1,25 @@
-from datetime import datetime
+import itertools
 
 from django import template
+from django.utils import timezone
 
 register = template.Library()
 
 
 @register.filter
-def game_has_started(ticket_entry):
-	if not ticket_entry.start_datetime:
+def game_has_started(game):
+	if not game.start_datetime:
 		return False
-	return datetime.now().time() > ticket_entry.start_datetime.time()
+	return timezone.now().time() > game.start_datetime.time()
 
 
 @register.simple_tag
-def num_entries(ticket, sport):
-	entries = [
-		ticket_entry.league.sport_id == sport.pk
-		for ticket_entry in ticket.entries.all()
-	]
-	return len(entries)
+def num_betting_lines_for_sport(sport):
+	lines = itertools.chain.from_iterable(
+		[
+			game.betting_lines.all()
+			for game in sport.schedule_games.all()
+			if not game_has_started(game)
+		]
+	)
+	return len(lines)

@@ -132,7 +132,7 @@
                 <span class="single-sports-icon">
                     <img src="{{ sport.icon.url }}" alt="" nonce="{{ request.csp_nonce }}">
                 </span>
-                <span class="single-sports-name">{{ sport.name }} ({% num_entries ticket sport %})</span>
+                <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines_for_sport sport %})</span>
                 <span class="single-sports-img">
                     <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
                 </span>
@@ -487,8 +487,8 @@
                  data-aos-duration="500"
                  data-aos-easing="ease-in">
                 <div class="section-title">
-                    <h3 class="sub-title">How it works</h3>
-                    <h2 class="title">Easiest Step To Placing A Bet</h2>
+                    <h3 class="sub-title">{% trans 'How it works' %}</h3>
+                    <h2 class="title">{% trans 'Easiest Step To Placing A Bet' %}</h2>
                 </div>
             </div>
         </div>
@@ -513,14 +513,16 @@
                               data-aos="fade-up"
                               data-aos-duration="500"
                               data-aos-easing="ease-in"
-                              data-aos-delay="150">Open an  account.</span>
+                              data-aos-delay="150">{% trans 'Open an account.' %}</span>
                         <p data-aos="fade-up"
                            data-aos-duration="500"
                            data-aos-easing="ease-in"
                            data-aos-delay="200">
-                            Create an account. Enter your
-                            <br />
-                            personal details into the sign-up form & click the 'Register' button.
+                            {% blocktrans trimmed %}
+                                Create an account. Enter your
+                                <br />
+                                personal details into the sign-up form & click the 'Register' button.
+                            {% endblocktrans %}
                         </p>
                     </div>
                 </div>
@@ -532,12 +534,12 @@
                               data-aos="fade-up"
                               data-aos-duration="500"
                               data-aos-easing="ease-in"
-                              data-aos-delay="250">Make your deposit.</span>
+                              data-aos-delay="250">{% trans 'Make your deposit.' %}</span>
                         <p data-aos="fade-up"
                            data-aos-duration="500"
                            data-aos-easing="ease-in"
                            data-aos-delay="300">
-                            Before you can make to placing bet, you’ll need to deposit some cash in your account.
+                            {% trans 'Before you can make to placing bet, you’ll need to deposit some cash in your account.' %}
                         </p>
                         <span class="step-number two"
                               data-aos="fade"
@@ -575,14 +577,16 @@
                               data-aos="fade-up"
                               data-aos-duration="500"
                               data-aos-easing="ease-in"
-                              data-aos-delay="450">Place your wagers.</span>
+                              data-aos-delay="450">{% trans 'Place your wagers.' %}</span>
                         <p data-aos="fade-up"
                            data-aos-duration="500"
                            data-aos-easing="ease-in"
                            data-aos-delay="500">
+                            {% blocktrans timmed %}
                             Now you’re ready to start placing
                             <br />
                             your bets online, so it’s time to make your selections.
+                           {% endblocktrans %}
                         </p>
                     </div>
                 </div>
@@ -594,14 +598,16 @@
                               data-aos="fade-up"
                               data-aos-duration="500"
                               data-aos-easing="ease-in"
-                              data-aos-delay="550">Withdraw your winnings.</span>
+                              data-aos-delay="550">{% trans 'Withdraw your winnings.' %}</span>
                         <p data-aos="fade-up"
                            data-aos-duration="500"
                            data-aos-easing="ease-in"
                            data-aos-delay="600">
-                            If you are a winner, claim your prize:
-                            <br />
-                            Be sure to visit a retailer before your prize expires in 12 months.
+                            {% blocktrans trimmed %}
+                                If you are a winner, claim your prize:
+                                <br />
+                                Be sure to visit a retailer before your prize expires in 12 months.
+                            {% endblocktrans %}
                         </p>
                         <span class="step-number four"
                               data-aos="fade"
@@ -643,8 +649,8 @@
                      data-aos-duration="500"
                      data-aos-easing="ease-in">
                     <div class="section-title if-lines-break title-white">
-                        <h3 class="sub-title">Why we are best</h3>
-                        <h2 class="title">We're proud to provide best services to our clients</h2>
+                        <h3 class="sub-title">{% trans 'Why we are best' %}</h3>
+                        <h2 class="title">{% trans 'We're proud to provide best services to our clients' %}</h2>
                     </div>
                     <div class="part-img">
                         <img class="img-shape"
@@ -677,10 +683,12 @@
                                     <img src="{% static 'peredion/images/feature/icon-1.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">Reasonable odds</span>
+                                    <span class="title">{% trans 'Reasonable odds' %}</span>
                                     <p>
-                                        The odds offered in a Betting
-                                        Exchange are relatively better than odds given by bookmakers.
+                                        {% blocktrans trimmed %}
+                                            The odds offered in a Betting
+                                            Exchange are relatively better than odds given by bookmakers.
+                                        {% endblocktrans %}
                                     </p>
                                 </div>
                             </div>
@@ -695,8 +703,8 @@
                                     <img src="{% static 'peredion/images/feature/icon-2.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">Live Betting</span>
-                                    <p>live streaming allows you to watch the games you’re betting on, bringing you closer to the action.</p>
+                                    <span class="title">{% trans 'Live Betting' %}</span>
+                                    <p>{% trans 'live streaming allows you to watch the games you’re betting on, bringing you closer to the action.' %}</p>
                                 </div>
                             </div>
                         </div>
@@ -710,8 +718,8 @@
                                     <img src="{% static 'peredion/images/feature/icon-3.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">Plenty of Options</span>
-                                    <p>we offer more than just betting options., Most of them allow you to stream games in real-time.</p>
+                                    <span class="title">{% trans 'Plenty of Options' %}</span>
+                                    <p>{% trans 'we offer more than just betting options., Most of them allow you to stream games in real-time.' %}</p>
                                 </div>
                             </div>
                         </div>
@@ -725,8 +733,8 @@
                                     <img src="{% static 'peredion/images/feature/icon-4.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">Easyest to Deposit</span>
-                                    <p>When you are looking to bet online you need to fund your account before you can place your bets.</p>
+                                    <span class="title">{% trans 'Easiest to Deposit' %}</span>
+                                    <p>{% trans 'When you are looking to bet online you need to fund your account before you can place your bets.' %}</p>
                                 </div>
                             </div>
                         </div>
@@ -740,10 +748,12 @@
                                     <img src="{% static 'peredion/images/feature/icon-5.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">Fastest Withdrawal</span>
+                                    <span class="title">{% trans 'Fastest Withdrawal' %}</span>
                                     <p>
-                                        It's easy to get retrieve your balance at a fast withdrawal, and you won't
-                                        be left waiting.
+                                        {% blocktrans trimmed %}
+                                            It's easy to get retrieve your balance at a fast withdrawal, and you won't
+                                            be left waiting.
+                                        {% endblocktrans %}
                                     </p>
                                 </div>
                             </div>
@@ -758,8 +768,10 @@
                                     <img src="{% static 'peredion/images/feature/icon-6.png' %}" alt="">
                                 </div>
                                 <div class="part-text">
-                                    <span class="title">24/7 Friendly Support</span>
-                                    <p>Our customer care team are ready to deal with betting issues and are available to talk to you 24/7.</p>
+                                    <span class="title">{% trans '24/7 Friendly Support' %}</span>
+                                    <p>
+                                        {% trans 'Our customer care team are ready to deal with betting issues and are available to talk to you 24/7.' %}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -891,5 +903,4 @@
     {% partial call-to-action-section %}
     {% partial working-process-section %}
     {% partial feature-section %}
-    {% partial testimonial-section %}
 {% endblock %}

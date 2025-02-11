@@ -1,28 +1,31 @@
 from django import forms
+from django.conf import settings
 from django.forms import modelformset_factory
+from django.utils.translation import get_language, gettext_lazy as _, to_locale
+from moneyed.l10n import format_money
 
-from .models import SpreadPick, TicketPlay, UnderOverPick
+from .models import Play, PlayPick
 
 
-class TicketPlayForm(forms.ModelForm):
-	class Meta:
-		model = TicketPlay
-		fields = ["purchaser_name", "email", "phone", "bet_amount"]
-
-	def clean_bet_amount(self):
-		amount = self.cleaned_data.get("bet_amount")
-		if amount is None or amount < 5.0:
-			raise forms.ValidationError("Bet amount must be at least $5.00.")
+class PlayForm(forms.ModelForm):
+	def clean_amount(self):
+		amount = self.cleaned_data.get("amount")
+		if not amount or amount < settings.SPORTS["MIN_BET"]:
+			locale = to_locale(get_language())
+			raise forms.ValidationError(
+				_("Bet amount must be at least %(min_amount)s.")
+				% {"min_amount": format_money(settings.SPORTS["MIN_BET"], locale)}
+			)
 		return amount
 
+	class Meta:
+		model = Play
+		fields = ["amount"]
 
-SpreadPickFormSet = modelformset_factory(
-	SpreadPick, fields=["picked", "spread_entry"], extra=0, can_delete=False
-)
 
-UnderOverPickFormSet = modelformset_factory(
-	UnderOverPick,
-	fields=["under_or_over", "under_over_entry"],
+PlayPickFormSet = modelformset_factory(
+	PlayPick,
+	fields=["betting_line", "type", "team", "is_over"],
 	extra=0,
-	can_delete=False,
+	absolute_max=1500,
 )

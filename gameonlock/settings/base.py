@@ -22,6 +22,7 @@ from csp.constants import (
 	UNSAFE_INLINE,
 )
 from django.utils.translation import gettext_lazy as _
+from djmoney.money import Money
 from dotenv import load_dotenv
 from oscar.defaults import *  # noqa: F403
 
@@ -321,6 +322,7 @@ SPORTS = {
 	"LONG_NAMES_PREFERRED": [
 		"NCAAF",
 	],
+	"MIN_BET": Money("USD", 5),
 }
 
 
