@@ -43,8 +43,7 @@ urlpatterns = [
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
 	path("pages/", include(wagtail_urls)),
-	include(internatonalized_patterns),
-]
+] + internatonalized_patterns
 
 if not settings.DEBUG:
 	urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))

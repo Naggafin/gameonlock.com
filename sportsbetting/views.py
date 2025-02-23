@@ -1,23 +1,18 @@
-from decimal import Decimal
-
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.shortcuts import redirect
-from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.timezone import localdate
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, FormView, TemplateView
-from django.views.generic.edit import FormMixin
-from paypal.standard.forms import PayPalPaymentsForm
+from django.views.generic import FormView
 
 from .forms import PlayForm, PlayPickFormSet
 from .models import BettingLine, Play, PlayPick
 from .munger import BettingLineMunger
 
 
-class IndexView(FormView):
+class HomeView(FormView):
 	template_name = "sportsbetting/index.html"
 	form_class = PlayForm
 
@@ -79,6 +74,7 @@ class IndexView(FormView):
 		).send(fail_silently=True)
 
 
+"""
 class PlayDetailView(FormMixin, DetailView):
 	model = TicketPlay
 	form_class = PayPalPaymentsForm
@@ -112,3 +108,4 @@ class PaymentCompleteView(TemplateView):
 
 class PaymentCancelledView(TemplateView):
 	template_name = "sportsbetting/payment_cancelled.html"
+"""

@@ -5,7 +5,8 @@ import requests
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.db import F, Q, models
+from django.db import models
+from django.db.models import F, Q
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
@@ -106,7 +107,7 @@ class Team(auto_prefetch.Model):
 	brand = models.ImageField(upload_to="teams/brands/", null=True, blank=True)
 	website = models.URLField(null=True, blank=True)
 	league = auto_prefetch.ForeignKey(
-		League, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
+		League, on_delete=models.CASCADE, related_name="teams"
 	)
 	division = auto_prefetch.ForeignKey(
 		Division, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
@@ -219,13 +220,13 @@ class ScheduledGame(auto_prefetch.Model):
 	class Meta(auto_prefetch.Model.Meta):
 		constraints = [
 			models.UniqueConstraint(
-				fields=["home_team", "away_team", "datetime"],
+				fields=["home_team", "away_team", "start_datetime"],
 				name="unique_scheduled_game",
 			),
 			models.CheckConstraint(
 				condition=~Q(home_team=F("away_team")),
 				name="scheduled_game_home_team_not_away_team",
-				validation_error_message="Home and away teams cannot be the same.",
+				violation_error_message="Home and away teams cannot be the same.",
 			),
 		]
 
@@ -262,7 +263,7 @@ class BettingLine(auto_prefetch.Model):
 				condition=(Q(under__isnull=True) & Q(over__isnull=True))
 				| (Q(under__isnull=False) & Q(over__isnull=False)),
 				name="betting_line_validate_under_over",
-				validation_error_message="Must populate both under and over, or leave both blank.",
+				violation_error_message="Must populate both under and over, or leave both blank.",
 			),
 		]
 
@@ -277,7 +278,7 @@ class Play(auto_prefetch.Model):
 		default_currency="USD",
 		validators=[MinMoneyValidator(settings.SPORTS["MIN_BET"])],
 	)
-	date = models.DateTimeField(auto_now=True)
+	placed_datetime = models.DateTimeField(auto_now=True)
 	paid = models.BooleanField(default=False)
 	won = models.BooleanField(default=False)
 

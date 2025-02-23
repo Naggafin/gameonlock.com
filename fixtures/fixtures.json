@@ -1,0 +1,4523 @@
+[
+  {
+    "model": "sportsbetting.Sport",
+    "pk": 1,
+    "fields": {
+      "name": "Football",
+      "description": "American football",
+      "slug_name": "football"
+    }
+  },
+  {
+    "model": "sportsbetting.Sport",
+    "pk": 2,
+    "fields": {
+      "name": "Basketball",
+      "description": "Basketball",
+      "slug_name": "basketball"
+    }
+  },
+  {
+    "model": "sportsbetting.Sport",
+    "pk": 3,
+    "fields": {
+      "name": "Baseball",
+      "description": "Baseball",
+      "slug_name": "baseball"
+    }
+  },
+  {
+    "model": "sportsbetting.Sport",
+    "pk": 4,
+    "fields": {
+      "name": "Soccer",
+      "description": "Association football",
+      "slug_name": "soccer"
+    }
+  },
+  {
+    "model": "sportsbetting.GoverningBody",
+    "pk": 1,
+    "fields": {
+      "sport": 4,
+      "name": "NFL",
+      "type": "col"
+    }
+  },
+  {
+    "model": "sportsbetting.GoverningBody",
+    "pk": 2,
+    "fields": {
+      "sport": 4,
+      "name": "NBA",
+      "type": "int"
+    }
+  },
+  {
+    "model": "sportsbetting.GoverningBody",
+    "pk": 3,
+    "fields": {
+      "sport": 4,
+      "name": "MLB",
+      "type": "clb"
+    }
+  },
+  {
+    "model": "sportsbetting.GoverningBody",
+    "pk": 4,
+    "fields": {
+      "sport": 2,
+      "name": "MLS",
+      "type": "col"
+    }
+  },
+  {
+    "model": "sportsbetting.GoverningBody",
+    "pk": 5,
+    "fields": {
+      "sport": 2,
+      "name": "NCAA",
+      "type": "clb"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 1,
+    "fields": {
+      "governing_body": 1,
+      "name": "Eastern Conference 1",
+      "region": "na"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 2,
+    "fields": {
+      "governing_body": 1,
+      "name": "Western Conference 1",
+      "region": "oc"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 3,
+    "fields": {
+      "governing_body": 2,
+      "name": "Premier Division 2",
+      "region": "sa"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 4,
+    "fields": {
+      "governing_body": 2,
+      "name": "Pro League 2",
+      "region": "oc"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 5,
+    "fields": {
+      "governing_body": 3,
+      "name": "Eastern Conference 3",
+      "region": "wd"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 6,
+    "fields": {
+      "governing_body": 3,
+      "name": "Western Conference 3",
+      "region": "oc"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 7,
+    "fields": {
+      "governing_body": 4,
+      "name": "Premier Division 4",
+      "region": "eu"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 8,
+    "fields": {
+      "governing_body": 4,
+      "name": "Pro League 4",
+      "region": "as"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 9,
+    "fields": {
+      "governing_body": 5,
+      "name": "Eastern Conference 5",
+      "region": "as"
+    }
+  },
+  {
+    "model": "sportsbetting.League",
+    "pk": 10,
+    "fields": {
+      "governing_body": 5,
+      "name": "Western Conference 5",
+      "region": "sa"
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 1,
+    "fields": {
+      "league": 1,
+      "name": "Division 2 1",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 2,
+    "fields": {
+      "league": 1,
+      "name": "North 1",
+      "hierarchy_level": 1
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 3,
+    "fields": {
+      "league": 2,
+      "name": "South 2",
+      "hierarchy_level": 1
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 4,
+    "fields": {
+      "league": 2,
+      "name": "East 2",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 5,
+    "fields": {
+      "league": 3,
+      "name": "West 3",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 6,
+    "fields": {
+      "league": 3,
+      "name": "Division 1 3",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 7,
+    "fields": {
+      "league": 4,
+      "name": "Division 2 4",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 8,
+    "fields": {
+      "league": 4,
+      "name": "North 4",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 9,
+    "fields": {
+      "league": 5,
+      "name": "South 5",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 10,
+    "fields": {
+      "league": 5,
+      "name": "East 5",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 11,
+    "fields": {
+      "league": 6,
+      "name": "West 6",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 12,
+    "fields": {
+      "league": 6,
+      "name": "Division 1 6",
+      "hierarchy_level": 1
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 13,
+    "fields": {
+      "league": 7,
+      "name": "Division 2 7",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 14,
+    "fields": {
+      "league": 7,
+      "name": "North 7",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 15,
+    "fields": {
+      "league": 8,
+      "name": "South 8",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 16,
+    "fields": {
+      "league": 8,
+      "name": "East 8",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 17,
+    "fields": {
+      "league": 9,
+      "name": "West 9",
+      "hierarchy_level": 1
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 18,
+    "fields": {
+      "league": 9,
+      "name": "Division 1 9",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 19,
+    "fields": {
+      "league": 10,
+      "name": "Division 2 10",
+      "hierarchy_level": 3
+    }
+  },
+  {
+    "model": "sportsbetting.Division",
+    "pk": 20,
+    "fields": {
+      "league": 10,
+      "name": "North 10",
+      "hierarchy_level": 2
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 1,
+    "fields": {
+      "league": 1,
+      "division": 16,
+      "name": "Los Angeles Reach",
+      "location": "Los Angeles",
+      "founding_year": 1916
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 2,
+    "fields": {
+      "league": 1,
+      "division": 3,
+      "name": "Chicago Ever",
+      "location": "Chicago",
+      "founding_year": 1955
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 3,
+    "fields": {
+      "league": 1,
+      "division": null,
+      "name": "Houston Family",
+      "location": "Houston",
+      "founding_year": 2013
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 4,
+    "fields": {
+      "league": 1,
+      "division": null,
+      "name": "Miami Dinner",
+      "location": "Miami",
+      "founding_year": 1924
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 5,
+    "fields": {
+      "league": 2,
+      "division": null,
+      "name": "New York First",
+      "location": "New York",
+      "founding_year": 1962
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 6,
+    "fields": {
+      "league": 2,
+      "division": null,
+      "name": "Los Angeles Cut",
+      "location": "Los Angeles",
+      "founding_year": 1925
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 7,
+    "fields": {
+      "league": 2,
+      "division": 8,
+      "name": "Chicago Long",
+      "location": "Chicago",
+      "founding_year": 1999
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 8,
+    "fields": {
+      "league": 2,
+      "division": 2,
+      "name": "Houston Kitchen",
+      "location": "Houston",
+      "founding_year": 1958
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 9,
+    "fields": {
+      "league": 3,
+      "division": null,
+      "name": "Miami Eight",
+      "location": "Miami",
+      "founding_year": 2014
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 10,
+    "fields": {
+      "league": 3,
+      "division": null,
+      "name": "New York Enter",
+      "location": "New York",
+      "founding_year": 1959
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 11,
+    "fields": {
+      "league": 3,
+      "division": 19,
+      "name": "Los Angeles Step",
+      "location": "Los Angeles",
+      "founding_year": 1950
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 12,
+    "fields": {
+      "league": 3,
+      "division": 9,
+      "name": "Chicago Affect",
+      "location": "Chicago",
+      "founding_year": 1915
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 13,
+    "fields": {
+      "league": 4,
+      "division": null,
+      "name": "Houston Already",
+      "location": "Houston",
+      "founding_year": 2002
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 14,
+    "fields": {
+      "league": 4,
+      "division": 20,
+      "name": "Miami Win",
+      "location": "Miami",
+      "founding_year": 2015
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 15,
+    "fields": {
+      "league": 4,
+      "division": 4,
+      "name": "New York Else",
+      "location": "New York",
+      "founding_year": 1998
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 16,
+    "fields": {
+      "league": 4,
+      "division": null,
+      "name": "Los Angeles About",
+      "location": "Los Angeles",
+      "founding_year": 1928
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 17,
+    "fields": {
+      "league": 5,
+      "division": null,
+      "name": "Chicago Job",
+      "location": "Chicago",
+      "founding_year": 1959
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 18,
+    "fields": {
+      "league": 5,
+      "division": null,
+      "name": "Houston Resource",
+      "location": "Houston",
+      "founding_year": 1918
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 19,
+    "fields": {
+      "league": 5,
+      "division": 18,
+      "name": "Miami Board",
+      "location": "Miami",
+      "founding_year": 2017
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 20,
+    "fields": {
+      "league": 5,
+      "division": 7,
+      "name": "New York Avoid",
+      "location": "New York",
+      "founding_year": 1900
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 21,
+    "fields": {
+      "league": 6,
+      "division": null,
+      "name": "Los Angeles Like",
+      "location": "Los Angeles",
+      "founding_year": 2007
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 22,
+    "fields": {
+      "league": 6,
+      "division": null,
+      "name": "Chicago Instead",
+      "location": "Chicago",
+      "founding_year": 2009
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 23,
+    "fields": {
+      "league": 6,
+      "division": null,
+      "name": "Houston Rise",
+      "location": "Houston",
+      "founding_year": 2012
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 24,
+    "fields": {
+      "league": 6,
+      "division": null,
+      "name": "Miami Across",
+      "location": "Miami",
+      "founding_year": 1904
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 25,
+    "fields": {
+      "league": 7,
+      "division": 7,
+      "name": "New York Bar",
+      "location": "New York",
+      "founding_year": 1976
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 26,
+    "fields": {
+      "league": 7,
+      "division": null,
+      "name": "Los Angeles Because",
+      "location": "Los Angeles",
+      "founding_year": 1994
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 27,
+    "fields": {
+      "league": 7,
+      "division": null,
+      "name": "Chicago Television",
+      "location": "Chicago",
+      "founding_year": 2019
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 28,
+    "fields": {
+      "league": 7,
+      "division": null,
+      "name": "Houston Instead",
+      "location": "Houston",
+      "founding_year": 1948
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 29,
+    "fields": {
+      "league": 8,
+      "division": 6,
+      "name": "Miami Model",
+      "location": "Miami",
+      "founding_year": 1984
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 30,
+    "fields": {
+      "league": 8,
+      "division": 17,
+      "name": "New York Remember",
+      "location": "New York",
+      "founding_year": 1969
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 31,
+    "fields": {
+      "league": 8,
+      "division": 6,
+      "name": "Los Angeles Simply",
+      "location": "Los Angeles",
+      "founding_year": 2009
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 32,
+    "fields": {
+      "league": 8,
+      "division": 15,
+      "name": "Chicago Many",
+      "location": "Chicago",
+      "founding_year": 1994
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 33,
+    "fields": {
+      "league": 9,
+      "division": 9,
+      "name": "Houston Response",
+      "location": "Houston",
+      "founding_year": 1918
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 34,
+    "fields": {
+      "league": 9,
+      "division": 18,
+      "name": "Miami Condition",
+      "location": "Miami",
+      "founding_year": 1930
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 35,
+    "fields": {
+      "league": 9,
+      "division": 1,
+      "name": "New York One",
+      "location": "New York",
+      "founding_year": 1957
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 36,
+    "fields": {
+      "league": 9,
+      "division": null,
+      "name": "Los Angeles Everybody",
+      "location": "Los Angeles",
+      "founding_year": 1909
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 37,
+    "fields": {
+      "league": 10,
+      "division": null,
+      "name": "Chicago Officer",
+      "location": "Chicago",
+      "founding_year": 2011
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 38,
+    "fields": {
+      "league": 10,
+      "division": null,
+      "name": "Houston Weight",
+      "location": "Houston",
+      "founding_year": 2022
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 39,
+    "fields": {
+      "league": 10,
+      "division": null,
+      "name": "Miami Change",
+      "location": "Miami",
+      "founding_year": 1996
+    }
+  },
+  {
+    "model": "sportsbetting.Team",
+    "pk": 40,
+    "fields": {
+      "league": 10,
+      "division": 13,
+      "name": "New York Deal",
+      "location": "New York",
+      "founding_year": 1934
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 1,
+    "fields": {
+      "team": 1,
+      "name": "Mary Thomas",
+      "position": "DF",
+      "jersey_number": 40
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 2,
+    "fields": {
+      "team": 1,
+      "name": "John Daniels",
+      "position": "FW",
+      "jersey_number": 18
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 3,
+    "fields": {
+      "team": 1,
+      "name": "Stephen Johnson",
+      "position": "MF",
+      "jersey_number": 89
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 4,
+    "fields": {
+      "team": 1,
+      "name": "Elizabeth Wolfe",
+      "position": "DF",
+      "jersey_number": 52
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 5,
+    "fields": {
+      "team": 1,
+      "name": "Gregory Dunlap",
+      "position": "FW",
+      "jersey_number": 94
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 6,
+    "fields": {
+      "team": 2,
+      "name": "Eric Mason",
+      "position": "FW",
+      "jersey_number": 23
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 7,
+    "fields": {
+      "team": 2,
+      "name": "Tyler Patton",
+      "position": "GK",
+      "jersey_number": 17
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 8,
+    "fields": {
+      "team": 2,
+      "name": "Melody Johnson",
+      "position": "FW",
+      "jersey_number": 6
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 9,
+    "fields": {
+      "team": 2,
+      "name": "Jessica Obrien",
+      "position": "FW",
+      "jersey_number": 90
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 10,
+    "fields": {
+      "team": 2,
+      "name": "Christopher Rodriguez",
+      "position": "FW",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 11,
+    "fields": {
+      "team": 3,
+      "name": "Alec Pennington",
+      "position": "DF",
+      "jersey_number": 78
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 12,
+    "fields": {
+      "team": 3,
+      "name": "Christy Fleming",
+      "position": "GK",
+      "jersey_number": 52
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 13,
+    "fields": {
+      "team": 3,
+      "name": "Jessica Torres",
+      "position": "FW",
+      "jersey_number": 21
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 14,
+    "fields": {
+      "team": 3,
+      "name": "Susan Scott",
+      "position": "DF",
+      "jersey_number": 57
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 15,
+    "fields": {
+      "team": 3,
+      "name": "John Bates",
+      "position": "MF",
+      "jersey_number": 25
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 16,
+    "fields": {
+      "team": 4,
+      "name": "Wendy Griffith",
+      "position": "DF",
+      "jersey_number": 6
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 17,
+    "fields": {
+      "team": 4,
+      "name": "Jacqueline Johnson",
+      "position": "MF",
+      "jersey_number": 59
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 18,
+    "fields": {
+      "team": 4,
+      "name": "Nancy Nolan",
+      "position": "DF",
+      "jersey_number": 45
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 19,
+    "fields": {
+      "team": 4,
+      "name": "Robin Bowman",
+      "position": "DF",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 20,
+    "fields": {
+      "team": 4,
+      "name": "Joanna Juarez",
+      "position": "DF",
+      "jersey_number": 20
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 21,
+    "fields": {
+      "team": 5,
+      "name": "Michael Johnson",
+      "position": "MF",
+      "jersey_number": 10
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 22,
+    "fields": {
+      "team": 5,
+      "name": "Catherine Lawrence",
+      "position": "GK",
+      "jersey_number": 52
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 23,
+    "fields": {
+      "team": 5,
+      "name": "Aaron Simpson",
+      "position": "GK",
+      "jersey_number": 90
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 24,
+    "fields": {
+      "team": 5,
+      "name": "Allison Campbell",
+      "position": "MF",
+      "jersey_number": 22
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 25,
+    "fields": {
+      "team": 5,
+      "name": "Anne James",
+      "position": "MF",
+      "jersey_number": 46
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 26,
+    "fields": {
+      "team": 6,
+      "name": "Mrs. Casey Patrick",
+      "position": "FW",
+      "jersey_number": 71
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 27,
+    "fields": {
+      "team": 6,
+      "name": "Glenda Mason",
+      "position": "FW",
+      "jersey_number": 72
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 28,
+    "fields": {
+      "team": 6,
+      "name": "Heather Humphrey",
+      "position": "FW",
+      "jersey_number": 80
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 29,
+    "fields": {
+      "team": 6,
+      "name": "Beverly Monroe",
+      "position": "MF",
+      "jersey_number": 27
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 30,
+    "fields": {
+      "team": 6,
+      "name": "Diana Obrien",
+      "position": "GK",
+      "jersey_number": 23
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 31,
+    "fields": {
+      "team": 7,
+      "name": "Hannah Johnson",
+      "position": "MF",
+      "jersey_number": 57
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 32,
+    "fields": {
+      "team": 7,
+      "name": "Brian White",
+      "position": "MF",
+      "jersey_number": 44
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 33,
+    "fields": {
+      "team": 7,
+      "name": "Katie Combs",
+      "position": "FW",
+      "jersey_number": 54
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 34,
+    "fields": {
+      "team": 7,
+      "name": "Luis Webb",
+      "position": "GK",
+      "jersey_number": 89
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 35,
+    "fields": {
+      "team": 7,
+      "name": "Kristine Esparza",
+      "position": "DF",
+      "jersey_number": 36
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 36,
+    "fields": {
+      "team": 8,
+      "name": "Megan Johnson",
+      "position": "DF",
+      "jersey_number": 74
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 37,
+    "fields": {
+      "team": 8,
+      "name": "Eddie Smith",
+      "position": "GK",
+      "jersey_number": 71
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 38,
+    "fields": {
+      "team": 8,
+      "name": "Daniel Spencer DDS",
+      "position": "FW",
+      "jersey_number": 70
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 39,
+    "fields": {
+      "team": 8,
+      "name": "Edward Brown",
+      "position": "DF",
+      "jersey_number": 30
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 40,
+    "fields": {
+      "team": 8,
+      "name": "Diana Bell",
+      "position": "MF",
+      "jersey_number": 13
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 41,
+    "fields": {
+      "team": 9,
+      "name": "Kelly Gonzales",
+      "position": "FW",
+      "jersey_number": 32
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 42,
+    "fields": {
+      "team": 9,
+      "name": "Ms. Ann Johnson",
+      "position": "GK",
+      "jersey_number": 94
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 43,
+    "fields": {
+      "team": 9,
+      "name": "Sara Wolf",
+      "position": "DF",
+      "jersey_number": 56
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 44,
+    "fields": {
+      "team": 9,
+      "name": "Benjamin Yang",
+      "position": "DF",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 45,
+    "fields": {
+      "team": 9,
+      "name": "Sharon Roberts",
+      "position": "MF",
+      "jersey_number": 77
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 46,
+    "fields": {
+      "team": 10,
+      "name": "Denise Church",
+      "position": "FW",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 47,
+    "fields": {
+      "team": 10,
+      "name": "Carol Cobb",
+      "position": "GK",
+      "jersey_number": 93
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 48,
+    "fields": {
+      "team": 10,
+      "name": "Matthew Bennett",
+      "position": "FW",
+      "jersey_number": 85
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 49,
+    "fields": {
+      "team": 10,
+      "name": "Margaret Townsend",
+      "position": "MF",
+      "jersey_number": 37
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 50,
+    "fields": {
+      "team": 10,
+      "name": "Matthew Allen",
+      "position": "MF",
+      "jersey_number": 92
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 51,
+    "fields": {
+      "team": 11,
+      "name": "Claudia Hanna",
+      "position": "MF",
+      "jersey_number": 11
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 52,
+    "fields": {
+      "team": 11,
+      "name": "Christopher Brown",
+      "position": "FW",
+      "jersey_number": 21
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 53,
+    "fields": {
+      "team": 11,
+      "name": "Pamela Farrell",
+      "position": "DF",
+      "jersey_number": 23
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 54,
+    "fields": {
+      "team": 11,
+      "name": "Stephanie Hernandez",
+      "position": "FW",
+      "jersey_number": 28
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 55,
+    "fields": {
+      "team": 11,
+      "name": "Kimberly White",
+      "position": "GK",
+      "jersey_number": 14
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 56,
+    "fields": {
+      "team": 12,
+      "name": "Stephanie Jones",
+      "position": "FW",
+      "jersey_number": 15
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 57,
+    "fields": {
+      "team": 12,
+      "name": "Zachary Mcdaniel",
+      "position": "GK",
+      "jersey_number": 9
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 58,
+    "fields": {
+      "team": 12,
+      "name": "Angela Davidson",
+      "position": "MF",
+      "jersey_number": 80
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 59,
+    "fields": {
+      "team": 12,
+      "name": "Claudia Nielsen",
+      "position": "FW",
+      "jersey_number": 33
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 60,
+    "fields": {
+      "team": 12,
+      "name": "Mary Dunlap",
+      "position": "MF",
+      "jersey_number": 76
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 61,
+    "fields": {
+      "team": 13,
+      "name": "Michael Hayes",
+      "position": "FW",
+      "jersey_number": 45
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 62,
+    "fields": {
+      "team": 13,
+      "name": "Thomas Flynn",
+      "position": "FW",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 63,
+    "fields": {
+      "team": 13,
+      "name": "Christopher Landry",
+      "position": "DF",
+      "jersey_number": 41
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 64,
+    "fields": {
+      "team": 13,
+      "name": "Amy Harvey",
+      "position": "GK",
+      "jersey_number": 65
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 65,
+    "fields": {
+      "team": 13,
+      "name": "Michael Montes",
+      "position": "FW",
+      "jersey_number": 58
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 66,
+    "fields": {
+      "team": 14,
+      "name": "Melissa Diaz",
+      "position": "GK",
+      "jersey_number": 93
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 67,
+    "fields": {
+      "team": 14,
+      "name": "Richard Keller",
+      "position": "GK",
+      "jersey_number": 10
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 68,
+    "fields": {
+      "team": 14,
+      "name": "Matthew White",
+      "position": "GK",
+      "jersey_number": 85
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 69,
+    "fields": {
+      "team": 14,
+      "name": "Jonathan Williams",
+      "position": "MF",
+      "jersey_number": 10
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 70,
+    "fields": {
+      "team": 14,
+      "name": "Nathaniel Greene",
+      "position": "DF",
+      "jersey_number": 7
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 71,
+    "fields": {
+      "team": 15,
+      "name": "Gwendolyn Schultz",
+      "position": "GK",
+      "jersey_number": 76
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 72,
+    "fields": {
+      "team": 15,
+      "name": "Tracie Pratt",
+      "position": "MF",
+      "jersey_number": 26
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 73,
+    "fields": {
+      "team": 15,
+      "name": "Robert Hudson",
+      "position": "DF",
+      "jersey_number": 14
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 74,
+    "fields": {
+      "team": 15,
+      "name": "Richard Mendez",
+      "position": "GK",
+      "jersey_number": 83
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 75,
+    "fields": {
+      "team": 15,
+      "name": "Tracy Mendoza",
+      "position": "GK",
+      "jersey_number": 6
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 76,
+    "fields": {
+      "team": 16,
+      "name": "Kelly Levine",
+      "position": "GK",
+      "jersey_number": 36
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 77,
+    "fields": {
+      "team": 16,
+      "name": "Brittany Cooper",
+      "position": "GK",
+      "jersey_number": 67
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 78,
+    "fields": {
+      "team": 16,
+      "name": "Nicholas Rodriguez",
+      "position": "FW",
+      "jersey_number": 11
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 79,
+    "fields": {
+      "team": 16,
+      "name": "John Reynolds",
+      "position": "GK",
+      "jersey_number": 12
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 80,
+    "fields": {
+      "team": 16,
+      "name": "Juan Lee",
+      "position": "GK",
+      "jersey_number": 28
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 81,
+    "fields": {
+      "team": 17,
+      "name": "Tina Crawford",
+      "position": "DF",
+      "jersey_number": 98
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 82,
+    "fields": {
+      "team": 17,
+      "name": "Thomas Moore",
+      "position": "DF",
+      "jersey_number": 7
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 83,
+    "fields": {
+      "team": 17,
+      "name": "Jody Brown",
+      "position": "MF",
+      "jersey_number": 54
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 84,
+    "fields": {
+      "team": 17,
+      "name": "Nicole Kennedy",
+      "position": "DF",
+      "jersey_number": 30
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 85,
+    "fields": {
+      "team": 17,
+      "name": "Crystal Pierce",
+      "position": "DF",
+      "jersey_number": 18
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 86,
+    "fields": {
+      "team": 18,
+      "name": "Allison Wallace",
+      "position": "MF",
+      "jersey_number": 15
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 87,
+    "fields": {
+      "team": 18,
+      "name": "Brianna Mccormick",
+      "position": "MF",
+      "jersey_number": 5
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 88,
+    "fields": {
+      "team": 18,
+      "name": "Robert Parker",
+      "position": "FW",
+      "jersey_number": 67
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 89,
+    "fields": {
+      "team": 18,
+      "name": "Darrell White",
+      "position": "GK",
+      "jersey_number": 92
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 90,
+    "fields": {
+      "team": 18,
+      "name": "Hunter Hayes",
+      "position": "FW",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 91,
+    "fields": {
+      "team": 19,
+      "name": "Kevin Payne",
+      "position": "FW",
+      "jersey_number": 35
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 92,
+    "fields": {
+      "team": 19,
+      "name": "Chase Wilson",
+      "position": "FW",
+      "jersey_number": 21
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 93,
+    "fields": {
+      "team": 19,
+      "name": "Jason Warner",
+      "position": "DF",
+      "jersey_number": 27
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 94,
+    "fields": {
+      "team": 19,
+      "name": "Andrea Davis",
+      "position": "MF",
+      "jersey_number": 29
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 95,
+    "fields": {
+      "team": 19,
+      "name": "Joanna Huffman",
+      "position": "GK",
+      "jersey_number": 12
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 96,
+    "fields": {
+      "team": 20,
+      "name": "Thomas Hardy",
+      "position": "FW",
+      "jersey_number": 9
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 97,
+    "fields": {
+      "team": 20,
+      "name": "Alison Brown",
+      "position": "FW",
+      "jersey_number": 47
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 98,
+    "fields": {
+      "team": 20,
+      "name": "Alan Fox",
+      "position": "MF",
+      "jersey_number": 70
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 99,
+    "fields": {
+      "team": 20,
+      "name": "Zachary Miller",
+      "position": "FW",
+      "jersey_number": 56
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 100,
+    "fields": {
+      "team": 20,
+      "name": "Darrell Ramos",
+      "position": "FW",
+      "jersey_number": 20
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 101,
+    "fields": {
+      "team": 21,
+      "name": "Eddie Maynard",
+      "position": "GK",
+      "jersey_number": 14
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 102,
+    "fields": {
+      "team": 21,
+      "name": "Jennifer Jordan",
+      "position": "DF",
+      "jersey_number": 43
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 103,
+    "fields": {
+      "team": 21,
+      "name": "Michael Patel",
+      "position": "FW",
+      "jersey_number": 15
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 104,
+    "fields": {
+      "team": 21,
+      "name": "Kimberly Peters",
+      "position": "MF",
+      "jersey_number": 40
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 105,
+    "fields": {
+      "team": 21,
+      "name": "Keith Smith",
+      "position": "DF",
+      "jersey_number": 66
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 106,
+    "fields": {
+      "team": 22,
+      "name": "John Smith",
+      "position": "GK",
+      "jersey_number": 67
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 107,
+    "fields": {
+      "team": 22,
+      "name": "Jane Landry",
+      "position": "MF",
+      "jersey_number": 12
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 108,
+    "fields": {
+      "team": 22,
+      "name": "Angela Scott",
+      "position": "FW",
+      "jersey_number": 28
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 109,
+    "fields": {
+      "team": 22,
+      "name": "Kenneth Hughes",
+      "position": "FW",
+      "jersey_number": 75
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 110,
+    "fields": {
+      "team": 22,
+      "name": "Tiffany Davis",
+      "position": "DF",
+      "jersey_number": 8
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 111,
+    "fields": {
+      "team": 23,
+      "name": "Timothy Chambers",
+      "position": "FW",
+      "jersey_number": 38
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 112,
+    "fields": {
+      "team": 23,
+      "name": "Latoya Warren",
+      "position": "MF",
+      "jersey_number": 4
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 113,
+    "fields": {
+      "team": 23,
+      "name": "James Wallace",
+      "position": "MF",
+      "jersey_number": 89
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 114,
+    "fields": {
+      "team": 23,
+      "name": "Hannah Sloan",
+      "position": "FW",
+      "jersey_number": 27
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 115,
+    "fields": {
+      "team": 23,
+      "name": "Debra Thompson",
+      "position": "DF",
+      "jersey_number": 78
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 116,
+    "fields": {
+      "team": 24,
+      "name": "Sarah Mcneil",
+      "position": "GK",
+      "jersey_number": 82
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 117,
+    "fields": {
+      "team": 24,
+      "name": "Jennifer Watson",
+      "position": "GK",
+      "jersey_number": 64
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 118,
+    "fields": {
+      "team": 24,
+      "name": "Erica Jones",
+      "position": "GK",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 119,
+    "fields": {
+      "team": 24,
+      "name": "Kristopher Wheeler",
+      "position": "FW",
+      "jersey_number": 4
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 120,
+    "fields": {
+      "team": 24,
+      "name": "Mathew Harris",
+      "position": "FW",
+      "jersey_number": 93
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 121,
+    "fields": {
+      "team": 25,
+      "name": "Jeffrey Finley",
+      "position": "PF",
+      "jersey_number": 6
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 122,
+    "fields": {
+      "team": 25,
+      "name": "Christopher Lopez",
+      "position": "PF",
+      "jersey_number": 57
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 123,
+    "fields": {
+      "team": 25,
+      "name": "Sheri Sanchez",
+      "position": "C",
+      "jersey_number": 95
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 124,
+    "fields": {
+      "team": 25,
+      "name": "Terry Williams",
+      "position": "PF",
+      "jersey_number": 76
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 125,
+    "fields": {
+      "team": 25,
+      "name": "Andrew Dunn",
+      "position": "PF",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 126,
+    "fields": {
+      "team": 26,
+      "name": "Sarah Paul",
+      "position": "SF",
+      "jersey_number": 6
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 127,
+    "fields": {
+      "team": 26,
+      "name": "Lisa Spencer",
+      "position": "SF",
+      "jersey_number": 20
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 128,
+    "fields": {
+      "team": 26,
+      "name": "Michelle Mcbride",
+      "position": "SF",
+      "jersey_number": 8
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 129,
+    "fields": {
+      "team": 26,
+      "name": "Sarah Kirby",
+      "position": "SG",
+      "jersey_number": 26
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 130,
+    "fields": {
+      "team": 26,
+      "name": "Kristin Phillips",
+      "position": "PG",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 131,
+    "fields": {
+      "team": 27,
+      "name": "Thomas Lopez",
+      "position": "C",
+      "jersey_number": 10
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 132,
+    "fields": {
+      "team": 27,
+      "name": "Victor Valentine",
+      "position": "SF",
+      "jersey_number": 24
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 133,
+    "fields": {
+      "team": 27,
+      "name": "Kurt Barber",
+      "position": "PF",
+      "jersey_number": 49
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 134,
+    "fields": {
+      "team": 27,
+      "name": "Randall Jenkins",
+      "position": "SG",
+      "jersey_number": 46
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 135,
+    "fields": {
+      "team": 27,
+      "name": "Cindy Gray",
+      "position": "C",
+      "jersey_number": 47
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 136,
+    "fields": {
+      "team": 28,
+      "name": "Joseph Edwards",
+      "position": "C",
+      "jersey_number": 88
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 137,
+    "fields": {
+      "team": 28,
+      "name": "Douglas Garrett",
+      "position": "SF",
+      "jersey_number": 24
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 138,
+    "fields": {
+      "team": 28,
+      "name": "Alison Hernandez",
+      "position": "SF",
+      "jersey_number": 23
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 139,
+    "fields": {
+      "team": 28,
+      "name": "Chloe Alexander",
+      "position": "SF",
+      "jersey_number": 44
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 140,
+    "fields": {
+      "team": 28,
+      "name": "Michael Bryant",
+      "position": "SG",
+      "jersey_number": 41
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 141,
+    "fields": {
+      "team": 29,
+      "name": "Eric Simpson",
+      "position": "C",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 142,
+    "fields": {
+      "team": 29,
+      "name": "Robert Jenkins",
+      "position": "PG",
+      "jersey_number": 95
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 143,
+    "fields": {
+      "team": 29,
+      "name": "Regina Rodriguez",
+      "position": "SG",
+      "jersey_number": 41
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 144,
+    "fields": {
+      "team": 29,
+      "name": "Sarah Copeland",
+      "position": "C",
+      "jersey_number": 74
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 145,
+    "fields": {
+      "team": 29,
+      "name": "Danielle Wells",
+      "position": "SF",
+      "jersey_number": 75
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 146,
+    "fields": {
+      "team": 30,
+      "name": "Tammy Shaw",
+      "position": "C",
+      "jersey_number": 14
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 147,
+    "fields": {
+      "team": 30,
+      "name": "Edward Miles",
+      "position": "PF",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 148,
+    "fields": {
+      "team": 30,
+      "name": "Haley Gordon",
+      "position": "SG",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 149,
+    "fields": {
+      "team": 30,
+      "name": "Christopher Hughes",
+      "position": "C",
+      "jersey_number": 76
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 150,
+    "fields": {
+      "team": 30,
+      "name": "Allen Hernandez",
+      "position": "SG",
+      "jersey_number": 46
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 151,
+    "fields": {
+      "team": 31,
+      "name": "Miss Stephanie White",
+      "position": "PF",
+      "jersey_number": 61
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 152,
+    "fields": {
+      "team": 31,
+      "name": "Debbie Murray",
+      "position": "PF",
+      "jersey_number": 94
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 153,
+    "fields": {
+      "team": 31,
+      "name": "Michael Brown",
+      "position": "PG",
+      "jersey_number": 58
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 154,
+    "fields": {
+      "team": 31,
+      "name": "Holly Baker",
+      "position": "PG",
+      "jersey_number": 57
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 155,
+    "fields": {
+      "team": 31,
+      "name": "Jon Bell",
+      "position": "SF",
+      "jersey_number": 49
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 156,
+    "fields": {
+      "team": 32,
+      "name": "Madison Bruce",
+      "position": "C",
+      "jersey_number": 13
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 157,
+    "fields": {
+      "team": 32,
+      "name": "Scott Garcia",
+      "position": "SF",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 158,
+    "fields": {
+      "team": 32,
+      "name": "Alec Taylor",
+      "position": "SG",
+      "jersey_number": 49
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 159,
+    "fields": {
+      "team": 32,
+      "name": "Robert Washington",
+      "position": "PG",
+      "jersey_number": 66
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 160,
+    "fields": {
+      "team": 32,
+      "name": "Bryan Parker",
+      "position": "PF",
+      "jersey_number": 79
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 161,
+    "fields": {
+      "team": 33,
+      "name": "Jasmine Ortiz",
+      "position": "PF",
+      "jersey_number": 64
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 162,
+    "fields": {
+      "team": 33,
+      "name": "Stephanie Harrington",
+      "position": "PG",
+      "jersey_number": 70
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 163,
+    "fields": {
+      "team": 33,
+      "name": "Thomas Bailey",
+      "position": "C",
+      "jersey_number": 38
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 164,
+    "fields": {
+      "team": 33,
+      "name": "Melissa Cooper",
+      "position": "C",
+      "jersey_number": 30
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 165,
+    "fields": {
+      "team": 33,
+      "name": "Jason Jennings",
+      "position": "C",
+      "jersey_number": 65
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 166,
+    "fields": {
+      "team": 34,
+      "name": "Barbara Horton",
+      "position": "PG",
+      "jersey_number": 10
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 167,
+    "fields": {
+      "team": 34,
+      "name": "Rachel Gardner",
+      "position": "PF",
+      "jersey_number": 27
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 168,
+    "fields": {
+      "team": 34,
+      "name": "Kristin Reed",
+      "position": "SF",
+      "jersey_number": 35
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 169,
+    "fields": {
+      "team": 34,
+      "name": "Mary Vincent",
+      "position": "SF",
+      "jersey_number": 34
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 170,
+    "fields": {
+      "team": 34,
+      "name": "Christopher Miranda",
+      "position": "PF",
+      "jersey_number": 90
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 171,
+    "fields": {
+      "team": 35,
+      "name": "Kristina Christensen",
+      "position": "SG",
+      "jersey_number": 63
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 172,
+    "fields": {
+      "team": 35,
+      "name": "Tyler Erickson",
+      "position": "PF",
+      "jersey_number": 18
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 173,
+    "fields": {
+      "team": 35,
+      "name": "Todd Frank",
+      "position": "PF",
+      "jersey_number": 52
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 174,
+    "fields": {
+      "team": 35,
+      "name": "Todd Melton",
+      "position": "C",
+      "jersey_number": 57
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 175,
+    "fields": {
+      "team": 35,
+      "name": "Troy Lutz V",
+      "position": "PF",
+      "jersey_number": 12
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 176,
+    "fields": {
+      "team": 36,
+      "name": "Tammy Wilson",
+      "position": "PG",
+      "jersey_number": 95
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 177,
+    "fields": {
+      "team": 36,
+      "name": "Nicole Hughes",
+      "position": "PG",
+      "jersey_number": 66
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 178,
+    "fields": {
+      "team": 36,
+      "name": "Dr. Amanda Morales MD",
+      "position": "C",
+      "jersey_number": 66
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 179,
+    "fields": {
+      "team": 36,
+      "name": "Michael Hughes",
+      "position": "PF",
+      "jersey_number": 68
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 180,
+    "fields": {
+      "team": 36,
+      "name": "Katherine Hopkins",
+      "position": "SG",
+      "jersey_number": 89
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 181,
+    "fields": {
+      "team": 37,
+      "name": "Virginia Moses",
+      "position": "SG",
+      "jersey_number": 54
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 182,
+    "fields": {
+      "team": 37,
+      "name": "Randall Obrien",
+      "position": "C",
+      "jersey_number": 23
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 183,
+    "fields": {
+      "team": 37,
+      "name": "James Estrada",
+      "position": "PF",
+      "jersey_number": 84
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 184,
+    "fields": {
+      "team": 37,
+      "name": "Matthew Flores",
+      "position": "PG",
+      "jersey_number": 19
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 185,
+    "fields": {
+      "team": 37,
+      "name": "Jose Williamson",
+      "position": "SF",
+      "jersey_number": 81
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 186,
+    "fields": {
+      "team": 38,
+      "name": "Tony Adkins",
+      "position": "PF",
+      "jersey_number": 11
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 187,
+    "fields": {
+      "team": 38,
+      "name": "Jacob Shaw",
+      "position": "PF",
+      "jersey_number": 84
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 188,
+    "fields": {
+      "team": 38,
+      "name": "Frank Johnson",
+      "position": "PF",
+      "jersey_number": 51
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 189,
+    "fields": {
+      "team": 38,
+      "name": "Joseph Smith",
+      "position": "PF",
+      "jersey_number": 55
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 190,
+    "fields": {
+      "team": 38,
+      "name": "Megan Melendez",
+      "position": "PF",
+      "jersey_number": 17
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 191,
+    "fields": {
+      "team": 39,
+      "name": "Larry Rodriguez",
+      "position": "PF",
+      "jersey_number": 71
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 192,
+    "fields": {
+      "team": 39,
+      "name": "Linda Swanson",
+      "position": "PF",
+      "jersey_number": 60
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 193,
+    "fields": {
+      "team": 39,
+      "name": "Deborah Moore",
+      "position": "SF",
+      "jersey_number": 9
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 194,
+    "fields": {
+      "team": 39,
+      "name": "Kimberly Lewis",
+      "position": "SG",
+      "jersey_number": 77
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 195,
+    "fields": {
+      "team": 39,
+      "name": "Kathryn Gregory",
+      "position": "SF",
+      "jersey_number": 9
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 196,
+    "fields": {
+      "team": 40,
+      "name": "Taylor Brown",
+      "position": "PG",
+      "jersey_number": 95
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 197,
+    "fields": {
+      "team": 40,
+      "name": "Amanda Wright",
+      "position": "SF",
+      "jersey_number": 29
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 198,
+    "fields": {
+      "team": 40,
+      "name": "David Orozco",
+      "position": "SG",
+      "jersey_number": 64
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 199,
+    "fields": {
+      "team": 40,
+      "name": "Tonya Roy",
+      "position": "C",
+      "jersey_number": 71
+    }
+  },
+  {
+    "model": "sportsbetting.Player",
+    "pk": 200,
+    "fields": {
+      "team": 40,
+      "name": "Jeremy White",
+      "position": "PG",
+      "jersey_number": 64
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 1,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 12,
+      "away_team": 6,
+      "location": "Natalieburgh",
+      "start_datetime": "2025-02-23T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 2,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 38,
+      "away_team": 5,
+      "location": "North Beckyland",
+      "start_datetime": "2025-02-24T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 3,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 1,
+      "away_team": 26,
+      "location": "North Ambermouth",
+      "start_datetime": "2025-02-25T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 4,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 14,
+      "away_team": 21,
+      "location": "Fowlerport",
+      "start_datetime": "2025-02-26T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 5,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 15,
+      "away_team": 24,
+      "location": "Ricardochester",
+      "start_datetime": "2025-02-27T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 6,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 12,
+      "away_team": 9,
+      "location": "Reeseborough",
+      "start_datetime": "2025-02-28T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 7,
+    "fields": {
+      "sport": 2,
+      "league": 8,
+      "home_team": 32,
+      "away_team": 15,
+      "location": "Chapmanborough",
+      "start_datetime": "2025-03-01T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 8,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 40,
+      "away_team": 10,
+      "location": "Hartmanmouth",
+      "start_datetime": "2025-03-02T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 9,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 2,
+      "away_team": 21,
+      "location": "West Nancy",
+      "start_datetime": "2025-03-03T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 10,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 39,
+      "away_team": 22,
+      "location": "New Tammieside",
+      "start_datetime": "2025-03-04T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 11,
+    "fields": {
+      "sport": 2,
+      "league": 8,
+      "home_team": 29,
+      "away_team": 40,
+      "location": "West Jeffrey",
+      "start_datetime": "2025-03-05T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 12,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 38,
+      "away_team": 40,
+      "location": "North Rebecca",
+      "start_datetime": "2025-03-06T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 13,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 7,
+      "away_team": 17,
+      "location": "Watershaven",
+      "start_datetime": "2025-03-07T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 14,
+    "fields": {
+      "sport": 4,
+      "league": 6,
+      "home_team": 21,
+      "away_team": 18,
+      "location": "North Patrick",
+      "start_datetime": "2025-03-08T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 15,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 6,
+      "away_team": 24,
+      "location": "West Maryton",
+      "start_datetime": "2025-03-09T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 16,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 4,
+      "away_team": 26,
+      "location": "West Jason",
+      "start_datetime": "2025-03-10T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 17,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 6,
+      "away_team": 30,
+      "location": "Estradaburgh",
+      "start_datetime": "2025-03-11T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 18,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 13,
+      "away_team": 8,
+      "location": "Frankland",
+      "start_datetime": "2025-03-12T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 19,
+    "fields": {
+      "sport": 4,
+      "league": 5,
+      "home_team": 19,
+      "away_team": 37,
+      "location": "Phillipsport",
+      "start_datetime": "2025-03-13T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 20,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 16,
+      "away_team": 26,
+      "location": "East Monicaview",
+      "start_datetime": "2025-03-14T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 21,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 10,
+      "away_team": 25,
+      "location": "Johnsonport",
+      "start_datetime": "2025-03-15T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 22,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 7,
+      "away_team": 24,
+      "location": "Cisnerosville",
+      "start_datetime": "2025-03-16T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 23,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 2,
+      "away_team": 36,
+      "location": "Tuckerport",
+      "start_datetime": "2025-03-17T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 24,
+    "fields": {
+      "sport": 2,
+      "league": 9,
+      "home_team": 35,
+      "away_team": 37,
+      "location": "New Donna",
+      "start_datetime": "2025-03-18T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 25,
+    "fields": {
+      "sport": 4,
+      "league": 5,
+      "home_team": 18,
+      "away_team": 23,
+      "location": "Gonzalestown",
+      "start_datetime": "2025-03-19T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 26,
+    "fields": {
+      "sport": 4,
+      "league": 5,
+      "home_team": 17,
+      "away_team": 12,
+      "location": "Lake Donald",
+      "start_datetime": "2025-03-20T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 27,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 37,
+      "away_team": 35,
+      "location": "Nicoleton",
+      "start_datetime": "2025-03-21T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 28,
+    "fields": {
+      "sport": 2,
+      "league": 8,
+      "home_team": 29,
+      "away_team": 25,
+      "location": "New Megan",
+      "start_datetime": "2025-03-22T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 29,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 37,
+      "away_team": 16,
+      "location": "West Brenda",
+      "start_datetime": "2025-03-23T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 30,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 5,
+      "away_team": 31,
+      "location": "Lake Carla",
+      "start_datetime": "2025-03-24T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 31,
+    "fields": {
+      "sport": 2,
+      "league": 10,
+      "home_team": 39,
+      "away_team": 7,
+      "location": "Farmerfort",
+      "start_datetime": "2025-03-25T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 32,
+    "fields": {
+      "sport": 4,
+      "league": 5,
+      "home_team": 19,
+      "away_team": 38,
+      "location": "Bridgethaven",
+      "start_datetime": "2025-03-26T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 33,
+    "fields": {
+      "sport": 4,
+      "league": 6,
+      "home_team": 24,
+      "away_team": 28,
+      "location": "South David",
+      "start_datetime": "2025-03-27T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 34,
+    "fields": {
+      "sport": 2,
+      "league": 7,
+      "home_team": 25,
+      "away_team": 20,
+      "location": "Stuarthaven",
+      "start_datetime": "2025-03-28T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 35,
+    "fields": {
+      "sport": 4,
+      "league": 5,
+      "home_team": 20,
+      "away_team": 36,
+      "location": "Stoneburgh",
+      "start_datetime": "2025-03-29T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 36,
+    "fields": {
+      "sport": 2,
+      "league": 8,
+      "home_team": 32,
+      "away_team": 9,
+      "location": "Barnettfort",
+      "start_datetime": "2025-03-30T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 37,
+    "fields": {
+      "sport": 2,
+      "league": 8,
+      "home_team": 29,
+      "away_team": 26,
+      "location": "Port Angieville",
+      "start_datetime": "2025-03-31T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 38,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 5,
+      "away_team": 2,
+      "location": "Port Edward",
+      "start_datetime": "2025-04-01T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 39,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 7,
+      "away_team": 5,
+      "location": "Robertsonstad",
+      "start_datetime": "2025-04-02T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 40,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 9,
+      "away_team": 12,
+      "location": "North Daniel",
+      "start_datetime": "2025-04-03T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 41,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 10,
+      "away_team": 37,
+      "location": "Whitakerchester",
+      "start_datetime": "2025-04-04T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 42,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 6,
+      "away_team": 4,
+      "location": "East Vanessa",
+      "start_datetime": "2025-04-05T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 43,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 15,
+      "away_team": 16,
+      "location": "East Cynthiaside",
+      "start_datetime": "2025-04-06T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 44,
+    "fields": {
+      "sport": 4,
+      "league": 3,
+      "home_team": 12,
+      "away_team": 4,
+      "location": "Hardinstad",
+      "start_datetime": "2025-04-07T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 45,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 3,
+      "away_team": 4,
+      "location": "Maddoxtown",
+      "start_datetime": "2025-04-08T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 46,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 2,
+      "away_team": 8,
+      "location": "New Ronniehaven",
+      "start_datetime": "2025-04-09T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 47,
+    "fields": {
+      "sport": 4,
+      "league": 2,
+      "home_team": 6,
+      "away_team": 7,
+      "location": "New Brandyburgh",
+      "start_datetime": "2025-04-10T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 48,
+    "fields": {
+      "sport": 4,
+      "league": 1,
+      "home_team": 2,
+      "away_team": 13,
+      "location": "Rodneyshire",
+      "start_datetime": "2025-04-11T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 49,
+    "fields": {
+      "sport": 4,
+      "league": 4,
+      "home_team": 14,
+      "away_team": 16,
+      "location": "Sarahfurt",
+      "start_datetime": "2025-04-12T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.ScheduledGame",
+    "pk": 50,
+    "fields": {
+      "sport": 4,
+      "league": 6,
+      "home_team": 21,
+      "away_team": 37,
+      "location": "Ryanton",
+      "start_datetime": "2025-04-13T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 1,
+    "fields": {
+      "game": 1,
+      "spread": -2.9,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-02-24T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 2,
+    "fields": {
+      "game": 2,
+      "spread": 3.5,
+      "is_pick": true,
+      "over": 38,
+      "under": 31,
+      "start_datetime": "2025-02-25T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 3,
+    "fields": {
+      "game": 3,
+      "spread": -3.8,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-02-26T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 4,
+    "fields": {
+      "game": 4,
+      "spread": 0.8,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-02-27T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 5,
+    "fields": {
+      "game": 5,
+      "spread": 4.4,
+      "is_pick": true,
+      "over": 59,
+      "under": 49,
+      "start_datetime": "2025-02-28T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 6,
+    "fields": {
+      "game": 6,
+      "spread": -3.8,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-01T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 7,
+    "fields": {
+      "game": 7,
+      "spread": -0.1,
+      "is_pick": true,
+      "over": 53,
+      "under": 40,
+      "start_datetime": "2025-03-02T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 8,
+    "fields": {
+      "game": 8,
+      "spread": -8.6,
+      "is_pick": false,
+      "over": 95,
+      "under": 39,
+      "start_datetime": "2025-03-03T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 9,
+    "fields": {
+      "game": 9,
+      "spread": 4.7,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-04T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 10,
+    "fields": {
+      "game": 10,
+      "spread": -7.9,
+      "is_pick": true,
+      "over": 87,
+      "under": 53,
+      "start_datetime": "2025-03-05T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 11,
+    "fields": {
+      "game": 11,
+      "spread": -9.7,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-06T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 12,
+    "fields": {
+      "game": 12,
+      "spread": -7.3,
+      "is_pick": false,
+      "over": 59,
+      "under": 43,
+      "start_datetime": "2025-03-07T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 13,
+    "fields": {
+      "game": 13,
+      "spread": 5.6,
+      "is_pick": false,
+      "over": 91,
+      "under": 73,
+      "start_datetime": "2025-03-08T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 14,
+    "fields": {
+      "game": 14,
+      "spread": 7.0,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-09T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 15,
+    "fields": {
+      "game": 15,
+      "spread": 0.5,
+      "is_pick": false,
+      "over": 58,
+      "under": 44,
+      "start_datetime": "2025-03-10T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 16,
+    "fields": {
+      "game": 16,
+      "spread": -0.8,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-11T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 17,
+    "fields": {
+      "game": 17,
+      "spread": -0.7,
+      "is_pick": true,
+      "over": 50,
+      "under": 31,
+      "start_datetime": "2025-03-12T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 18,
+    "fields": {
+      "game": 18,
+      "spread": 9.1,
+      "is_pick": false,
+      "over": 61,
+      "under": 50,
+      "start_datetime": "2025-03-13T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 19,
+    "fields": {
+      "game": 19,
+      "spread": 3.3,
+      "is_pick": true,
+      "over": 46,
+      "under": 30,
+      "start_datetime": "2025-03-14T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 20,
+    "fields": {
+      "game": 20,
+      "spread": -9.3,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-15T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 21,
+    "fields": {
+      "game": 21,
+      "spread": 7.1,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-16T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 22,
+    "fields": {
+      "game": 22,
+      "spread": -2.5,
+      "is_pick": false,
+      "over": 75,
+      "under": 32,
+      "start_datetime": "2025-03-17T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 23,
+    "fields": {
+      "game": 23,
+      "spread": 2.6,
+      "is_pick": false,
+      "over": 72,
+      "under": 57,
+      "start_datetime": "2025-03-18T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 24,
+    "fields": {
+      "game": 24,
+      "spread": 9.6,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-19T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 25,
+    "fields": {
+      "game": 25,
+      "spread": -2.8,
+      "is_pick": false,
+      "over": 36,
+      "under": 36,
+      "start_datetime": "2025-03-20T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 26,
+    "fields": {
+      "game": 26,
+      "spread": -3.4,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-21T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 27,
+    "fields": {
+      "game": 27,
+      "spread": 8.1,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-22T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 28,
+    "fields": {
+      "game": 28,
+      "spread": 4.8,
+      "is_pick": false,
+      "over": 93,
+      "under": 80,
+      "start_datetime": "2025-03-23T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 29,
+    "fields": {
+      "game": 29,
+      "spread": 6.3,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-24T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 30,
+    "fields": {
+      "game": 30,
+      "spread": 3.9,
+      "is_pick": false,
+      "over": 41,
+      "under": 38,
+      "start_datetime": "2025-03-25T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 31,
+    "fields": {
+      "game": 31,
+      "spread": -5.0,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-26T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 32,
+    "fields": {
+      "game": 32,
+      "spread": -6.0,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-27T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 33,
+    "fields": {
+      "game": 33,
+      "spread": 5.8,
+      "is_pick": false,
+      "over": 32,
+      "under": 32,
+      "start_datetime": "2025-03-28T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 34,
+    "fields": {
+      "game": 34,
+      "spread": -4.2,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-29T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 35,
+    "fields": {
+      "game": 35,
+      "spread": 9.2,
+      "is_pick": true,
+      "over": 51,
+      "under": 42,
+      "start_datetime": "2025-03-30T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 36,
+    "fields": {
+      "game": 36,
+      "spread": 1.2,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-03-31T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 37,
+    "fields": {
+      "game": 37,
+      "spread": -5.8,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-01T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 38,
+    "fields": {
+      "game": 38,
+      "spread": -6.2,
+      "is_pick": false,
+      "over": 81,
+      "under": 64,
+      "start_datetime": "2025-04-02T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 39,
+    "fields": {
+      "game": 39,
+      "spread": 5.5,
+      "is_pick": false,
+      "over": 34,
+      "under": 31,
+      "start_datetime": "2025-04-03T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 40,
+    "fields": {
+      "game": 40,
+      "spread": -5.7,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-04T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 41,
+    "fields": {
+      "game": 41,
+      "spread": 7.7,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-05T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 42,
+    "fields": {
+      "game": 42,
+      "spread": -8.2,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-06T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 43,
+    "fields": {
+      "game": 43,
+      "spread": 9.2,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-07T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 44,
+    "fields": {
+      "game": 44,
+      "spread": 1.4,
+      "is_pick": false,
+      "over": 38,
+      "under": 33,
+      "start_datetime": "2025-04-08T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 45,
+    "fields": {
+      "game": 45,
+      "spread": -3.2,
+      "is_pick": true,
+      "over": 53,
+      "under": 49,
+      "start_datetime": "2025-04-09T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 46,
+    "fields": {
+      "game": 46,
+      "spread": 7.0,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-10T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 47,
+    "fields": {
+      "game": 47,
+      "spread": 6.3,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-11T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 48,
+    "fields": {
+      "game": 48,
+      "spread": 6.8,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-12T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 49,
+    "fields": {
+      "game": 49,
+      "spread": -1.1,
+      "is_pick": true,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-13T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.BettingLine",
+    "pk": 50,
+    "fields": {
+      "game": 50,
+      "spread": 4.3,
+      "is_pick": false,
+      "over": null,
+      "under": null,
+      "start_datetime": "2025-04-14T20:08:06.506123+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 1,
+    "fields": {
+      "user": 2,
+      "amount": "153.43",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 2,
+    "fields": {
+      "user": 2,
+      "amount": "699.55",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 3,
+    "fields": {
+      "user": 1,
+      "amount": "733.06",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 4,
+    "fields": {
+      "user": 1,
+      "amount": "118.91",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 5,
+    "fields": {
+      "user": 1,
+      "amount": "826.70",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 6,
+    "fields": {
+      "user": 2,
+      "amount": "908.65",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 7,
+    "fields": {
+      "user": 1,
+      "amount": "76.16",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 8,
+    "fields": {
+      "user": 2,
+      "amount": "860.19",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 9,
+    "fields": {
+      "user": 2,
+      "amount": "747.70",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.Play",
+    "pk": 10,
+    "fields": {
+      "user": 1,
+      "amount": "613.20",
+      "placed_datetime": "2025-02-23T20:08:06.602768+00:00"
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 1,
+    "fields": {
+      "play": 1,
+      "betting_line": 24,
+      "type": "sp",
+      "team": 35,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 2,
+    "fields": {
+      "play": 1,
+      "betting_line": 18,
+      "type": "sp",
+      "team": 8,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 3,
+    "fields": {
+      "play": 1,
+      "betting_line": 16,
+      "type": "sp",
+      "team": 4,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 4,
+    "fields": {
+      "play": 1,
+      "betting_line": 37,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 5,
+    "fields": {
+      "play": 2,
+      "betting_line": 19,
+      "type": "sp",
+      "team": 37,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 6,
+    "fields": {
+      "play": 2,
+      "betting_line": 1,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 7,
+    "fields": {
+      "play": 2,
+      "betting_line": 33,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 8,
+    "fields": {
+      "play": 2,
+      "betting_line": 18,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 9,
+    "fields": {
+      "play": 3,
+      "betting_line": 36,
+      "type": "sp",
+      "team": 32,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 10,
+    "fields": {
+      "play": 3,
+      "betting_line": 45,
+      "type": "sp",
+      "team": 4,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 11,
+    "fields": {
+      "play": 3,
+      "betting_line": 42,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 12,
+    "fields": {
+      "play": 3,
+      "betting_line": 37,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 13,
+    "fields": {
+      "play": 4,
+      "betting_line": 47,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 14,
+    "fields": {
+      "play": 4,
+      "betting_line": 44,
+      "type": "sp",
+      "team": 4,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 15,
+    "fields": {
+      "play": 4,
+      "betting_line": 36,
+      "type": "sp",
+      "team": 9,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 16,
+    "fields": {
+      "play": 4,
+      "betting_line": 7,
+      "type": "sp",
+      "team": 15,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 17,
+    "fields": {
+      "play": 5,
+      "betting_line": 26,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 18,
+    "fields": {
+      "play": 5,
+      "betting_line": 43,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 19,
+    "fields": {
+      "play": 5,
+      "betting_line": 11,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 20,
+    "fields": {
+      "play": 5,
+      "betting_line": 41,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 21,
+    "fields": {
+      "play": 6,
+      "betting_line": 23,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 22,
+    "fields": {
+      "play": 6,
+      "betting_line": 25,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 23,
+    "fields": {
+      "play": 6,
+      "betting_line": 15,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 24,
+    "fields": {
+      "play": 6,
+      "betting_line": 29,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 25,
+    "fields": {
+      "play": 7,
+      "betting_line": 22,
+      "type": "sp",
+      "team": 7,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 26,
+    "fields": {
+      "play": 7,
+      "betting_line": 20,
+      "type": "sp",
+      "team": 16,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 27,
+    "fields": {
+      "play": 7,
+      "betting_line": 7,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 28,
+    "fields": {
+      "play": 7,
+      "betting_line": 19,
+      "type": "sp",
+      "team": 19,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 29,
+    "fields": {
+      "play": 8,
+      "betting_line": 36,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 30,
+    "fields": {
+      "play": 8,
+      "betting_line": 9,
+      "type": "sp",
+      "team": 2,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 31,
+    "fields": {
+      "play": 8,
+      "betting_line": 4,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 32,
+    "fields": {
+      "play": 8,
+      "betting_line": 17,
+      "type": "uo",
+      "team": null,
+      "is_over": false
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 33,
+    "fields": {
+      "play": 9,
+      "betting_line": 3,
+      "type": "sp",
+      "team": 26,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 34,
+    "fields": {
+      "play": 9,
+      "betting_line": 34,
+      "type": "sp",
+      "team": 20,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 35,
+    "fields": {
+      "play": 9,
+      "betting_line": 37,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 36,
+    "fields": {
+      "play": 9,
+      "betting_line": 7,
+      "type": "uo",
+      "team": null,
+      "is_over": true
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 37,
+    "fields": {
+      "play": 10,
+      "betting_line": 46,
+      "type": "sp",
+      "team": 8,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 38,
+    "fields": {
+      "play": 10,
+      "betting_line": 39,
+      "type": "sp",
+      "team": 7,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 39,
+    "fields": {
+      "play": 10,
+      "betting_line": 42,
+      "type": "sp",
+      "team": 4,
+      "is_over": null
+    }
+  },
+  {
+    "model": "sportsbetting.PlayPick",
+    "pk": 40,
+    "fields": {
+      "play": 10,
+      "betting_line": 28,
+      "type": "sp",
+      "team": 25,
+      "is_over": null
+    }
+  }
+]

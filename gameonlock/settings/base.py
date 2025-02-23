@@ -322,7 +322,7 @@ SPORTS = {
 	"LONG_NAMES_PREFERRED": [
 		"NCAAF",
 	],
-	"MIN_BET": Money("USD", 5),
+	"MIN_BET": Money(5, "USD"),
 }
 
 

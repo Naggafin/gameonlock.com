@@ -41,7 +41,7 @@ def read_uploaded_ticket(
 					or row.get("home_team")
 					or row.get("unfavored")
 				)
-				entry_spread = row.get("spread")
+				row.get("spread")
 				entry_second_team = (
 					row.get("second_team") or row.get("away_team") or row.get("favored")
 				)
@@ -200,7 +200,7 @@ def parse_ticket(request: HttpRequest, ticket: Ticket, end_date: datetime.date) 
 					or row.get("home_team")
 					or row.get("unfavored")
 				)
-				entry_spread = row.get("spread")
+				row.get("spread")
 				entry_second_team = (
 					row.get("second_team") or row.get("away_team") or row.get("favored")
 				)
@@ -504,7 +504,7 @@ def generate_ticket_spreadsheet(
 									for outcome in market.get("outcomes"):
 										if spread:
 											break
-										elif outcome.get("point") == None:
+										elif outcome.get("point") is None:
 											continue
 										elif outcome.get("name") == i.get("home_team"):
 											if settings.SPORTS["ROUND_SPREADS"]:
@@ -515,7 +515,7 @@ def generate_ticket_spreadsheet(
 									for outcome in market.get("outcomes"):
 										if totals:
 											break
-										elif outcome.get("point") == None:
+										elif outcome.get("point") is None:
 											continue
 										else:
 											if settings.SPORTS["ROUND_TOTALS"]:
