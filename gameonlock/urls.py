@@ -34,6 +34,7 @@ admin.site.login = secure_admin_login(admin.site.login)
 internatonalized_patterns = i18n_patterns(
 	path(_("accounts/"), include("allauth.urls")),
 	path(_("ticket/"), include("sportsbetting.urls")),
+	path(_("pages/"), include(wagtail_urls)),
 	path("", views.home, name="index"),
 	prefix_default_language=False,
 )
@@ -42,7 +43,6 @@ urlpatterns = [
 	path("admin/", admin.site.urls),
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
-	path("pages/", include(wagtail_urls)),
 ] + internatonalized_patterns
 
 if not settings.DEBUG:

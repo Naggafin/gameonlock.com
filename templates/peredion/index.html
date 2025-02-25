@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load static i18n humanize partials %}
-{% load wagtailcore_tags %}
 {% load sportsbetting_tags %}
 {% partialdef banner-section %}
 <section class="banner">
@@ -102,8 +101,8 @@
                          data-aos-delay="100"
                          data-aos-duration="500"
                          data-aos-easing="ease-in">
-                        <h3 class="sub-title">{{ page.about_title }}</h3>
-                        <h2 class="title">{{ page.about_subtitle }}</h2>
+                        <h3 class="sub-title">{{ home_page.about_title }}</h3>
+                        <h2 class="title">{{ home_page.about_subtitle }}</h2>
                     </div>
                     <div class="part-bottom">
                         <div class="part-descr"
@@ -111,7 +110,7 @@
                              data-aos-delay="150"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            {{ page.about_content|richtext }}
+                            {{ home_page.about_content }}
                             <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -125,14 +124,16 @@
 <div class="tab-pane fade"
      id="sports-{{ sport.slug_name }}"
      role="tabpanel"
-     aria-labelledby="sports-{{ sport.sport.slug_name }}-tab">
+     aria-labelledby="sports-{{ sport.slug_name }}-tab">
     <div class="single-sports-item">
-        <h2 class="accordion-header" id="{{ sport.sport.slug_name }}-matches">
+        <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
             <div class="sports-header">
                 <span class="single-sports-icon">
-                    <img src="{{ sport.icon.url }}" alt="" nonce="{{ request.csp_nonce }}">
+                    <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
                 </span>
-                <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines_for_sport sport %})</span>
+                <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
                 <span class="single-sports-img">
                     <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
                 </span>
@@ -147,37 +148,37 @@
                             <div class="single-tournament">
                                 <div class="tournament-title">
                                     <span class="title-text">{{ league.name }}</span>
-                                    <span class="match-quantity">({{ league.ticket_entries.all|length }})</span>
+                                    <span class="match-quantity">({{ league.scheduled_games.all|length }})</span>
                                 </div>
                                 <div class="all-tournament-match">
-                                    {% for ticket_entry in league.ticket_entries.all %}
+                                    {% for game in league.scheduled_games.all %}
                                         <div class="single-t-match
-                                                    {% if ticket_entry|game_has_started %}match-in-play{% endif %}">
+                                                    {% if game|game_has_started %}match-in-play{% endif %}">
                                             <div class="match-time">
                                                 <span class="time-icon">
                                                     <i class="fa-regular fa-clock"></i>
                                                 </span>
-                                                <span class="m-date">{{ ticket_entry.start_datetime|naturalday }}</span>
-                                                <span class="m-time">{{ ticket_entry.start_datetime|time }}</span>
+                                                <span class="m-date">{{ game.start_datetime|naturalday }}</span>
+                                                <span class="m-time">{{ game.start_datetime|time }}</span>
                                             </div>
                                             <div class="playing-teams">
                                                 <div class="single-team">
                                                     <div class="team-descr">
                                                         <span class="team-icon">
-                                                            <img src="{{ ticket_entry.home_team.icon.url }}"
-                                                                 alt="{{ ticket_entry.home_team.name }}">
+                                                            <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                                                 alt="{{ game.home_team.name }}">
                                                         </span>
-                                                        <span class="team-name">{{ ticket_entry.home_team.name }}</span>
+                                                        <span class="team-name">{{ game.home_team.name }}</span>
                                                     </div>
                                                     <div class="team-score">0</div>
                                                 </div>
                                                 <div class="single-team">
                                                     <div class="team-descr">
                                                         <span class="team-icon">
-                                                            <img src="{{ ticket_entry.away_team.icon.url }}"
-                                                                 alt="{{ ticket_entry.away_team.name }}">
+                                                            <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                                                 alt="{{ game.away_team.name }}">
                                                         </span>
-                                                        <span class="team-name">{{ ticket_entry.away_team.name }}</span>
+                                                        <span class="team-name">{{ game.away_team.name }}</span>
                                                     </div>
                                                     <div class="team-score">0</div>
                                                 </div>
@@ -185,7 +186,7 @@
                                             <div class="placing-bet">
                                                 <a href="#0" class="single-bet-place">
                                                     <span class="bet-ratio">0.25</span>
-                                                    <span class="team-name">Dinamo Zagreb</span>
+                                                    <span class="team-name">{{ game.home_team.name }}</span>
                                                 </a>
                                                 <a href="#0" class="single-bet-place draw-box">
                                                     <span class="bet-ratio">1.42</span>
@@ -193,7 +194,7 @@
                                                 </a>
                                                 <a href="#0" class="single-bet-place">
                                                     <span class="bet-ratio">4.32</span>
-                                                    <span class="team-name">Bodo-Glimt</span>
+                                                    <span class="team-name">{{ game.away_team.name }}</span>
                                                 </a>
                                             </div>
                                             <span class="bet-ratio-details">
@@ -210,7 +211,7 @@
         </div>
     </div>
 </div>
-{% endpartialdef
+{% endpartialdef %}
 {% partialdef bet-section %}
 <section class="playing-bet">
     <div class="global-shape style-2">
@@ -235,8 +236,8 @@
              data-aos-delay="100"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <h3 class="sub-title">{{ page.bet_title }}</h3>
-            <h2 class="title">{{ page.bet_subtitle }}</h2>
+            <h3 class="sub-title">{{ home_page.bet_title }}</h3>
+            <h2 class="title">{{ home_page.bet_subtitle }}</h2>
         </div>
         <div class="sports-menu scrollable-menu"
              data-aos="fade-up"
@@ -247,15 +248,15 @@
                 {% for sport in sports %}
                     <li class="nav-item" role="presentation">
                         <button class="nav-link"
-                                id="sports-{{ sport.short_name }}-tab"
+                                id="sports-{{ sport.slug_name }}-tab"
                                 data-bs-toggle="pill"
-                                data-bs-target="#sports-{{ sport.short_name }}"
+                                data-bs-target="#sports-{{ sport.slug_name }}"
                                 type="button"
                                 role="tab"
-                                aria-controls="sports-{{ sport.short_name }}"
+                                aria-controls="sports-{{ sport.slug_name }}"
                                 aria-selected="false">
                             <span class="sport-icon">
-                                <img src="{{ sport.icon.url }}"
+                                <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
                                      alt="{{ sport.name }}"
                                      nonce="{{ request.csp_nonce }}">
                             </span>
@@ -270,16 +271,117 @@
              data-aos="fade-up"
              data-aos-delay="200"
              data-aos-duration="500"
-             data-aos-easing="ease-in"></div>
-        <div class="see-all-sports-btn-cover"
-             data-aos="fade-up"
-             data-aos-delay="150"
-             data-aos-duration="500"
              data-aos-easing="ease-in">
-            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            <div class="tab-pane fade active"
+                 id="sports-all"
+                 role="tabpanel"
+                 aria-labelledby="sports-all-tab">
+                {% for sport in sports %}
+                    <div class="accordion accordion-flush sports-accordion"
+                         id="accordion-{{ sport.slug_name }}-matches">
+                        <div class="accordion-item single-sports-item">
+                            <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
+                                <div class="sports-header">
+                                    <span class="single-sports-icon">
+                                        <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
+                                             alt=""
+                                             nonce="{{ request.csp_nonce }}">
+                                    </span>
+                                    <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
+                                    <span class="single-sports-img">
+                                        <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
+                                    </span>
+                                    <a href="#TODO" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+                                </div>
+                            </h2>
+                            <div id="flush-{{ sport.slug_name }}-matches"
+                                 class="accordion-collapse collapse show sports-expanded-list"
+                                 aria-labelledby="{{ sport.slug_name }}-matches"
+                                 data-bs-parent="#accordion-{{ sport.slug_name }}-matches">
+                                <div class="accordion-body sports-body">
+                                    <div class="playing-sports-all">
+                                        {% for governing_body in sport.governing_bodies.all %}
+                                            {% for league in governing_body.leagues.all %}
+                                                <div class="single-tournament">
+                                                    <div class="tournament-title">
+                                                        <span class="title-text">{{ league.name }}</span>
+                                                        <span class="match-quantity">({{ league.scheduled_games.all|length }})</span>
+                                                    </div>
+                                                    <div class="all-tournament-match">
+                                                        {% for game in league.scheduled_games.all %}
+                                                            <div class="single-t-match
+                                                                        {% if game|game_has_started %}match-in-play{% endif %}">
+                                                                <div class="match-time">
+                                                                    <span class="time-icon">
+                                                                        <i class="fa-regular fa-clock"></i>
+                                                                    </span>
+                                                                    <span class="m-date">{{ game.start_datetime|naturalday }}</span>
+                                                                    <span class="m-time">{{ game.start_datetime|time }}</span>
+                                                                </div>
+                                                                <div class="playing-teams">
+                                                                    <div class="single-team">
+                                                                        <div class="team-descr">
+                                                                            <span class="team-icon">
+                                                                                <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                                                                     alt="{{ game.home_team.name }}">
+                                                                            </span>
+                                                                            <span class="team-name">{{ game.home_team.name }}</span>
+                                                                        </div>
+                                                                        <div class="team-score">0</div>
+                                                                    </div>
+                                                                    <div class="single-team">
+                                                                        <div class="team-descr">
+                                                                            <span class="team-icon">
+                                                                                <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                                                                     alt="{{ game.away_team.name }}">
+                                                                            </span>
+                                                                            <span class="team-name">{{ game.away_team.name }}</span>
+                                                                        </div>
+                                                                        <div class="team-score">0</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="placing-bet">
+                                                                    <a href="#0" class="single-bet-place">
+                                                                        <span class="bet-ratio">0.25</span>
+                                                                        <span class="team-name">{{ game.home_team.name }}</span>
+                                                                    </a>
+                                                                    <a href="#0" class="single-bet-place draw-box">
+                                                                        <span class="bet-ratio">1.42</span>
+                                                                        <span class="team-name">draw</span>
+                                                                    </a>
+                                                                    <a href="#0" class="single-bet-place">
+                                                                        <span class="bet-ratio">4.32</span>
+                                                                        <span class="team-name">{{ game.away_team.name }}</span>
+                                                                    </a>
+                                                                </div>
+                                                                <span class="bet-ratio-details">
+                                                                    <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
+                                                                </span>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% for sport in sports %}
+                    {% partial bet-section-tab-content %}
+                {% endfor %}
+            </div>
+            <div class="see-all-sports-btn-cover"
+                 data-aos="fade-up"
+                 data-aos-delay="150"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 {% endpartialdef %}
 {% partialdef sports-schedule-section-schedule-content %}
 <div class="single-view-schedule-content">
@@ -298,15 +400,15 @@
                         <div class="schedule-stats">
                             <div class="single-team">
                                 <div class="team-icon">
-                                    <img src="{{ game.home_team.icon.url }}"
+                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
                                          alt="{{ game.home_team.name }}"
                                          nonce="{{ request.csp_nonce }}">
                                 </div>
                                 <span class="team-name">{{ game.home_team.name }}</span>
                             </div>
                             <div class="date-times-vs">
-                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.datetime|time }}</span>
-                                <span class="date">{{ game.datetime|naturalday }}</span>
+                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.start_datetime|time }}</span>
+                                <span class="date">{{ game.start_datetime|naturalday }}</span>
                                 <img class="versace-icon"
                                      src="{% static 'peredion/images/sports-schedule/vs.png' %}"
                                      alt=""
@@ -314,7 +416,7 @@
                             </div>
                             <div class="single-team">
                                 <div class="team-icon">
-                                    <img src="{{ game.away_team.icon.url }}"
+                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
                                          alt="{{ game.away_team.name }}"
                                          nonce="{{ request.csp_nonce }}">
                                 </div>
@@ -330,7 +432,8 @@
                                     </div>
                         {% endcomment %}
                     </div>
-                    <div class="schedue-timer timer" data-date="30 Feb 2023 9:56:00 GMT+01:00">
+                    <div class="schedue-timer timer"
+                         data-date="{{ game|game_start_datetime }}">
                         <div class="time-starting-text">
                             <span class="txt">{% trans 'starting in' %}</span>
                             <img class="icon"
@@ -360,7 +463,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    {% endfor %}
 </div>
 {% endpartialdef %}
 {% partialdef sports-schedule-section-schedule-list %}
@@ -385,7 +488,7 @@
                 <div class="single-list-schedule">
                     <div class="single-team">
                         <div class="team-icon">
-                            <img src="{{ game.home_team.icon.url }}"
+                            <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
                                  alt="{{ game.home_team.name }}"
                                  nonce="{{ request.csp_nonce }}">
                         </div>
@@ -398,8 +501,8 @@
                     <div class="single-team">
                         <span class="team-name">{{ game.away_team.name }}</span>
                         <div class="team-icon">
-                            <img src="{{ game.away_team.icon.url }}"
-                                 alt=""
+                            <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                 alt="{{ game.away_team.name }}"
                                  nonce="{{ request.csp_nonce }}">
                         </div>
                     </div>
@@ -425,8 +528,8 @@
              data-aos-delay="100"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <h3 class="sub-title">{{ page.schedule_title }}</h3>
-            <h2 class="title">{{ page.schedule_subtitle }}</h2>
+            <h3 class="sub-title">{{ home_page.schedule_title }}</h3>
+            <h2 class="title">{{ home_page.schedule_subtitle }}</h2>
         </div>
         <div class="row">
             <div class="col-xl-6 col-lg-8 col-md-8 order-md-1 order-2"
@@ -582,11 +685,11 @@
                            data-aos-duration="500"
                            data-aos-easing="ease-in"
                            data-aos-delay="500">
-                            {% blocktrans timmed %}
-                            Now you’re ready to start placing
-                            <br />
-                            your bets online, so it’s time to make your selections.
-                           {% endblocktrans %}
+                            {% blocktrans trimmed %}
+                                Now you’re ready to start placing
+                                <br />
+                                your bets online, so it’s time to make your selections.
+                            {% endblocktrans %}
                         </p>
                     </div>
                 </div>
@@ -650,7 +753,7 @@
                      data-aos-easing="ease-in">
                     <div class="section-title if-lines-break title-white">
                         <h3 class="sub-title">{% trans 'Why we are best' %}</h3>
-                        <h2 class="title">{% trans 'We're proud to provide best services to our clients' %}</h2>
+                        <h2 class="title">{% trans "We're proud to provide best services to our clients" %}</h2>
                     </div>
                     <div class="part-img">
                         <img class="img-shape"
@@ -776,117 +879,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-{% endpartialdef %}
-{% partialdef testimonial-section %}
-<section class="testimonial">
-    <div class="global-shape style-3">
-        <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
-             alt=""
-             data-aos="fade-left"
-             data-aos-duration="500"
-             data-aos-offset="200"
-             data-aos-easing="ease-in"
-             data-aos-delay="400">
-    </div>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xl-8 col-lg-8"
-                 data-aos="fade-up"
-                 data-aos-delay="100"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <div class="section-title">
-                    <h3 class="sub-title">testimonials</h3>
-                    <h2 class="title">Client’s Valuable Feedback</h2>
-                </div>
-            </div>
-        </div>
-        <div class="testimonial-carousel owl-carousel owl-theme"
-             data-aos="fade-up"
-             data-aos-delay="150"
-             data-aos-duration="500"
-             data-aos-easing="ease-in">
-            <div class="single-testimonial">
-                <div class="testi-user-info">
-                    <div class="part-user-info">
-                        <span class="user-name">ruhio S albert</span>
-                        <span class="lottery-category">Est. Returns : $205.20</span>
-                        <span class="winning-date">( apr - 2022 )</span>
-                    </div>
-                    <div class="user-img-cover">
-                        <div class="part-img">
-                            <img src="{% static 'peredion/images/testimonial/user-1.jpg" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="part-feedback">
-                    <p>
-                        <img class="quot-1"
-                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
-                             alt="">
-                        Since it’s all by chance, enjoy picking your numbers or seeing what the
-                        lottery terminal generates Since it’s all by chance.
-                        <img class="quot-2"
-                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
-                             alt="">
-                    </p>
-                </div>
-            </div>
-            <div class="single-testimonial">
-                <div class="testi-user-info">
-                    <div class="part-user-info">
-                        <span class="user-name">Leah Stanley</span>
-                        <span class="lottery-category">Est. Returns : $425.20</span>
-                        <span class="winning-date">( Jan - 2022 )</span>
-                    </div>
-                    <div class="user-img-cover">
-                        <div class="part-img">
-                            <img src="{% static 'peredion/images/testimonial/user-2.png' %}" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="part-feedback">
-                    <p>
-                        <img class="quot-1"
-                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
-                             alt="">
-                        Since it’s all by chance, enjoy picking your numbers or seeing what the
-                        lottery terminal generates Since it’s all by chance.
-                        <img class="quot-2"
-                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
-                             alt="">
-                    </p>
-                </div>
-            </div>
-            <div class="single-testimonial">
-                <div class="testi-user-info">
-                    <div class="part-user-info">
-                        <span class="user-name">Megan Clayton</span>
-                        <span class="lottery-category">Est. Returns : $99.51</span>
-                        <span class="winning-date">( Dec - 2021 )</span>
-                    </div>
-                    <div class="user-img-cover">
-                        <div class="part-img">
-                            <img src="{% static 'peredion/images/testimonial/user-3.png' %}" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="part-feedback">
-                    <p>
-                        <img class="quot-1"
-                             src="{% static 'peredion/images/testimonial/quot-icon-1.png' %}"
-                             alt="">
-                        Since it’s all by chance, enjoy picking your numbers or seeing what the
-                        lottery terminal generates Since it’s all by chance.
-                        <img class="quot-2"
-                             src="{% static 'peredion/images/testimonial/quot-icon-2.png' %}"
-                             alt="">
-                    </p>
                 </div>
             </div>
         </div>

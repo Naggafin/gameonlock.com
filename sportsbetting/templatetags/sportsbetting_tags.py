@@ -13,8 +13,15 @@ def game_has_started(game):
 	return timezone.now().time() > game.start_datetime.time()
 
 
-@register.simple_tag
-def num_betting_lines_for_sport(sport):
+@register.filter
+def game_start_datetime(game):
+	format = '%d %b %Y %I:%M:%S %Z%z'
+	dt = game.start_datetime
+	return dt.strftime(format)
+
+
+@register.filter
+def num_betting_lines(sport):
 	lines = itertools.chain.from_iterable(
 		[
 			game.betting_lines.all()

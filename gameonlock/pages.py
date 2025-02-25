@@ -7,6 +7,8 @@ from sportsbetting.models import ScheduledGame, Sport
 
 
 class HomePage(Page):
+	template = "peredion/index.html"
+
 	about_title = models.CharField(
 		blank=True,
 		default="About us",
@@ -76,12 +78,8 @@ class HomePage(Page):
 
 	def get_context(self, request):
 		context = super().get_context(request)
-		# TODO: optimize later
-		context["sports"] = Sport.objects.prefetch_related(
-			"governing_bodies__leagues__ticket_entries"
-		).prefetch_related(
-			"governing_bodies__leagues__ticket_entries__home_team",
-			"governing_bodies__leagues__ticket_entries__away_team",
-		)
-		context["scheduled_games"] = ScheduledGame.objects.all()
+		context["sports"] = Sport.objects.prefetch_related('governing_bodies__leagues__schedule_games__betting_lines', 'governing_bodies__leagues__schedule_games__betting_lines__home_team', 'governing_bodies__leagues__schedule_games__betting_lines__away_team').all()
+		context["scheduled_games"] = ScheduledGame.objects.prefetch_related('home_team','away_team').all()
 		return context
+
+
