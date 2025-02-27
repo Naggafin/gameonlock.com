@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from sportsbetting.models import Sport, ScheduledGame
+from sportsbetting.models import ScheduledGame, Sport
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +23,14 @@ def csp_report_view(request):
 
 def home(request):
 	context = {
-		"sports": Sport.objects.prefetch_related('governing_bodies__leagues__schedule_games__betting_lines', 'governing_bodies__leagues__schedule_games__home_team', 'governing_bodies__leagues__schedule_games__away_team').all(),
-		'scheduled_games': ScheduledGame.objects.select_related('home_team','away_team').all()
+		"sports": Sport.objects.prefetch_related(
+			"scheduled_games",
+			"governing_bodies__leagues__scheduled_games__betting_lines",
+			"governing_bodies__leagues__scheduled_games__home_team",
+			"governing_bodies__leagues__scheduled_games__away_team",
+		).all(),
+		"scheduled_games": ScheduledGame.objects.select_related(
+			"home_team", "away_team"
+		).all(),
 	}
 	return render(request, "peredion/index.html", context)

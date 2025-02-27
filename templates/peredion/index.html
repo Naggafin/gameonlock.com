@@ -135,9 +135,11 @@
                 </span>
                 <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
                 <span class="single-sports-img">
-                    <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
+                    <img src="{% if sport.icon %}{{ sport.banner.url }}{% endif %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
                 </span>
-                <a href="#TODO" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+                <a href="#" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
             </div>
         </h2>
         <div class="sports-expanded-list">
@@ -245,6 +247,23 @@
              data-aos-duration="500"
              data-aos-easing="ease-in">
             <ul class="nav nav-pills" id="sports-tab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active"
+                            id="sports-all-tab"
+                            data-bs-toggle="pill"
+                            data-bs-target="#sports-all"
+                            type="button"
+                            role="tab"
+                            aria-controls="sports-all"
+                            aria-selected="true">
+                        <span class="sport-icon">
+                            <img src="{# TODO: assets/img/playing-bet/sports-icon/all-sports.png #}"
+                                 alt=""
+                                 nonce="{{ request.csp_nonce }}">
+                        </span>
+                        <span class="sport-name">{% trans 'All Sports' %}</span>
+                    </button>
+                </li>
                 {% for sport in sports %}
                     <li class="nav-item" role="presentation">
                         <button class="nav-link"
@@ -272,16 +291,27 @@
              data-aos-delay="200"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <div class="tab-pane fade active"
+            <div class="tab-pane fade show active"
                  id="sports-all"
                  role="tabpanel"
                  aria-labelledby="sports-all-tab">
-                {% for sport in sports %}
-                    <div class="accordion accordion-flush sports-accordion"
-                         id="accordion-{{ sport.slug_name }}-matches">
-                        <div class="accordion-item single-sports-item">
+                <div class="accordion accordion-flush sports-accordion"
+                     id="accordion-all-matches">
+                    {% for sport in sports %}
+                        <div class="accordion-item
+                                    {% if forloop.first %}single-sports-item{% endif %}">
                             <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
-                                <div class="sports-header">
+                                <button class="accordion-button sports-header
+                                               {% if not forloop.first %}collapse{% endif %}"
+                                        type="button"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#flush-{{ sport.slug_name }}-matches"
+                                        aria-expanded="{% if forloop.first %}
+                                                           true
+                                                       {% else %}
+                                                           false
+                                                       {% endif %}"
+                                        aria-controls="flush-{{ sport.slug_name }}-matches">
                                     <span class="single-sports-icon">
                                         <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
                                              alt=""
@@ -289,15 +319,18 @@
                                     </span>
                                     <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
                                     <span class="single-sports-img">
-                                        <img src="{{ sport_header_image }}" alt="" nonce="{{ request.csp_nonce }}">
+                                        <img src="{% if sport.icon %}{{ sport.banner.url }}{% endif %}"
+                                             alt=""
+                                             nonce="{{ request.csp_nonce }}">
                                     </span>
-                                    <a href="#TODO" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
-                                </div>
+                                    <a href="#" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+                                </button>
                             </h2>
                             <div id="flush-{{ sport.slug_name }}-matches"
-                                 class="accordion-collapse collapse show sports-expanded-list"
+                                 class="accordion-collapse collapse sports-expanded-list
+                                        {% if forloop.first %}show{% endif %}"
                                  aria-labelledby="{{ sport.slug_name }}-matches"
-                                 data-bs-parent="#accordion-{{ sport.slug_name }}-matches">
+                                 data-bs-parent="#accordion-all-matches">
                                 <div class="accordion-body sports-body">
                                     <div class="playing-sports-all">
                                         {% for governing_body in sport.governing_bodies.all %}
@@ -367,150 +400,24 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% for sport in sports %}
-                    {% partial bet-section-tab-content %}
-                {% endfor %}
             </div>
-            <div class="see-all-sports-btn-cover"
-                 data-aos="fade-up"
-                 data-aos-delay="150"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
-            </div>
+            {% comment %}
+            {% for sport in sports %}
+                {% partial bet-section-tab-content %}
+            {% endfor %}
+            {% endcomment %}
         </div>
-    </section>
-{% endpartialdef %}
-{% partialdef sports-schedule-section-schedule-content %}
-<div class="single-view-schedule-content">
-    <div class="tab-content" id="schedule-tab-content">
-        {% for game in scheduled_games %}
-            <div class="tab-pane fade show active"
-                 id="v-schedule-{{ forloop.counter|apnumber }}"
-                 role="tabpanel"
-                 aria-labelledby="schedule-{{ forloop.counter|apnumber }}-tab">
-                <div class="single-view-schedule">
-                    <div class="schedue-header">
-                        <span class="tournament-name">{{ game.league }}</span>
-                        <span class="stadium-name">{{ game.location }}</span>
-                    </div>
-                    <div class="schedule-body">
-                        <div class="schedule-stats">
-                            <div class="single-team">
-                                <div class="team-icon">
-                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                         alt="{{ game.home_team.name }}"
-                                         nonce="{{ request.csp_nonce }}">
-                                </div>
-                                <span class="team-name">{{ game.home_team.name }}</span>
-                            </div>
-                            <div class="date-times-vs">
-                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.start_datetime|time }}</span>
-                                <span class="date">{{ game.start_datetime|naturalday }}</span>
-                                <img class="versace-icon"
-                                     src="{% static 'peredion/images/sports-schedule/vs.png' %}"
-                                     alt=""
-                                     nonce="{{ request.csp_nonce }}">
-                            </div>
-                            <div class="single-team">
-                                <div class="team-icon">
-                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                         alt="{{ game.away_team.name }}"
-                                         nonce="{{ request.csp_nonce }}">
-                                </div>
-                                <span class="team-name">{{ game.away_team.name }}</span>
-                            </div>
-                        </div>
-                        {% comment %}
-                                    TODO: maybe?
-                                    <div class="placing-bet">
-                                        <a href="#0" class="place-a-bet placed">0.25</a>
-                                        <a href="#0" class="place-a-bet">1.42</a>
-                                        <a href="#0" class="place-a-bet">4.32</a>
-                                    </div>
-                        {% endcomment %}
-                    </div>
-                    <div class="schedue-timer timer"
-                         data-date="{{ game|game_start_datetime }}">
-                        <div class="time-starting-text">
-                            <span class="txt">{% trans 'starting in' %}</span>
-                            <img class="icon"
-                                 src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
-                                 alt=""
-                                 nonce="{{ request.csp_nonce }}">
-                        </div>
-                        <div class="all-timer-task">
-                            <div class="single-time">
-                                <span class="number day">01</span>
-                                <span class="title">Days</span>
-                            </div>
-                            <div class="single-time">
-                                <span class="number hour">24</span>
-                                <span class="title">Hours</span>
-                            </div>
-                            <div class="single-time">
-                                <span class="number minute">60</span>
-                                <span class="title">Minutes</span>
-                            </div>
-                            <div class="single-time">
-                                <span class="number second">60</span>
-                                <span class="title">Seconds</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="see-all-sports-btn-cover"
+             data-aos="fade-up"
+             data-aos-delay="150"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
         </div>
-    {% endfor %}
-</div>
-{% endpartialdef %}
-{% partialdef sports-schedule-section-schedule-list %}
-<div class="all-schedule-list">
-    <div class="nav flex-column nav-pills"
-         id="v-schedule-tab"
-         role="tablist"
-         aria-orientation="vertical">
-        {% for game in scheduled_games %}
-            <button class="nav-link active"
-                    id="schedule-one-tab"
-                    data-bs-toggle="pill"
-                    data-bs-target="#v-schedule-{{ forloop.counter|apnumber }}"
-                    type="button"
-                    role="tab"
-                    aria-controls="v-schedule-{{ forloop.counter|apnumber }}"
-                    aria-selected="true"
-                    data-aos="fade-left"
-                    data-aos-delay="150"
-                    data-aos-duration="500"
-                    data-aos-easing="ease-in">
-                <div class="single-list-schedule">
-                    <div class="single-team">
-                        <div class="team-icon">
-                            <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                 alt="{{ game.home_team.name }}"
-                                 nonce="{{ request.csp_nonce }}">
-                        </div>
-                        <span class="team-name">{{ game.home_team.name }}</span>
-                    </div>
-                    <img class="versace-icon"
-                         src="{% static 'peredion/images/sports-schedule/vs-sm.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                    <div class="single-team">
-                        <span class="team-name">{{ game.away_team.name }}</span>
-                        <div class="team-icon">
-                            <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                 alt="{{ game.away_team.name }}"
-                                 nonce="{{ request.csp_nonce }}">
-                        </div>
-                    </div>
-                </div>
-            </button>
-        {% endfor %}
     </div>
-</div>
+</section>
 {% endpartialdef %}
 {% partialdef sports-schedule-section %}
 <section class="sports-schedule">
@@ -536,8 +443,141 @@
                  data-aos="fade-up"
                  data-aos-delay="150"
                  data-aos-duration="500"
-                 data-aos-easing="ease-in">{% partial sports-schedule-section-schedule-content %}</div>
-            <div class="col-xl-6 col-lg-4 col-md-4 order-md-2 order-1">{% partial sports-schedule-section-schedule-list %}</div>
+                 data-aos-easing="ease-in">
+                <div class="single-view-schedule-content">
+                    <div class="tab-content" id="schedule-tab-content">
+                        {% for game in scheduled_games %}
+                            <div class="tab-pane fade
+                                        {% if forloop.first %}show active{% endif %}"
+                                 id="v-schedule-{{ forloop.counter|apnumber }}"
+                                 role="tabpanel"
+                                 aria-labelledby="schedule-{{ forloop.counter|apnumber }}-tab">
+                                <div class="single-view-schedule">
+                                    <div class="schedue-header">
+                                        <span class="tournament-name">{{ game.league }}</span>
+                                        <span class="stadium-name">{{ game.location }}</span>
+                                    </div>
+                                    <div class="schedule-body">
+                                        <div class="schedule-stats">
+                                            <div class="single-team">
+                                                <div class="team-icon">
+                                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                                         alt="{{ game.home_team.name }}"
+                                                         nonce="{{ request.csp_nonce }}">
+                                                </div>
+                                                <span class="team-name">{{ game.home_team.name }}</span>
+                                            </div>
+                                            <div class="date-times-vs">
+                                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.start_datetime|time }}</span>
+                                                <span class="date">{{ game.start_datetime|naturalday }}</span>
+                                                <img class="versace-icon"
+                                                     src="{% static 'peredion/images/sports-schedule/vs.png' %}"
+                                                     alt=""
+                                                     nonce="{{ request.csp_nonce }}">
+                                            </div>
+                                            <div class="single-team">
+                                                <div class="team-icon">
+                                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                                         alt="{{ game.away_team.name }}"
+                                                         nonce="{{ request.csp_nonce }}">
+                                                </div>
+                                                <span class="team-name">{{ game.away_team.name }}</span>
+                                            </div>
+                                        </div>
+                                        {% comment %}
+                                    TODO: maybe?
+                                    <div class="placing-bet">
+                                        <a href="#0" class="place-a-bet placed">0.25</a>
+                                        <a href="#0" class="place-a-bet">1.42</a>
+                                        <a href="#0" class="place-a-bet">4.32</a>
+                                    </div>
+                                        {% endcomment %}
+                                    </div>
+                                    <div class="schedue-timer timer"
+                                         data-date="{{ game|game_start_datetime }}">
+                                        <div class="time-starting-text">
+                                            <span class="txt">{% trans 'starting in' %}</span>
+                                            <img class="icon"
+                                                 src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
+                                                 alt=""
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </div>
+                                        <div class="all-timer-task">
+                                            <div class="single-time">
+                                                <span class="number day">01</span>
+                                                <span class="title">Days</span>
+                                            </div>
+                                            <div class="single-time">
+                                                <span class="number hour">24</span>
+                                                <span class="title">Hours</span>
+                                            </div>
+                                            <div class="single-time">
+                                                <span class="number minute">60</span>
+                                                <span class="title">Minutes</span>
+                                            </div>
+                                            <div class="single-time">
+                                                <span class="number second">60</span>
+                                                <span class="title">Seconds</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-4 col-md-4 order-md-2 order-1">
+                <div class="all-schedule-list">
+                    <div class="nav flex-column nav-pills"
+                         id="v-schedule-tab"
+                         role="tablist"
+                         aria-orientation="vertical">
+                        {% for game in scheduled_games %}
+                            <button class="nav-link
+                                           {% if forloop.first %}active{% endif %}"
+                                    id="schedule-one-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#v-schedule-{{ forloop.counter|apnumber }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="v-schedule-{{ forloop.counter|apnumber }}"
+                                    aria-selected="true"
+                                    data-aos="fade-left"
+                                    data-aos-delay="{% if forloop.first %}
+                                                        150
+                                                    {% else %}
+                                                        200
+                                                    {% endif %}"
+                                    data-aos-duration="500"
+                                    data-aos-easing="ease-in">
+                                <div class="single-list-schedule">
+                                    <div class="single-team">
+                                        <div class="team-icon">
+                                            <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                                 alt="{{ game.home_team.name }}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </div>
+                                        <span class="team-name">{{ game.home_team.name }}</span>
+                                    </div>
+                                    <img class="versace-icon"
+                                         src="{% static 'peredion/images/sports-schedule/vs-sm.png' %}"
+                                         alt=""
+                                         nonce="{{ request.csp_nonce }}">
+                                    <div class="single-team">
+                                        <span class="team-name">{{ game.away_team.name }}</span>
+                                        <div class="team-icon">
+                                            <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                                 alt="{{ game.away_team.name }}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="see-all-schedule-btn-cover"
              data-aos="fade-up"

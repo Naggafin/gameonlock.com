@@ -15,7 +15,7 @@ def game_has_started(game):
 
 @register.filter
 def game_start_datetime(game):
-	format = '%d %b %Y %I:%M:%S %Z%z'
+	format = "%d %b %Y %I:%M:%S %Z%z"
 	dt = game.start_datetime
 	return dt.strftime(format)
 
@@ -25,8 +25,8 @@ def num_betting_lines(sport):
 	lines = itertools.chain.from_iterable(
 		[
 			game.betting_lines.all()
-			for game in sport.schedule_games.all()
+			for game in sport.scheduled_games.all()
 			if not game_has_started(game)
 		]
 	)
-	return len(lines)
+	return len(list(lines))

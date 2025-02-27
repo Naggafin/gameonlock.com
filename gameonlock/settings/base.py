@@ -46,7 +46,7 @@ INSTALLED_APPS = [
 	"django.contrib.staticfiles",
 	"django.contrib.sites",
 	"django.contrib.flatpages",
-	'django.contrib.humanize',
+	"django.contrib.humanize",
 	# oscar
 	"oscar.config.Shop",
 	"oscar.apps.analytics.apps.AnalyticsConfig",
@@ -315,14 +315,14 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
 
 SITE_UI_VARS = {
-	'home_page': {
-		'about_title': _('About us'),
-		'about_subtitle': _("We provide the most reliable & legal betting"),
-		'about_content': '',
-		'bet_title': _('Available Bets'),
-		'bet_subtitle': _("Choose Your Match & Place A Bet"),
-		'schedule_title': _('Next Schedule'),
-		'schedule_subtitle': _("All Upcoming Matches"),
+	"home_page": {
+		"about_title": _("About us"),
+		"about_subtitle": _("We provide the most reliable & legal betting"),
+		"about_content": "",
+		"bet_title": _("Available Bets"),
+		"bet_subtitle": _("Choose Your Match & Place A Bet"),
+		"schedule_title": _("Next Schedule"),
+		"schedule_subtitle": _("All Upcoming Matches"),
 	},
 }
 

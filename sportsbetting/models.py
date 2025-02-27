@@ -16,6 +16,7 @@ from slugify import slugify
 
 class Sport(models.Model):
 	icon = models.ImageField(null=True)
+	banner = models.ImageField(null=True)
 	name = models.CharField(max_length=100, unique=True)
 	description = models.TextField(blank=True, null=True)
 	slug_name = models.SlugField(unique=True, blank=True)
@@ -194,16 +195,16 @@ class Player(auto_prefetch.Model):
 
 class ScheduledGame(auto_prefetch.Model):
 	sport = auto_prefetch.ForeignKey(
-		Sport, on_delete=models.CASCADE, related_name="schedule_games"
+		Sport, on_delete=models.CASCADE, related_name="scheduled_games"
 	)
 	league = auto_prefetch.ForeignKey(
-		League, on_delete=models.CASCADE, related_name="schedule_games"
+		League, on_delete=models.CASCADE, related_name="scheduled_games"
 	)
 	home_team = auto_prefetch.ForeignKey(
-		Team, on_delete=models.CASCADE, related_name="schedule_games_home_team"
+		Team, on_delete=models.CASCADE, related_name="scheduled_games_home_team"
 	)
 	away_team = auto_prefetch.ForeignKey(
-		Team, on_delete=models.CASCADE, related_name="schedule_games_away_team"
+		Team, on_delete=models.CASCADE, related_name="scheduled_games_away_team"
 	)
 	home_team_final_score = models.IntegerField(blank=True, null=True)
 	away_team_final_score = models.IntegerField(blank=True, null=True)
