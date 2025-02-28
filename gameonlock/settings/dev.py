@@ -89,7 +89,7 @@ HAYSTACK_CONNECTIONS = {
 # Debug Toolbar settings
 INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
 try:
-	index = MIDDLEWARE.index("django.contrib.sessions.middleware.SessionMiddleware") + 1  # noqa: F405
+	index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
 except ValueError:
 	index = 0
 MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405

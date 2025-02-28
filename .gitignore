@@ -96,3 +96,4 @@ local_settings.py
 *.log
 *.bak
 schema.yml
+fixtures/

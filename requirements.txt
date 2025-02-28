@@ -1,13 +1,16 @@
+cachetools
 django-allauth
 django-allauth-ui
 django-auto-prefetch
 django-debug-toolbar
 django-fastdev
+django-guardian
 django-htmx
 django-machina
 django-model-utils
 django-money
 django-oscar
+django-paypal
 django-phonenumber-field[phonenumbers]
 django-redis
 django-silk
@@ -35,6 +38,8 @@ python-dotenv
 python-telegram-handler
 redis
 ruff
+slugify
 sorl-thumbnail
 uv
+wagtail
 wheel

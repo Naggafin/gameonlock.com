@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static i18n humanize partials %}
 {% load sportsbetting_tags %}
+{% block js %}{{ block.super }}{% endblock %}
 {% partialdef banner-section %}
 <section class="banner">
     <div class="container">
@@ -335,65 +336,67 @@
                                     <div class="playing-sports-all">
                                         {% for governing_body in sport.governing_bodies.all %}
                                             {% for league in governing_body.leagues.all %}
-                                                <div class="single-tournament">
-                                                    <div class="tournament-title">
-                                                        <span class="title-text">{{ league.name }}</span>
-                                                        <span class="match-quantity">({{ league.scheduled_games.all|length }})</span>
-                                                    </div>
-                                                    <div class="all-tournament-match">
-                                                        {% for game in league.scheduled_games.all %}
-                                                            <div class="single-t-match
-                                                                        {% if game|game_has_started %}match-in-play{% endif %}">
-                                                                <div class="match-time">
-                                                                    <span class="time-icon">
-                                                                        <i class="fa-regular fa-clock"></i>
-                                                                    </span>
-                                                                    <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                                                                    <span class="m-time">{{ game.start_datetime|time }}</span>
-                                                                </div>
-                                                                <div class="playing-teams">
-                                                                    <div class="single-team">
-                                                                        <div class="team-descr">
-                                                                            <span class="team-icon">
-                                                                                <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                                                     alt="{{ game.home_team.name }}">
-                                                                            </span>
+                                                {% if league.scheduled_games.all|length > 0 %}
+                                                    <div class="single-tournament">
+                                                        <div class="tournament-title">
+                                                            <span class="title-text">{{ league.name }}</span>
+                                                            <span class="match-quantity">({{ league.scheduled_games.all|length }})</span>
+                                                        </div>
+                                                        <div class="all-tournament-match">
+                                                            {% for game in league.scheduled_games.all %}
+                                                                <div class="single-t-match
+                                                                            {% if game|game_has_started %}match-in-play{% endif %}">
+                                                                    <div class="match-time">
+                                                                        <span class="time-icon">
+                                                                            <i class="fa-regular fa-clock"></i>
+                                                                        </span>
+                                                                        <span class="m-date">{{ game.start_datetime|naturalday }}</span>
+                                                                        <span class="m-time">{{ game.start_datetime|time }}</span>
+                                                                    </div>
+                                                                    <div class="playing-teams">
+                                                                        <div class="single-team">
+                                                                            <div class="team-descr">
+                                                                                <span class="team-icon">
+                                                                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                                                                         alt="{{ game.home_team.name }}">
+                                                                                </span>
+                                                                                <span class="team-name">{{ game.home_team.name }}</span>
+                                                                            </div>
+                                                                            <div class="team-score">0</div>
+                                                                        </div>
+                                                                        <div class="single-team">
+                                                                            <div class="team-descr">
+                                                                                <span class="team-icon">
+                                                                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                                                                         alt="{{ game.away_team.name }}">
+                                                                                </span>
+                                                                                <span class="team-name">{{ game.away_team.name }}</span>
+                                                                            </div>
+                                                                            <div class="team-score">0</div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="placing-bet">
+                                                                        <a href="#0" class="single-bet-place">
+                                                                            <span class="bet-ratio">0.25</span>
                                                                             <span class="team-name">{{ game.home_team.name }}</span>
-                                                                        </div>
-                                                                        <div class="team-score">0</div>
-                                                                    </div>
-                                                                    <div class="single-team">
-                                                                        <div class="team-descr">
-                                                                            <span class="team-icon">
-                                                                                <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                                                     alt="{{ game.away_team.name }}">
-                                                                            </span>
+                                                                        </a>
+                                                                        <a href="#0" class="single-bet-place draw-box">
+                                                                            <span class="bet-ratio">1.42</span>
+                                                                            <span class="team-name">draw</span>
+                                                                        </a>
+                                                                        <a href="#0" class="single-bet-place">
+                                                                            <span class="bet-ratio">4.32</span>
                                                                             <span class="team-name">{{ game.away_team.name }}</span>
-                                                                        </div>
-                                                                        <div class="team-score">0</div>
+                                                                        </a>
                                                                     </div>
+                                                                    <span class="bet-ratio-details">
+                                                                        <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
+                                                                    </span>
                                                                 </div>
-                                                                <div class="placing-bet">
-                                                                    <a href="#0" class="single-bet-place">
-                                                                        <span class="bet-ratio">0.25</span>
-                                                                        <span class="team-name">{{ game.home_team.name }}</span>
-                                                                    </a>
-                                                                    <a href="#0" class="single-bet-place draw-box">
-                                                                        <span class="bet-ratio">1.42</span>
-                                                                        <span class="team-name">draw</span>
-                                                                    </a>
-                                                                    <a href="#0" class="single-bet-place">
-                                                                        <span class="bet-ratio">4.32</span>
-                                                                        <span class="team-name">{{ game.away_team.name }}</span>
-                                                                    </a>
-                                                                </div>
-                                                                <span class="bet-ratio-details">
-                                                                    <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                                </span>
-                                                            </div>
-                                                        {% endfor %}
+                                                            {% endfor %}
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                {% endif %}
                                             {% endfor %}
                                         {% endfor %}
                                     </div>
@@ -446,7 +449,7 @@
                  data-aos-easing="ease-in">
                 <div class="single-view-schedule-content">
                     <div class="tab-content" id="schedule-tab-content">
-                        {% for game in scheduled_games %}
+                        {% for game in scheduled_games|slice:":3" %}
                             <div class="tab-pane fade
                                         {% if forloop.first %}show active{% endif %}"
                                  id="v-schedule-{{ forloop.counter|apnumber }}"
@@ -485,12 +488,12 @@
                                             </div>
                                         </div>
                                         {% comment %}
-                                    TODO: maybe?
-                                    <div class="placing-bet">
-                                        <a href="#0" class="place-a-bet placed">0.25</a>
-                                        <a href="#0" class="place-a-bet">1.42</a>
-                                        <a href="#0" class="place-a-bet">4.32</a>
-                                    </div>
+                                        TODO: maybe?
+                                        <div class="placing-bet">
+                                            <a href="#0" class="place-a-bet placed">0.25</a>
+                                            <a href="#0" class="place-a-bet">1.42</a>
+                                            <a href="#0" class="place-a-bet">4.32</a>
+                                        </div>
                                         {% endcomment %}
                                     </div>
                                     <div class="schedue-timer timer"
@@ -533,10 +536,10 @@
                          id="v-schedule-tab"
                          role="tablist"
                          aria-orientation="vertical">
-                        {% for game in scheduled_games %}
+                        {% for game in scheduled_games|slice:":3" %}
                             <button class="nav-link
                                            {% if forloop.first %}active{% endif %}"
-                                    id="schedule-one-tab"
+                                    id="schedule-{{ forloop.counter|apnumber }}-tab"
                                     data-bs-toggle="pill"
                                     data-bs-target="#v-schedule-{{ forloop.counter|apnumber }}"
                                     type="button"
@@ -547,7 +550,11 @@
                                     data-aos-delay="{% if forloop.first %}
                                                         150
                                                     {% else %}
-                                                        200
+                                                        {% if forloop.counter < 7 %}
+                                                            {% widthratio forloop.counter 1 50 as counter %} {{ counter|add:150 }}
+                                                        {% else %}
+                                                            500
+                                                        {% endif %}
                                                     {% endif %}"
                                     data-aos-duration="500"
                                     data-aos-easing="ease-in">

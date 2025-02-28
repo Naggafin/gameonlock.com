@@ -119,7 +119,6 @@
         setTimeout(function() {
             ball_Img.removeClass('animated');
         }, 2500);
-        
     });
 
     $(document).ready(function($){

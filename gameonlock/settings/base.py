@@ -121,6 +121,7 @@ SITE_ID = 1
 MIDDLEWARE = [
 	"django.middleware.security.SecurityMiddleware",
 	"django.contrib.sessions.middleware.SessionMiddleware",
+	"csp.middleware.CSPMiddleware",
 	"django.middleware.locale.LocaleMiddleware",
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
@@ -136,7 +137,6 @@ MIDDLEWARE = [
 	"wagtail.contrib.redirects.middleware.RedirectMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 	"django_user_agents.middleware.UserAgentMiddleware",
-	"csp.middleware.CSPMiddleware",
 ]
 
 ROOT_URLCONF = "gameonlock.urls"

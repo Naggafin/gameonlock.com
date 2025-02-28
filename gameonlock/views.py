@@ -24,7 +24,7 @@ def csp_report_view(request):
 def home(request):
 	context = {
 		"sports": Sport.objects.prefetch_related(
-			"scheduled_games",
+			"scheduled_games__betting_lines",
 			"governing_bodies__leagues__scheduled_games__betting_lines",
 			"governing_bodies__leagues__scheduled_games__home_team",
 			"governing_bodies__leagues__scheduled_games__away_team",

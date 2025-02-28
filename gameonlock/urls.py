@@ -41,6 +41,7 @@ internatonalized_patterns = i18n_patterns(
 
 urlpatterns = [
 	path("admin/", admin.site.urls),
+	path("csp-report/", views.csp_report_view, name="csp_report"),
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
 ] + internatonalized_patterns
