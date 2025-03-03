@@ -1,221 +1,224 @@
-{% load static i18n partials %}
-{% partialdef nav-section %}
-<div class="header animated">
-    <div class="top-bar topbar-transparent">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col-xl-5 col-lg-5 col-md-7">
-                    <div class="left-side">
-                        <div class="single-bar">
-                            <span class="dashboard-overview">
-                                <span class="part-icon">
-                                    <i class="fa-regular fa-circle-user"></i>
-                                </span>
-                                <span class="part-text">hi, <span class="user-name">{{ request.user }}</span></span>
-                            </span>
-                        </div>
-                        {% if request.user.email %}
+{% load static i18n %}
+{% get_available_languages as languages %}
+<header>
+    <div class="header animated">
+        <div class="top-bar topbar-transparent">
+            <div class="container">
+                <div class="row justify-content-between">
+                    <div class="col-xl-5 col-lg-5 col-md-7">
+                        <div class="left-side">
                             <div class="single-bar">
                                 <span class="dashboard-overview">
                                     <span class="part-icon">
-                                        <i class="fa-regular fa-envelope"></i>
+                                        <i class="fa-regular fa-circle-user"></i>
                                     </span>
-                                    <span class="part-text">{{ request.user.email }}</span>
+                                    <span class="part-text">{% trans 'hi,' %} <span class="user-name">{{ request.user }}</span></span>
                                 </span>
                             </div>
-                        {% endif %}
-                        <div class="single-bar dropdown">
-                            <a href="#"
-                               role="button"
-                               id="languageMenuLink"
-                               data-bs-toggle="dropdown"
-                               aria-expanded="false"
-                               class="dashboard-overview">
-                                <span class="part-icon">
-                                    <i class="fa-regular fa-globe"></i>
-                                </span>
-                                <span class="part-text lang-display">{{ request.LANGUAGE_CODE }}</span>
-                            </a>
-                            <ul class="dropdown-menu lang-item" aria-labelledby="languageMenuLink">
-                                {% for lang_code, lang_name in languages %}
-                                    {% language lang_code %}
-                                        <li>
-                                            <a class="dropdown-item"
-                                               href="{% url request.resolver_match.url_name %}">{{ lang_name }}</a>
-                                        </li>
-                                    {% endlanguage %}
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xl-5 col-lg-5 col-md-5">
-                    <div class="right-side">
-                        <div class="single-bar">
-                            <span class="part-icon">
-                                <i class="fa-regular fa-calendars"></i>
-                            </span>
-                            <span class="part-text">
-                                <span id="date"></span>
-                                <span id="month"></span>
-                                <span id="year"></span>
-                            </span>
-                        </div>
-                        <div class="single-bar">
-                            <span class="part-icon">
-                                <i class="fa-solid fa-timer"></i>
-                            </span>
-                            <span class="part-text"><span class="timer" id="hours"></span>:<span class="timer" id="minutes"></span>:<span class="timer" id="seconds"></span></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mobile-navbar">
-        <div class="container">
-            <div class="row">
-                <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
-                    <a href="{% url 'index' %}" class="mobile-logo">
-                        <img src="{% static 'peredion/img/logo/mobile-logo.png' %}"
-                             alt="{% trans 'logo' %}"
-                             nonce="{{ request.csp_nonce }}">
-                    </a>
-                </div>
-                <div class="col-6 col-xl-none col-lg-none col-lg-block">
-                    <button class="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="{% trans 'Toggle navigation' %}">
-                        <i class="fa-light fa-bars"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="mainmenu">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <div class="scalation">
-                        <div class="row">
-                            <div class="col-xl-5 col-lg-5">
-                                <ul class="navbar-nav nn-left">
-                                    <li class="nav-item">
-                                        {% url 'index' as url %}
-                                        <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'home' %}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        {# TODO: this should direct to a wagtail page #}
-                                        {% url 'about' as url %}
-                                        <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'about us' %}</a>
-                                    </li>
-                                    <li class="nav-item dropdown">
-                                        {# TODO #}
-                                        <a class="nav-link dropdown-toggle"
-                                           href="#"
-                                           id="betDropdown"
-                                           role="button"
-                                           data-bs-toggle="dropdown"
-                                           aria-expanded="false">{% trans 'all bets' %}</a>
-                                        <ul class="dropdown-menu" aria-labelledby="betDropdown">
-                                            <li>
-                                                <a class="dropdown-item" href="#">all bets</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">in-play</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">upcoming</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">finished</a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item" href="#">bet details</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="nav-item">
-                                        {% url 'contact' as url %}
-                                        <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'contact us' %}</a>
-                                    </li>
+                            {% if request.user.email %}
+                                <div class="single-bar">
+                                    <span class="dashboard-overview">
+                                        <span class="part-icon">
+                                            <i class="fa-regular fa-envelope"></i>
+                                        </span>
+                                        <span class="part-text">{{ request.user.email }}</span>
+                                    </span>
+                                </div>
+                            {% endif %}
+                            <div class="single-bar dropdown">
+                                <a href="javascript:void(0);"
+                                   role="button"
+                                   id="languageMenuLink"
+                                   data-bs-toggle="dropdown"
+                                   aria-expanded="false"
+                                   class="dashboard-overview">
+                                    <span class="part-icon">
+                                        <i class="fa-regular fa-globe"></i>
+                                    </span>
+                                    <span class="part-text lang-display">{{ request.LANGUAGE_CODE }}</span>
+                                </a>
+                                <ul class="dropdown-menu lang-item" aria-labelledby="languageMenuLink">
+                                    {% for lang_code, lang_name in languages %}
+                                        {% if lang_code != request.LANGUAGE_CODE %}
+                                            {% language lang_code %}
+                                                <li>
+                                                    <form method="post" action="{% url 'set_language' %}" class="language-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="language" value="{{ lang_code }}">
+                                                        <button type="submit" class="dropdown-item">{% trans lang_name %}</button>
+                                                    </form>
+                                                </li>
+                                            {% endlanguage %}
+                                        {% endif %}
+                                    {% endfor %}
                                 </ul>
                             </div>
-                            <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
-                                <div class="logo">
-                                    <a href="{% url 'index' %}">
-                                        <img src="{% static 'peredion/img/logo/logo-1.png' %}"
-                                             alt="{% trans 'logo' %}">
-                                    </a>
-                                </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-5 col-lg-5 col-md-5">
+                        <div class="right-side">
+                            <div class="single-bar">
+                                <span class="part-icon">
+                                    <i class="fa-regular fa-calendars"></i>
+                                </span>
+                                <span class="part-text">
+                                    <span id="date"></span>
+                                    <span id="month"></span>
+                                    <span id="year"></span>
+                                </span>
                             </div>
-                            <div class="col-xl-5 col-lg-5">
-                                <ul class="navbar-nav nn-right">
-                                    <li class="nav-item dropdown">
-                                        {# TODO: direct to wagtail articles; detect active #}
-                                        <a class="nav-link" href="#">{% trans 'blog' %}</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        {% url 'faq' as url %}
-                                        <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'faq' %}</a>
-                                    </li>
-                                    {% if request.user.is_authenticated %}
-                                        {# TODO #}
+                            <div class="single-bar">
+                                <span class="part-icon">
+                                    <i class="fa-solid fa-timer"></i>
+                                </span>
+                                <span class="part-text"><span class="timer" id="hours"></span>:<span class="timer" id="minutes"></span>:<span class="timer" id="seconds"></span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mobile-navbar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
+                        <a href="{% url 'index' %}" class="mobile-logo">
+                            <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
+                                 alt="{% trans 'logo' %}"
+                                 nonce="{{ request.csp_nonce }}">
+                        </a>
+                    </div>
+                    <div class="col-6 col-xl-none col-lg-none col-lg-block">
+                        <button class="navbar-toggler"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target="#navbarSupportedContent"
+                                aria-controls="navbarSupportedContent"
+                                aria-expanded="false"
+                                aria-label="{% trans 'Toggle navigation' %}">
+                            <i class="fa-light fa-bars"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mainmenu">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <div class="scalation">
+                            <div class="row">
+                                <div class="col-xl-5 col-lg-5">
+                                    <ul class="navbar-nav nn-left">
+                                        <li class="nav-item">
+                                            {% url 'index' as url %}
+                                            <a class="nav-link
+                                                      {% if request.path == url %}active{% endif %}"
+                                               href="{{ url }}">{% trans 'home' %}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            {# TODO: this should direct to a wagtail page #}
+                                            {% url 'about' as url %}
+                                            <a class="nav-link
+                                                      {% if request.path == url %}active{% endif %}"
+                                               href="{{ url }}">{% trans 'about us' %}</a>
+                                        </li>
                                         <li class="nav-item dropdown">
+                                            {# TODO #}
                                             <a class="nav-link dropdown-toggle"
-                                               href="#"
-                                               id="dashboardDropdown"
+                                               href="javascript:void(0);"
+                                               id="betDropdown"
                                                role="button"
                                                data-bs-toggle="dropdown"
-                                               aria-expanded="false">{% trans 'dashboard' %}</a>
-                                            <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                                               aria-expanded="false">{% trans 'all bets' %}</a>
+                                            <ul class="dropdown-menu" aria-labelledby="betDropdown">
                                                 <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'account' %}</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">all bets</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'bet history' %}</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">in-play</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'transaction' %}</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">upcoming</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'deposit' %}</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">finished</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'withdrawal' %}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'referral' %}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="#">{% trans 'settings' %}</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">bet details</a>
                                                 </li>
                                             </ul>
                                         </li>
-                                    {% else %}
-                                    {% endif %}
-                                </ul>
+                                        <li class="nav-item">
+                                            {% url 'contact' as url %}
+                                            <a class="nav-link
+                                                      {% if request.path == url %}active{% endif %}"
+                                               href="{{ url }}">{% trans 'contact us' %}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
+                                    <div class="logo">
+                                        <a href="{% url 'index' %}">
+                                            <img src="{% static 'peredion/images/logo/logo-1.png' %}"
+                                                 alt="{% trans 'logo' %}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-xl-5 col-lg-5">
+                                    <ul class="navbar-nav nn-right">
+                                        <li class="nav-item dropdown">
+                                            {# TODO: direct to wagtail articles; detect active #}
+                                            <a class="nav-link" href="javascript:void(0);">{% trans 'blog' %}</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            {% url 'faq' as url %}
+                                            <a class="nav-link
+                                                      {% if request.path == url %}active{% endif %}"
+                                               href="{{ url }}">{% trans 'faq' %}</a>
+                                        </li>
+                                        {% if request.user.is_authenticated %}
+                                            {# TODO #}
+                                            <li class="nav-item dropdown">
+                                                <a class="nav-link dropdown-toggle"
+                                                   href="javascript:void(0);"
+                                                   id="dashboardDropdown"
+                                                   role="button"
+                                                   data-bs-toggle="dropdown"
+                                                   aria-expanded="false">{% trans 'dashboard' %}</a>
+                                                <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'account' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'bet history' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'transaction' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'deposit' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'withdrawal' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'referral' %}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'settings' %}</a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
-{% endpartialdef %}
-<header>
-    {% partial nav-section %}
 </header>

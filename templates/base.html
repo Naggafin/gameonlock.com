@@ -13,11 +13,8 @@
         <meta property="og:title" content="TODO" />
         <meta property="og:description" content="TODO" />
         <meta property="og:image" content="TODO" />
-        <!-- Mobile Specific -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- PAGE TITLE HERE -->
         <title>{% trans 'Game-on-Lock' %}</title>
-        <!-- FAVICONS ICON -->
         <link rel="shortcut icon"
               type="image/x-icon"
               href="{% static 'images/favicon.ico' %}" />
@@ -98,6 +95,9 @@
                  x-data></div>
         {% endblock %}
         {% block header %}
+            {% if request.user.is_authenticated %}
+                {% include 'peredion/elements/bet-slip.html' %}
+            {% endif %}
             {% include 'peredion/elements/header.html' %}
         {% endblock %}
         <div>
@@ -106,29 +106,11 @@
         </div>
         {% block footer %}
             {% include 'peredion/elements/footer.html' %}
-        {% endblock %}
-        {% block scroll-elements %}
-            <!-- scroll down button begin -->
-            <div class="scroll-down">
-                <div class="container">
-                    <a href="#0" class="scroll-down-btn">
-                        <span class="straight-line"></span>
-                        <span class="arrow-icon">
-                            <i class="fa-light fa-angle-down"></i>
-                            <i class="fa-light fa-angle-down"></i>
-                            <i class="fa-light fa-angle-down"></i>
-                        </span>
-                    </a>
-                </div>
-            </div>
-            <!-- scroll down button end -->
-            <!-- back to top button begin -->
             <div class="back-to-top-btn">
                 <a href="#">
                     <i class="fa-light fa-turn-up"></i>
                 </a>
             </div>
-            <!-- back to top button end -->
         {% endblock %}
         {% block js %}
             <!-- jQuery js -->
@@ -157,9 +139,6 @@
                     nonce="{{ request.csp_nonce }}"></script>
             <!-- main script js -->
             <script src="{% static 'peredion/js/main.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- placing bet js -->
-            <script src="{% static 'peredion/js/placing-bet.js' %}"
                     nonce="{{ request.csp_nonce }}"></script>
         {% endblock %}
     </body>

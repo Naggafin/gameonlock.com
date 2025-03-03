@@ -2,67 +2,6 @@
 {% load static i18n humanize partials %}
 {% load sportsbetting_tags %}
 {% block js %}{{ block.super }}{% endblock %}
-{% partialdef banner-section %}
-<section class="banner">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-xxl-2 col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-none align-items-end">
-                <div class="part-img img-1">
-                    <img class="img-shape img-shape-1"
-                         src="{% static 'peredion/images/banner/img-shape-1.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                    <img class="main-img"
-                         src="{% static 'peredion/images/banner/banner-img-2.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                </div>
-            </div>
-            <div class="col-xxl-8 col-xl-7 col-lg-8 col-md-8 col-sm-9">
-                <div class="banner-content">
-                    <h3 class="sub-title"
-                        data-aos="fade-up"
-                        data-aos-delay="150"
-                        data-aos-duration="500"
-                        data-aos-easing="ease-in">{% trans 'Place your bet online' %}</h3>
-                    <h1 class="title"
-                        data-aos="fade-up"
-                        data-aos-delay="300"
-                        data-aos-duration="500"
-                        data-aos-easing="ease-in">{% trans 'BET ON SPORTS AND WIN.' %}</h1>
-                    <div class="all-btn"
-                         data-aos="fade-up"
-                         data-aos-delay="350"
-                         data-aos-duration="500"
-                         data-aos-easing="ease-in">
-                        <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
-                        <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-duotone fa-arrow-right"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 d-xl-flex d-lg-flex d-md-flex d-sm-none d-none align-items-end">
-                <div class="part-img img-2">
-                    <img class="img-shape img-shape-2"
-                         src="{% static 'peredion/images/banner/img-shape-1.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                    <img class="main-img"
-                         src="{% static 'peredion/images/banner/banner-img-1.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="banner-bottom-img">
-        <img src="{% static 'peredion/images/banner/banner-img-3.png' %}"
-             alt=""
-             nonce="{{ request.csp_nonce }}">
-    </div>
-    <div class="shape-1 banner-shape"></div>
-    <div class="shape-2 banner-shape"></div>
-</section>
-{% endpartialdef %}
 {% partialdef about-section %}
 <section class="about" id="aboutUs">
     <div class="global-shape"
@@ -111,7 +50,7 @@
                              data-aos-delay="150"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            {{ home_page.about_content }}
+                            {{ home_page.about_content|safe }}
                             <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -130,7 +69,7 @@
         <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
             <div class="sports-header">
                 <span class="single-sports-icon">
-                    <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
+                    <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
                          alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
@@ -140,7 +79,7 @@
                          alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
-                <a href="#" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+                <a href="javascript:void(0);" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
             </div>
         </h2>
         <div class="sports-expanded-list">
@@ -187,15 +126,15 @@
                                                 </div>
                                             </div>
                                             <div class="placing-bet">
-                                                <a href="#0" class="single-bet-place">
+                                                <a href="javascript:void(0);" class="single-bet-place">
                                                     <span class="bet-ratio">0.25</span>
                                                     <span class="team-name">{{ game.home_team.name }}</span>
                                                 </a>
-                                                <a href="#0" class="single-bet-place draw-box">
+                                                <a href="javascript:void(0);" class="single-bet-place draw-box">
                                                     <span class="bet-ratio">1.42</span>
                                                     <span class="team-name">draw</span>
                                                 </a>
-                                                <a href="#0" class="single-bet-place">
+                                                <a href="javascript:void(0);" class="single-bet-place">
                                                     <span class="bet-ratio">4.32</span>
                                                     <span class="team-name">{{ game.away_team.name }}</span>
                                                 </a>
@@ -258,7 +197,7 @@
                             aria-controls="sports-all"
                             aria-selected="true">
                         <span class="sport-icon">
-                            <img src="{# TODO: assets/img/playing-bet/sports-icon/all-sports.png #}"
+                            <img src="{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}"
                                  alt=""
                                  nonce="{{ request.csp_nonce }}">
                         </span>
@@ -276,7 +215,7 @@
                                 aria-controls="sports-{{ sport.slug_name }}"
                                 aria-selected="false">
                             <span class="sport-icon">
-                                <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
+                                <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
                                      alt="{{ sport.name }}"
                                      nonce="{{ request.csp_nonce }}">
                             </span>
@@ -303,7 +242,7 @@
                                     {% if forloop.first %}single-sports-item{% endif %}">
                             <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
                                 <button class="accordion-button sports-header
-                                               {% if not forloop.first %}collapse{% endif %}"
+                                               {% if not forloop.first %}collapsed{% endif %}"
                                         type="button"
                                         data-bs-toggle="collapse"
                                         data-bs-target="#flush-{{ sport.slug_name }}-matches"
@@ -314,7 +253,7 @@
                                                        {% endif %}"
                                         aria-controls="flush-{{ sport.slug_name }}-matches">
                                     <span class="single-sports-icon">
-                                        <img src="{% if sport.icon %}{{ sport.icon.url }}{% endif %}"
+                                        <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
                                              alt=""
                                              nonce="{{ request.csp_nonce }}">
                                     </span>
@@ -324,7 +263,7 @@
                                              alt=""
                                              nonce="{{ request.csp_nonce }}">
                                     </span>
-                                    <a href="#" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
+                                    <a href="javascript:void(0);" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
                                 </button>
                             </h2>
                             <div id="flush-{{ sport.slug_name }}-matches"
@@ -358,7 +297,8 @@
                                                                             <div class="team-descr">
                                                                                 <span class="team-icon">
                                                                                     <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                                                         alt="{{ game.home_team.name }}">
+                                                                                         alt="{{ game.home_team.name }}"
+                                                                                         nonce="{{ request.csp_nonce }}">
                                                                                 </span>
                                                                                 <span class="team-name">{{ game.home_team.name }}</span>
                                                                             </div>
@@ -368,7 +308,8 @@
                                                                             <div class="team-descr">
                                                                                 <span class="team-icon">
                                                                                     <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                                                         alt="{{ game.away_team.name }}">
+                                                                                         alt="{{ game.away_team.name }}"
+                                                                                         nonce="{{ request.csp_nonce }}">
                                                                                 </span>
                                                                                 <span class="team-name">{{ game.away_team.name }}</span>
                                                                             </div>
@@ -376,15 +317,15 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="placing-bet">
-                                                                        <a href="#0" class="single-bet-place">
+                                                                        <a href="javascript:void(0);" class="single-bet-place">
                                                                             <span class="bet-ratio">0.25</span>
                                                                             <span class="team-name">{{ game.home_team.name }}</span>
                                                                         </a>
-                                                                        <a href="#0" class="single-bet-place draw-box">
+                                                                        <a href="javascript:void(0);" class="single-bet-place draw-box">
                                                                             <span class="bet-ratio">1.42</span>
                                                                             <span class="team-name">draw</span>
                                                                         </a>
-                                                                        <a href="#0" class="single-bet-place">
+                                                                        <a href="javascript:void(0);" class="single-bet-place">
                                                                             <span class="bet-ratio">4.32</span>
                                                                             <span class="team-name">{{ game.away_team.name }}</span>
                                                                         </a>
@@ -406,11 +347,9 @@
                     {% endfor %}
                 </div>
             </div>
-            {% comment %}
             {% for sport in sports %}
                 {% partial bet-section-tab-content %}
             {% endfor %}
-            {% endcomment %}
         </div>
         <div class="see-all-sports-btn-cover"
              data-aos="fade-up"
@@ -490,9 +429,9 @@
                                         {% comment %}
                                         TODO: maybe?
                                         <div class="placing-bet">
-                                            <a href="#0" class="place-a-bet placed">0.25</a>
-                                            <a href="#0" class="place-a-bet">1.42</a>
-                                            <a href="#0" class="place-a-bet">4.32</a>
+                                            <a href="javascript:void(0);" class="place-a-bet placed">0.25</a>
+                                            <a href="javascript:void(0);" class="place-a-bet">1.42</a>
+                                            <a href="javascript:void(0);" class="place-a-bet">4.32</a>
                                         </div>
                                         {% endcomment %}
                                     </div>
@@ -933,7 +872,77 @@
 </section>
 {% endpartialdef %}
 {% block banner %}
-    {% partial banner-section %}
+    <section class="banner">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-2 col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-none align-items-end">
+                    <div class="part-img img-1">
+                        <img class="img-shape img-shape-1"
+                             src="{% static 'peredion/images/banner/img-shape-1.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                        <img class="main-img"
+                             src="{% static 'peredion/images/banner/banner-img-2.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                    </div>
+                </div>
+                <div class="col-xxl-8 col-xl-7 col-lg-8 col-md-8 col-sm-9">
+                    <div class="banner-content">
+                        <h3 class="sub-title"
+                            data-aos="fade-up"
+                            data-aos-delay="150"
+                            data-aos-duration="500"
+                            data-aos-easing="ease-in">{% trans 'Place your bet online' %}</h3>
+                        <h1 class="title"
+                            data-aos="fade-up"
+                            data-aos-delay="300"
+                            data-aos-duration="500"
+                            data-aos-easing="ease-in">{% trans 'BET ON SPORTS AND WIN.' %}</h1>
+                        <div class="all-btn"
+                             data-aos="fade-up"
+                             data-aos-delay="350"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xxl-2 col-xl-2 col-lg-2 col-md-4 d-xl-flex d-lg-flex d-md-flex d-sm-none d-none align-items-end">
+                    <div class="part-img img-2">
+                        <img class="img-shape img-shape-2"
+                             src="{% static 'peredion/images/banner/img-shape-1.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                        <img class="main-img"
+                             src="{% static 'peredion/images/banner/banner-img-1.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="banner-bottom-img">
+            <img src="{% static 'peredion/images/banner/banner-img-3.png' %}"
+                 alt=""
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="shape-1 banner-shape"></div>
+        <div class="shape-2 banner-shape"></div>
+    </section>
+    <div class="scroll-down">
+        <div class="container">
+            <a href="javascript:void(0);" class="scroll-down-btn">
+                <span class="straight-line"></span>
+                <span class="arrow-icon">
+                    <i class="fa-light fa-angle-down"></i>
+                    <i class="fa-light fa-angle-down"></i>
+                    <i class="fa-light fa-angle-down"></i>
+                </span>
+            </a>
+        </div>
+    </div>
 {% endblock %}
 {% block content %}
     {% partial about-section %}

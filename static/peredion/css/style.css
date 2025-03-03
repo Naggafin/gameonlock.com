@@ -170,7 +170,7 @@ body.modal-open {
   content: "";
   height: 27px;
   width: 153px;
-  background: url("../img/icon/section-title.png") left center no-repeat;
+  background: url("../images/icon/section-title.png") left center no-repeat;
   background-size: contain;
   position: absolute;
   bottom: 0;
@@ -335,7 +335,7 @@ body.modal-open {
   color: #fff;
 }
 .section-title.title-white h2.title:after {
-  background: url("../img/icon/section-title-2.png") left center no-repeat;
+  background: url("../images/icon/section-title-2.png") left center no-repeat;
   background-size: contain;
   opacity: 0.7;
 }
@@ -3674,7 +3674,7 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  background: url("../img/banner/banner-bg.png") center center no-repeat;
+  background: url("../images/banner/banner-bg.png") center center no-repeat;
   background-size: cover;
   z-index: -2;
   opacity: 0.15;
@@ -3780,7 +3780,7 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  background: url("../img/banner/banner-bg-2.jpg") center center no-repeat;
+  background: url("../images/banner/banner-bg-2.jpg") center center no-repeat;
   background-size: cover;
   z-index: -3;
   opacity: 0.15;
@@ -4018,7 +4018,7 @@ ul {
   height: 129px;
   width: 402px;
   max-width: none;
-  background: url("../img/icon/long-arrow.png") no-repeat 0 0;
+  background: url("../images/icon/long-arrow.png") no-repeat 0 0;
   background-size: 402px 129px;
 }
 @media (max-width: 1399.98px) {
@@ -4168,7 +4168,7 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  background: url("../img/banner/banner-bg-3.jpg") center center no-repeat;
+  background: url("../images/banner/banner-bg-3.jpg") center center no-repeat;
   background-size: cover;
   z-index: -1;
   opacity: 0.35;
@@ -4510,7 +4510,7 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  background: url("../img/banner/banner-bg-4.jpg") center center no-repeat;
+  background: url("../images/banner/banner-bg-4.jpg") center center no-repeat;
   background-size: cover;
   z-index: -1;
   opacity: 0.35;
@@ -4702,7 +4702,7 @@ ul {
   transition: all 0.8s ease-in;
 }
 .banner-7 .part-img .glitch.img-1 .glitch__img {
-  background-image: url("../img/banner/banner-img-11.png");
+  background-image: url("../images/banner/banner-img-11.png");
 }
 @media (max-width: 1399.98px) {
   .banner-7 .part-img .glitch.img-1 {
@@ -4744,7 +4744,7 @@ ul {
   }
 }
 .banner-7 .part-img .glitch.img-2 .glitch__img {
-  background-image: url("../img/banner/banner-img-12.png");
+  background-image: url("../images/banner/banner-img-12.png");
 }
 .banner-7 .part-img .glitch.animated.img-1 {
   opacity: 1;
@@ -5130,7 +5130,7 @@ ul {
   top: 0;
   width: 100%;
   height: 100%;
-  background: url("../img/banner/banner-bg-5.jpg") center center no-repeat;
+  background: url("../images/banner/banner-bg-5.jpg") center center no-repeat;
   background-size: cover;
   z-index: -1;
   opacity: 0.05;
@@ -6952,7 +6952,7 @@ ul {
   transform: translateY(-50%);
   width: 100%;
   height: 2px;
-  background: url("../img/playing-bet/shape/line-shape-1.png") left top repeat-x;
+  background: url("../images/playing-bet/shape/line-shape-1.png") left top repeat-x;
   background-position: 1px;
   z-index: -1;
 }
@@ -7027,7 +7027,7 @@ ul {
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet a.single-bet-place:before {
   content: "";
   position: absolute;
-  background: url("../img/playing-bet/lock-icon.png") center center no-repeat;
+  background: url("../images/playing-bet/lock-icon.png") center center no-repeat;
   background-size: contain;
   width: 25px;
   height: 25px;
@@ -7617,7 +7617,7 @@ ul {
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.up:before {
   right: 2px;
   top: 2px;
-  background: url("../img/playing-bet/shape/up.png") right top no-repeat;
+  background: url("../images/playing-bet/shape/up.png") right top no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
@@ -7635,7 +7635,7 @@ ul {
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.down:before {
   right: 2px;
   bottom: 2px;
-  background: url("../img/playing-bet/shape/down.png") right bottom no-repeat;
+  background: url("../images/playing-bet/shape/down.png") right bottom no-repeat;
   animation-delay: 1s;
   background-size: 15px 15px;
 }
@@ -7651,7 +7651,7 @@ ul {
   font-weight: 700;
 }
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.up:before {
-  background: url("../img/playing-bet/shape/up-placed.png") right top no-repeat;
+  background: url("../images/playing-bet/shape/up-placed.png") right top no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
@@ -7663,7 +7663,7 @@ ul {
   color: #72ff7f;
 }
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.down:before {
-  background: url("../img/playing-bet/shape/down-placed.png") right bottom no-repeat;
+  background: url("../images/playing-bet/shape/down-placed.png") right bottom no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
@@ -7926,7 +7926,7 @@ ul {
   border-radius: 10px;
   z-index: 2;
   position: relative;
-  background: url("../img/playing-bet/modal/selected-match-bg.jpg") center center no-repeat;
+  background: url("../images/playing-bet/modal/selected-match-bg.jpg") center center no-repeat;
   background-size: cover;
 }
 @media (max-width: 1399.98px) {
@@ -7977,7 +7977,7 @@ ul {
   transform: translateX(-50%);
   width: 80px;
   height: 34.78px;
-  background: url("../img/playing-bet/modal/team-logo-bg.png") no-repeat;
+  background: url("../images/playing-bet/modal/team-logo-bg.png") no-repeat;
   background-position: bottom center;
   background-size: auto 34.78px;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.1));
@@ -8362,7 +8362,7 @@ ul {
   transform: translateY(-50%);
   width: 100%;
   height: 2px;
-  background: url("../img/playing-bet/shape/line-shape-1.png") left top repeat-x;
+  background: url("../images/playing-bet/shape/line-shape-1.png") left top repeat-x;
   background-position: 1px;
   z-index: -1;
 }
@@ -8573,7 +8573,7 @@ ul {
   transform: translateX(-50%);
   width: 80px;
   height: 73.39px;
-  background: url("../img/sports-schedule/team-icon-bg.png") no-repeat;
+  background: url("../images/sports-schedule/team-icon-bg.png") no-repeat;
   background-position: bottom center;
   background-size: 80px 73.39px;
 }
@@ -9144,7 +9144,7 @@ ul {
   top: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/bs-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/bs-card-bg.png") center center no-repeat;
   background-position-y: top;
   background-size: cover;
   z-index: -1;
@@ -9156,7 +9156,7 @@ ul {
   bottom: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/bs-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/bs-card-bg.png") center center no-repeat;
   background-position-y: bottom;
   background-size: cover;
   z-index: -1;
@@ -9358,7 +9358,7 @@ ul {
   top: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
   background-position-y: top;
   background-size: cover;
   z-index: -1;
@@ -9370,7 +9370,7 @@ ul {
   bottom: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
   background-position-y: bottom;
   background-size: cover;
   z-index: -1;
@@ -9473,7 +9473,7 @@ ul {
   top: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
   background-position-y: top;
   background-size: cover;
   z-index: -1;
@@ -9485,7 +9485,7 @@ ul {
   bottom: 0;
   width: 100%;
   height: 50%;
-  background: url("../img/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
+  background: url("../images/playing-bet/bet-slip/empty-card-bg.png") center center no-repeat;
   background-position-y: bottom;
   background-size: cover;
   z-index: -1;
@@ -9500,7 +9500,7 @@ ul {
 .bet-slip .bet-slip-body .odd-changing .form-check-input {
   float: right;
   border: 1px solid rgba(62, 63, 111, 0.5);
-  background-image: url("../img/playing-bet/bet-slip/radio.svg");
+  background-image: url("../images/playing-bet/bet-slip/radio.svg");
   box-shadow: none;
   cursor: pointer;
   -webkit-user-select: none;
@@ -9509,7 +9509,7 @@ ul {
 }
 .bet-slip .bet-slip-body .odd-changing .form-check-input:checked {
   background-color: transparent;
-  background-image: url("../img/playing-bet/bet-slip/radio-2.svg");
+  background-image: url("../images/playing-bet/bet-slip/radio-2.svg");
   border: 1px solid rgba(229, 86, 96, 0.68);
 }
 .bet-slip .bet-slip-body .odd-changing .form-check-label {
@@ -9910,7 +9910,7 @@ ul {
   transform: translateX(-50%);
   width: 80px;
   height: 73.39px;
-  background: url("../img/sports-schedule/team-icon-bg.png") no-repeat;
+  background: url("../images/sports-schedule/team-icon-bg.png") no-repeat;
   background-position: bottom center;
   background-size: 80px 73.39px;
 }
@@ -10380,7 +10380,7 @@ ul {
   transform: translateX(-50%);
   width: 80px;
   height: 52.17px;
-  background: url("../img/sports-schedule/team-icon-bg.png") no-repeat;
+  background: url("../images/sports-schedule/team-icon-bg.png") no-repeat;
   background-position: bottom center;
   background-size: auto 52.17px;
 }
@@ -10467,7 +10467,7 @@ ul {
 }
 
 .call-to-action {
-  background-image: url("../img/cta/cta-bg.png");
+  background-image: url("../images/cta/cta-bg.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -10668,7 +10668,7 @@ ul {
 .working-process .single-process .part-icon {
   height: 100px;
   width: 100px;
-  background: url("../img/working-process/icon-shape.png") center center no-repeat;
+  background: url("../images/working-process/icon-shape.png") center center no-repeat;
   background-size: contain;
   text-align: center;
   margin-top: 20px;
@@ -10812,7 +10812,7 @@ ul {
 .working-process .single-process .part-text span.step-number:before {
   position: absolute;
   content: "";
-  background: url("../img/working-process/step-arrow.png") center center no-repeat;
+  background: url("../images/working-process/step-arrow.png") center center no-repeat;
   background-size: contain;
   width: 136px;
   height: 15px;
@@ -10905,7 +10905,7 @@ ul {
 
 .feature {
   padding: 120px 0 0;
-  background-image: url("../img/feature/feature-bg.png");
+  background-image: url("../images/feature/feature-bg.png");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -11232,7 +11232,7 @@ ul {
   top: 0;
   width: 192.13px;
   height: 130px;
-  background: url("../img/shapes/shape-1.png") left top no-repeat;
+  background: url("../images/shapes/shape-1.png") left top no-repeat;
   background-size: 192.13px 130px;
   opacity: 0.3;
   transform: matrix(-1, 0, 0, -1, 0, 0);
@@ -11266,7 +11266,7 @@ ul {
   bottom: 0;
   width: 192.13px;
   height: 130px;
-  background: url("../img/shapes/shape-1.png") right bottom no-repeat;
+  background: url("../images/shapes/shape-1.png") right bottom no-repeat;
   background-size: 192.13px 130px;
   opacity: 0.3;
   border-radius: 0 0 15px 0;
@@ -11445,7 +11445,7 @@ ul {
   }
 }
 .testimonial .testimonial-carousel .single-testimonial .part-img {
-  background: url("../img/testimonial/border.png") center center no-repeat;
+  background: url("../images/testimonial/border.png") center center no-repeat;
   background-size: contain;
   padding: 10px;
   margin-right: 60px;
@@ -11677,7 +11677,7 @@ ul {
 }
 
 .footer {
-  background: url("../img/footer/footer-bg.jpg") center center no-repeat;
+  background: url("../images/footer/footer-bg.jpg") center center no-repeat;
   background-size: cover;
   position: relative;
   z-index: 2;
@@ -12014,7 +12014,7 @@ ul {
     01. Breadcrumb
 ==========================================*/
 .prd-breadcrumb {
-  background-image: url("../img/breadcrumb/breadcrumb-bg.png");
+  background-image: url("../images/breadcrumb/breadcrumb-bg.png");
   background-color: #161D35;
   background-position: center center;
   background-repeat: no-repeat;
@@ -12062,7 +12062,7 @@ ul {
   left: 50%;
   top: 50%;
   transform: translateX(-50%) translateY(-50%);
-  background: url("../img/breadcrumb/bg-shadow.png") center center no-repeat;
+  background: url("../images/breadcrumb/bg-shadow.png") center center no-repeat;
   background-size: contain;
   height: 100%;
   width: 100%;
@@ -12148,7 +12148,7 @@ ul {
   content: "";
   height: 26px;
   width: 153px;
-  background: url("../img/breadcrumb/line.png") left center no-repeat;
+  background: url("../images/breadcrumb/line.png") left center no-repeat;
   background-size: contain;
   position: absolute;
   bottom: 0;
@@ -12482,7 +12482,7 @@ ul {
 }
 
 .referral {
-  background: url("../img/affiliate/reffer-bg.jpg") center center no-repeat;
+  background: url("../images/affiliate/reffer-bg.jpg") center center no-repeat;
   background-size: cover;
   position: relative;
   z-index: 2;
@@ -12680,7 +12680,7 @@ ul {
   content: "";
   left: calc(100% - 20px);
   top: 60px;
-  background: url("../img/affiliate/icon/arrow.png") center center no-repeat;
+  background: url("../images/affiliate/icon/arrow.png") center center no-repeat;
   background-size: contain;
   width: 70px;
   height: 50px;
@@ -12710,7 +12710,7 @@ ul {
   }
 }
 .affiliate-how-it-works .single-step.down:after {
-  background: url("../img/affiliate/icon/arrow-2.png") center center no-repeat;
+  background: url("../images/affiliate/icon/arrow-2.png") center center no-repeat;
   background-size: contain;
   width: 77px;
   height: 34px;
@@ -13918,7 +13918,7 @@ ul {
   content: "";
   width: 80px;
   height: 80px;
-  background: url(../img/match-details/icon-bg.png) center center no-repeat;
+  background: url(../images/match-details/icon-bg.png) center center no-repeat;
   background-size: contain;
   top: 10px;
   left: 50%;
@@ -14304,7 +14304,7 @@ ul {
   top: 0;
   width: 1920px;
   height: 100%;
-  background: url("../img/authority/shape-3.png") center center no-repeat;
+  background: url("../images/authority/shape-3.png") center center no-repeat;
   background-size: cover;
   z-index: -1;
 }
@@ -14381,7 +14381,7 @@ ul {
   }
 }
 .authority .all-members .single-authority-member .part-info {
-  background: url("../img/authority/shape-1.png") center center no-repeat;
+  background: url("../images/authority/shape-1.png") center center no-repeat;
   background-size: contain;
   padding: 42px 0 25px;
   display: inline-block;
@@ -14465,7 +14465,7 @@ ul {
   justify-content: center;
 }
 .authority .all-members .row .col-xl-3:nth-child(2) .single-authority-member .part-info, .authority .all-members .row .col-xl-3:last-child .single-authority-member .part-info {
-  background: url("../img/authority/shape-2.png") center center no-repeat;
+  background: url("../images/authority/shape-2.png") center center no-repeat;
   background-size: contain;
   padding: 25px 0 41px;
   margin-top: 0;
@@ -14492,7 +14492,7 @@ ul {
     flex-direction: column-reverse;
   }
   .authority .all-members .row .col-xl-3:nth-child(2) .single-authority-member .part-info, .authority .all-members .row .col-xl-3:last-child .single-authority-member .part-info {
-    background: url("../img/authority/shape-1.png") center center no-repeat;
+    background: url("../images/authority/shape-1.png") center center no-repeat;
     background-size: contain;
     padding: 29px 0 20px;
     margin-top: 20px;
@@ -15267,7 +15267,7 @@ ul {
   content: "";
   bottom: 0;
   left: 0;
-  background: url("../img/blog/sidebar-title-bg.png") left center no-repeat;
+  background: url("../images/blog/sidebar-title-bg.png") left center no-repeat;
   background-size: contain;
   height: 14px;
   width: 58px;
@@ -17320,7 +17320,7 @@ ul {
 }
 .contact-us .part-address div.bg {
   position: absolute;
-  background: url("../img/footer/footer-bg.jpg") center center no-repeat;
+  background: url("../images/footer/footer-bg.jpg") center center no-repeat;
   left: 0;
   top: 0;
   width: 100%;
@@ -17439,7 +17439,7 @@ ul {
   bottom: 0;
   width: 60px;
   height: 14px;
-  background: url("../img/contact/title-shape.png") left center no-repeat;
+  background: url("../images/contact/title-shape.png") left center no-repeat;
   background-size: contain;
 }
 @media (max-width: 991.98px) {
@@ -19296,7 +19296,7 @@ ul {
   }
 }
 .bettor-ranking .all-members .row .col-xl-3:nth-child(2n+2) .single-authority-member .part-info {
-  background: url("../img/authority/shape-2.png") center center no-repeat;
+  background: url("../images/authority/shape-2.png") center center no-repeat;
   background-size: contain;
   padding: 25px 0 41px;
   margin-top: 0;
@@ -19324,7 +19324,7 @@ ul {
     flex-direction: column-reverse;
   }
   .bettor-ranking .all-members .row .col-xl-3:nth-child(2n+2) .single-authority-member .part-info {
-    background: url("../img/authority/shape-1.png") center center no-repeat;
+    background: url("../images/authority/shape-1.png") center center no-repeat;
     background-size: contain;
     padding: 33px 0 19px;
     margin-top: 20px;
@@ -19381,7 +19381,7 @@ ul {
   justify-content: center;
 }
 .bettor-ranking .all-members .row .col-xl-3 .row .col-xl-3:nth-child(2n+2) .single-authority-member .part-info {
-  background: url("../img/authority/shape-2.png") center center no-repeat;
+  background: url("../images/authority/shape-2.png") center center no-repeat;
   background-size: contain;
   padding: 25px 0 41px;
   margin-top: 0;
@@ -19408,7 +19408,7 @@ ul {
     flex-direction: column-reverse;
   }
   .bettor-ranking .all-members .row .col-xl-3 .row .col-xl-3:nth-child(2n+2) .single-authority-member .part-info {
-    background: url("../img/authority/shape-1.png") center center no-repeat;
+    background: url("../images/authority/shape-1.png") center center no-repeat;
     background-size: contain;
     padding: 29px 0 20px;
     margin-top: 20px;
@@ -19501,7 +19501,7 @@ ul {
   transform: translateY(-50%);
   width: 100%;
   height: 2px;
-  background: url("../img/playing-bet/shape/line-shape-1.png") left top repeat-x;
+  background: url("../images/playing-bet/shape/line-shape-1.png") left top repeat-x;
   background-position: 1px;
   z-index: -1;
 }
