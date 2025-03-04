@@ -6,26 +6,33 @@ from django.utils import timezone
 from django.utils.timezone import localdate
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
+from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PlayForm, PlayPickFormSet
 from .models import BettingLine, Play, PlayPick
 from .munger import BettingLineMunger
 
 
-class HomeView(FormView):
-	template_name = "sportsbetting/index.html"
+class BettingFormView(ListBreadcrumbMixin, FormView):
+	model = BettingLine
+	template_name = "peredion/playing-bet.html"
 	form_class = PlayForm
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		betting_lines = BettingLine.objects.select_related("game__sport").filter(
-			start_datetime__lt=timezone.now()
+			start_datetime__gt=timezone.now()
 		)
 		plays = Play.objects.prefetch_related("picks").get(
 			purchaser=self.request.user, date__gte=localdate()
 		)
 		munger = BettingLineMunger(betting_lines, plays)
-		context["lines_and_picks"] = munger.categorize_and_sort()
+		upcoming_entries, in_play_entries, finished_entries = (
+			munger.categorize_and_sort()
+		)
+		context["upcoming_entries"] = upcoming_entries
+		context["in_play_entries"] = in_play_entries
+		context["finished_entries"] = finished_entries
 		return context
 
 	def form_valid(self, form):

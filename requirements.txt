@@ -21,7 +21,7 @@ django>=5.1
 git+https://github.com/Naggafin/django-extensions.git
 git+https://github.com/Naggafin/django-htmx-utils.git
 git+https://github.com/mozilla/django-csp.git
-git+https://www.github.com/Naggafin/django-view-breadcrumbs.git@improvements
+git+https://github.com/Naggafin/django-view-breadcrumbs.git@improvements
 hiredis
 isort
 jwt

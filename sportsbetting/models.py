@@ -217,6 +217,7 @@ class ScheduledGame(auto_prefetch.Model):
 	)
 	location = models.CharField(max_length=100)
 	start_datetime = models.DateTimeField()
+	is_finished = models.BooleanField(default=False)
 
 	class Meta(auto_prefetch.Model.Meta):
 		constraints = [

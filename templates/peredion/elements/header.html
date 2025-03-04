@@ -7,23 +7,25 @@
                 <div class="row justify-content-between">
                     <div class="col-xl-5 col-lg-5 col-md-7">
                         <div class="left-side">
-                            <div class="single-bar">
-                                <span class="dashboard-overview">
-                                    <span class="part-icon">
-                                        <i class="fa-regular fa-circle-user"></i>
-                                    </span>
-                                    <span class="part-text">{% trans 'hi,' %} <span class="user-name">{{ request.user }}</span></span>
-                                </span>
-                            </div>
-                            {% if request.user.email %}
+                            {% if request.user.is_authenticated %}
                                 <div class="single-bar">
                                     <span class="dashboard-overview">
                                         <span class="part-icon">
-                                            <i class="fa-regular fa-envelope"></i>
+                                            <i class="fa-regular fa-circle-user"></i>
                                         </span>
-                                        <span class="part-text">{{ request.user.email }}</span>
+                                        <span class="part-text">{% trans 'hi,' %} <span class="user-name">{{ request.user }}</span></span>
                                     </span>
                                 </div>
+                                {% if request.user.email %}
+                                    <div class="single-bar">
+                                        <span class="dashboard-overview">
+                                            <span class="part-icon">
+                                                <i class="fa-regular fa-envelope"></i>
+                                            </span>
+                                            <span class="part-text">{{ request.user.email }}</span>
+                                        </span>
+                                    </div>
+                                {% endif %}
                             {% endif %}
                             <div class="single-bar dropdown">
                                 <a href="javascript:void(0);"
@@ -37,21 +39,23 @@
                                     </span>
                                     <span class="part-text lang-display">{{ request.LANGUAGE_CODE }}</span>
                                 </a>
-                                <ul class="dropdown-menu lang-item" aria-labelledby="languageMenuLink">
-                                    {% for lang_code, lang_name in languages %}
-                                        {% if lang_code != request.LANGUAGE_CODE %}
-                                            {% language lang_code %}
-                                                <li>
-                                                    <form method="post" action="{% url 'set_language' %}" class="language-form">
-                                                        {% csrf_token %}
-                                                        <input type="hidden" name="language" value="{{ lang_code }}">
-                                                        <button type="submit" class="dropdown-item">{% trans lang_name %}</button>
-                                                    </form>
-                                                </li>
-                                            {% endlanguage %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
+                                {% if languages|length > 1 %}
+                                    <ul class="dropdown-menu lang-item" aria-labelledby="languageMenuLink">
+                                        {% for lang_code, lang_name in languages %}
+                                            {% if lang_code != request.LANGUAGE_CODE %}
+                                                {% language lang_code %}
+                                                    <li>
+                                                        <form method="post" action="{% url 'set_language' %}" class="language-form">
+                                                            {% csrf_token %}
+                                                            <input type="hidden" name="language" value="{{ lang_code }}">
+                                                            <button type="submit" class="dropdown-item">{% trans lang_name %}</button>
+                                                        </form>
+                                                    </li>
+                                                {% endlanguage %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -180,16 +184,16 @@
                                         </li>
                                         {% if request.user.is_authenticated %}
                                             {# TODO #}
-                                            <li class="nav-item dropdown">
+                                            <li class="nav-item dropdown ms-auto">
                                                 <a class="nav-link dropdown-toggle"
                                                    href="javascript:void(0);"
                                                    id="dashboardDropdown"
                                                    role="button"
                                                    data-bs-toggle="dropdown"
-                                                   aria-expanded="false">{% trans 'dashboard' %}</a>
+                                                   aria-expanded="false">{% trans 'account dashboard' %}</a>
                                                 <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'account' %}</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'my account' %}</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'bet history' %}</a>
@@ -198,10 +202,10 @@
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'transaction' %}</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'deposit' %}</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'deposits' %}</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'withdrawal' %}</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'withdraws' %}</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'referral' %}</a>
@@ -210,6 +214,13 @@
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'settings' %}</a>
                                                     </li>
                                                 </ul>
+                                            </li>
+                                        {% else %}
+                                            <li class="nav-item ms-auto">
+                                                {% url 'account_login' as url %}
+                                                <a class="nav-link
+                                                          {% if request.path == url %}active{% endif %}"
+                                                   href="{{ url }}">{% trans 'sign in' %}</a>
                                             </li>
                                         {% endif %}
                                     </ul>

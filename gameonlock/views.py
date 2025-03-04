@@ -2,6 +2,7 @@ import logging
 
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.utils import timezone
 from django.views.decorators.csrf import csrf_exempt
 
 from sportsbetting.models import ScheduledGame, Sport
@@ -29,8 +30,8 @@ def home(request):
 			"governing_bodies__leagues__scheduled_games__home_team",
 			"governing_bodies__leagues__scheduled_games__away_team",
 		).all(),
-		"scheduled_games": ScheduledGame.objects.select_related(
+		"all_scheduled_games": ScheduledGame.objects.select_related(
 			"home_team", "away_team"
-		).all(),
+		).filter(start_datetime__gt=timezone.now()),
 	}
 	return render(request, "peredion/index.html", context)

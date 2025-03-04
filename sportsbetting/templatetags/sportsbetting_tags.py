@@ -30,3 +30,10 @@ def num_betting_lines(sport):
 		]
 	)
 	return len(list(lines))
+
+
+@register.filter
+def get_pending_games(queryset):
+	now = timezone.now()
+	games = [game for game in queryset if game.start_datetime > now]
+	return games
