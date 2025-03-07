@@ -43,15 +43,13 @@
                                     <ul class="dropdown-menu lang-item" aria-labelledby="languageMenuLink">
                                         {% for lang_code, lang_name in languages %}
                                             {% if lang_code != request.LANGUAGE_CODE %}
-                                                {% language lang_code %}
-                                                    <li>
-                                                        <form method="post" action="{% url 'set_language' %}" class="language-form">
-                                                            {% csrf_token %}
-                                                            <input type="hidden" name="language" value="{{ lang_code }}">
-                                                            <button type="submit" class="dropdown-item">{% trans lang_name %}</button>
-                                                        </form>
-                                                    </li>
-                                                {% endlanguage %}
+                                                <li>
+                                                    <form method="post" action="{% url 'set_language' %}" class="language-form">
+                                                        {% csrf_token %}
+                                                        <input type="hidden" name="language" value="{{ lang_code }}">
+                                                        <button type="submit" class="dropdown-item">{% lang_code|language_name_local %}</button>
+                                                    </form>
+                                                </li>
                                             {% endif %}
                                         {% endfor %}
                                     </ul>
@@ -134,22 +132,13 @@
                                                id="betDropdown"
                                                role="button"
                                                data-bs-toggle="dropdown"
-                                               aria-expanded="false">{% trans 'all bets' %}</a>
+                                               aria-expanded="false">{% trans 'bets' %}</a>
                                             <ul class="dropdown-menu" aria-labelledby="betDropdown">
                                                 <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">all bets</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">{% trans 'all bets' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">in-play</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">upcoming</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">finished</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">bet details</a>
+                                                    <a class="dropdown-item" href="javascript:void(0);">{% trans 'my plays' %}</a>
                                                 </li>
                                             </ul>
                                         </li>
@@ -196,10 +185,7 @@
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'my account' %}</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'bet history' %}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'transaction' %}</a>
+                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'play history' %}</a>
                                                     </li>
                                                     <li>
                                                         <a class="dropdown-item" href="javascript:void(0);">{% trans 'deposits' %}</a>
