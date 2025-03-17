@@ -135,7 +135,7 @@
 }
 
 /* Button styles for the over/under buttons */
-.placing-bet button {
+.placing-bet .btn {
   background-color: #D03355;
   color: white;
   padding: 10px 20px;
@@ -146,10 +146,22 @@
   transition: background-color 0.3s ease-in-out;
 }
 
-.placing-bet button:hover {
+.placing-bet .btn:hover {
   background-color: #FB7A6B;
 }
 
-.placing-bet button.placed {
+.placing-bet .btn.placed {
   background-color: #4D8E53;
+}
+
+/* Prevent <label> from being clickable when inside a disabled fieldset */
+.placing-bet fieldset:disabled label {
+  pointer-events: none;
+  opacity: 0.6; /* Optional: Make it look visually disabled */
+}
+
+/* Grey out <span> text when inside a disabled fieldset */
+.placing-bet fieldset:disabled span {
+  color: gray;
+  opacity: 0.5;
 }

@@ -6,20 +6,15 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.timezone import localdate
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import FormView, ListView
+from django.views.generic import ListView, TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PlayForm, PlayPickFormSet
-from .models import BettingLine, Play, PlayPick
+from .models import BettingLine, Play, PlayPick, ScheduledGame
 from .munger import BettingLineMunger
 
 
-class BettingFormView(ListBreadcrumbMixin, FormView):
-	model = BettingLine
-	template_name = "peredion/playing-bet.html"
-	form_class = PlayForm
-	list_view_url = reverse_lazy("sportsbetting:betting")
-
+class SportsBettingContextMixin:
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		betting_lines = BettingLine.objects.select_related("game__sport").filter(
@@ -37,12 +32,40 @@ class BettingFormView(ListBreadcrumbMixin, FormView):
 		context["finished_entries"] = finished_entries
 		return context
 
-	def form_valid(self, form):
-		play = form.save(commit=False)
-		play.user = self.request.user
-		play.save()
 
-		play_picks_formset = PlayPickFormSet(
+class HomeView(SportsBettingContextMixin, TemplateView):
+	template_name = "peredion/index.html"
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["upcoming_games"] = ScheduledGame.objects.select_related(
+			"home_team", "away_team"
+		).filter(start_datetime__gt=timezone.now())
+		return context
+
+
+class BettingView(SportsBettingContextMixin, ListBreadcrumbMixin, TemplateView):
+	model = BettingLine
+	template_name = "peredion/playing-bet.html"
+	list_view_url = reverse_lazy("sportsbetting:bet")
+
+
+class PlayCreateUpdateView(UpdateView):
+	model = Play
+	form_class = PlayForm
+	success_url = reverse_lazy("sportsbetting:play_list")
+
+	def get(self, request, *args, **kwargs):
+		return redirect("sportsbetting:betting")
+
+	def get_object(self, queryset=None):
+		try:
+			return super().get_object(queryset=queryset)
+		except AttributeError:
+			return None
+
+	def form_valid(self, form):
+		formset = PlayPickFormSet(
 			self.request.POST,
 			queryset=PlayPick.objects.filter(
 				play__user_id=self.request.user.pk,
@@ -50,18 +73,25 @@ class BettingFormView(ListBreadcrumbMixin, FormView):
 			),
 		)
 
-		if play_picks_formset.is_valid():
-			picks = play_picks_formset.save(commit=False)
+		if formset.is_valid():
+			play = form.save(commit=False)
+			play.user = self.request.user
+			play.save()
+
+			picks = formset.save(commit=False)
 			for pick in picks:
 				pick.play = play
-			play_picks_formset.save()
-		else:
-			messages.error(self.request, _("Error processing picks."))
-			return self.form_invalid(form)
+			formset.save()
 
-		self.send_email_confirmation(play)
-		self.send_admin_notification(play)
-		return redirect("sportsbetting:play")
+			# TODO: abstract these into signals
+			self.send_email_confirmation(play)
+			self.send_admin_notification(play)
+			return redirect("sportsbetting:play")
+		return self.form_invalid(form, formset)
+
+	def form_invalid(self, form, formset=None):
+		messages.error(self.request, _("Error processing picks."))
+		return super().form_invalid(form)
 
 	def send_email_confirmation(self, play):
 		email_message = f"Dear {play.purchaser_name},\n\nYour picks:\n"

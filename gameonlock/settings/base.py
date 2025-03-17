@@ -156,7 +156,7 @@ TEMPLATES = [
 				"oscar.apps.checkout.context_processors.checkout",
 				"oscar.core.context_processors.metadata",
 				"htmx_utils.context_processors.htmx_utils_context",
-				"gameonlock.context.site_ui",
+				"gameonlock.context.site_vars",
 			],
 		},
 	},
@@ -314,7 +314,7 @@ LOGGING = {
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
 
-SITE_UI_VARS = {
+SITE_VARS = {
 	"home_page": {
 		"about_title": _("About us"),
 		"about_subtitle": _("We provide the most reliable & legal betting"),
@@ -341,6 +341,9 @@ SPORTS = {
 	],
 	"MIN_BET": Money(5, "USD"),
 }
+
+SITE_VARS["MIN_BET"] = SPORTS["MIN_BET"]
+SITE_VARS["MIN_BET_INT"] = int(SITE_VARS["MIN_BET"])
 
 
 # allauth-ui

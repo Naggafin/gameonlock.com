@@ -1017,64 +1017,60 @@
 <!-- main script js -->
 <script src="assets/js/main.js"></script>
 <script>
-            var options = {
-            chart: {
-                height: 276,
-                type: "area",
-                zoom: {
+    var options = {
+        chart: {
+            height: 276,
+            type: "area",
+            zoom: {
                 enabled: false
-                },
-                toolbar: {
-                show: false
-                }, 
-                fontFamily: 'Asap, Arial, sans-serif'
             },
-            legend: {
+            toolbar: {
                 show: false
             },
-            grid: {
-                show: false,
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: -10
-                },  
+            fontFamily: 'Asap, Arial, sans-serif'
+        },
+        legend: {
+            show: false
+        },
+        grid: {
+            show: false,
+            padding: {
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: -10
             },
-            dataLabels: {
-                enabled: false,
-                style: {
+        },
+        dataLabels: {
+            enabled: false,
+            style: {
                 fontSize: '20px',
                 fontFamily: 'Asap, Arial, sans-serif',
                 fontWeight: 'bold',
                 colors: undefined
             },
-            },
-            series: [
-                {
-                name: "Win",
-                data: [0, 350, 150, 300, 80, 250, 0]
-                },
-                {
-                name: "Loss",
-                data: [900, 700, 1000, 660, 880, 700, 1000]
-                },
-                {
-                name: "Profit",
-                data: [600, 220, 580, 50, 400, 800, 600]
-                }
-            ],
-            fill: {
-                type: "gradient",
-                gradient: {
+        },
+        series: [{
+            name: "Win",
+            data: [0, 350, 150, 300, 80, 250, 0]
+        }, {
+            name: "Loss",
+            data: [900, 700, 1000, 660, 880, 700, 1000]
+        }, {
+            name: "Profit",
+            data: [600, 220, 580, 50, 400, 800, 600]
+        }],
+        fill: {
+            type: "gradient",
+            gradient: {
                 shadeIntensity: 1,
                 opacityFrom: 0.45,
                 opacityTo: 0.1,
                 stops: [0, 90, 100]
-                }
-            },
-            xaxis: {
-                categories: [
+            }
+        },
+        xaxis: {
+            categories: [
                 "Sun",
                 "Mon",
                 "Tue",
@@ -1082,56 +1078,54 @@
                 "Thu",
                 "Fri",
                 "Sat"
-                ],
-                labels: {
-                        style: {
-                        colors: [],
-                        fontSize: '14px',
-                        fontFamily: 'Asap, Arial, sans-serif',
-                        fontWeight: 500,
-                        cssClass: 'apexcharts-xaxis-label',
-                    },
-                },
-                axisBorder: {
-                    show: false,
-                    color: '#78909C',
-                    offsetX: 0,
-                    offsetY: 0
+            ],
+            labels: {
+                style: {
+                    colors: [],
+                    fontSize: '14px',
+                    fontFamily: 'Asap, Arial, sans-serif',
+                    fontWeight: 500,
+                    cssClass: 'apexcharts-xaxis-label',
                 },
             },
-            yaxis: {
-                min: 0,
-                max: 1000,
-                tickAmount: 5,
-                labels: {
-                        style: {
-                        colors: [],
-                        fontSize: '14px',
-                        fontFamily: 'Asap, Arial, sans-serif',
-                        fontWeight: 500,
-                        // cssClass: 'apexcharts-xaxis-label',
-                        cssClass: 'noce',
-                    },
+            axisBorder: {
+                show: false,
+                color: '#78909C',
+                offsetX: 0,
+                offsetY: 0
+            },
+        },
+        yaxis: {
+            min: 0,
+            max: 1000,
+            tickAmount: 5,
+            labels: {
+                style: {
+                    colors: [],
+                    fontSize: '14px',
+                    fontFamily: 'Asap, Arial, sans-serif',
+                    fontWeight: 500,
+                    // cssClass: 'apexcharts-xaxis-label',
+                    cssClass: 'noce',
+                },
+            }
+        },
+        responsive: [{
+            breakpoint: 1400,
+            options: {
+                chart: {
+                    height: 256
+                },
+                legend: {
+                    position: "bottom"
                 }
             },
-            responsive: [
-                {
-                    breakpoint: 1400,
-                    options: {
-                        chart: {
-                            height: 256
-                        },
-                        legend: {
-                        position: "bottom"
-                        }
-                    },
-                }
-            ]
-            };
+        }]
+    };
 
-            var chart = new ApexCharts(document.querySelector("#chart"), options);
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-            chart.render();
+    chart.render();
 </script>
 </body>
 </html>

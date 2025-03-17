@@ -1,3 +1,226 @@
+{% load static i18n %}
+<div class="bet-slip" x-data="betSlip" x-init="init()">
+    <!-- Header -->
+    <button class="bet-slip-header"
+            :class="{ 'collapsed': !isOpen }"
+            @click="toggle()"
+            type="button"
+            aria-expanded="false"
+            aria-controls="collapseBetSlip">
+        <span class="icon"><i class="fa-light fa-clipboard-list"></i></span>
+        <span class="text">{% trans 'Bet Slip' %}</span>
+        <span class="slip-quantity-badge" x-text="picks.length"></span>
+    </button>
+    <!-- Body -->
+    <div class="collapse"
+         id="collapseBetSlip"
+         x-show="isOpen"
+         @click.outside="isOpen = false">
+        <div class="bet-slip-body">
+            <div class="part-slip-header">
+                <div class="all-bs-card">
+                    <!-- Empty State -->
+                    <div class="empty-card" x-show="picks.length === 0">
+                        <img src="{% static 'peredion/img/playing-bet/bet-slip/empty-icon.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                        <h4 class="empty-title">{% trans 'Your bet slip is empty!' %}</h4>
+                        <p>{% trans 'Looks like you haven't placed a bet yet.' %}</p>
+                    </div>
+                    <!-- Success State -->
+                    <div class="successfull-card" x-show="submitted">
+                        <svg version="1.1"
+                             xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 130.2 130.2"
+                             style="display: inline-block">
+                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
+                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
+                        </svg>
+                        <h4 class="empty-title">{% trans 'Bet placed successfully!' %}</h4>
+                        <p>{% trans 'Check your bets in the dashboard.' %}</p>
+                    </div>
+                    <!-- Bet Cards -->
+                    <template x-for="(pick, index) in picks" :key="pick.betting_line">
+                        <div class="single-bs-card singleBS">
+                            <div class="bs-card-header">
+                                <span class="tournament-name" x-text="pick.game_data.league"></span>
+                                <div class="slct-place">
+                                    <span class="team-name" x-text="displayPick(pick)"></span>
+                                </div>
+                                <button class="slip-dlt" @click="removePick(index)">
+                                    <i class="fa-light fa-trash-can"></i>
+                                </button>
+                            </div>
+                            <div class="slct-match">
+                                <span class="sports-category-icon">
+                                    <img src="{% static 'peredion/img/playing-bet/bet-slip/sports-icon.png' %}"
+                                         alt=""
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-1" x-text="pick.game_data.away_team"></span>
+                                vs
+                                <span class="team-2" x-text="pick.game_data.home_team"></span>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <!-- Calculation and Submission -->
+            <div class="bet-slip-calculation" x-show="picks.length > 0 && !submitted">
+                <div class="total-calc">
+                    <div class="single-calc">
+                        <span class="text">{% trans 'Total stake:' %}</span>
+                        <input type="number"
+                               x-model="amount"
+                               min="{{ MIN_BET }}"
+                               step="0.01"
+                               class="form-control d-inline w-auto">
+                    </div>
+                    <div class="single-calc">
+                        <span class="text">{% trans 'Total est. return:' %}</span>
+                        <span class="number total-est-return" x-text="calculateReturn()"></span>
+                    </div>
+                </div>
+                <div class="calc-finish">
+                    <button class="prd-btn-1 medium"
+                            hx-post="{% url 'sportsbetting:play_create_update' %}"
+                            hx-target="#collapseBetSlip"
+                            hx-swap="innerHTML"
+                            @click="prepareSubmission"
+                            :disabled="amount < {{ MIN_BET_INT }}">
+                        <span x-text="amount < {{ MIN_BET_INT }} ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : '{% trans "Place Bet" %}'"></span>
+                        <i class="fa-duotone fa-arrow-right"></i>
+                    </button>
+                    <button class="calc-dlt" @click="clearSlip()">
+                        <i class="fa-light fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script nonce="{{ request.csp_nonce }}">
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('betSlip', () => ({
+            isOpen: false,
+            picks: [],
+            amount: {
+                {
+                    MIN_BET_INT
+                }
+            },
+            submitted: false,
+
+            init() {
+                this.loadSlip();
+                window.addEventListener('betslip-updated', () => this.loadSlip());
+            },
+
+            toggle() {
+                this.isOpen = !this.isOpen;
+            },
+
+            loadSlip() {
+                const slip = localStorage.getItem('betslip');
+                if (slip) {
+                    const data = JSON.parse(slip);
+                    this.picks = data.picks.map(pick => ({
+                        ...pick,
+                        game_data: pick.game_data || {} // Ensure game_data exists for display
+                    }));
+                    this.amount = data.amount || {
+                        {
+                            MIN_BET
+                        }
+                    };
+                }
+                this.submitted = false;
+            },
+
+            saveSlip() {
+                localStorage.setItem('betslip', JSON.stringify({
+                    picks: this.picks,
+                    amount: this.amount
+                }));
+                window.dispatchEvent(new Event('betslip-updated'));
+            },
+
+            addPick(bettingLine, type, team, isOver, gameData) {
+                const existingIndex = this.picks.findIndex(p => p.betting_line === bettingLine);
+                if (existingIndex !== -1) {
+                    this.picks[existingIndex] = {
+                        betting_line: bettingLine,
+                        type,
+                        team,
+                        is_over: isOver,
+                        game: gameData.game,
+                        game_data: gameData
+                    };
+                } else {
+                    this.picks.push({
+                        betting_line: bettingLine,
+                        type,
+                        team,
+                        is_over: isOver,
+                        game: gameData.game,
+                        game_data: gameData
+                    });
+                }
+                this.saveSlip();
+            },
+
+            removePick(index) {
+                this.picks.splice(index, 1);
+                this.saveSlip();
+            },
+
+            clearSlip() {
+                this.picks = [];
+                this.amount = {
+                    {
+                        MIN_BET
+                    }
+                };
+                this.submitted = false;
+                localStorage.removeItem('betslip');
+                window.dispatchEvent(new Event('betslip-updated'));
+            },
+
+            displayPick(pick) {
+                if (pick.type === 'team') {
+                    return pick.game_data[pick.team === pick.game_data.away_team_pk ? 'away_team' : 'home_team'];
+                } else {
+                    return pick.is_over ? `Over ${pick.game_data.over}` : `Under ${pick.game_data.under}`;
+                }
+            },
+
+            calculateReturn() {
+                // Placeholder: Assume odds are in game_data; enhance with real odds later
+                const totalOdds = this.picks.reduce((sum, pick) => sum + (pick.game_data.spread || 1), 0);
+                return (this.amount * totalOdds).toFixed(2);
+            },
+
+            prepareSubmission(event) {
+                const formData = new FormData();
+                formData.append('amount', this.amount);
+                this.picks.forEach((pick, index) => {
+                    formData.append(`form-${index}-betting_line`, pick.betting_line);
+                    formData.append(`form-${index}-type`, pick.type);
+                    if (pick.team) formData.append(`form-${index}-team`, pick.team);
+                    if (pick.is_over !== null) formData.append(`form-${index}-is_over`, pick.is_over);
+                });
+                formData.append('form-TOTAL_FORMS', this.picks.length);
+                formData.append('form-INITIAL_FORMS', 0);
+                formData.append('form-MIN_NUM_FORMS', 0);
+                formData.append('form-MAX_NUM_FORMS', 1000);
+
+                event.target._hx_formData = formData;
+                this.submitted = true; // Show success state post-submission
+                setTimeout(() => this.clearSlip(), 2000); // Clear after success
+            }
+        }));
+    });
+</script>
 <div class="bet-slip">
     <button class="bet-slip-header collapsed type="button" data-bs-toggle="collapse" data-bs-target="#collapseBetSlip" aria-expanded="false" aria-controls="collapseBetSlip">
         <span class="icon"><i class="fa-light fa-clipboard-list"></i></span>

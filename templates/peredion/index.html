@@ -50,7 +50,7 @@
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
                             {{ home_page.about_content|safe }}
-                            <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="{% url 'sportsbetting:bet: %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -58,112 +58,6 @@
         </div>
     </div>
 </section>
-{% endpartialdef %}
-{% partialdef bet-section-tab-content %}
-<div class="tab-pane fade"
-     id="sports-{{ sport.slug_name }}"
-     role="tabpanel"
-     aria-labelledby="sports-{{ sport.slug_name }}-tab">
-    <div class="single-sports-item">
-        <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
-            <div class="sports-header">
-                <span class="single-sports-icon">
-                    <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                </span>
-                <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines sport 'upcoming' %})</span>
-                <span class="single-sports-img">
-                    <img src="{% static 'peredion/images/playing-bet/'|add:sports.slug_name|add:'-bg.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                </span>
-                <a href="javascript:void(0);" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
-            </div>
-        </h2>
-        <div class="sports-expanded-list">
-            <div class="sports-body">
-                <div class="playing-sports-all no-tabs-here">
-                    {% for governing_body in sport.governing_bodies.all %}
-                        {% for league in governing_body.leagues.all %}
-                            {% with scheduled_games=league.scheduled_games.all|get_pending_games %}
-                                {% if scheduled_games|length > 0 %}
-                                    <div class="single-tournament">
-                                        <div class="tournament-title">
-                                            <span class="title-text">{{ league.name }}</span>
-                                            <span class="match-quantity">({{ scheduled_games|length }})</span>
-                                        </div>
-                                        <div class="all-tournament-match">
-                                            {% for game in scheduled_games %}
-                                                <div class="single-t-match
-                                                            {% if game|game_has_started %}match-in-play{% endif %}">
-                                                    <div class="match-time">
-                                                        <span class="time-icon">
-                                                            <i class="fa-regular fa-clock"></i>
-                                                        </span>
-                                                        <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                                                        <span class="m-time">
-                                                            {% if game|game_has_started %}
-                                                                {% trans 'in-play' %}
-                                                            {% else %}
-                                                                {{ game.start_datetime|time }}
-                                                            {% endif %}
-                                                        </span>
-                                                    </div>
-                                                    <div class="playing-teams">
-                                                        <div class="single-team">
-                                                            <div class="team-descr">
-                                                                <span class="team-icon">
-                                                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                                         alt="{{ game.home_team.name }}"
-                                                                         nonce="{{ request.csp_nonce }}">
-                                                                </span>
-                                                                <span class="team-name">{{ game.home_team.name }}</span>
-                                                            </div>
-                                                            <div class="team-score">{{ game.home_team_score }}</div>
-                                                        </div>
-                                                        <div class="single-team">
-                                                            <div class="team-descr">
-                                                                <span class="team-icon">
-                                                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                                         alt="{{ game.away_team.name }}"
-                                                                         nonce="{{ request.csp_nonce }}">
-                                                                </span>
-                                                                <span class="team-name">{{ game.away_team.name }}</span>
-                                                            </div>
-                                                            <div class="team-score">{{ game.away_team_score }}</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="placing-bet">
-                                                        <a href="javascript:void(0);" class="single-bet-place">
-                                                            <span class="bet-ratio">0.25</span>
-                                                            <span class="team-name">{{ game.home_team.name }}</span>
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="single-bet-place draw-box">
-                                                            <span class="bet-ratio">1.42</span>
-                                                            <span class="team-name">draw</span>
-                                                        </a>
-                                                        <a href="javascript:void(0);" class="single-bet-place">
-                                                            <span class="bet-ratio">4.32</span>
-                                                            <span class="team-name">{{ game.away_team.name }}</span>
-                                                        </a>
-                                                    </div>
-                                                    <span class="bet-ratio-details">
-                                                        <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                    </span>
-                                                </div>
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% endwith %}
-                        {% endfor %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 {% endpartialdef %}
 {% partialdef bet-section %}
 <section class="playing-bet">
@@ -209,13 +103,13 @@
                             aria-selected="true">
                         <span class="sport-icon">
                             <img src="{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}"
-                                 alt=""
+                                 alt="{% trans 'All sports' %}"
                                  nonce="{{ request.csp_nonce }}">
                         </span>
                         <span class="sport-name">{% trans 'All Sports' %}</span>
                     </button>
                 </li>
-                {% for sport in sports %}
+                {% for sport in upcoming_entries %}
                     <li class="nav-item" role="presentation">
                         <button class="nav-link"
                                 id="sports-{{ sport.slug_name }}-tab"
@@ -225,8 +119,8 @@
                                 role="tab"
                                 aria-controls="sports-{{ sport.slug_name }}"
                                 aria-selected="false">
-                            <span class="sport-icon">
-                                <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
+                            <span class="sports-icon">
+                                <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
                                      alt="{{ sport.name }}"
                                      nonce="{{ request.csp_nonce }}">
                             </span>
@@ -242,127 +136,58 @@
              data-aos-delay="200"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <div class="tab-pane fade show active"
-                 id="sports-all"
-                 role="tabpanel"
-                 aria-labelledby="sports-all-tab">
-                <div class="accordion accordion-flush sports-accordion"
-                     id="accordion-all-matches">
-                    {% for sport in sports %}
-                        <div class="accordion-item
-                                    {% if forloop.first %}single-sports-item{% endif %}">
-                            <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
-                                <button class="accordion-button sports-header
-                                               {% if not forloop.first %}collapsed{% endif %}"
-                                        type="button"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#flush-{{ sport.slug_name }}-matches"
-                                        aria-expanded="{% if forloop.first %}
-                                                           true
-                                                       {% else %}
-                                                           false
-                                                       {% endif %}"
-                                        aria-controls="flush-{{ sport.slug_name }}-matches">
-                                    <span class="single-sports-icon">
-                                        <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
-                                             alt=""
-                                             nonce="{{ request.csp_nonce }}">
-                                    </span>
-                                    <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
-                                    <span class="single-sports-img">
-                                        <img src="{% if sport.icon %}{{ sport.banner.url }}{% endif %}"
-                                             alt=""
-                                             nonce="{{ request.csp_nonce }}">
-                                    </span>
-                                    <a href="javascript:void(0);" class="see-all-sports-btn">{% trans 'See all' %} <i class="fa-light fa-arrow-right-long"></i></a>
-                                </button>
-                            </h2>
-                            <div id="flush-{{ sport.slug_name }}-matches"
-                                 class="accordion-collapse collapse sports-expanded-list
-                                        {% if forloop.first %}show{% endif %}"
-                                 aria-labelledby="{{ sport.slug_name }}-matches"
-                                 data-bs-parent="#accordion-all-matches">
-                                <div class="accordion-body sports-body">
-                                    <div class="playing-sports-all">
-                                        {% for governing_body in sport.governing_bodies.all %}
-                                            {% for league in governing_body.leagues.all %}
-                                                {% with scheduled_games=league.scheduled_games.all|get_pending_games %}
-                                                    {% if scheduled_games|length > 0 %}
-                                                        <div class="single-tournament">
-                                                            <div class="tournament-title">
-                                                                <span class="title-text">{{ league.name }}</span>
-                                                                <span class="match-quantity">({{ scheduled_games|length }})</span>
-                                                            </div>
-                                                            <div class="all-tournament-match">
-                                                                {% for game in scheduled_games %}
-                                                                    <div class="single-t-match
-                                                                                {% if game|game_has_started %}match-in-play{% endif %}">
-                                                                        <div class="match-time">
-                                                                            <span class="time-icon">
-                                                                                <i class="fa-regular fa-clock"></i>
-                                                                            </span>
-                                                                            <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                                                                            <span class="m-time">{{ game.start_datetime|time }}</span>
-                                                                        </div>
-                                                                        <div class="playing-teams">
-                                                                            <div class="single-team">
-                                                                                <div class="team-descr">
-                                                                                    <span class="team-icon">
-                                                                                        <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                                                             alt="{{ game.home_team.name }}"
-                                                                                             nonce="{{ request.csp_nonce }}">
-                                                                                    </span>
-                                                                                    <span class="team-name">{{ game.home_team.name }}</span>
-                                                                                </div>
-                                                                                <div class="team-score">0</div>
-                                                                            </div>
-                                                                            <div class="single-team">
-                                                                                <div class="team-descr">
-                                                                                    <span class="team-icon">
-                                                                                        <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                                                             alt="{{ game.away_team.name }}"
-                                                                                             nonce="{{ request.csp_nonce }}">
-                                                                                    </span>
-                                                                                    <span class="team-name">{{ game.away_team.name }}</span>
-                                                                                </div>
-                                                                                <div class="team-score">0</div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="placing-bet">
-                                                                            <a href="javascript:void(0);" class="single-bet-place">
-                                                                                <span class="bet-ratio">0.25</span>
-                                                                                <span class="team-name">{{ game.home_team.name }}</span>
-                                                                            </a>
-                                                                            <a href="javascript:void(0);" class="single-bet-place draw-box">
-                                                                                <span class="bet-ratio">1.42</span>
-                                                                                <span class="team-name">draw</span>
-                                                                            </a>
-                                                                            <a href="javascript:void(0);" class="single-bet-place">
-                                                                                <span class="bet-ratio">4.32</span>
-                                                                                <span class="team-name">{{ game.away_team.name }}</span>
-                                                                            </a>
-                                                                        </div>
-                                                                        <span class="bet-ratio-details">
-                                                                            <a href="#TODO">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                                        </span>
-                                                                    </div>
-                                                                {% endfor %}
-                                                            </div>
-                                                        </div>
-                                                    {% endif %}
-                                                {% endwith %}
-                                            {% endfor %}
-                                        {% endfor %}
+            {% with game_state='upcoming' %}
+                <div class="tab-pane fade show active"
+                     id="sports-all"
+                     role="tabpanel"
+                     aria-labelledby="sports-all-tab">
+                    <div class="accordion accordion-flush sports-accordion"
+                         id="accordion-all-matches">
+                        {% for sport, governing_bodies in upcoming_entries.items %}
+                            <div class="accordion-item
+                                        {% if forloop.first %}single-sports-item{% endif %}">
+                                <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
+                                    <button class="accordion-button sports-header
+                                                   {% if not forloop.first %}collapsed{% endif %}"
+                                            type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#flush-{{ sport.slug_name }}-matches"
+                                            aria-expanded="{% if forloop.first %}
+                                                               true
+                                                           {% else %}
+                                                               false
+                                                           {% endif %}"
+                                            aria-controls="flush-{{ sport.slug_name }}-matches">
+                                        <span class="single-sports-icon">
+                                            <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
+                                                 alt="{{ sport.name }}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </span>
+                                        <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines sport game_state %})</span>
+                                        <span class="single-sports-img">
+                                            <img src="{% static 'peredion/images/playing-bet/'|add:sports.slug_name|add:'-bg.png' %}"
+                                                 alt=""
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </span>
+                                    </button>
+                                </h2>
+                                <div id="flush-{{ sport.slug_name }}-matches"
+                                     class="accordion-collapse collapse sports-expanded-list
+                                            {% if forloop.first %}show{% endif %}"
+                                     aria-labelledby="{{ sport.slug_name }}-matches"
+                                     data-bs-parent="#accordion-all-matches">
+                                    <div class="accordion-body sports-body">
+                                        <div class="playing-sports-all">{% include "peredion/playing-bet.html#bet-section-tab-content" %}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            {% for sport in sports %}
-                {% partial bet-section-tab-content %}
-            {% endfor %}
+                {% for sport, governing_bodies in upcoming_entries %}
+                    {% include "peredion/playing-bet.html#bet-section-tab" %}
+                {% endfor %}
+            {% endwith %}
         </div>
         <div class="see-all-sports-btn-cover"
              data-aos="fade-up"
@@ -401,7 +226,7 @@
                  data-aos-easing="ease-in">
                 <div class="single-view-schedule-content">
                     <div class="tab-content" id="schedule-tab-content">
-                        {% for game in all_scheduled_games|slice:":3" %}
+                        {% for game in upcoming_games|slice:":3" %}
                             <div class="tab-pane fade
                                         {% if forloop.first %}show active{% endif %}"
                                  id="v-schedule-{{ forloop.counter|apnumber }}"
@@ -488,7 +313,7 @@
                          id="v-schedule-tab"
                          role="tablist"
                          aria-orientation="vertical">
-                        {% for game in all_scheduled_games|slice:":3" %}
+                        {% for game in upcoming_games|slice:":3" %}
                             <button class="nav-link
                                            {% if forloop.first %}active{% endif %}"
                                     id="schedule-{{ forloop.counter|apnumber }}-tab"
@@ -499,15 +324,7 @@
                                     aria-controls="v-schedule-{{ forloop.counter|apnumber }}"
                                     aria-selected="true"
                                     data-aos="fade-left"
-                                    data-aos-delay="{% if forloop.first %}
-                                                        150
-                                                    {% else %}
-                                                        {% if forloop.counter < 7 %}
-                                                            {% widthratio forloop.counter 1 50 as counter %} {{ counter|add:150 }}
-                                                        {% else %}
-                                                            500
-                                                        {% endif %}
-                                                    {% endif %}"
+                                    data-aos-delay="150"
                                     data-aos-duration="500"
                                     data-aos-easing="ease-in">
                                 <div class="single-list-schedule">

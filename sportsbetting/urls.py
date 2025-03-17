@@ -4,8 +4,15 @@ from . import views
 
 app_name = "sportsbetting"
 urlpatterns = [
-	path("", views.BettingFormView.as_view(), name="betting"),
-	path("plays/", views.PlayListView.as_view(), name="plays"),
+	path("", views.HomeView.as_view(), name="index"),
+	path("bet/", views.BettingView.as_view(), name="bet"),
+	path("plays/", views.PlayListView.as_view(), name="play_list"),
+	path("plays/create/", views.PlayCreateUpdateView.as_view(), name="play_create"),
+	path(
+		"plays/update/<int:id>/",
+		views.PlayCreateUpdateView.as_view(),
+		name="play_update",
+	),
 	# path("play/", views.play, name="play"),
 	# path("paypal/", include("paypal.standard.ipn.urls")),
 	# path("payment_complete/", views.payment_complete, name="payment_complete"),

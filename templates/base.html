@@ -61,8 +61,8 @@
                 <script src="{% static 'js/eruda.js' %}" nonce="{{ request.csp_nonce }}"></script>
                 <script src="{% static 'js/eruda-code.js' %}" nonce="{{ request.csp_nonce }}"></script>
                 <script type="text/javascript" nonce="{{ request.csp_nonce }}">
-					eruda.add(erudaCode);
-					eruda.init();
+                    eruda.add(erudaCode);
+                    eruda.init();
                 </script>
             {% endif %}
             <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
