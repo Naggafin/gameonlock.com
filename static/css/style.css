@@ -94,3 +94,62 @@
 .require-js {
   display: none !important;
 }
+
+
+/****** peredion overrides *******/
+
+/* Hide the actual radio input */
+.single-bet-place input[type="radio"] {
+  display: none;
+}
+
+/* Style the parent container */
+.single-bet-place {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 15px;
+  border: 2px solid #D03355;
+  background-color: #fff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Style when the radio is checked */
+.single-bet-place input[type="radio"]:checked + .team-icon,
+.single-bet-place input[type="radio"]:checked + .bet-ratio,
+.single-bet-place input[type="radio"]:checked + .team-name {
+  background-color: #FB7A6B;
+  transform: scale(1.05);
+}
+
+/* Hover effect */
+.single-bet-place:hover {
+  background-color: #F5F5F5;
+}
+
+/* Selected state */
+.single-bet-place input[type="radio"]:checked + span {
+  color: white;
+}
+
+/* Button styles for the over/under buttons */
+.placing-bet button {
+  background-color: #D03355;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 5px;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.placing-bet button:hover {
+  background-color: #FB7A6B;
+}
+
+.placing-bet button.placed {
+  background-color: #4D8E53;
+}

@@ -21,19 +21,51 @@ def game_start_datetime(game):
 
 
 @register.filter
-def num_betting_lines(sport):
-	lines = itertools.chain.from_iterable(
-		[
-			game.betting_lines.all()
-			for game in sport.scheduled_games.all()
-			if not game_has_started(game)
-		]
-	)
-	return len(list(lines))
-
-
-@register.filter
 def get_pending_games(queryset):
 	now = timezone.now()
 	games = [game for game in queryset if game.start_datetime > now]
 	return games
+
+
+@register.filter
+def chain(lists):
+	return itertools.chain(lists)
+
+
+@register.filter
+def get(dict, value):
+	return dict[value]
+
+
+@register.simple_tag
+def num_betting_lines(obj, state=None):
+	# NOTE: we do this in a prefetch_related() efficient manner
+	if not state:
+		lines = itertools.chain.from_iterable(
+			[game.betting_lines.all() for game in obj.scheduled_games.all()]
+		)
+	elif state == "upcoming":
+		lines = itertools.chain.from_iterable(
+			[
+				game.betting_lines.all()
+				for game in obj.scheduled_games.all()
+				if not game_has_started(game)
+			]
+		)
+	elif state == "in_play":
+		lines = itertools.chain.from_iterable(
+			[
+				game.betting_lines.all()
+				for game in obj.scheduled_games.all()
+				if game_has_started(game) and not game.is_finished
+			]
+		)
+	elif state == "finished":
+		lines = itertools.chain.from_iterable(
+			[
+				game.betting_lines.all()
+				for game in obj.scheduled_games.all()
+				if game.is_finished
+			]
+		)
+	return len(list(lines))

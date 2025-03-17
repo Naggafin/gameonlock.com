@@ -15,8 +15,6 @@ from slugify import slugify
 
 
 class Sport(models.Model):
-	icon = models.ImageField(null=True)
-	banner = models.ImageField(null=True)
 	name = models.CharField(max_length=100, unique=True)
 	description = models.TextField(blank=True, null=True)
 	slug_name = models.SlugField(unique=True, blank=True)
@@ -39,7 +37,6 @@ class GoverningBody(auto_prefetch.Model):
 		("clb", "club", _("Club")),
 	)
 
-	icon = models.ImageField(blank=True, null=True)
 	sport = auto_prefetch.ForeignKey(
 		Sport, on_delete=models.CASCADE, related_name="governing_bodies"
 	)
@@ -70,7 +67,6 @@ class League(auto_prefetch.Model):
 		("oc", "oceania", _("Oceania")),
 	)
 
-	icon = models.ImageField(blank=True, null=True)
 	governing_body = auto_prefetch.ForeignKey(
 		GoverningBody, on_delete=models.CASCADE, related_name="leagues"
 	)
@@ -91,8 +87,8 @@ class League(auto_prefetch.Model):
 		]
 
 
+"""
 class Division(auto_prefetch.Model):
-	icon = models.ImageField(blank=True, null=True)
 	league = auto_prefetch.ForeignKey(
 		League, on_delete=models.CASCADE, related_name="divisions"
 	)
@@ -101,6 +97,7 @@ class Division(auto_prefetch.Model):
 
 	def __str__(self):
 		return f"{self.name} ({self.league.name})"
+"""
 
 
 class Team(auto_prefetch.Model):
@@ -110,9 +107,7 @@ class Team(auto_prefetch.Model):
 	league = auto_prefetch.ForeignKey(
 		League, on_delete=models.CASCADE, related_name="teams"
 	)
-	division = auto_prefetch.ForeignKey(
-		Division, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
-	)
+	# division = auto_prefetch.ForeignKey(Division, on_delete=models.CASCADE, related_name="teams", blank=True, null=True)
 	name = models.CharField(max_length=100)
 	location = models.CharField(max_length=100, blank=True, null=True)
 	founding_year = models.PositiveIntegerField(blank=True, null=True)
@@ -145,6 +140,7 @@ class Team(auto_prefetch.Model):
 			logo_url, brand_url, website = self.fetch_team_data()
 
 			self.website = website
+			self.downloaded = True
 
 			if not self.logo and logo_url:
 				logo_filename = f"teams/logos/{slugify(self.name)}_logo.jpg"
@@ -165,8 +161,7 @@ class Team(auto_prefetch.Model):
 		return super().save(*args, **kwargs)
 
 	def __str__(self):
-		if self.division:
-			return f"{self.name} ({self.division.name})"
+		# if self.division: return f"{self.name} ({self.division.name})";
 		return self.name
 
 	class Meta(auto_prefetch.Model.Meta):
@@ -174,12 +169,11 @@ class Team(auto_prefetch.Model):
 			models.UniqueConstraint(
 				fields=["name", "league"], name="unique_team_per_league"
 			),
-			models.UniqueConstraint(
-				fields=["name", "division"], name="unique_team_per_division"
-			),
+			# models.UniqueConstraint(fields=["name", "division"], name="unique_team_per_division"),
 		]
 
 
+"""
 class Player(auto_prefetch.Model):
 	icon = models.ImageField(blank=True, null=True)
 	team = auto_prefetch.ForeignKey(
@@ -191,6 +185,7 @@ class Player(auto_prefetch.Model):
 
 	def __str__(self):
 		return f"{self.name} ({self.team.name})"
+"""
 
 
 class ScheduledGame(auto_prefetch.Model):
@@ -206,8 +201,8 @@ class ScheduledGame(auto_prefetch.Model):
 	away_team = auto_prefetch.ForeignKey(
 		Team, on_delete=models.CASCADE, related_name="scheduled_games_away_team"
 	)
-	home_team_final_score = models.IntegerField(blank=True, null=True)
-	away_team_final_score = models.IntegerField(blank=True, null=True)
+	home_team_score = models.IntegerField(blank=True, null=True)
+	away_team_score = models.IntegerField(blank=True, null=True)
 	winner = auto_prefetch.ForeignKey(
 		Team,
 		on_delete=models.SET_NULL,
@@ -234,8 +229,11 @@ class ScheduledGame(auto_prefetch.Model):
 
 
 class BettingLine(auto_prefetch.Model):
-	game = auto_prefetch.ForeignKey(
-		ScheduledGame, on_delete=models.CASCADE, related_name="betting_lines"
+	game = auto_prefetch.OneToOneField(
+		ScheduledGame,
+		on_delete=models.CASCADE,
+		related_name="betting_line",
+		unique=True,
 	)
 	spread = models.DecimalField(max_digits=5, decimal_places=2)
 	is_pick = models.BooleanField(blank=True, default=False)
@@ -318,13 +316,7 @@ class PlayPick(auto_prefetch.Model):
 		null=True,
 		blank=True,
 	)
-	player = auto_prefetch.ForeignKey(
-		Player,
-		on_delete=models.SET_NULL,
-		related_name="play_picks",
-		null=True,
-		blank=True,
-	)
+	# player = auto_prefetch.ForeignKey(Player, on_delete=models.SET_NULL, related_name="play_picks", null=True, blank=True)
 	stat_type = None  # TODO
 	target_value = None  # TODO
 	is_over = models.BooleanField(null=True, blank=True)
@@ -349,8 +341,7 @@ class PlayPick(auto_prefetch.Model):
 					"away_team": self.betting_line.spread.away_team,
 					"under": self.betting_line.under,
 				}
-		elif self.type == self.TYPES.player:
-			return f"{self.player.name} - {self.stat_type} ({'Over' if self.is_over else 'Under'} {self.target_value})"
+		# elif self.type == self.TYPES.player: return f"{self.player.name} - {self.stat_type} ({'Over' if self.is_over else 'Under'} {self.target_value})";
 
 	class Meta(auto_prefetch.Model.Meta):
 		verbose_name = _("pick")

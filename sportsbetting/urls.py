@@ -5,6 +5,7 @@ from . import views
 app_name = "sportsbetting"
 urlpatterns = [
 	path("", views.BettingFormView.as_view(), name="betting"),
+	path("plays/", views.PlayListView.as_view(), name="plays"),
 	# path("play/", views.play, name="play"),
 	# path("paypal/", include("paypal.standard.ipn.urls")),
 	# path("payment_complete/", views.payment_complete, name="payment_complete"),

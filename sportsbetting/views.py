@@ -2,10 +2,11 @@ from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMessage
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.timezone import localdate
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PlayForm, PlayPickFormSet
@@ -17,6 +18,7 @@ class BettingFormView(ListBreadcrumbMixin, FormView):
 	model = BettingLine
 	template_name = "peredion/playing-bet.html"
 	form_class = PlayForm
+	list_view_url = reverse_lazy("sportsbetting:betting")
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
@@ -79,6 +81,10 @@ class BettingFormView(ListBreadcrumbMixin, FormView):
 			body=email_message,
 			to=settings.NOTIFY_EMAILS,
 		).send(fail_silently=True)
+
+
+class PlayListView(ListBreadcrumbMixin, ListView):
+	model = Play
 
 
 """

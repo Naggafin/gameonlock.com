@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static i18n humanize partials %}
 {% load sportsbetting_tags %}
-{% block js %}{{ block.super }}{% endblock %}
 {% partialdef about-section %}
 <section class="about" id="aboutUs">
     <div class="global-shape"
@@ -69,13 +68,13 @@
         <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
             <div class="sports-header">
                 <span class="single-sports-icon">
-                    <img src="{% if sport.icon %}{{ sport.icon.url }}{% else %}{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}{% endif %}"
+                    <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
                          alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
-                <span class="single-sports-name">{{ sport.name }} ({{ sport|num_betting_lines }})</span>
+                <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines sport 'upcoming' %})</span>
                 <span class="single-sports-img">
-                    <img src="{% if sport.icon %}{{ sport.banner.url }}{% endif %}"
+                    <img src="{% static 'peredion/images/playing-bet/'|add:sports.slug_name|add:'-bg.png' %}"
                          alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
@@ -103,7 +102,13 @@
                                                             <i class="fa-regular fa-clock"></i>
                                                         </span>
                                                         <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                                                        <span class="m-time">{{ game.start_datetime|time }}</span>
+                                                        <span class="m-time">
+                                                            {% if game|game_has_started %}
+                                                                {% trans 'in-play' %}
+                                                            {% else %}
+                                                                {{ game.start_datetime|time }}
+                                                            {% endif %}
+                                                        </span>
                                                     </div>
                                                     <div class="playing-teams">
                                                         <div class="single-team">
@@ -115,7 +120,7 @@
                                                                 </span>
                                                                 <span class="team-name">{{ game.home_team.name }}</span>
                                                             </div>
-                                                            <div class="team-score">0</div>
+                                                            <div class="team-score">{{ game.home_team_score }}</div>
                                                         </div>
                                                         <div class="single-team">
                                                             <div class="team-descr">
@@ -126,7 +131,7 @@
                                                                 </span>
                                                                 <span class="team-name">{{ game.away_team.name }}</span>
                                                             </div>
-                                                            <div class="team-score">0</div>
+                                                            <div class="team-score">{{ game.away_team_score }}</div>
                                                         </div>
                                                     </div>
                                                     <div class="placing-bet">
@@ -455,19 +460,19 @@
                                         <div class="all-timer-task">
                                             <div class="single-time">
                                                 <span class="number day">01</span>
-                                                <span class="title">Days</span>
+                                                <span class="title">{% trans 'Days' %}</span>
                                             </div>
                                             <div class="single-time">
                                                 <span class="number hour">24</span>
-                                                <span class="title">Hours</span>
+                                                <span class="title">{% trans 'Hours' %}</span>
                                             </div>
                                             <div class="single-time">
                                                 <span class="number minute">60</span>
-                                                <span class="title">Minutes</span>
+                                                <span class="title">{% trans 'Minutes' %}</span>
                                             </div>
                                             <div class="single-time">
                                                 <span class="number second">60</span>
-                                                <span class="title">Seconds</span>
+                                                <span class="title">{% trans 'Seconds' %}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -977,6 +982,4 @@
     {% partial bet-section %}
     {% partial sports-schedule-section %}
     {% partial call-to-action-section %}
-    {% partial working-process-section %}
-    {% partial feature-section %}
 {% endblock %}
