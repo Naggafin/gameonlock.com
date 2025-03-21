@@ -58,7 +58,7 @@
                                          nonce="{{ request.csp_nonce }}">
                                 </span>
                                 <span class="team-1" x-text="pick.game_data.away_team"></span>
-                                vs
+                                {% trans 'vs' %}
                                 <span class="team-2" x-text="pick.game_data.home_team"></span>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                         <span class="text">{% trans 'Total stake:' %}</span>
                         <input type="number"
                                x-model="amount"
-                               min="{{ MIN_BET }}"
+                               min="{{ MIN_BET|int }};"
                                step="0.01"
                                class="form-control d-inline w-auto">
                     </div>
@@ -87,8 +87,8 @@
                             hx-target="#collapseBetSlip"
                             hx-swap="innerHTML"
                             @click="prepareSubmission"
-                            :disabled="amount < {{ MIN_BET_INT }}">
-                        <span x-text="amount < {{ MIN_BET_INT }} ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : '{% trans "Place Bet" %}'"></span>
+                            :disabled="amount < {{ MIN_BET|int }};">
+                        <span x-text="amount < {{ MIN_BET|int }}; ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : '{% trans "Place Bet" %}'"></span>
                         <i class="fa-duotone fa-arrow-right"></i>
                     </button>
                     <button class="calc-dlt" @click="clearSlip()">
@@ -104,11 +104,7 @@
         Alpine.data('betSlip', () => ({
             isOpen: false,
             picks: [],
-            amount: {
-                {
-                    MIN_BET_INT
-                }
-            },
+            amount: {{ MIN_BET|int }};,
             submitted: false,
 
             init() {
@@ -128,11 +124,7 @@
                         ...pick,
                         game_data: pick.game_data || {} // Ensure game_data exists for display
                     }));
-                    this.amount = data.amount || {
-                        {
-                            MIN_BET
-                        }
-                    };
+                    this.amount = data.amount || {{ MIN_BET|int }};;
                 }
                 this.submitted = false;
             },
@@ -145,7 +137,7 @@
                 window.dispatchEvent(new Event('betslip-updated'));
             },
 
-            addPick(bettingLine, type, team, isOver, gameData) {
+            addPick(bettingLine, type, team, gameData) {
                 const existingIndex = this.picks.findIndex(p => p.betting_line === bettingLine);
                 if (existingIndex !== -1) {
                     this.picks[existingIndex] = {
@@ -176,21 +168,17 @@
 
             clearSlip() {
                 this.picks = [];
-                this.amount = {
-                    {
-                        MIN_BET
-                    }
-                };
+                this.amount = {{ MIN_BET|int }};
                 this.submitted = false;
                 localStorage.removeItem('betslip');
                 window.dispatchEvent(new Event('betslip-updated'));
             },
 
             displayPick(pick) {
-                if (pick.type === 'team') {
+                if (pick.type === 'sp') {
                     return pick.game_data[pick.team === pick.game_data.away_team_pk ? 'away_team' : 'home_team'];
-                } else {
-                    return pick.is_over ? `Over ${pick.game_data.over}` : `Under ${pick.game_data.under}`;
+                } else if (pick.type === 'uo') {
+                    return pick.is_over ? `{% trans 'Over' %} ${pick.game_data.over}` : `{% trans 'Under' %} ${pick.game_data.under}`;
                 }
             },
 
@@ -206,8 +194,8 @@
                 this.picks.forEach((pick, index) => {
                     formData.append(`form-${index}-betting_line`, pick.betting_line);
                     formData.append(`form-${index}-type`, pick.type);
-                    if (pick.team) formData.append(`form-${index}-team`, pick.team);
-                    if (pick.is_over !== null) formData.append(`form-${index}-is_over`, pick.is_over);
+                    if (pick.type === 'sp') formData.append(`form-${index}-team`, pick.team);
+                    if (pick.type === 'uo') formData.append(`form-${index}-is_over`, pick.is_over);
                 });
                 formData.append('form-TOTAL_FORMS', this.picks.length);
                 formData.append('form-INITIAL_FORMS', 0);
@@ -221,245 +209,3 @@
         }));
     });
 </script>
-<div class="bet-slip">
-    <button class="bet-slip-header collapsed type="button" data-bs-toggle="collapse" data-bs-target="#collapseBetSlip" aria-expanded="false" aria-controls="collapseBetSlip">
-        <span class="icon"><i class="fa-light fa-clipboard-list"></i></span>
-        <span class="text">betslip</span>
-        <span class="slip-quantity-badge">3</span>
-    </button>
-    <div class="collapse" id="collapseBetSlip">
-        <div class="bet-slip-body">
-            <ul class="nav nav-pills bet-slip-category"
-                id="bsCategory-tab"
-                role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active"
-                            id="bsCat-single-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#bsCategory-home"
-                            type="button"
-                            role="tab"
-                            aria-controls="bsCategory-home"
-                            aria-selected="true">Single</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            id="bsCat-combo-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#bsCategory-profile"
-                            type="button"
-                            role="tab"
-                            aria-controls="bsCategory-profile"
-                            aria-selected="false">Combo</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link"
-                            id="bsCat-system-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#bsCategory-contact"
-                            type="button"
-                            role="tab"
-                            aria-controls="bsCategory-contact"
-                            aria-selected="false">System</button>
-                </li>
-            </ul>
-            <div class="tab-content" id="bsCategory-tabContent">
-                <div class="tab-pane fade show active"
-                     id="bsCategory-home"
-                     role="tabpanel"
-                     aria-labelledby="bsCat-single-tab">
-                    <div class="part-slip-header">
-                        <div class="all-bs-card">
-                            <div class="empty-card">
-                                <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                <h4 class="empty-title">Your bet slip is empty!</h4>
-                                <p>
-                                    looks like you haven’t placed
-                                    <br />
-                                    a bet yet to your bet slip.
-                                </p>
-                            </div>
-                            <div class="successfull-card">
-                                <svg version="1.1"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 130.2 130.2"
-                                     style="display: inline-block">
-                                    <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                    <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                </svg>
-                                <h4 class="empty-title">Bet is placed successfully!</h4>
-                                <p>
-                                    so, you can check your placed
-                                    <br />
-                                    bets in dashboard.
-                                </p>
-                            </div>
-                            <div class="single-bs-card singleBS hidden"></div>
-                        </div>
-                        <div class="form-check form-switch odd-changing">
-                            <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade"
-                     id="bsCategory-profile"
-                     role="tabpanel"
-                     aria-labelledby="bsCat-combo-tab">
-                    <div class="part-slip-header">
-                        <div class="all-bs-card">
-                            <div class="successfull-card combo-system-empty">
-                                <svg version="1.1"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 130.2 130.2"
-                                     style="display: inline-block">
-                                    <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                    <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                </svg>
-                                <h4 class="empty-title">Bet is placed successfully!</h4>
-                                <p>
-                                    so, you can check your placed
-                                    <br />
-                                    bets in dashboard.
-                                </p>
-                            </div>
-                            <div class="empty-card combo-system-empty">
-                                <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                <h4 class="empty-title">Your bet slip is empty!</h4>
-                                <p>
-                                    looks like you haven’t placed
-                                    <br />
-                                    a bet yet to your bet slip.
-                                </p>
-                            </div>
-                            <div class="single-bs-card card-combo hidden"></div>
-                        </div>
-                    </div>
-                    <div class="bet-quantity">
-                        <div class="title">
-                            <span class="title-text">multy bet</span>
-                        </div>
-                        <div class="single-list">
-                            <span class="text">overall odds :</span>
-                            <span class="number">1</span>
-                        </div>
-                        <div class="single-list">
-                            <span class="text">Combo (1x) :</span>
-                            <div class="inc-dec-bet">
-                                <button class="dec-btn">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                                <span class="result-num"></span>
-                                <button class="inc-btn">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-check form-switch odd-changing oc-for-combo">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                    </div>
-                </div>
-                <div class="tab-pane fade"
-                     id="bsCategory-contact"
-                     role="tabpanel"
-                     aria-labelledby="bsCat-system-tab">
-                    <div class="part-slip-header">
-                        <div class="all-bs-card">
-                            <div class="successfull-card combo-system-empty">
-                                <svg version="1.1"
-                                     xmlns="http://www.w3.org/2000/svg"
-                                     viewBox="0 0 130.2 130.2"
-                                     style="display: inline-block">
-                                    <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                    <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                </svg>
-                                <h4 class="empty-title">Bet is placed successfully!</h4>
-                                <p>
-                                    so, you can check your placed
-                                    <br />
-                                    bets in dashboard.
-                                </p>
-                            </div>
-                            <div class="empty-card combo-system-empty">
-                                <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                <h4 class="empty-title">Your bet slip is empty!</h4>
-                                <p>
-                                    looks like you haven’t placed
-                                    <br />
-                                    a bet yet to your bet slip.
-                                </p>
-                            </div>
-                            <div class="single-bs-card card-system hidden"></div>
-                        </div>
-                    </div>
-                    <div class="bet-quantity">
-                        <div class="title sytem-title">
-                            <span class="title-text">multy bet</span>
-                            <div class="system-bet-option">
-                                <div class="btn-group">
-                                    <button type="button"
-                                            class="bet-option-btn"
-                                            data-bs-toggle="dropdown"
-                                            aria-expanded="false">2/3 (3 Bets)</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
-                                        <li>
-                                            <button class="dropdown-item" data-bet-add="3" type="button">2/3 (3 Bets)</button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" data-bet-add="4" type="button">Trixie (4 Bets)</button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" data-bet-add="7" type="button">Patent (7 Bets)</button>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="single-list">
-                            <span class="text">overall odds :</span>
-                            <span class="number">1</span>
-                        </div>
-                        <div class="single-list">
-                            <span class="text">Combo (1x) :</span>
-                            <div class="inc-dec-bet">
-                                <button class="dec-btn">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                                <span class="result-num">0</span>
-                                <button class="inc-btn">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-check form-switch odd-changing oc-for-combo">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                    </div>
-                </div>
-            </div>
-            <div class="bet-slip-calculation">
-                <div class="total-calc">
-                    <div class="single-calc">
-                        <span class="text">Total stake :</span>
-                        <span class="number total-stake">1</span>
-                    </div>
-                    <div class="single-calc">
-                        <span class="text">Total est. return :</span>
-                        <span class="number total-est-return">1.00</span>
-                    </div>
-                </div>
-                <div class="calc-finish">
-                    <button class="prd-btn-1 medium placed-to-dashboard" id="btn1">
-                        place your bet <i class="fa-duotone fa-arrow-right"></i>
-                    </button>
-                    <button class="calc-dlt">
-                        <i class="fa-light fa-trash-can"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

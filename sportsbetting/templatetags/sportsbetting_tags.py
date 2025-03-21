@@ -37,6 +37,11 @@ def get(dict, value):
 	return dict[value]
 
 
+@register.filter(name="int")
+def int_filter(value):
+	return int(value)
+
+
 @register.simple_tag
 def num_betting_lines(obj, state=None):
 	# NOTE: we do this in a prefetch_related() efficient manner

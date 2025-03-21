@@ -19,7 +19,9 @@
                                             finished
                                         {% elif game|game_has_started %}
                                             match-in-play
-                                        {% endif %}">
+                                        {% endif %}"
+                                 data-betting-line="{{ line.pk }}"
+                                 data-game="{{ game.pk }}">
                                 <div class="match-time">
                                     <span class="time-icon">
                                         <i class="fa-regular fa-clock"></i>
@@ -60,10 +62,9 @@
                                     </div>
                                     <div class="placing-bet">
                                         <fieldset {% if game.is_finished or game_has_started or line.picked_team %}disabled{% endif %}>
-                                            <label class="single-bet-place
-                                                          {% if line.picked_team == game.away_team.pk %}placed{% endif %}"
-                                                   data-team-pk="{{ game.away_team.pk }}">
-                                                <input type="radio">
+                                            <label class="single-bet-place away
+                                                          {% if line.picked_team == game.away_team.pk %}placed{% endif %}">
+                                                <input type="radio" value="{{ game.away_team.pk }}" data-team-pk="away">
                                                 <span class="team-icon">
                                                     <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
                                                          alt="{{ game.away_team.name }}"
@@ -72,15 +73,14 @@
                                                 <span class="team-name">{{ game.away_team.name }}</span>
                                             </label>
                                             <label class="single-bet-place draw-box">
-                                                <input type="radio">
+                                                <input type="radio" value="">
                                                 <span class="bet-ratio">
                                                     {% if line.is_pick %}P{% endif %}
                                                 {{ line.spread }}</span>
                                             </label>
-                                            <label class="single-bet-place
-                                                          {% if line.picked_team == game.home_team.pk %}placed{% endif %}"
-                                                   data-team-pk="{{ game.home_team.pk }}">
-                                                <input type="radio">
+                                            <label class="single-bet-place home
+                                                          {% if line.picked_team == game.home_team.pk %}placed{% endif %}">
+                                                <input type="radio" value="{{ game.home_team.pk }}" data-team-pk="home">
                                                 <span class="team-icon">
                                                     <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
                                                          alt="{{ game.home_team.name }}"
@@ -91,14 +91,14 @@
                                         </fieldset>
                                         {% if line.under or line.over %}
                                             <fieldset {% if game.is_finished or game_has_started or line.picked_uo %}disabled{% endif %}>
-                                                <label class="btn single-bet-place
+                                                <label class="btn single-bet-place over
                                                               {% if line.picked_uo == 'over' %}placed{% endif %}">
-                                                    <input type="radio">
+                                                    <input type="radio" value="true" data-over-under="{{ line.over }}">
                                                     <span>{% trans 'over' %} {{ line.over }}</span>
                                                 </label>
-                                                <label class="btn single-bet-place
+                                                <label class="btn single-bet-place under
                                                               {% if line.picked_uo == 'under' %}placed{% endif %}">
-                                                    <input type="radio">
+                                                    <input type="radio" value="false" data-over-under="{{ line.under }}">
                                                     <span>{% trans 'under' %} {{ line.under }}</span>
                                                 </label>
                                             </fieldset>
@@ -144,75 +144,7 @@
 {% endpartialdef %}
 {% block js %}
     {{ block.super }}
-    <script nonce="{{ request.csp_nonce }}">
-        document.addEventListener('DOMContentLoaded', () => {
-            const betSlip = Alpine.store('betSlip', {
-                addPick(bettingLine, type, team, isOver, gameData) {
-                    const slip = localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET_INT }}}';
-                    const data = JSON.parse(slip);
-                    const existingIndex = data.picks.findIndex(p => p.betting_line === bettingLine);
-                    if (existingIndex !== -1) {
-                        data.picks[existingIndex] = {
-                            betting_line: bettingLine,
-                            type,
-                            team,
-                            is_over: isOver,
-                            game: gameData.game,
-                            game_data: gameData
-                        };
-                    } else {
-                        data.picks.push({
-                            betting_line: bettingLine,
-                            type,
-                            team,
-                            is_over: isOver,
-                            game: gameData.game,
-                            game_data: gameData
-                        });
-                    }
-                    localStorage.setItem('betslip', JSON.stringify(data));
-                    window.dispatchEvent(new Event('betslip-updated'));
-                }
-            });
-
-            document.querySelectorAll('.placing-bet fieldset').forEach(fieldset => {
-                fieldset.addEventListener('change', (event) => {
-                    const radio = event.target;
-                    if (!radio.checked) return;
-
-                    const bettingLine = fieldset.closest('.single-t-match').dataset.bettingLine; // Add data-betting-line="{{ line.pk }}" to single-t-match
-                    const game = {
-                        game: bettingLine, // Simplified; use game PK if separate
-                        away_team: fieldset.querySelector('.single-team:nth-child(1) .team-name').textContent,
-                        home_team: fieldset.querySelector('.single-team:nth-child(2) .team-name').textContent,
-                        away_team_pk: fieldset.querySelector('.single-team:nth-child(1) label:first-child').dataset.teamPk, // Add data-team-pk="{{ game.away_team.pk }}"
-                        home_team_pk: fieldset.querySelector('.single-team:nth-child(2) label:last-child').dataset.teamPk, // Add data-team-pk="{{ game.home_team.pk }}"
-                        spread: fieldset.querySelector('.draw-box .bet-ratio').textContent,
-                        over: fieldset.querySelector('.single-bet-place:nth-child(1) span')?.textContent.replace('over ', '') || null,
-                        under: fieldset.querySelector('.single-bet-place:nth-child(3) span')?.textContent.replace('under ', '') || null
-                    };
-
-                    if (fieldset.querySelectorAll('label').length === 3 && radio.closest('.draw-box')) {
-                        // No pick (spread/none); remove from slip if exists
-                        const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET_INT }}}');
-                        slip.picks = slip.picks.filter(p => p.betting_line !== bettingLine);
-                        localStorage.setItem('betslip', JSON.stringify(slip));
-                        window.dispatchEvent(new Event('betslip-updated'));
-                        return;
-                    }
-
-                    const isTeamBet = fieldset.querySelectorAll('label')[0].classList.contains('single-bet-place') && !fieldset.querySelector('.btn');
-                    if (isTeamBet) {
-                        const teamPk = radio.closest('label').dataset.teamPk; // Add data-team-pk="{{ game.away_team.pk }}" or "{{ game.home_team.pk }}"
-                        betSlip.addPick(bettingLine, 'team', teamPk, null, game);
-                    } else {
-                        const isOver = radio.closest('label').textContent.includes('over');
-                        betSlip.addPick(bettingLine, 'over_under', null, isOver, game);
-                    }
-                });
-            });
-        });
-    </script>
+    {% include 'peredion/elements/playing-bet.js' %}
 {% endblock %}
 {% block banner %}
     <div class="prd-breadcrumb">

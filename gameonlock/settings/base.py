@@ -343,7 +343,6 @@ SPORTS = {
 }
 
 SITE_VARS["MIN_BET"] = SPORTS["MIN_BET"]
-SITE_VARS["MIN_BET_INT"] = int(SITE_VARS["MIN_BET"])
 
 
 # allauth-ui
