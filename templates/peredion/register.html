@@ -1,1067 +1,344 @@
-<!DOCTYPE html>
-<html lang="zxx">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>PerediOn - Sports Prediction HTML Template</title>
-        <!-- favicon -->
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <!-- bootstrap -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
-        <!-- animate css -->
-        <link rel="stylesheet" href="assets/css/animate.css">
-        <link rel="stylesheet" href="assets/css/animate.min.css">
-        <!-- load all Font Awesome styles -->
-        <link rel="stylesheet" href="assets/css/all.min.css">
-        <!-- owl carousel css -->
-        <link rel="stylesheet" href="assets/css/owl.carousel.min.css">
-        <!-- odometer css -->
-        <link rel="stylesheet" href="assets/css/odometer.min.css">
-        <!-- overlay scrollbar css -->
-        <link rel="stylesheet" href="assets/css/OverlayScrollbars.min.css">
-        <!-- aos css -->
-        <link href="assets/css/aos.css" rel="stylesheet">
-        <!-- date picker css -->
-        <link rel="stylesheet" href="assets/date-p/mc-calendar.min.css">
-        <!-- main css -->
-        <link rel="stylesheet" href="assets/css/style.css">
-    </head>
-    <body>
-        <!-- preloader begin -->
-        <div class="preloader">
-            <div class="icon">
-                <img src="assets/img/preloader/preload-1.gif" alt="">
-                <img src="assets/img/preloader/preload-2.gif" alt="">
-                <img src="assets/img/preloader/preload-5.gif" alt="">
-                <img src="assets/img/preloader/preload-4.gif" alt="">
-                <img src="assets/img/preloader/preload-3.gif" alt="">
+{% extends 'base.html' %}
+{% load static i18n socialaccount %}
+{% block js %}
+    {{ block.super }}
+    <script nonce="{{ request.csp_nonce }}">
+document.addEventListener('DOMContentLoaded', () => {
+    const processingSteps = document.querySelector('.processing-steps');
+    const poklottoForm = document.querySelector('#poklotto_register_form');
+    const headingTitle = document.querySelector('h3.steps-heading-title');
+
+    window.addEventListener('scroll', () => {
+        const offsetTop = poklottoForm.offsetTop;
+        if (window.scrollY > offsetTop) {
+            processingSteps.classList.add('top-fixed', 'animate__animated', 'animate__fadeInDown');
+            headingTitle.classList.add('steps-heading-fixed');
+        } else {
+            processingSteps.classList.remove('top-fixed', 'animate__fadeInDown');
+            headingTitle.classList.remove('steps-heading-fixed');
+        }
+    });
+});
+    </script>
+{% endblock %}
+{% block banner %}
+    <div class="prd-breadcrumb">
+        <div class="brd-shape">
+            <div class="brd-img brd-img-1"
+                 data-aos="fade-right"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
             </div>
-            <span class="text">peredion is loading</span>
+            <div class="brd-img brd-img-2"
+                 data-aos="fade-left"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
+            </div>
         </div>
-        <!-- preloader end -->
-        <!-- bet-slip begin -->
-        <div class="bet-slip">
-            <button class="bet-slip-header collapsed type="button" data-bs-toggle="collapse" data-bs-target="#collapseBetSlip" aria-expanded="false" aria-controls="collapseBetSlip">
-                <span class="icon"><i class="fa-light fa-clipboard-list"></i></span>
-                <span class="text">betslip</span>
-                <span class="slip-quantity-badge">3</span>
-            </button>
-            <div class="collapse" id="collapseBetSlip">
-                <div class="bet-slip-body">
-                    <ul class="nav nav-pills bet-slip-category"
-                        id="bsCategory-tab"
-                        role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active"
-                                    id="bsCat-single-tab"
-                                    data-bs-toggle="pill"
-                                    data-bs-target="#bsCategory-home"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="bsCategory-home"
-                                    aria-selected="true">Single</button>
+        <div class="container">
+            <div class="brd-content">
+                <div data-aos="fade-up"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <span class="sub-title">{% trans "Sign Up" %}</span>
+                </div>
+                <h2 class="title"
+                    data-aos="fade-up"
+                    data-aos-delay="350"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in">{% trans "Sign up to create an account" %}</h2>
+                <div class="page-direction">
+                    <ul>
+                        <li>
+                            <span class="icon"><i class="fa-solid fa-house"></i></span>
+                            <a href="/" class="text">{% trans "Home" %}</a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link"
-                                    id="bsCat-combo-tab"
-                                    data-bs-toggle="pill"
-                                    data-bs-target="#bsCategory-profile"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="bsCategory-profile"
-                                    aria-selected="false">Combo</button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link"
-                                    id="bsCat-system-tab"
-                                    data-bs-toggle="pill"
-                                    data-bs-target="#bsCategory-contact"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="bsCategory-contact"
-                                    aria-selected="false">System</button>
+                        <li>
+                            <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                            <span class="text">{% trans "Sign Up" %}</span>
                         </li>
                     </ul>
-                    <div class="tab-content" id="bsCategory-tabContent">
-                        <div class="tab-pane fade show active"
-                             id="bsCategory-home"
-                             role="tabpanel"
-                             aria-labelledby="bsCat-single-tab">
-                            <div class="part-slip-header">
-                                <div class="all-bs-card">
-                                    <div class="empty-card">
-                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                        <h4 class="empty-title">Your bet slip is empty!</h4>
-                                        <p>
-                                            looks like you haven’t placed
-                                            <br />
-                                            a bet yet to your bet slip.
-                                        </p>
-                                    </div>
-                                    <div class="successfull-card">
-                                        <svg version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 130.2 130.2"
-                                             style="display: inline-block">
-                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                        </svg>
-                                        <h4 class="empty-title">Bet is placed successfully!</h4>
-                                        <p>
-                                            so, you can check your placed
-                                            <br />
-                                            bets in dashboard.
-                                        </p>
-                                    </div>
-                                    <div class="single-bs-card singleBS hidden"></div>
-                                </div>
-                                <div class="form-check form-switch odd-changing">
-                                    <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade"
-                             id="bsCategory-profile"
-                             role="tabpanel"
-                             aria-labelledby="bsCat-combo-tab">
-                            <div class="part-slip-header">
-                                <div class="all-bs-card">
-                                    <div class="successfull-card combo-system-empty">
-                                        <svg version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 130.2 130.2"
-                                             style="display: inline-block">
-                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                        </svg>
-                                        <h4 class="empty-title">Bet is placed successfully!</h4>
-                                        <p>
-                                            so, you can check your placed
-                                            <br />
-                                            bets in dashboard.
-                                        </p>
-                                    </div>
-                                    <div class="empty-card combo-system-empty">
-                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                        <h4 class="empty-title">Your bet slip is empty!</h4>
-                                        <p>
-                                            looks like you haven’t placed
-                                            <br />
-                                            a bet yet to your bet slip.
-                                        </p>
-                                    </div>
-                                    <div class="single-bs-card card-combo hidden"></div>
-                                </div>
-                            </div>
-                            <div class="bet-quantity">
-                                <div class="title">
-                                    <span class="title-text">multy bet</span>
-                                </div>
-                                <div class="single-list">
-                                    <span class="text">overall odds :</span>
-                                    <span class="number">1</span>
-                                </div>
-                                <div class="single-list">
-                                    <span class="text">Combo (1x) :</span>
-                                    <div class="inc-dec-bet">
-                                        <button class="dec-btn">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
-                                        <span class="result-num"></span>
-                                        <button class="inc-btn">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-check form-switch odd-changing oc-for-combo">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                            </div>
-                        </div>
-                        <div class="tab-pane fade"
-                             id="bsCategory-contact"
-                             role="tabpanel"
-                             aria-labelledby="bsCat-system-tab">
-                            <div class="part-slip-header">
-                                <div class="all-bs-card">
-                                    <div class="successfull-card combo-system-empty">
-                                        <svg version="1.1"
-                                             xmlns="http://www.w3.org/2000/svg"
-                                             viewBox="0 0 130.2 130.2"
-                                             style="display: inline-block">
-                                            <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"></circle>
-                                            <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "></polyline>
-                                        </svg>
-                                        <h4 class="empty-title">Bet is placed successfully!</h4>
-                                        <p>
-                                            so, you can check your placed
-                                            <br />
-                                            bets in dashboard.
-                                        </p>
-                                    </div>
-                                    <div class="empty-card combo-system-empty">
-                                        <img src="assets/img/playing-bet/bet-slip/empty-icon.png" alt="">
-                                        <h4 class="empty-title">Your bet slip is empty!</h4>
-                                        <p>
-                                            looks like you haven’t placed
-                                            <br />
-                                            a bet yet to your bet slip.
-                                        </p>
-                                    </div>
-                                    <div class="single-bs-card card-system hidden"></div>
-                                </div>
-                            </div>
-                            <div class="bet-quantity">
-                                <div class="title sytem-title">
-                                    <span class="title-text">multy bet</span>
-                                    <div class="system-bet-option">
-                                        <div class="btn-group">
-                                            <button type="button"
-                                                    class="bet-option-btn"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">2/3 (3 Bets)</button>
-                                            <ul class="dropdown-menu dropdown-menu-end">
-                                                <li>
-                                                    <button class="dropdown-item" data-bet-add="3" type="button">2/3 (3 Bets)</button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item" data-bet-add="4" type="button">Trixie (4 Bets)</button>
-                                                </li>
-                                                <li>
-                                                    <button class="dropdown-item" data-bet-add="7" type="button">Patent (7 Bets)</button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="single-list">
-                                    <span class="text">overall odds :</span>
-                                    <span class="number">1</span>
-                                </div>
-                                <div class="single-list">
-                                    <span class="text">Combo (1x) :</span>
-                                    <div class="inc-dec-bet">
-                                        <button class="dec-btn">
-                                            <i class="fa-solid fa-minus"></i>
-                                        </button>
-                                        <span class="result-num">0</span>
-                                        <button class="inc-btn">
-                                            <i class="fa-solid fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-check form-switch odd-changing oc-for-combo">
-                                <label class="form-check-label" for="flexSwitchCheckDefault">Accept if odd changes</label>
-                                <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bet-slip-calculation">
-                        <div class="total-calc">
-                            <div class="single-calc">
-                                <span class="text">Total stake :</span>
-                                <span class="number total-stake">1</span>
-                            </div>
-                            <div class="single-calc">
-                                <span class="text">Total est. return :</span>
-                                <span class="number total-est-return">1.00</span>
-                            </div>
-                        </div>
-                        <div class="calc-finish">
-                            <button class="prd-btn-1 medium placed-to-dashboard" id="btn1">
-                                place your bet <i class="fa-duotone fa-arrow-right"></i>
-                            </button>
-                            <button class="calc-dlt">
-                                <i class="fa-light fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-        <!-- bet-slip end -->
-        <!-- comming soon Modal -->
-        <div class="modal fade"
-             id="comming_soon"
-             tabindex="-1"
-             aria-labelledby="comming_soon"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Attention!</h5>
-                        <button type="button"
-                                class="btn-close"
-                                data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body text-center bg-dark text-white">
-                        <h4>Dark Version is comming soon</h4>
-                    </div>
-                </div>
-            </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="sign-up">
+        <div class="global-shape style-3">
+            <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+                 alt=""
+                 data-aos="fade-left"
+                 data-aos-duration="500"
+                 data-aos-offset="200"
+                 data-aos-easing="ease-in"
+                 data-aos-delay="400"
+                 nonce="{{ request.csp_nonce }}">
         </div>
-        <!-- header begin -->
-        <div class="header animated">
-            <div class="top-bar">
-                <div class="container">
-                    <div class="row justify-content-between">
-                        <div class="col-xl-5 col-lg-5 col-md-7">
-                            <div class="left-side">
-                                <div class="single-bar">
-                                    <a class="dashboard-overview" href="dashboard-overview.html">
-                                        <span class="part-icon">
-                                            <i class="fa-regular fa-circle-user"></i>
-                                        </span>
-                                        <span class="part-text">hi, <span class="user-name">john doe</span></span>
-                                    </a>
-                                </div>
-                                <div class="single-bar">
-                                    <a class="dashboard-overview" href="mailto: abc@example.com">
-                                        <span class="part-icon">
-                                            <i class="fa-regular fa-envelope"></i>
-                                        </span>
-                                        <span class="part-text">predion@mail.co</span>
-                                    </a>
-                                </div>
-                                <div class="single-bar dropdown">
-                                    <a href="#"
-                                       role="button"
-                                       id="dropdownMenuLink"
-                                       data-bs-toggle="dropdown"
-                                       aria-expanded="false"
-                                       class="dashboard-overview">
-                                        <span class="part-icon">
-                                            <i class="fa-regular fa-globe"></i>
-                                        </span>
-                                        <span class="part-text lang-display">eng</span>
-                                    </a>
-                                    <ul class="dropdown-menu lang-item" aria-labelledby="dropdownMenuLink">
-                                        <li>
-                                            <a class="dropdown-item" href="#">ENG</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">বাংলা</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">عربي</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">हिन्दी</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Español</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">贛語</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Հայերեն</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item" href="#">Ўзбек</a>
-                                        </li>
-                                    </ul>
-                                </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-9 col-md-11">
+                    <div class="processing-steps">
+                        <div class="single-steps first-step current-step"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-1.png' %}"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Basic Info" %}</span>
                             </div>
                         </div>
-                        <div class="col-xl-5 col-lg-5 col-md-5">
-                            <div class="right-side">
-                                <div class="single-bar">
-                                    <span class="part-icon">
-                                        <i class="fa-regular fa-calendars"></i>
-                                    </span>
-                                    <span class="part-text">
-                                        <span id="date"></span>
-                                        <span id="month"></span>
-                                        <span id="year"></span>
-                                    </span>
-                                </div>
-                                <div class="single-bar">
-                                    <span class="part-icon">
-                                        <i class="fa-solid fa-timer"></i>
-                                    </span>
-                                    <span class="part-text"><span class="timer" id="hours"></span>:<span class="timer" id="minutes"></span>:<span class="timer" id="seconds"></span></span>
-                                </div>
+                        <div class="arrow-img"
+                             data-aos="fade-right"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-1.png' %}"
+                                 alt=""
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps second-step"
+                             data-aos="fade-up"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-2.png' %}"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Personal Details" %}</span>
+                            </div>
+                        </div>
+                        <div class="arrow-img second"
+                             data-aos="fade-right"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-2.png' %}"
+                                 alt=""
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps third-step"
+                             data-aos="fade-up"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-3.png' %}"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Contact Info" %}</span>
+                            </div>
+                        </div>
+                        <div class="arrow-img"
+                             data-aos="fade-right"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-1.png' %}"
+                                 alt=""
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps last-step"
+                             data-aos="fade-up"
+                             data-aos-delay="300"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-4.png' %}"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Security & Confirmation" %}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mobile-navbar">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
-                            <a href="index.html" class="mobile-logo">
-                                <img src="assets/img/logo/mobile-logo.png" alt="">
-                            </a>
-                        </div>
-                        <div class="col-6 col-xl-none col-lg-none col-lg-block">
-                            <button class="navbar-toggler"
-                                    type="button"
-                                    data-bs-toggle="collapse"
-                                    data-bs-target="#navbarSupportedContent"
-                                    aria-controls="navbarSupportedContent"
-                                    aria-expanded="false"
-                                    aria-label="Toggle navigation">
-                                <i class="fa-light fa-bars"></i>
-                            </button>
-                            <a href="#" class="changing-version">
-                                <i class="fa-solid fa-moon-stars"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mainmenu">
-                <div class="container">
-                    <nav class="navbar navbar-expand-lg">
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <div class="scalation">
-                                <div class="row">
-                                    <div class="col-xl-5 col-lg-5">
-                                        <ul class="navbar-nav nn-left">
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle"
-                                                   href="#"
-                                                   id="home-dropdown"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown"
-                                                   aria-expanded="false">Home</a>
-                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="home-dropdown">
-                                                    <li>
-                                                        <a class="dropdown-item" href="index.html">Homepage 01</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-2.html">Homepage 02</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-3.html">Homepage 03</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-4.html">Homepage 04</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-5.html">Homepage 05</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-6.html">Homepage 06</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-7.html">Homepage 07</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-8.html">Homepage 08</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-9.html">Homepage 09</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="index-10.html">Homepage 10</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="about.html">about us</a>
-                                            </li>
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle"
-                                                   href="#"
-                                                   id="betDropdown"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown"
-                                                   aria-expanded="false">all bets</a>
-                                                <ul class="dropdown-menu" aria-labelledby="betDropdown">
-                                                    <li>
-                                                        <a class="dropdown-item" href="playing-bet.html">all bets</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="playing-bet-in-play.html">in-play</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="playing-bet-upcoming.html">upcoming</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="playing-bet-finished.html">finished</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="match-details.html">bet details</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="contact.html">contact us</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
-                                        <div class="logo">
-                                            <a href="index.html">
-                                                <img src="assets/img/logo/logo-1.png" alt="">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-5 col-lg-5">
-                                        <ul class="navbar-nav nn-right">
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle active"
-                                                   href="#"
-                                                   id="pagesDropdown"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown"
-                                                   aria-expanded="false">pages</a>
-                                                <ul class="dropdown-menu custom-dropdown" aria-labelledby="pagesDropdown">
-                                                    <li>
-                                                        <a class="dropdown-item" href="blog-posts.html">blog post</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="blog-details.html">blog details</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="sign-in.html">login</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item active" href="register.html">register</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="error.html">error 404</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="affiliate.html">affiliate</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="promotion.html">promotion</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="promotion-details.html">promo details</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="ranking.html">ranking</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="#">bracket</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" href="faq.html">faq</a>
-                                            </li>
-                                            <li class="nav-item dropdown">
-                                                <a class="nav-link dropdown-toggle"
-                                                   href="#"
-                                                   id="dashboardDropdown"
-                                                   role="button"
-                                                   data-bs-toggle="dropdown"
-                                                   aria-expanded="false">dashboard</a>
-                                                <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
-                                                    <li>
-                                                        <a class="dropdown-item" href="peredion-dashboard/index.html">overview <small>(index)</small></a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-bet-history.html">bet history</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-transaction-history.html">transaction</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-deposit.html">deposit</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-withdraw.html">withdrawal</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-referral.html">referral</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item"
-                                                           href="peredion-dashboard/dashboard-settings.html">settings</a>
-                                                    </li>
-                                                </ul>
-                                            </li>
-                                            <li class="nav-item version-changing-button">
-                                                <button class="nav-link"
-                                                        data-bs-toggle="modal"
-                                                        data-bs-target="#comming_soon">dark mode</button>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- header end -->
-        <!-- breadcrumb begin -->
-        <div class="prd-breadcrumb">
-            <div class="brd-shape">
-                <div class="brd-img brd-img-1"
-                     data-aos="fade-right"
-                     data-aos-delay="200"
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-10"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
                      data-aos-duration="500"
                      data-aos-easing="ease-in">
-                    <img src="assets/img/breadcrumb/brd-img-1.png" alt="">
-                </div>
-                <div class="brd-img brd-img-2"
-                     data-aos="fade-left"
-                     data-aos-delay="200"
-                     data-aos-duration="500"
-                     data-aos-easing="ease-in">
-                    <img src="assets/img/breadcrumb/brd-img-2.png" alt="">
-                </div>
-            </div>
-            <div class="container">
-                <div class="brd-content">
-                    <div data-aos="fade-up"
-                         data-aos-delay="200"
-                         data-aos-duration="500"
-                         data-aos-easing="ease-in">
-                        <span class="sub-title">SIGN UP</span>
-                    </div>
-                    <h2 class="title"
-                        data-aos="fade-up"
-                        data-aos-delay="350"
-                        data-aos-duration="500"
-                        data-aos-easing="ease-in">Sign up to having an account</h2>
-                    <div class="page-direction">
-                        <ul>
-                            <li>
-                                <span class="icon"><i class="fa-solid fa-house"></i></span>
-                                <span class="text">Home</span>
-                            </li>
-                            <li>
-                                <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
-                                <span class="text">SIGN UP</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- breadcrumb end -->
-        <!-- sign-up begin -->
-        <div class="sign-up">
-            <div class="global-shape style-3">
-                <img src="assets/img/shapes/shape-1.png"
-                     alt=""
-                     data-aos="fade-left"
-                     data-aos-duration="500"
-                     data-aos-offset="200"
-                     data-aos-easing="ease-in"
-                     data-aos-delay="400">
-            </div>
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-xl-8 col-lg-9 col-md-11">
-                        <div class="processing-steps">
-                            <div class="single-steps first-step current-step"
-                                 data-aos="fade-up"
-                                 data-aos-delay="150"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <div class="part-icon">
-                                    <img src="assets/img/register/step-1.png" alt="">
-                                </div>
-                                <div class="part-text">
-                                    <span class="step-line-title">Getting Started</span>
-                                </div>
-                            </div>
-                            <div class="arrow-img"
-                                 data-aos="fade-right"
-                                 data-aos-delay="150"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <img src="assets/img/register/arrow-1.png" alt="" class="arrow-icon">
-                            </div>
-                            <div class="single-steps second-step"
-                                 data-aos="fade-up"
-                                 data-aos-delay="200"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <div class="part-icon">
-                                    <img src="assets/img/register/step-2.png" alt="">
-                                </div>
-                                <div class="part-text">
-                                    <span class="step-line-title">Contact Details</span>
-                                </div>
-                            </div>
-                            <div class="arrow-img second"
-                                 data-aos="fade-right"
-                                 data-aos-delay="200"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <img src="assets/img/register/arrow-2.png" alt="" class="arrow-icon">
-                            </div>
-                            <div class="single-steps third-step"
-                                 data-aos="fade-up"
-                                 data-aos-delay="250"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <div class="part-icon">
-                                    <img src="assets/img/register/step-3.png" alt="">
-                                </div>
-                                <div class="part-text">
-                                    <span class="step-line-title">Security Details</span>
-                                </div>
-                            </div>
-                            <div class="arrow-img"
-                                 data-aos="fade-right"
-                                 data-aos-delay="250"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <img src="assets/img/register/arrow-1.png" alt="" class="arrow-icon">
-                            </div>
-                            <div class="single-steps last-step"
-                                 data-aos="fade-up"
-                                 data-aos-delay="300"
-                                 data-aos-duration="500"
-                                 data-aos-easing="ease-in">
-                                <div class="part-icon">
-                                    <img src="assets/img/register/step-4.png" alt="">
-                                </div>
-                                <div class="part-text">
-                                    <span class="step-line-title">Almost Done</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-xl-10 col-lg-10"
-                         data-aos="fade-up"
-                         data-aos-delay="100"
-                         data-aos-duration="500"
-                         data-aos-easing="ease-in">
-                        <div class="poklotto-form" id="poklotto_register_form">
-                            <h3 class="steps-heading-title title">Getting started</h3>
-                            <div class="part-form">
-                                <form>
-                                    <div class="form-all-step">
-                                        <div class="first-step-form per-step animate__animated blanked">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <label for="first_name" class="form-label">
-                                                        <span>First name</span>
-                                                    </label>
-                                                    <input type="text" id="first_name" placeholder="Ex: John">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <label for="last_name" class="form-label">
-                                                        <span>Last name</span>
-                                                    </label>
-                                                    <input type="text" id="last_name" placeholder="Ex: Doe">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="mail_address" class="form-label">
-                                                        <span>Mail address</span>
-                                                    </label>
-                                                    <input type="email" id="mail_address" placeholder="Ex: yourmail@address">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="birth-date" class="form-label">
-                                                        <span>Date of birth</span>
-                                                    </label>
-                                                    <div class="birth-date-element">
-                                                        <input readonly type="text" id="birth-date" placeholder="Ex: 19/05/98">
-                                                        <span class="caln-icon">
-                                                            <i class="fa-regular fa-calendars"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label class="form-label">
-                                                        <span>Gender</span>
-                                                    </label>
-                                                    <div class="dropdown select-list gender-select">
-                                                        <button class="dropdown-toggle"
-                                                                type="button"
-                                                                id="gender-select"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                            Male <i class="fa-regular fa-mars"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="gender-select">
-                                                            <li>
-                                                                <a class="dropdown-item active" href="#">Male <i class="fa-duotone fa-mars"></i></a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">Female <i class="fa-duotone fa-venus"></i></a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">Custom <i class="fa-duotone fa-neuter"></i></a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="profession_name" class="form-label">
-                                                        <span>profession name</span>
-                                                    </label>
-                                                    <input type="text"
-                                                           id="profession_name"
-                                                           placeholder="Ex: student, employee or teacher etc.">
-                                                </div>
+                    <div class="poklotto-form"
+                         id="poklotto_register_form"
+                         x-data="registerForm">
+                        <h3 class="steps-heading-title title" x-text="steps[currentStep].title"></h3>
+                        <div class="part-form">
+                            <form method="post"
+                                  action="{% url 'account_signup' %}"
+                                  @submit.prevent="submitForm">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                                        {% for field in form %}
+                                            {% if field.errors %}
+                                                {% for error in field.errors %}<p>{{ field.label }}: {{ error }}</p>{% endfor %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="form-all-step">
+                                    <!-- Step 1: Basic Info -->
+                                    <div class="first-step-form per-step animate__animated"
+                                         :class="{ 'blanked': currentStep === 0 }">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_username" class="form-label">
+                                                    <span>{% trans "Username" %}</span>
+                                                </label>
+                                                {{ form.username }}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_email" class="form-label">
+                                                    <span>{% trans "Email Address" %}</span>
+                                                </label>
+                                                {{ form.email }}
                                             </div>
                                         </div>
-                                        <div class="second-step-form per-step animate__animated">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label class="form-label">
-                                                        <span>Country Name</span>
-                                                    </label>
-                                                    <div class="dropdown select-list country-select">
-                                                        <button class="dropdown-toggle"
-                                                                type="button"
-                                                                id="country-select"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false">
-                                                            <img src="assets/img/flags/brazil.png" alt="" class="flag">
-                                                            Brazil
-                                                        </button>
-                                                        <ul class="dropdown-menu" aria-labelledby="country-select">
-                                                            <li>
-                                                                <a class="dropdown-item active" href="#">
-                                                                    <img src="assets/img/flags/brazil.png" alt="" class="flag">
-                                                                Brazil</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <img src="assets/img/flags/nigeria.png" alt="" class="flag">
-                                                                Nigeria</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <img src="assets/img/flags/switzerland.png" alt="" class="flag">
-                                                                Switzerland</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <img src="assets/img/flags/united-kingdom.png" alt="" class="flag">
-                                                                United Kingdom</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">
-                                                                    <img src="assets/img/flags/united-states.png" alt="" class="flag">
-                                                                USA</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="city_name" class="form-label">
-                                                        <span>City Name</span>
-                                                    </label>
-                                                    <input type="text"
-                                                           id="city_name"
-                                                           placeholder="Ex: New York, wahsington etc.">
-                                                </div>
-                                                <div class="col-xl-12">
-                                                    <label for="address_one" class="form-label">
-                                                        <span>Address line 1</span>
-                                                    </label>
-                                                    <input type="text"
-                                                           id="address_one"
-                                                           placeholder="There will be your first address line.">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="address_two" class="form-label">
-                                                        <span>Address line 2</span>
-                                                    </label>
-                                                    <input type="text"
-                                                           id="address_two"
-                                                           placeholder="There will be your second address line.">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="mobile_number" class="form-label">
-                                                        <span>Mobile Number</span>
-                                                    </label>
-                                                    <input type="text" id="mobile_number" placeholder="Ex: +1 000 00 0000">
-                                                </div>
+                                    </div>
+                                    <!-- Step 2: Personal Details -->
+                                    <div class="second-step-form per-step animate__animated"
+                                         :class="{ 'blanked': currentStep === 1 }">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_state" class="form-label">
+                                                    <span>{% trans "State" %}</span>
+                                                </label>
+                                                {{ form.state }}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_date_of_birth" class="form-label">
+                                                    <span>{% trans "Date of Birth" %}</span>
+                                                </label>
+                                                {{ form.date_of_birth }}
                                             </div>
                                         </div>
-                                        <div class="third-step-form per-step animate__animated">
-                                            <div class="row">
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="user_name" class="form-label">
-                                                        <span>Username</span>
-                                                    </label>
-                                                    <input type="text" id="user_name" placeholder="Ex: @jalebi_baby">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="alt-mail" class="form-label">
-                                                        <span>Alternative email address</span>
-                                                    </label>
-                                                    <input type="email"
-                                                           id="alt-mail"
-                                                           placeholder="Ex: your_alternative_mail@address">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <label for="password" class="form-label">
-                                                        <span>password</span>
-                                                    </label>
-                                                    <input type="password" id="password" placeholder="Your password here">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6">
-                                                    <label for="re-password" class="form-label">
-                                                        <span>Re-enter passord</span>
-                                                    </label>
-                                                    <input type="password"
-                                                           id="re-password"
-                                                           placeholder="Re-enter your same password">
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label class="form-label">
-                                                        <span>Password reminder question</span>
-                                                    </label>
-                                                    <div class="dropup select-list question-select">
-                                                        <button class="dropdown-toggle"
-                                                                type="button"
-                                                                id="question-select"
-                                                                data-bs-toggle="dropdown"
-                                                                aria-expanded="false">Select a question.</button>
-                                                        <ul class="dropdown-menu" aria-labelledby="question-select">
-                                                            <li>
-                                                                <a class="dropdown-item active" href="#">In what city were you born?</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">What high school did you attend?</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">What is your mother's maiden name?</a>
-                                                            </li>
-                                                            <li>
-                                                                <a class="dropdown-item" href="#">What was the make of your first car?</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <div class="col-xl-6 col-lg-6 col-md-6">
-                                                    <label for="answer" class="form-label">
-                                                        <span>Answer</span>
-                                                    </label>
-                                                    <input type="text"
-                                                           id="answer"
-                                                           placeholder="Remember the answer that you put here">
-                                                </div>
+                                    </div>
+                                    <!-- Step 3: Contact Info -->
+                                    <div class="third-step-form per-step animate__animated"
+                                         :class="{ 'blanked': currentStep === 2 }">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_phone_number" class="form-label">
+                                                    <span>{% trans "Phone Number" %}</span>
+                                                </label>
+                                                {{ form.phone_number }}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_alternate_email_address" class="form-label">
+                                                    <span>{% trans "Alternate Email Address" %}</span>
+                                                </label>
+                                                {{ form.alternate_email_address }}
                                             </div>
                                         </div>
-                                        <div class="fourth-step-form per-step animate__animated">
-                                            <div class="agreement-article">
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="inlineCheckbox1"
-                                                           value="option1">
-                                                    <label class="form-check-label" for="inlineCheckbox1">
-                                                        These website standard terms and conditions written on this webpage shall manage your use of our website, envesta accessible at envesta.template.
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                           checked
-                                                           type="checkbox"
-                                                           id="inlineCheckbox2"
-                                                           value="option2">
-                                                    <label class="form-check-label" for="inlineCheckbox2">
-                                                        These terms will be applied fully and affect to your use of this website. by using this Website, you agreed to accept all terms and conditions written in here. you must not use this website if you disagree with any of these website standard terms and conditions. these terms and conditions have been generated with the help of the terms and conditiions sample generator.
-                                                    </label>
-                                                </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input"
-                                                           type="checkbox"
-                                                           id="inlineCheckbox3"
-                                                           value="option3">
-                                                    <label class="form-check-label" for="inlineCheckbox3">
-                                                        Minors or people below 18 years old are not allowed to use this Website.
-                                                    </label>
+                                    </div>
+                                    <!-- Step 4: Security & Confirmation -->
+                                    <div class="fourth-step-form per-step animate__animated"
+                                         :class="{ 'blanked': currentStep === 3 }">
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_password1" class="form-label">
+                                                    <span>{% trans "Password" %}</span>
+                                                </label>
+                                                {{ form.password1 }}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                <label for="id_password2" class="form-label">
+                                                    <span>{% trans "Confirm Password" %}</span>
+                                                </label>
+                                                {{ form.password2 }}
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <div class="agreement-article">
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               id="terms_confirm"
+                                                               x-model="termsConfirmed">
+                                                        <label class="form-check-label" for="terms_confirm">
+                                                            {% blocktrans %}I agree to the <a href="#TODO">terms and conditions</a> to use this website{% endblocktrans %}
+                                                        </label>
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               id="age_confirm"
+                                                               x-model="ageConfirmed">
+                                                        <label class="form-check-label" for="age_confirm">{% trans "I confirm I am at least 18 years old" %}</label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-controller">
-                                        <button class="prv-stp-btn disabled" id="prv-stp-btn">
-                                            <i class="fa-duotone fa-arrow-left"></i>
-                                        </button>
-                                        <button class="prd-btn-1" id="nxt-stp-btn">
-                                            Next Step <i class="fa-duotone fa-arrow-right"></i>
-                                        </button>
-                                    </div>
-                                    <button id="big-screen" class="btn-pok">
-                                        <i class="fa-solid fa-expand"></i>
+                                </div>
+                                <div class="form-controller">
+                                    <button class="prv-stp-btn"
+                                            :class="{ 'disabled': currentStep === 0 }"
+                                            @click="prevStep"
+                                            type="button">
+                                        <i class="fa-duotone fa-arrow-left"></i>
                                     </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- sign-up end -->
-        <!-- footer begin -->
-        <div class="footer">
-            <div class="global-shape style-4">
-                <img src="assets/img/shapes/shape-1.png"
-                     alt=""
-                     data-aos="fade-left"
-                     data-aos-duration="500"
-                     data-aos-offset="200"
-                     data-aos-easing="ease-in"
-                     data-aos-delay="500">
-            </div>
-            <div class="footer-top">
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-xl-6 col-lg-6 col-md-8 col-sm-9">
-                            <div class="part-about">
-                                <div class="footer-logo"
-                                     data-aos="fade-up"
-                                     data-aos-delay="100"
-                                     data-aos-duration="500"
-                                     data-aos-easing="ease-in">
-                                    <a href="index.html">
-                                        <img src="assets/img/logo/mobile-logo.png" alt="" class="logo">
-                                    </a>
+                                    <button class="prd-btn-1"
+                                            @click="nextStep"
+                                            type="button"
+                                            x-show="currentStep < 3">
+                                        {% trans "Next Step" %} <i class="fa-duotone fa-arrow-right"></i>
+                                    </button>
+                                    <button class="prd-btn-1"
+                                            type="submit"
+                                            x-show="currentStep === 3"
+                                            :disabled="!termsConfirmed || !ageConfirmed">
+                                        {% trans "Sign Up" %} <i class="fa-duotone fa-arrow-right"></i>
+                                    </button>
                                 </div>
-                                <p data-aos="fade-up"
-                                   data-aos-delay="150"
-                                   data-aos-duration="500"
-                                   data-aos-easing="ease-in">
-                                    This allows bettors to bet over or under the bookmaker's score,
-                                    <br />
-                                    and indicate what they believe the difference in points will be.
-                                </p>
-                                <ul class="importants-links">
-                                    <li class="single-link"
-                                        data-aos="fade-up"
-                                        data-aos-delay="200"
-                                        data-aos-duration="500"
-                                        data-aos-easing="ease-in">
-                                        <a href="#0">policy</a>
+                            </form>
+                            <div class="part-connect-social-info">
+                                <div class="title-overlap">
+                                    <h4 class="title">{% trans "Or Sign Up With" %}</h4>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="{% provider_login_url 'google' %}"
+                                           class="single-social s-pinterest">
+                                            <i class="fa-brands fa-google"></i>
+                                        </a>
                                     </li>
-                                    <li class="single-link"
-                                        data-aos="fade-up"
-                                        data-aos-delay="250"
-                                        data-aos-duration="500"
-                                        data-aos-easing="ease-in">
-                                        <a href="#0">Terms</a>
+                                    <li>
+                                        <a href="{% provider_login_url 'facebook' %}"
+                                           class="single-social s-facebook">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
                                     </li>
-                                    <li class="single-link"
-                                        data-aos="fade-up"
-                                        data-aos-delay="300"
-                                        data-aos-duration="500"
-                                        data-aos-easing="ease-in">
-                                        <a href="#0">license</a>
+                                    <li>
+                                        <a href="{% provider_login_url 'twitter' %}"
+                                           class="single-social s-twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -1069,81 +346,54 @@
                     </div>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <div class="container">
-                    <div class="footer-bottom-content">
-                        <p class="copyright-text">Copyright © 2023. All Right Reserved By Peredion</p>
-                        <ul class="social-link">
-                            <li class="single-social">
-                                <a href="#0">
-                                    <i class="fa-brands fa-facebook-f"></i>
-                                </a>
-                            </li>
-                            <li class="single-social">
-                                <a href="#0">
-                                    <i class="fa-brands fa-twitter"></i>
-                                </a>
-                            </li>
-                            <li class="single-social">
-                                <a href="#0">
-                                    <i class="fa-brands fa-pinterest-p"></i>
-                                </a>
-                            </li>
-                        </ul>
-                        <div class="footer-menu">
-                            <ul>
-                                <li>
-                                    <a href="index.html" class="single-menu">homepage</a>
-                                </li>
-                                <li>
-                                    <a href="about.html" class="single-menu">About Us</a>
-                                </li>
-                                <li>
-                                    <a href="lotteries.html" class="single-menu">Lotteries</a>
-                                </li>
-                                <li>
-                                    <a href="blog-posts.html" class="single-menu">Blog</a>
-                                </li>
-                                <li>
-                                    <a href="contact.html" class="single-menu">contact</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-        <!-- footer end -->
-        <!-- back to button begin -->
-        <div class="back-to-top-btn">
-            <a href="#">
-                <i class="fa-light fa-turn-up"></i>
-            </a>
-        </div>
-        <!-- back to top button end -->
-        <!-- jQuery js -->
-        <script src="assets/js/jquery-3.6.0.min.js"></script>
-        <!-- bootstrap js -->
-        <script src="assets/js/bootstrap.bundle.min.js"></script>
-        <!-- owl carousel js -->
-        <script src="assets/js/owl.carousel.min.js"></script>
-        <!-- live clock js -->
-        <script src="assets/js/clock.min.js"></script>
-        <!-- appear js -->
-        <script src="assets/js/jquery.appear.min.js"></script>
-        <!-- odometer js -->
-        <script src="assets/js/odometer.min.js"></script>
-        <!-- overlayScrollbars js -->
-        <script src="assets/js/jquery.overlayScrollbars.min.js"></script>
-        <!-- date picker js  -->
-        <script src="assets/date-p/mc-calendar.min.js"></script>
-        <!-- main script js -->
-        <script src="assets/js/main.js"></script>
-        <!-- aos js -->
-        <script src="assets/js/aos.js"></script>
-        <!-- placing bet js -->
-        <script src="assets/js/placing-bet.js"></script>
-        <!-- register js -->
-        <script src="assets/js/register.js"></script>
-    </body>
-</html>
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('registerForm', () => ({
+                    currentStep: 0,
+                    termsConfirmed: false,
+                    ageConfirmed: false,
+                    steps: [
+                        { title: '{% trans "Basic Info" %}' },
+                        { title: '{% trans "Personal Details" %}' },
+                        { title: '{% trans "Contact Info" %}' },
+                        { title: '{% trans "Security & Confirmation" %}' }
+                    ],
+                    nextStep(event) {
+                        if (this.currentStep < 3) {
+                            this.currentStep++;
+                            this.updateStepVisibility();
+                        }
+                    },
+                    prevStep(event) {
+                        if (this.currentStep > 0) {
+                            this.currentStep--;
+                            this.updateStepVisibility();
+                        }
+                    },
+                    updateStepVisibility() {
+                        document.querySelectorAll('.per-step').forEach((el, index) => {
+                            el.classList.remove('blanked', 'animate__fadeInRight', 'animate__fadeOutLeft');
+                            if (index === this.currentStep) {
+                                el.classList.add('blanked', 'animate__fadeInRight');
+                            } else if (index < this.currentStep) {
+                                el.classList.add('animate__fadeOutLeft');
+                            }
+                        });
+                        document.querySelectorAll('.single-steps').forEach((el, index) => {
+                            el.classList.toggle('current-step', index <= this.currentStep);
+                        });
+                        document.querySelectorAll('.arrow-img').forEach((el, index) => {
+                            el.classList.toggle('current-arrow', index < this.currentStep);
+                        });
+                    },
+                    submitForm(event) {
+                        if (this.termsConfirmed && this.ageConfirmed) {
+                            event.target.submit();
+                        }
+                    }
+                }));
+            });
+        </script>
+    </div>
+{% endblock %}

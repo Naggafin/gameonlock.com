@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static i18n socialaccount %}
+{% block banner %}
+    <div class="prd-breadcrumb">
+        <div class="brd-shape">
+            <div class="brd-img brd-img-1"
+                 data-aos="fade-right"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
+            </div>
+            <div class="brd-img brd-img-2"
+                 data-aos="fade-left"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
+            </div>
+        </div>
+        <div class="container">
+            <div class="brd-content">
+                <div data-aos="fade-up"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <span class="sub-title">{% trans "Sign In" %}</span>
+                </div>
+                <div class="page-direction">
+                    <ul>
+                        <li>
+                            <span class="icon"><i class="fa-solid fa-house"></i></span>
+                            <a href="/" class="text">{% trans "Home" %}</a>
+                        </li>
+                        <li>
+                            <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                            <span class="text">{% trans "Sign In" %}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="sign-in">
+        <div class="global-shape"
+             data-aos="fade-left"
+             data-aos-duration="700"
+             data-aos-delay="200">
+            <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+                 alt=""
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="container">
+            <div class="row justify-content-lg-between justify-content-center">
+                <div class="col-xl-5 col-lg-6"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="poklotto-form">
+                        <h3 class="title">{% trans "Sign In to Your Account" %}</h3>
+                        <div class="part-form">
+                            <!-- Allauth Login Form -->
+                            <form method="post" action="{% url 'account_login' %}">
+                                {% csrf_token %}
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in form.non_field_errors %}{{ error }}{% endfor %}
+                                    </div>
+                                {% endif %}
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <label for="id_login" class="form-label">
+                                            <span>{% trans "Email or Username" %}</span>
+                                        </label>
+                                        {{ form.login }}
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <label for="id_password" class="form-label">
+                                            <span>{% trans "Password" %}</span>
+                                        </label>
+                                        {{ form.password }}
+                                    </div>
+                                    <div class="col-xl-12">
+                                        <div class="form-check">
+                                            {{ form.remember }}
+                                            <label class="form-check-label" for="id_remember">{% trans "Remember Me" %}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="part-submit">
+                                    <button type="submit" class="prd-btn-1">
+                                        {% trans "Sign In" %} <i class="fa-duotone fa-arrow-right"></i>
+                                    </button>
+                                    <p>
+                                        {% blocktrans %}
+                                            No account yet in Game-on-Lock?<br />
+                                            <a href="{% url 'account_signup' %}" class="reg-link">Register</a> here to sign up.
+                                        {% endblocktrans %}
+                                    </p>
+                                </div>
+                            </form>
+                            <!-- Social Login Buttons -->
+                            <div class="part-connect-social-info">
+                                <div class="title-overlap">
+                                    <h4 class="title">{% trans "Or Sign In With" %}</h4>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="{% provider_login_url 'google' %}"
+                                           class="single-social s-pinterest">
+                                            <i class="fa-brands fa-google"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% provider_login_url 'facebook' %}"
+                                           class="single-social s-facebook">
+                                            <i class="fa-brands fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% provider_login_url 'twitter' %}"
+                                           class="single-social s-twitter">
+                                            <i class="fa-brands fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-6 col-lg-5 col-md-12 order-lg-last order-first col-sm-10 d-xl-flex d-lg-flex d-block align-items-center">
+                    <div class="part-right">
+                        <div class="part-img"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/sign-in/sign-in-img.png' %}"
+                                 alt=""
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="part-text"
+                             data-aos="fade-up"
+                             data-aos-delay="100"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="section-title if-lines-break">
+                                <h3 class="sub-title">{% trans "Welcome to Game-on-Lock" %}</h3>
+                                <h2 class="title">
+                                    <span>
+                                        {% blocktrans %}
+                                            Sign In & Start Betting<br />with Just One Click
+                                        {% endblocktrans %}
+                                    </span>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

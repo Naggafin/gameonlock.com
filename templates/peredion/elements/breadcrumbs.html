@@ -3,7 +3,7 @@
         {% for url, label in breadcrumbs %}
             {% if not url or forloop.counter == breadcrumbs_total %}
                 <li>
-                    <span class="icon"><i class="{% if forloop.counter == 1 %}
+                    <span class="icon"><i class="{% if forloop.first %}
               fa-solid fa-house
           {% else %}
               fa-light fa-caret-right fa-xl
@@ -13,7 +13,7 @@
                 </li>
             {% else %}
                 <li>
-                    <span class="icon"><i class="{% if forloop.counter == 1 %}
+                    <span class="icon"><i class="{% if forloop.first %}
               fa-solid fa-house
           {% else %}
               fa-light fa-caret-right fa-xl

@@ -56,7 +56,7 @@ class PlayCreateUpdateView(UpdateView):
 	success_url = reverse_lazy("sportsbetting:play_list")
 
 	def get(self, request, *args, **kwargs):
-		return redirect("sportsbetting:betting")
+		return redirect("sportsbetting:bet")
 
 	def get_object(self, queryset=None):
 		try:
@@ -70,7 +70,9 @@ class PlayCreateUpdateView(UpdateView):
 			queryset=PlayPick.objects.filter(
 				play__user_id=self.request.user.pk,
 				betting_line__game__start_datetime__gt=timezone.now(),
-			),
+			)
+			if self.object
+			else PlayPick.objects.none(),
 		)
 
 		if formset.is_valid():

@@ -1,11 +1,13 @@
 cachetools
+celery
+celerybeat
 django-allauth
-django-allauth-ui
 django-auto-prefetch
 django-debug-toolbar
 django-fastdev
 django-guardian
 django-htmx
+django-localflavor
 django-machina
 django-model-utils
 django-money

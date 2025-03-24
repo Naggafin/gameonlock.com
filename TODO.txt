@@ -1,0 +1,2 @@
+Bet slip should link to payment after submit
+Celery task to automatically mark a play as paid

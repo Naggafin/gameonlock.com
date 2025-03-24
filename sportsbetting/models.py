@@ -1,12 +1,8 @@
-from http import HTTPStatus
-
 import auto_prefetch
-import requests
 from django.conf import settings
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
 from django.db import models
 from django.db.models import F, Q
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
@@ -17,7 +13,7 @@ from slugify import slugify
 class Sport(models.Model):
 	name = models.CharField(max_length=100, unique=True)
 	description = models.TextField(blank=True, null=True)
-	slug_name = models.SlugField(unique=True, blank=True)
+	slug_name = models.SlugField(unique=True, blank=True, editable=False)
 
 	def save(self, *args, **kwargs):
 		if not self.slug_name:
@@ -100,9 +96,17 @@ class Division(auto_prefetch.Model):
 """
 
 
+def save_uploaded_logos(instance, filename):
+	return f"teams/logos/{slugify(instance.name)}_logo.jpg"
+
+
+def save_uploaded_brands(instance, filename):
+	return f"teams/brands/{slugify(instance.name)}_brand.jpg"
+
+
 class Team(auto_prefetch.Model):
-	logo = models.ImageField(upload_to="teams/logos/", null=True, blank=True)
-	brand = models.ImageField(upload_to="teams/brands/", null=True, blank=True)
+	logo = models.ImageField(upload_to=save_uploaded_logos, null=True, blank=True)
+	brand = models.ImageField(upload_to=save_uploaded_brands, null=True, blank=True)
 	website = models.URLField(null=True, blank=True)
 	league = auto_prefetch.ForeignKey(
 		League, on_delete=models.CASCADE, related_name="teams"
@@ -112,53 +116,6 @@ class Team(auto_prefetch.Model):
 	location = models.CharField(max_length=100, blank=True, null=True)
 	founding_year = models.PositiveIntegerField(blank=True, null=True)
 	downloaded = models.BooleanField(default=False, editable=False)
-
-	def fetch_team_data(self):
-		"""Fetches data from an external API based on the team name."""
-		api_url = (
-			f"https://www.thesportsdb.com/api/v1/json/3/searchteams.php?t={self.name}"
-		)
-		response = requests.get(api_url)
-
-		if response.status_code == HTTPStatus.OK:
-			data = response.json()
-			return data.get("strLogo"), data.get("strBadge"), data.get("strWebsite")
-		return None, None, None
-
-	def download_image(self, url, filename):
-		"""Downloads an image from a URL and saves it to the media directory."""
-		response = requests.get(url)
-		if response.status_code == HTTPStatus.OK:
-			file_path = settings.MEDIA_ROOT / filename
-			default_storage.save(file_path, ContentFile(response.content))
-			return file_path
-		return None
-
-	def save(self, *args, **kwargs):
-		"""Overrides save method to fetch and store images if missing."""
-		if not all(self.logo, self.brand, self.website) and not self.downloaded:
-			logo_url, brand_url, website = self.fetch_team_data()
-
-			self.website = website
-			self.downloaded = True
-
-			if not self.logo and logo_url:
-				logo_filename = f"teams/logos/{slugify(self.name)}_logo.jpg"
-				self.logo = (
-					logo_filename
-					if self.download_image(logo_url, logo_filename)
-					else None
-				)
-
-			if not self.brand and brand_url:
-				brand_filename = f"teams/brands/{slugify(self.name)}_brand.jpg"
-				self.brand = (
-					brand_filename
-					if self.download_image(brand_url, brand_filename)
-					else None
-				)
-
-		return super().save(*args, **kwargs)
 
 	def __str__(self):
 		# if self.division: return f"{self.name} ({self.division.name})";
@@ -235,7 +192,7 @@ class BettingLine(auto_prefetch.Model):
 		related_name="betting_line",
 		unique=True,
 	)
-	spread = models.DecimalField(max_digits=5, decimal_places=2)
+	spread = models.IntegerField()
 	is_pick = models.BooleanField(blank=True, default=False)
 	over = models.IntegerField(blank=True, null=True)
 	under = models.IntegerField(blank=True, null=True)
@@ -278,8 +235,9 @@ class Play(auto_prefetch.Model):
 		default_currency="USD",
 		validators=[MinMoneyValidator(settings.SPORTS["MIN_BET"])],
 	)
+	stakes = models.IntegerField(blank=True, null=True, editable=False)
 	placed_datetime = models.DateTimeField(auto_now=True)
-	paid = models.BooleanField(default=False)
+	paid = models.BooleanField(default=False, editable=False)
 	won = models.BooleanField(default=False)
 
 	def __str__(self):
@@ -317,9 +275,53 @@ class PlayPick(auto_prefetch.Model):
 		blank=True,
 	)
 	# player = auto_prefetch.ForeignKey(Player, on_delete=models.SET_NULL, related_name="play_picks", null=True, blank=True)
-	stat_type = None  # TODO
-	target_value = None  # TODO
+	# stat_type = None  # TODO
+	# target_value = None  # TODO
 	is_over = models.BooleanField(null=True, blank=True)
+
+	@cached_property
+	def won(self):
+		# Return None if the game isn’t finished
+		if not self.betting_line.game.is_finished:
+			return None
+
+		# Get game scores
+		home_score = self.betting_line.game.home_team_score
+		away_score = self.betting_line.game.away_team_score
+
+		# Ensure scores are available
+		if home_score is None or away_score is None:
+			return None
+
+		if self.type == self.TYPES.spread:
+			# Spread bet: team must win by more than the spread
+			spread = self.betting_line.spread
+			is_pick = self.betting_line.is_pick
+			picked_team = self.team
+
+			if picked_team == self.betting_line.game.home_team:
+				return (
+					(home_score - away_score) > spread
+					if is_pick
+					else (home_score + spread) > away_score
+				)
+			elif picked_team == self.betting_line.game.away_team:
+				return (
+					(away_score - home_score) > spread
+					if is_pick
+					else (home_score + spread) < away_score
+				)
+			return False  # Team not in game (shouldn’t happen due to constraints)
+
+		elif self.type == self.TYPES.under_over:
+			# Over/Under bet: compare total score to over/under value
+			total_score = home_score + away_score
+			if self.is_over:
+				return total_score > self.betting_line.over
+			else:
+				return total_score < self.betting_line.under
+
+		return None  # Default for unhandled types (e.g., future 'player' type)
 
 	def __str__(self):
 		if self.type == self.TYPES.spread:

@@ -42,13 +42,12 @@
           return;
         }
 
-        const isTeamBet = fieldset.querySelectorAll('label')[0].classList.contains('single-bet-place') && !fieldset.querySelector('.btn');
-        if (isTeamBet) {
+        if (radio.name === 'team') {
           const teamPk = radio.value;
-          betSlip.addPick(bettingLine, 'team', teamPk, null, game);
-        } else {
+          betSlip.addPick(bettingLine, 'sp', teamPk, null, game);
+        } else if (radio.name === 'over_under') {
           const isOver = (radio.value === 'true');
-          betSlip.addPick(bettingLine, 'over_under', null, isOver, game);
+          betSlip.addPick(bettingLine, 'uo', null, isOver, game);
         }
       });
     });

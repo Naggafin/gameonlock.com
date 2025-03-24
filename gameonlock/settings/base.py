@@ -79,7 +79,6 @@ INSTALLED_APPS = [
 	"oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig",
 	"oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig",
 	# allauth
-	"allauth_ui",
 	"allauth",
 	"allauth.account",
 	"allauth.socialaccount",
@@ -98,6 +97,8 @@ INSTALLED_APPS = [
 	"wagtail.admin",
 	"wagtail",
 	# other 3rd party dependencies
+	"celery",
+	"django_celery_beat",
 	"modelcluster",
 	"taggit",
 	"guardian",
@@ -190,6 +191,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = "gameonlock.User"
 
 
 # Internationalization
@@ -340,18 +343,16 @@ SPORTS = {
 		"NCAAF",
 	],
 	"MIN_BET": Money(5, "USD"),
+	"BET_MULTIPLIER": 5,
 }
 
 SITE_VARS["MIN_BET"] = SPORTS["MIN_BET"]
-
-
-# allauth-ui
-
-ALLAUTH_UI_THEME = "light"
+SITE_VARS["BET_MULTIPLIER"] = SPORTS["BET_MULTIPLIER"]
 
 
 # django-allauth
 
+ACCOUNT_FORMS = {"signup": "gameonlock.forms.SignupForm"}
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 SOCIALACCOUNT_PROVIDERS = {
 	"google": {
@@ -412,12 +413,12 @@ SILKY_PYTHON_PROFILER_EXTENDED_FILE_NAME = True
 SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
-SILKY_INTERCEPT_PERCENT = 100  # log 100% of requests
+SILKY_INTERCEPT_PERCENT = 25  # log 25% of requests
 
 
 # django-view-breadcrumbs
 
-# BREADCRUMBS_TEMPLATE = "pixio/elements/breadcrumbs.html"
+BREADCRUMBS_TEMPLATE = "peredion/elements/breadcrumbs.html"
 
 
 # django-csp

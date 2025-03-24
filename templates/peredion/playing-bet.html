@@ -64,7 +64,10 @@
                                         <fieldset {% if game.is_finished or game_has_started or line.picked_team %}disabled{% endif %}>
                                             <label class="single-bet-place away
                                                           {% if line.picked_team == game.away_team.pk %}placed{% endif %}">
-                                                <input type="radio" value="{{ game.away_team.pk }}" data-team-pk="away">
+                                                <input type="radio"
+                                                       name="team"
+                                                       value="{{ game.away_team.pk }}"
+                                                       data-team="away">
                                                 <span class="team-icon">
                                                     <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
                                                          alt="{{ game.away_team.name }}"
@@ -73,14 +76,17 @@
                                                 <span class="team-name">{{ game.away_team.name }}</span>
                                             </label>
                                             <label class="single-bet-place draw-box">
-                                                <input type="radio" value="">
+                                                <input type="radio" name="team" value="">
                                                 <span class="bet-ratio">
                                                     {% if line.is_pick %}P{% endif %}
                                                 {{ line.spread }}</span>
                                             </label>
                                             <label class="single-bet-place home
                                                           {% if line.picked_team == game.home_team.pk %}placed{% endif %}">
-                                                <input type="radio" value="{{ game.home_team.pk }}" data-team-pk="home">
+                                                <input type="radio"
+                                                       name="team"
+                                                       value="{{ game.home_team.pk }}"
+                                                       data-team="home">
                                                 <span class="team-icon">
                                                     <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
                                                          alt="{{ game.home_team.name }}"
@@ -91,15 +97,26 @@
                                         </fieldset>
                                         {% if line.under or line.over %}
                                             <fieldset {% if game.is_finished or game_has_started or line.picked_uo %}disabled{% endif %}>
-                                                <label class="btn single-bet-place over
-                                                              {% if line.picked_uo == 'over' %}placed{% endif %}">
-                                                    <input type="radio" value="true" data-over-under="{{ line.over }}">
-                                                    <span>{% trans 'over' %} {{ line.over }}</span>
-                                                </label>
                                                 <label class="btn single-bet-place under
                                                               {% if line.picked_uo == 'under' %}placed{% endif %}">
-                                                    <input type="radio" value="false" data-over-under="{{ line.under }}">
-                                                    <span>{% trans 'under' %} {{ line.under }}</span>
+                                                    <input type="radio"
+                                                           name="over_under"
+                                                           value="false"
+                                                           data-over-under="{{ line.under }}">
+                                                    <span>{% trans 'under' %}</span>
+                                                </label>
+                                                <label class="single-bet-place draw-box">
+                                                    <input type="radio" name="over_under" value="">
+                                                    {# NOTE: line.over and line.under should be same on current implementation #}
+                                                    <span class="bet-ratio">{{ line.over }}</span>
+                                                </label>
+                                                <label class="btn single-bet-place over
+                                                              {% if line.picked_uo == 'over' %}placed{% endif %}">
+                                                    <input type="radio"
+                                                           name="over_under"
+                                                           value="true"
+                                                           data-over-under="{{ line.over }}">
+                                                    <span>{% trans 'over' %}</span>
                                                 </label>
                                             </fieldset>
                                         {% endif %}
@@ -267,7 +284,11 @@
                             </ul>
                         </div>
                         <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            {% for sport, games in upcoming_entries.items %}{% endfor %}
+                            {% for sport, games in upcoming_entries.items %}
+                                {% with active=forloop.first game_state='upcoming' %}
+                                    {% partial bet-section-tab %}
+                                {% endwith %}
+                            {% endfor %}
                         </div>
                     </div>
                 {% endwith %}
@@ -278,7 +299,7 @@
                          aria-labelledby="bet-inplay-tab">
                         <div class="sports-menu scrollable-menu">
                             <ul class="nav nav-pills" id="sports-tab-{{ tab_num }}" role="tablist">
-                                {% for sport in inplay_entries %}
+                                {% for sport in in_play_entries %}
                                     <li class="nav-item" role="presentation">
                                         <button class="nav-link
                                                        {% if forloop.first %}active{% endif %}"
@@ -301,308 +322,11 @@
                             </ul>
                         </div>
                         <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            <div class="tab-pane fade show active"
-                                 id="sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                 role="tabpanel"
-                                 aria-labelledby="sports-{{ sport.sport.slug_name }}-tab-{{ tab_num }}">
-                                <h2 class="accordion-header">
-                                    <div class="sports-header">
-                                        <span class="single-sports-icon">
-                                            <img src="{% static 'peredion/images/playing-bet/icon/icon-1.png' %}"
-                                                 alt=""
-                                                 nonce="{{ request.csp_nonce }}">
-                                        </span>
-                                        <span class="single-sports-name">football (05)</span>
-                                        <span class="single-sports-img">
-                                            <img src="{% static 'peredion/images/playing-bet/football-bg.png' %}"
-                                                 alt=""
-                                                 nonce="{{ request.csp_nonce }}">
-                                        </span>
-                                        <a href="#" class="see-all-sports-btn">See all <i class="fa-light fa-arrow-right-long"></i></a>
-                                    </div>
-                                </h2>
-                                <div class="sports-schedule-elem">
-                                    <div class="tournament-title">
-                                        <span class="title-text">UEFA Champions League</span>
-                                        <span class="match-quantity">(3)</span>
-                                    </div>
-                                    <div class="row g-3">
-                                        <div class="col-xl-6 col-lg-6">
-                                            <div class="single-view-schedule">
-                                                <div class="schedue-header">
-                                                    <span class="tournament-name">UEFA Champions League - 2022</span>
-                                                    <span class="stadium-name">Tottenham Hotspur Stadium, london</span>
-                                                </div>
-                                                <div class="schedule-body">
-                                                    <div class="schedule-stats">
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-1.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Dinamo Zagreb</span>
-                                                        </div>
-                                                        <div class="date-times-vs">
-                                                            <span class="time"><i class="fa-regular fa-clock"></i> 09:00 AM</span>
-                                                            <span class="date">24 Nov SAT, 2022</span>
-                                                            <img src="{% static 'peredion/images/sports-schedule/vs.png' %}"
-                                                                 alt=""
-                                                                 class="versace-icon"
-                                                                 nonce="{{ request.csp_nonce }}">
-                                                        </div>
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-5.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Bodo Glimt FC</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="placing-bet">
-                                                        <a href="#" class="place-a-bet placed">0.25</a>
-                                                        <a href="#" class="place-a-bet">1.42</a>
-                                                        <a href="#" class="place-a-bet">4.32</a>
-                                                    </div>
-                                                </div>
-                                                <div class="schedue-timer timer" data-date="30 Feb 2024 8:41:00 GMT+01:00">
-                                                    <div class="time-starting-text">
-                                                        <span class="txt">starting on</span>
-                                                        <img class="icon"
-                                                             src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
-                                                             alt=""
-                                                             nonce="{{ request.csp_nonce }}">
-                                                    </div>
-                                                    <div class="all-timer-task">
-                                                        <div class="single-time">
-                                                            <span class="number day">-101</span>
-                                                            <span class="title">Days</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number hour">00</span>
-                                                            <span class="title">Hours</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number minute">19</span>
-                                                            <span class="title">Minutes</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number second">20</span>
-                                                            <span class="title">Seconds</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <div class="single-view-schedule">
-                                                <div class="schedue-header">
-                                                    <span class="tournament-name">UEFA Champions League - 2022</span>
-                                                    <span class="stadium-name">Tottenham Hotspur Stadium, london</span>
-                                                </div>
-                                                <div class="schedule-body">
-                                                    <div class="schedule-stats">
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-1.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Dinamo Zagreb</span>
-                                                        </div>
-                                                        <div class="date-times-vs">
-                                                            <span class="time"><i class="fa-regular fa-clock"></i> 09:00 AM</span>
-                                                            <span class="date">24 Nov SAT, 2022</span>
-                                                            <img src="{% static 'peredion/images/sports-schedule/vs.png' %}"
-                                                                 alt=""
-                                                                 class="versace-icon"
-                                                                 nonce="{{ request.csp_nonce }}">
-                                                        </div>
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-5.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Bodo Glimt FC</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="placing-bet">
-                                                        <a href="#" class="place-a-bet placed">0.25</a>
-                                                        <a href="#" class="place-a-bet">1.42</a>
-                                                        <a href="#" class="place-a-bet">4.32</a>
-                                                    </div>
-                                                </div>
-                                                <div class="schedue-timer timer" data-date="01 Jan 2024 7:22:00 GMT+01:00">
-                                                    <div class="time-starting-text">
-                                                        <span class="txt">starting on</span>
-                                                        <img class="icon"
-                                                             src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
-                                                             alt=""
-                                                             nonce="{{ request.csp_nonce }}">
-                                                    </div>
-                                                    <div class="all-timer-task">
-                                                        <div class="single-time">
-                                                            <span class="number day">-101</span>
-                                                            <span class="title">Days</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number hour">00</span>
-                                                            <span class="title">Hours</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number minute">19</span>
-                                                            <span class="title">Minutes</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number second">20</span>
-                                                            <span class="title">Seconds</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <div class="single-view-schedule">
-                                                <div class="schedue-header">
-                                                    <span class="tournament-name">UEFA Champions League - 2022</span>
-                                                    <span class="stadium-name">Tottenham Hotspur Stadium, london</span>
-                                                </div>
-                                                <div class="schedule-body">
-                                                    <div class="schedule-stats">
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-1.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Dinamo Zagreb</span>
-                                                        </div>
-                                                        <div class="date-times-vs">
-                                                            <span class="time"><i class="fa-regular fa-clock"></i> 09:00 AM</span>
-                                                            <span class="date">24 Nov SAT, 2022</span>
-                                                            <img src="{% static 'peredion/images/sports-schedule/vs.png' %}"
-                                                                 alt=""
-                                                                 class="versace-icon"
-                                                                 nonce="{{ request.csp_nonce }}">
-                                                        </div>
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-5.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Bodo Glimt FC</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="placing-bet">
-                                                        <a href="#" class="place-a-bet placed">0.25</a>
-                                                        <a href="#" class="place-a-bet">1.42</a>
-                                                        <a href="#" class="place-a-bet">4.32</a>
-                                                    </div>
-                                                </div>
-                                                <div class="schedue-timer timer"
-                                                     data-date="24 June 2024 2:18:00 GMT+01:00">
-                                                    <div class="time-starting-text">
-                                                        <span class="txt">starting on</span>
-                                                        <img class="icon"
-                                                             src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
-                                                             alt=""
-                                                             nonce="{{ request.csp_nonce }}">
-                                                    </div>
-                                                    <div class="all-timer-task">
-                                                        <div class="single-time">
-                                                            <span class="number day">-101</span>
-                                                            <span class="title">Days</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number hour">00</span>
-                                                            <span class="title">Hours</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number minute">19</span>
-                                                            <span class="title">Minutes</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number second">20</span>
-                                                            <span class="title">Seconds</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-6 col-lg-6">
-                                            <div class="single-view-schedule">
-                                                <div class="schedue-header">
-                                                    <span class="tournament-name">UEFA Champions League - 2022</span>
-                                                    <span class="stadium-name">Tottenham Hotspur Stadium, london</span>
-                                                </div>
-                                                <div class="schedule-body">
-                                                    <div class="schedule-stats">
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-1.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Dinamo Zagreb</span>
-                                                        </div>
-                                                        <div class="date-times-vs">
-                                                            <span class="time"><i class="fa-regular fa-clock"></i> 09:00 AM</span>
-                                                            <span class="date">24 Nov SAT, 2022</span>
-                                                            <img src="{% static 'peredion/images/sports-schedule/vs.png' %}"
-                                                                 alt=""
-                                                                 class="versace-icon"
-                                                                 nonce="{{ request.csp_nonce }}">
-                                                        </div>
-                                                        <div class="single-team">
-                                                            <div class="team-icon">
-                                                                <img src="{% static 'peredion/images/sports-schedule/team-icon/icon-5.png' %}"
-                                                                     alt=""
-                                                                     nonce="{{ request.csp_nonce }}">
-                                                            </div>
-                                                            <span class="team-name">Bodo Glimt FC</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="placing-bet">
-                                                        <a href="#" class="place-a-bet placed">0.25</a>
-                                                        <a href="#" class="place-a-bet">1.42</a>
-                                                        <a href="#" class="place-a-bet">4.32</a>
-                                                    </div>
-                                                </div>
-                                                <div class="schedue-timer timer" data-date="21 Apr 2024 1:10:00 GMT+01:00">
-                                                    <div class="time-starting-text">
-                                                        <span class="txt">starting on</span>
-                                                        <img class="icon"
-                                                             src="{% static 'peredion/images/sports-schedule/vector-line.png' %}"
-                                                             alt=""
-                                                             nonce="{{ request.csp_nonce }}">
-                                                    </div>
-                                                    <div class="all-timer-task">
-                                                        <div class="single-time">
-                                                            <span class="number day">-101</span>
-                                                            <span class="title">Days</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number hour">00</span>
-                                                            <span class="title">Hours</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number minute">19</span>
-                                                            <span class="title">Minutes</span>
-                                                        </div>
-                                                        <div class="single-time">
-                                                            <span class="number second">20</span>
-                                                            <span class="title">Seconds</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% for sport, games in upcoming_entries.items %}
+                                {% with active=forloop.first game_state='in_play' %}
+                                    {% partial bet-section-tab %}
+                                {% endwith %}
+                            {% endfor %}
                         </div>
                     </div>
                 {% endwith %}
@@ -636,193 +360,11 @@
                             </ul>
                         </div>
                         <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            <div class="tab-pane fade show active"
-                                 id="sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                 role="tabpanel"
-                                 aria-labelledby="sports-{{ sport.slug_name }}-tab-{{ tab_num }}">
-                                <div class="single-sports-item">
-                                    <h2 class="accordion-header">
-                                        <div class="sports-header">
-                                            <span class="single-sports-icon">
-                                                <img src="{% static 'peredion/images/playing-bet/icon/icon-1.png' %}"
-                                                     alt=""
-                                                     nonce="{{ request.csp_nonce }}">
-                                            </span>
-                                            <span class="single-sports-name">football (05)</span>
-                                            <span class="single-sports-img">
-                                                <img src="{% static 'peredion/images/playing-bet/football-bg.png' %}"
-                                                     alt=""
-                                                     nonce="{{ request.csp_nonce }}">
-                                            </span>
-                                            <a href="#" class="see-all-sports-btn">See all <i class="fa-light fa-arrow-right-long"></i></a>
-                                        </div>
-                                    </h2>
-                                    <div class="sports-expanded-list">
-                                        <div class="sports-body">
-                                            <div class="playing-sports-all no-tabs-here">
-                                                <div class="single-tournament">
-                                                    <div class="tournament-title">
-                                                        <span class="title-text">UEFA Champions League</span>
-                                                        <span class="match-quantity">(3)</span>
-                                                    </div>
-                                                    <div class="all-tournament-match">
-                                                        <div class="single-t-match finished">
-                                                            <div class="match-time">
-                                                                <span class="time-icon">
-                                                                    <i class="fa-regular fa-clock"></i>
-                                                                </span>
-                                                                <span class="m-date">24 Nov</span>
-                                                                <span class="m-time">9:22 am</span>
-                                                            </div>
-                                                            <div class="playing-teams">
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-3.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Dinamo Zagreb</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-4.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Bodo-Glimt</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="placing-bet">
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">0.25</span>
-                                                                    <span class="team-name">Dinamo Zagreb</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place draw-box">
-                                                                    <span class="bet-ratio">1.42</span>
-                                                                    <span class="team-name">draw</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">4.32</span>
-                                                                    <span class="team-name">Bodo-Glimt</span>
-                                                                </a>
-                                                            </div>
-                                                            <span class="bet-ratio-details">
-                                                                <a href="#">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                            </span>
-                                                        </div>
-                                                        <div class="single-t-match finished">
-                                                            <div class="match-time">
-                                                                <span class="time-icon">
-                                                                    <i class="fa-regular fa-clock"></i>
-                                                                </span>
-                                                                <span class="m-date">24 Nov</span>
-                                                                <span class="m-time">9:22 am</span>
-                                                            </div>
-                                                            <div class="playing-teams">
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-3.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Dinamo Zagreb</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-4.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Bodo-Glimt</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="placing-bet">
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">0.25</span>
-                                                                    <span class="team-name">Dinamo Zagreb</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place draw-box">
-                                                                    <span class="bet-ratio">1.42</span>
-                                                                    <span class="team-name">draw</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">4.32</span>
-                                                                    <span class="team-name">Bodo-Glimt</span>
-                                                                </a>
-                                                            </div>
-                                                            <span class="bet-ratio-details">
-                                                                <a href="#">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                            </span>
-                                                        </div>
-                                                        <div class="single-t-match finished">
-                                                            <div class="match-time">
-                                                                <span class="time-icon">
-                                                                    <i class="fa-regular fa-clock"></i>
-                                                                </span>
-                                                                <span class="m-date">24 Nov</span>
-                                                                <span class="m-time">9:22 am</span>
-                                                            </div>
-                                                            <div class="playing-teams">
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-3.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Dinamo Zagreb</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                                <div class="single-team">
-                                                                    <div class="team-descr">
-                                                                        <span class="team-icon">
-                                                                            <img src="{% static 'peredion/images/playing-bet/team-icon/team-4.png' %}"
-                                                                                 alt=""
-                                                                                 nonce="{{ request.csp_nonce }}">
-                                                                        </span>
-                                                                        <span class="team-name">Bodo-Glimt</span>
-                                                                    </div>
-                                                                    <div class="team-score">0</div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="placing-bet">
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">0.25</span>
-                                                                    <span class="team-name">Dinamo Zagreb</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place draw-box">
-                                                                    <span class="bet-ratio">1.42</span>
-                                                                    <span class="team-name">draw</span>
-                                                                </a>
-                                                                <a href="#0" class="single-bet-place">
-                                                                    <span class="bet-ratio">4.32</span>
-                                                                    <span class="team-name">Bodo-Glimt</span>
-                                                                </a>
-                                                            </div>
-                                                            <span class="bet-ratio-details">
-                                                                <a href="#">33 <i class="fa-regular fa-angle-right"></i></a>
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {% for sport, games in finished_entries.items %}
+                                {% with active=forloop.first game_state='finished' %}
+                                    {% partial bet-section-tab %}
+                                {% endwith %}
+                            {% endfor %}
                         </div>
                     </div>
                 {% endwith %}

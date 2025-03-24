@@ -1,5 +1,7 @@
 {% load static i18n %}
+{% load sportsbetting_tags %}
 <div class="bet-slip" x-data="betSlip" x-init="init()">
+    {% csrf_token %}
     <!-- Header -->
     <button class="bet-slip-header"
             :class="{ 'collapsed': !isOpen }"
@@ -20,15 +22,15 @@
             <div class="part-slip-header">
                 <div class="all-bs-card">
                     <!-- Empty State -->
-                    <div class="empty-card" x-show="picks.length === 0">
-                        <img src="{% static 'peredion/img/playing-bet/bet-slip/empty-icon.png' %}"
+                    <div class="empty-card" x-show="picks.length === 0 && !submitted">
+                        <img src="{% static 'peredion/images/playing-bet/bet-slip/empty-icon.png' %}"
                              alt=""
                              nonce="{{ request.csp_nonce }}">
                         <h4 class="empty-title">{% trans 'Your bet slip is empty!' %}</h4>
                         <p>{% trans 'Looks like you haven't placed a bet yet.' %}</p>
                     </div>
                     <!-- Success State -->
-                    <div class="successfull-card" x-show="submitted">
+                    <div class="successfull-card" x-show="submitted" x-transition>
                         <svg version="1.1"
                              xmlns="http://www.w3.org/2000/svg"
                              viewBox="0 0 130.2 130.2"
@@ -41,7 +43,7 @@
                     </div>
                     <!-- Bet Cards -->
                     <template x-for="(pick, index) in picks" :key="pick.betting_line">
-                        <div class="single-bs-card singleBS">
+                        <div class="single-bs-card singleBS" x-show="!submitted">
                             <div class="bs-card-header">
                                 <span class="tournament-name" x-text="pick.game_data.league"></span>
                                 <div class="slct-place">
@@ -53,7 +55,7 @@
                             </div>
                             <div class="slct-match">
                                 <span class="sports-category-icon">
-                                    <img src="{% static 'peredion/img/playing-bet/bet-slip/sports-icon.png' %}"
+                                    <img src="{% static 'peredion/images/playing-bet/bet-slip/sports-icon.png' %}"
                                          alt=""
                                          nonce="{{ request.csp_nonce }}">
                                 </span>
@@ -72,7 +74,7 @@
                         <span class="text">{% trans 'Total stake:' %}</span>
                         <input type="number"
                                x-model="amount"
-                               min="{{ MIN_BET|int }};"
+                               min="{{ MIN_BET|int }}"
                                step="0.01"
                                class="form-control d-inline w-auto">
                     </div>
@@ -83,12 +85,9 @@
                 </div>
                 <div class="calc-finish">
                     <button class="prd-btn-1 medium"
-                            hx-post="{% url 'sportsbetting:play_create_update' %}"
-                            hx-target="#collapseBetSlip"
-                            hx-swap="innerHTML"
-                            @click="prepareSubmission"
-                            :disabled="amount < {{ MIN_BET|int }};">
-                        <span x-text="amount < {{ MIN_BET|int }}; ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : '{% trans "Place Bet" %}'"></span>
+                            @click="submitBet()"
+                            :disabled="amount < {{ MIN_BET|int }} || picks.length < 4">
+                        <span x-text="amount < {{ MIN_BET|int }} ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : (picks.length < 4 ? '{% trans "Must place at least 4 bets" %}' : '{% trans "Place Bet" %}')"></span>
                         <i class="fa-duotone fa-arrow-right"></i>
                     </button>
                     <button class="calc-dlt" @click="clearSlip()">
@@ -104,7 +103,7 @@
         Alpine.data('betSlip', () => ({
             isOpen: false,
             picks: [],
-            amount: {{ MIN_BET|int }};,
+            amount: {{ MIN_BET|int }},
             submitted: false,
 
             init() {
@@ -124,7 +123,7 @@
                         ...pick,
                         game_data: pick.game_data || {} // Ensure game_data exists for display
                     }));
-                    this.amount = data.amount || {{ MIN_BET|int }};;
+                    this.amount = data.amount || {{ MIN_BET|int }};
                 }
                 this.submitted = false;
             },
@@ -135,30 +134,6 @@
                     amount: this.amount
                 }));
                 window.dispatchEvent(new Event('betslip-updated'));
-            },
-
-            addPick(bettingLine, type, team, gameData) {
-                const existingIndex = this.picks.findIndex(p => p.betting_line === bettingLine);
-                if (existingIndex !== -1) {
-                    this.picks[existingIndex] = {
-                        betting_line: bettingLine,
-                        type,
-                        team,
-                        is_over: isOver,
-                        game: gameData.game,
-                        game_data: gameData
-                    };
-                } else {
-                    this.picks.push({
-                        betting_line: bettingLine,
-                        type,
-                        team,
-                        is_over: isOver,
-                        game: gameData.game,
-                        game_data: gameData
-                    });
-                }
-                this.saveSlip();
             },
 
             removePick(index) {
@@ -183,12 +158,10 @@
             },
 
             calculateReturn() {
-                // Placeholder: Assume odds are in game_data; enhance with real odds later
-                const totalOdds = this.picks.reduce((sum, pick) => sum + (pick.game_data.spread || 1), 0);
-                return (this.amount * totalOdds).toFixed(2);
+                return Math.max(this.amount * ((this.picks.length - 2) * {{ BET_MULTIPLIER }}), 0).toFixed(2);
             },
 
-            prepareSubmission(event) {
+            async submitBet() {
                 const formData = new FormData();
                 formData.append('amount', this.amount);
                 this.picks.forEach((pick, index) => {
@@ -202,9 +175,31 @@
                 formData.append('form-MIN_NUM_FORMS', 0);
                 formData.append('form-MAX_NUM_FORMS', 1000);
 
-                event.target._hx_formData = formData;
-                this.submitted = true; // Show success state post-submission
-                setTimeout(() => this.clearSlip(), 2000); // Clear after success
+                try {
+                    const response = await fetch("{% url 'sportsbetting:play_create_update' %}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                            'X-Requested-With': 'XMLHttpRequest'
+                        }
+                    });
+
+                    if (response.ok) {
+                        this.submitted = true; // Show success message
+                        setTimeout(() => {
+                            this.clearSlip(); // Clear slip after 2 seconds
+                        }, 2000);
+                    } else {
+                        console.error('Submission failed:', response.statusText);
+                        window.alert("{% trans 'There was an error submitting your bet.' %}");
+                        this.submitted = false; // Reset on failure
+                    }
+                } catch (error) {
+                    console.error('Error submitting bet:', error);
+                    window.alert("{% trans 'There was an error submitting your bet.' %}");
+                    this.submitted = false; // Reset on error
+                }
             }
         }));
     });

@@ -185,7 +185,7 @@
                     </div>
                 </div>
                 {% for sport, governing_bodies in upcoming_entries %}
-                    {% include "peredion/playing-bet.html#bet-section-tab" %}
+                    {% include "peredion/playing-bet.html#bet-section-tab" with active=forloop.first %}
                 {% endfor %}
             {% endwith %}
         </div>
