@@ -50,6 +50,9 @@ SESSION_CACHE_ALIAS = "default"
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+
 # django-silk
 
 INSTALLED_APPS.append("silk")  # noqa: F405
@@ -73,3 +76,7 @@ HAYSTACK_CONNECTIONS = {
 		"INCLUDE_SPELLING": True,
 	},
 }
+
+# django-allauth
+
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "HTTPS"

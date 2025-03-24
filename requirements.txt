@@ -43,5 +43,6 @@ ruff
 slugify
 sorl-thumbnail
 uv
+Whoosh
 wagtail
 wheel

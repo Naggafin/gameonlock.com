@@ -1,6 +1,4 @@
-from django.conf import settings
 from django.contrib import messages
-from django.core.mail import EmailMessage
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -12,6 +10,7 @@ from view_breadcrumbs.generic import ListBreadcrumbMixin
 from .forms import PlayForm, PlayPickFormSet
 from .models import BettingLine, Play, PlayPick, ScheduledGame
 from .munger import BettingLineMunger
+from .util import calculate_play_stakes
 
 
 class SportsBettingContextMixin:
@@ -85,34 +84,15 @@ class PlayCreateUpdateView(UpdateView):
 				pick.play = play
 			formset.save()
 
-			# TODO: abstract these into signals
-			self.send_email_confirmation(play)
-			self.send_admin_notification(play)
+			play.stakes = calculate_play_stakes(play)
+			play.save()
+
 			return redirect("sportsbetting:play")
 		return self.form_invalid(form, formset)
 
 	def form_invalid(self, form, formset=None):
 		messages.error(self.request, _("Error processing picks."))
 		return super().form_invalid(form)
-
-	def send_email_confirmation(self, play):
-		email_message = f"Dear {play.purchaser_name},\n\nYour picks:\n"
-		for pick in play.spread_picks.all():
-			email_message += f"{pick}\n"
-		for pick in play.under_over_picks.all():
-			email_message += f"{pick}\n"
-		email_message += "\nPlease complete your payment via PayPal."
-		EmailMessage(
-			subject="Your Bets Confirmation", body=email_message, to=[play.email]
-		).send(fail_silently=True)
-
-	def send_admin_notification(self, play):
-		email_message = f"New Play Submitted:\n\n{play}"
-		EmailMessage(
-			subject=f"New Play for {play.ticket.name}",
-			body=email_message,
-			to=settings.NOTIFY_EMAILS,
-		).send(fail_silently=True)
 
 
 class PlayListView(ListBreadcrumbMixin, ListView):

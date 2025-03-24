@@ -1,13 +1,58 @@
 from smtplib import SMTPException
 
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage, send_mail
+from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.utils.translation import gettext_lazy as _
 from paypal.standard.ipn.signals import valid_ipn_received
 from paypal.standard.models import ST_PP_COMPLETED
 
-from .models import TicketPlay
+from .models import Play, TicketPlay
+
+
+@receiver(post_save, sender=Play)
+def send_email_confirmation(sender, instance, created, **kwargs):
+	if not created or not instance.user.email:
+		return
+
+	# Prepare context for the template
+	picks = sorted(list(instance.picks.all()), key=lambda obj: obj.type)
+	context = {"user": instance.user, "picks": picks}
+
+	# Render the email body from the template
+	email_body = render_to_string("emails/play_confirmation.txt", context)
+
+	# Send the email
+	EmailMessage(
+		subject=_("Your Bets Confirmation"),
+		body=email_body,
+		to=[instance.user.email],
+		from_email=settings.DEFAULT_FROM_EMAIL,
+	).send(fail_silently=True)
+
+
+@receiver(post_save, sender=Play)
+def send_admin_notification(sender, instance, created, **kwargs):
+	if not created:
+		return
+
+	# Prepare context for the template
+	picks = sorted(list(instance.picks.all()), key=lambda obj: obj.type)
+	context = {"play": instance, "picks": picks}
+
+	# Render the email body from the template
+	email_body = render_to_string("emails/admin_play_notification.txt", context)
+
+	# Send the email
+	EmailMessage(
+		subject=_("New Play"),
+		body=email_body,
+		to=settings.NOTIFY_EMAILS,
+		from_email=settings.DEFAULT_FROM_EMAIL,
+	).send(fail_silently=True)
 
 
 @receiver(valid_ipn_received)

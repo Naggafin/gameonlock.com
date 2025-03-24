@@ -1,0 +1,12 @@
+{% load i18n %}
+{% trans "Dear" %} {{ user.username }},
+
+{% trans "Your picks:" %}
+{% for pick in picks %}
+{{ pick }}
+{% endfor %}
+
+{% trans "If you haven't already done so, please complete your payment via PayPal so you can secure your bets." %}
+
+{% trans "Best regards," %}
+{% trans "The Game-on-Lock Team" %}

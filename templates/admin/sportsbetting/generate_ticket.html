@@ -1,0 +1,57 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+{% block extrastyle %}
+    <style>
+        .sport-section { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
+        .sport-section h3 { margin-top: 0; color: #333; }
+        .checkbox-list { column-count: 2; column-gap: 20px; }
+        .checkbox-list label { display: block; margin-bottom: 5px; }
+        .submit-row { margin-top: 20px; }
+    </style>
+{% endblock %}
+{% block title %}{{ title }} | {{ site_title|default:_("Django site admin") }}{% endblock %}
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+        &rsaquo; <a href="{% url 'admin:sportsbetting_generate_ticket' %}">{% trans 'Sportsbetting Tools' %}</a>
+        &rsaquo; {% trans 'Generate Ticket' %}
+    </div>
+{% endblock %}
+{% block content %}
+    <div id="content-main">
+        <h1>{% trans "Generate Ticket" %}</h1>
+        {% if messages %}
+            <ul class="messagelist">
+                {% for message in messages %}
+                    <li {% if message.tags %}class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        <form method="post"
+              action="{% url 'admin:sportsbetting_generate_ticket' %}">
+            {% csrf_token %}
+            <fieldset class="module aligned">
+                <h2>{% trans "Select Sports and Governing Bodies" %}</h2>
+                {% for field in form %}
+                    <div class="sport-section">
+                        <h3>{{ field.label }}</h3>
+                        <div class="checkbox-list">{{ field }}</div>
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}<li>{{ error }}</li>{% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <p>{% trans "No sports available." %}</p>
+                {% endfor %}
+            </fieldset>
+            <div class="submit-row">
+                <input type="submit"
+                       value="{% trans 'Generate Ticket CSV' %}"
+                       class="default"
+                       name="_generate">
+            </div>
+        </form>
+    </div>
+{% endblock %}

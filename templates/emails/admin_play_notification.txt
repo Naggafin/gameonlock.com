@@ -1,0 +1,17 @@
+{% load i18n model_tools %}
+{% trans "New Play Submitted:" %}
+
+{% with meta=play|meta %}
+{% for field in meta.fields %}
+{{ meta|field_verbose_name:field.name }}: {{ field }}
+{% endfor %}
+{% endwith %}
+
+{% "Picks:" %}
+
+{% for pick in picks %}
+{{ pick }}
+{% endfor %}
+
+{% trans "Regards," %}
+{% trans "System Notification" %}

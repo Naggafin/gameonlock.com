@@ -1,0 +1,11 @@
+{% extends 'admin/base_site.html' %}
+{% block object-tools %}
+    <h4>Upload ticket spreadsheet</h4>
+    <form enctype="multipart/form-data"
+          action="{% url 'admin:upload_ticket' %}"
+          method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Upload">
+    </form>
+{% endblock %}

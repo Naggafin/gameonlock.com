@@ -3,7 +3,10 @@
     {% for game in sport.games %}
         <div class="form-row">
             <div class="checkbox-row">
-                <input type="checkbox" id="{{ game.title }}" name="{{ game.title }}" value="{{ game.key }}">
+                <input type="checkbox"
+                       id="{{ game.title }}"
+                       name="{{ game.title }}"
+                       value="{{ game.key }}">
                 <label for="{{ game.title }}">{{ game.title }}</label>
             </div>
         </div>

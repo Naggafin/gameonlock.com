@@ -11,9 +11,29 @@ from slugify import slugify
 
 
 class Sport(models.Model):
-	name = models.CharField(max_length=100, unique=True)
-	description = models.TextField(blank=True, null=True)
-	slug_name = models.SlugField(unique=True, blank=True, editable=False)
+	key = models.CharField(
+		max_length=100,
+		blank=True,
+		null=True,
+		editable=False,
+		help_text="An identifier for the sport, if provided.",
+	)
+	name = models.CharField(
+		max_length=100,
+		unique=True,
+		help_text="The unique name of the sport.",
+	)
+	description = models.TextField(
+		blank=True,
+		null=True,
+		help_text="Optional description of the sport.",
+	)
+	slug_name = models.SlugField(
+		blank=True,
+		null=True,
+		editable=False,
+		help_text="A unique slug for the sport, if provided.",
+	)
 
 	def save(self, *args, **kwargs):
 		if not self.slug_name:
@@ -22,6 +42,20 @@ class Sport(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	class Meta:
+		constraints = [
+			models.UniqueConstraint(
+				fields=["key"],
+				condition=Q(key__isnull=False),
+				name="unique_sport_key_when_not_null",
+			),
+			models.UniqueConstraint(
+				fields=["slug_name"],
+				condition=Q(slug_name__isnull=False),
+				name="unique_slug_name_when_not_null",
+			),
+		]
 
 
 class GoverningBody(auto_prefetch.Model):
@@ -36,6 +70,13 @@ class GoverningBody(auto_prefetch.Model):
 	sport = auto_prefetch.ForeignKey(
 		Sport, on_delete=models.CASCADE, related_name="governing_bodies"
 	)
+	key = models.CharField(
+		max_length=100,
+		blank=True,
+		null=True,
+		editable=False,
+		help_text="A unique identifier for the governing body, if provided.",
+	)
 	name = models.CharField(max_length=100, unique=True)
 	description = models.TextField(blank=True, null=True)
 	type = models.CharField(
@@ -44,12 +85,23 @@ class GoverningBody(auto_prefetch.Model):
 		verbose_name=_("type of competition"),
 	)
 
+	@property
+	def full_key(self):
+		return f"{self.sport.key}_{self.key}"
+
 	def __str__(self):
 		return f"{self.name} ({self.sport.name})"
 
 	class Meta(auto_prefetch.Model.Meta):
 		verbose_name = _("governing body")
 		verbose_name_plural = _("governing bodies")
+		constraints = [
+			models.UniqueConstraint(
+				fields=["key"],
+				condition=Q(key__isnull=False),
+				name="unique_governing_body_key_when_not_null",
+			),
+		]
 
 
 class League(auto_prefetch.Model):
@@ -58,7 +110,7 @@ class League(auto_prefetch.Model):
 		("eu", "europe", _("Europe")),
 		("as", "asia", _("Asia")),
 		("af", "africa", _("Africa")),
-		("na", "north_merica", _("North America")),
+		("na", "north_america", _("North America")),
 		("sa", "south_america", _("South America")),
 		("oc", "oceania", _("Oceania")),
 	)
@@ -66,7 +118,7 @@ class League(auto_prefetch.Model):
 	governing_body = auto_prefetch.ForeignKey(
 		GoverningBody, on_delete=models.CASCADE, related_name="leagues"
 	)
-	name = models.CharField(max_length=100)
+	name = models.CharField(max_length=100, unique=True)
 	level_of_play = models.CharField(max_length=100, blank=True, null=True)
 	season = models.CharField(max_length=50, blank=True, null=True)
 	region = models.CharField(max_length=2, choices=REGIONS, blank=True, null=True)
@@ -108,11 +160,15 @@ class Team(auto_prefetch.Model):
 	logo = models.ImageField(upload_to=save_uploaded_logos, null=True, blank=True)
 	brand = models.ImageField(upload_to=save_uploaded_brands, null=True, blank=True)
 	website = models.URLField(null=True, blank=True)
+	governing_body = auto_prefetch.ForeignKey(
+		GoverningBody, on_delete=models.CASCADE, related_name="teams"
+	)
 	league = auto_prefetch.ForeignKey(
-		League, on_delete=models.CASCADE, related_name="teams"
+		League, on_delete=models.CASCADE, related_name="teams", blank=True, null=True
 	)
 	# division = auto_prefetch.ForeignKey(Division, on_delete=models.CASCADE, related_name="teams", blank=True, null=True)
 	name = models.CharField(max_length=100)
+	short_name = models.CharField(max_length=20, blank=True)
 	location = models.CharField(max_length=100, blank=True, null=True)
 	founding_year = models.PositiveIntegerField(blank=True, null=True)
 	downloaded = models.BooleanField(default=False, editable=False)
@@ -149,8 +205,15 @@ class ScheduledGame(auto_prefetch.Model):
 	sport = auto_prefetch.ForeignKey(
 		Sport, on_delete=models.CASCADE, related_name="scheduled_games"
 	)
+	governing_body = auto_prefetch.ForeignKey(
+		GoverningBody, on_delete=models.CASCADE, related_name="scheduled_games"
+	)
 	league = auto_prefetch.ForeignKey(
-		League, on_delete=models.CASCADE, related_name="scheduled_games"
+		League,
+		on_delete=models.CASCADE,
+		related_name="scheduled_games",
+		blank=True,
+		null=True,
 	)
 	home_team = auto_prefetch.ForeignKey(
 		Team, on_delete=models.CASCADE, related_name="scheduled_games_home_team"
@@ -167,7 +230,7 @@ class ScheduledGame(auto_prefetch.Model):
 		blank=True,
 		related_name="schedule_game_wins",
 	)
-	location = models.CharField(max_length=100)
+	location = models.CharField(max_length=100, blank=True)
 	start_datetime = models.DateTimeField()
 	is_finished = models.BooleanField(default=False)
 
@@ -192,7 +255,7 @@ class BettingLine(auto_prefetch.Model):
 		related_name="betting_line",
 		unique=True,
 	)
-	spread = models.IntegerField()
+	spread = models.IntegerField(blank=True, null=True)
 	is_pick = models.BooleanField(blank=True, default=False)
 	over = models.IntegerField(blank=True, null=True)
 	under = models.IntegerField(blank=True, null=True)

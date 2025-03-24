@@ -158,7 +158,13 @@
             },
 
             calculateReturn() {
-                return Math.max(this.amount * ((this.picks.length - 2) * {{ BET_MULTIPLIER }}), 0).toFixed(2);
+                return Math.max(
+                    this.amount * Math.floor(
+                        {{ BASE_BET_STAKES }} +
+                        ((this.picks.length - {{ MIN_NUM_BETS }}) / {{ BET_STEP }}) *
+                        {{ BET_MULTIPLIER }}
+                    ),
+                    0).toFixed(2);
             },
 
             async submitBet() {

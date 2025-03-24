@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
-from .models import (
+from ..models import (
 	BettingLine,
 	GoverningBody,
 	League,
@@ -11,6 +12,37 @@ from .models import (
 	Sport,
 	Team,
 )
+from .views import GenerateTicketView
+
+
+class SportsbettingAdminSite(admin.AdminSite):
+	def get_urls(self):
+		urls = super().get_urls()
+		custom_urls = [
+			path(
+				"sportsbetting/generate-ticket/",
+				self.admin_view(GenerateTicketView.as_view()),
+				name="sportsbetting_generate_ticket",
+			),
+		]
+		return custom_urls + urls
+
+	def get_app_list(self, request):
+		app_list = super().get_app_list(request)
+		sportsbetting_app = {
+			"name": "Sportsbetting Tools",
+			"app_label": "sportsbetting_tools",
+			"models": [
+				{
+					"name": "Generate Ticket",
+					"object_name": "generate_ticket",
+					"admin_url": f"{self.name}:sportsbetting_generate_ticket",
+					"perms": {"view": True},
+				},
+			],
+		}
+		app_list.append(sportsbetting_app)
+		return app_list
 
 
 @admin.register(Sport)
@@ -245,3 +277,6 @@ class PlayPickAdmin(admin.ModelAdmin):
 		return "Over" if obj.is_over else "Under"
 
 	is_over_display.short_description = _("Over/Under")
+
+
+admin.site = SportsbettingAdminSite(name="sportsbetting_admin")

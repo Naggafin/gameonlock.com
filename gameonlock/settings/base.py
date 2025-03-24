@@ -317,17 +317,8 @@ LOGGING = {
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
 
-SITE_VARS = {
-	"home_page": {
-		"about_title": _("About us"),
-		"about_subtitle": _("We provide the most reliable & legal betting"),
-		"about_content": "",
-		"bet_title": _("Available Bets"),
-		"bet_subtitle": _("Choose Your Match & Place A Bet"),
-		"schedule_title": _("Next Schedule"),
-		"schedule_subtitle": _("All Upcoming Matches"),
-	},
-}
+DEFAULT_FROM_EMAIL = "no-reply@gameonlock.com"
+NOTIFY_EMAILS = ["admin@gameonlock.com"]
 
 
 SPORTS = {
@@ -339,15 +330,31 @@ SPORTS = {
 	"ROUND_TOTALS": True,
 	"TOTALS_SPREAD": 2,
 	"PAIR_PROMINENCE": "unfavored",
-	"LONG_NAMES_PREFERRED": [
-		"NCAAF",
-	],
+	"LONG_NAMES_PREFERRED": ["NCAAF"],
 	"MIN_BET": Money(5, "USD"),
+	"MIN_NUM_BETS": 4,
+	"BASE_BET_STAKES": 10,
 	"BET_MULTIPLIER": 5,
+	"BET_STEP": 1,
 }
 
-SITE_VARS["MIN_BET"] = SPORTS["MIN_BET"]
-SITE_VARS["BET_MULTIPLIER"] = SPORTS["BET_MULTIPLIER"]
+
+SITE_VARS = {
+	"home_page": {
+		"about_title": _("About us"),
+		"about_subtitle": _("We provide the most reliable & legal betting"),
+		"about_content": "",
+		"bet_title": _("Available Bets"),
+		"bet_subtitle": _("Choose Your Match & Place A Bet"),
+		"schedule_title": _("Next Schedule"),
+		"schedule_subtitle": _("All Upcoming Matches"),
+	},
+	"MIN_BET": SPORTS["MIN_BET"],
+	"MIN_NUM_BETS": SPORTS["MIN_NUM_BETS"],
+	"BASE_BET_STAKES": SPORTS["BASE_BET_STAKES"],
+	"BET_MULTIPLIER": SPORTS["BET_MULTIPLIER"],
+	"BET_STEP": SPORTS["BET_STEP"],
+}
 
 
 # django-allauth
@@ -387,7 +394,7 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 }
 OSCAR_PRODUCT_MODEL = "catalogue.Product"
 OSCAR_ALLOW_ANON_CHECKOUT = True
-OSCAR_FROM_EMAIL = "noreply@airvehicleservices.com"
+OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
 OSCAR_BASKET_COOKIE_OPEN = "gameonlock_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
