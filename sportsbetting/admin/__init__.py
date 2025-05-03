@@ -195,8 +195,13 @@ class ScheduledGameAdmin(admin.ModelAdmin):
 
 @admin.register(BettingLine)
 class BettingLineAdmin(admin.ModelAdmin):
-	list_display = ("game", "spread_display", "over_under_display", "start_datetime")
-	list_filter = ("game__sport", "game__league", "is_pick", "start_datetime")
+	list_display = (
+		"game",
+		"spread_display",
+		"over_under_display",
+		"game__start_datetime",
+	)
+	list_filter = ("game__sport", "game__league", "is_pick", "game__start_datetime")
 	search_fields = ("game__home_team__name", "game__away_team__name")
 	list_select_related = (
 		"game",
@@ -206,7 +211,7 @@ class BettingLineAdmin(admin.ModelAdmin):
 		"game__away_team",
 	)
 	list_per_page = 25
-	date_hierarchy = "start_datetime"
+	date_hierarchy = "game__start_datetime"
 
 	def spread_display(self, obj):
 		return f"P{obj.spread}" if obj.is_pick else obj.spread

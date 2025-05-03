@@ -137,9 +137,7 @@ class GenerateTicketView(FormView):
 			return ["sport", "unfavored", "spread", "favored"] + base_fields[1:]
 		elif pair_prominence == "favored":
 			return ["sport", "favored", "spread", "unfavored"] + base_fields[1:]
-		return ["sport", "home_team", "spread", "away_team"] + base_fields[
-			1:
-		]  # Default to home_team
+		return ["sport", "home_team", "spread", "away_team"] + base_fields[1:]
 
 	def _extract_markets(
 		self, game_data: dict

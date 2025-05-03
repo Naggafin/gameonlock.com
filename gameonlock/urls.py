@@ -36,7 +36,8 @@ admin.site.login = secure_admin_login(admin.site.login)
 internatonalized_patterns = i18n_patterns(
 	path(_("accounts/"), include("allauth.urls")),
 	path(_("pages/"), include(wagtail_urls)),
-	path("", include("sportsbetting.urls")),
+	path("", views.HomeView.as_view(), name="index"),
+	path("sports/", include("sportsbetting.urls")),
 	prefix_default_language=False,
 )
 

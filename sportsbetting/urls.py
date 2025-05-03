@@ -4,7 +4,6 @@ from . import views
 
 app_name = "sportsbetting"
 urlpatterns = [
-	path("", views.HomeView.as_view(), name="index"),
 	path("bet/", views.BettingView.as_view(), name="bet"),
 	path("plays/", views.PlayListView.as_view(), name="play_list"),
 	path("plays/create/", views.PlayCreateUpdateView.as_view(), name="play_create"),

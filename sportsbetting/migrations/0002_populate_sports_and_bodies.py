@@ -1,16 +1,20 @@
 import requests
 from django.conf import settings
 from django.db import migrations
+from requests.exceptions import ConnectionError
 
 
 def create_sports_fixtures(apps, schema_editor):
 	Sport = apps.get_model("sportsbetting", "Sport")
 	GoverningBody = apps.get_model("sportsbetting", "GoverningBody")
 
-	sports_data = requests.get(
-		url=settings.SPORTS["SPORTS_API_PROVIDER_URL"],
-		params={"apiKey": settings.SPORTS["SPORTS_API_KEY"], "all": "true"},
-	).json()
+	try:
+		sports_data = requests.get(
+			url=settings.SPORTS["SPORTS_API_PROVIDER_URL"],
+			params={"apiKey": settings.SPORTS["SPORTS_API_KEY"], "all": "true"},
+		).json()
+	except ConnectionError:
+		return
 
 	# Process JSON data to extract sports and governing bodies with keys
 	sports = {}
@@ -38,10 +42,10 @@ def create_sports_fixtures(apps, schema_editor):
 				"description": item["description"],
 				# Determine type based on naming conventions
 				"type": (
-					GoverningBody.TYPES.collegiate
+					"col"
 					if "ncaa" in governing_body_key.lower()
 					or "college" in item["description"].lower()
-					else GoverningBody.TYPES.professional
+					else "pro"
 				),
 			}
 

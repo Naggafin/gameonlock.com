@@ -50,7 +50,7 @@
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
                             {{ home_page.about_content|safe }}
-                            <a href="{% url 'sportsbetting:bet: %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -120,11 +120,11 @@
                                 aria-controls="sports-{{ sport.slug_name }}"
                                 aria-selected="false">
                             <span class="sports-icon">
-                                <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                                     alt="{{ sport.name }}"
+                                <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
+                                     alt="{{ sport }}"
                                      nonce="{{ request.csp_nonce }}">
                             </span>
-                            <span class="sport-name">{{ sport.name }}</span>
+                            <span class="sport-name">{{ sport }}</span>
                         </button>
                     </li>
                 {% endfor %}
@@ -143,7 +143,7 @@
                      aria-labelledby="sports-all-tab">
                     <div class="accordion accordion-flush sports-accordion"
                          id="accordion-all-matches">
-                        {% for sport, governing_bodies in upcoming_entries.items %}
+                        {% for sport, lines_dict in upcoming_entries.items %}
                             <div class="accordion-item
                                         {% if forloop.first %}single-sports-item{% endif %}">
                                 <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
@@ -160,12 +160,12 @@
                                             aria-controls="flush-{{ sport.slug_name }}-matches">
                                         <span class="single-sports-icon">
                                             <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                                                 alt="{{ sport.name }}"
+                                                 alt="{{ sport }}"
                                                  nonce="{{ request.csp_nonce }}">
                                         </span>
-                                        <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines sport game_state %})</span>
+                                        <span class="single-sports-name">{{ sport }} ({% num_betting_lines sport game_state %})</span>
                                         <span class="single-sports-img">
-                                            <img src="{% static 'peredion/images/playing-bet/'|add:sports.slug_name|add:'-bg.png' %}"
+                                            <img src="{% static 'peredion/images/playing-bet/'|add:sport.slug_name|add:'-bg.png' %}"
                                                  alt=""
                                                  nonce="{{ request.csp_nonce }}">
                                         </span>
@@ -177,14 +177,20 @@
                                      aria-labelledby="{{ sport.slug_name }}-matches"
                                      data-bs-parent="#accordion-all-matches">
                                     <div class="accordion-body sports-body">
-                                        <div class="playing-sports-all">{% include "peredion/playing-bet.html#bet-section-tab-content" %}</div>
+                                        <div class="playing-sports-all">
+                                            {% for governing_body__league, lines in lines_dict.items %}
+                                                {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
+                                                    {% include "peredion/playing-bet.html#bet-section-tab-content" %}
+                                                {% endwith %}
+                                            {% endfor %}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-                {% for sport, governing_bodies in upcoming_entries %}
+                {% for sport, lines_dict in upcoming_entries.items %}
                     {% include "peredion/playing-bet.html#bet-section-tab" with active=forloop.first %}
                 {% endfor %}
             {% endwith %}
@@ -194,7 +200,7 @@
              data-aos-delay="150"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -226,7 +232,7 @@
                  data-aos-easing="ease-in">
                 <div class="single-view-schedule-content">
                     <div class="tab-content" id="schedule-tab-content">
-                        {% for game in upcoming_games|slice:":3" %}
+                        {% for game in upcoming_games %}
                             <div class="tab-pane fade
                                         {% if forloop.first %}show active{% endif %}"
                                  id="v-schedule-{{ forloop.counter|apnumber }}"
@@ -313,7 +319,7 @@
                          id="v-schedule-tab"
                          role="tablist"
                          aria-orientation="vertical">
-                        {% for game in upcoming_games|slice:":3" %}
+                        {% for game in upcoming_games %}
                             <button class="nav-link
                                            {% if forloop.first %}active{% endif %}"
                                     id="schedule-{{ forloop.counter|apnumber }}-tab"
@@ -360,7 +366,7 @@
              data-aos-delay="200"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <a href="#TODO" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -754,7 +760,7 @@
                              data-aos-delay="350"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            <a href="#TODO" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
                             <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-duotone fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -797,6 +803,6 @@
 {% block content %}
     {% partial about-section %}
     {% partial bet-section %}
-    {% partial sports-schedule-section %}
     {% partial call-to-action-section %}
+    {% partial working-process-section %}
 {% endblock %}

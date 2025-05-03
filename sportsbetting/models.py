@@ -216,10 +216,10 @@ class ScheduledGame(auto_prefetch.Model):
 		null=True,
 	)
 	home_team = auto_prefetch.ForeignKey(
-		Team, on_delete=models.CASCADE, related_name="scheduled_games_home_team"
+		Team, on_delete=models.CASCADE, related_name="scheduled_games_home_teams"
 	)
 	away_team = auto_prefetch.ForeignKey(
-		Team, on_delete=models.CASCADE, related_name="scheduled_games_away_team"
+		Team, on_delete=models.CASCADE, related_name="scheduled_games_away_teams"
 	)
 	home_team_score = models.IntegerField(blank=True, null=True)
 	away_team_score = models.IntegerField(blank=True, null=True)
@@ -259,7 +259,7 @@ class BettingLine(auto_prefetch.Model):
 	is_pick = models.BooleanField(blank=True, default=False)
 	over = models.IntegerField(blank=True, null=True)
 	under = models.IntegerField(blank=True, null=True)
-	start_datetime = models.DateTimeField()
+	is_draft = models.BooleanField(default=False)
 
 	def __str__(self):
 		_str = _("%(sport)s: %(home_team)s vs %(away_team)s (%(spread)s)") % {

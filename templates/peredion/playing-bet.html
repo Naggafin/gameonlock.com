@@ -1,163 +1,172 @@
 {% extends 'base.html' %}
 {% load static i18n humanize partials %}
 {% load sportsbetting_tags %}
+{% load view_breadcrumbs %}
 {% partialdef bet-section-tab-content %}
-{% for governing_body, leagues in governing_bodies.items %}
-    {% for league, game_dates in leagues.items %}
-        <div class="single-tournament">
-            <div class="tournament-title">
-                <span class="title-text">{{ governing_body.name }} {{ league.name }}</span>
-                <span class="match-quantity">({{ game_dates.values|chain|length }})</span>
-            </div>
-            <div class="all-tournament-match">
-                {% for game_date, lines in game_dates.items %}
-                    <div>{{ game_date|date }}</div>
-                    {% for line in lines %}
-                        {% with game=line.game %}
-                            <div class="single-t-match
-                                        {% if game.is_finished %}
-                                            finished
-                                        {% elif game|game_has_started %}
-                                            match-in-play
-                                        {% endif %}"
-                                 data-betting-line="{{ line.pk }}"
-                                 data-game="{{ game.pk }}">
-                                <div class="match-time">
-                                    <span class="time-icon">
-                                        <i class="fa-regular fa-clock"></i>
-                                    </span>
-                                    <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                                    <span class="m-time">
-                                        {% if game|game_has_started %}
-                                            {% trans 'in-play' %}
-                                        {% else %}
-                                            {{ game.start_datetime|time }}
-                                        {% endif %}
-                                    </span>
-                                </div>
-                                {% with game_has_started=game|game_has_started %}
-                                    <div class="playing-teams">
-                                        <div class="single-team">
-                                            <div class="team-descr">
-                                                <span class="team-icon">
-                                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                         alt="{{ game.away_team.name }}"
-                                                         nonce="{{ request.csp_nonce }}">
-                                                </span>
-                                                <span class="team-name">{{ game.away_team.name }}</span>
-                                            </div>
-                                            {% if game_has_started %}<div class="team-score">{{ game.away_team_score }}</div>{% endif %}
-                                        </div>
-                                        <div class="single-team">
-                                            <div class="team-descr">
-                                                <span class="team-icon">
-                                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                         alt="{{ game.home_team.name }}"
-                                                         nonce="{{ request.csp_nonce }}">
-                                                </span>
-                                                <span class="team-name">{{ game.home_team.name }}</span>
-                                            </div>
-                                            {% if game_has_started %}<div class="team-score">{{ game.home_team_score }}</div>{% endif %}
-                                        </div>
-                                    </div>
-                                    <div class="placing-bet">
-                                        <fieldset {% if game.is_finished or game_has_started or line.picked_team %}disabled{% endif %}>
-                                            <label class="single-bet-place away
-                                                          {% if line.picked_team == game.away_team.pk %}placed{% endif %}">
-                                                <input type="radio"
-                                                       name="team"
-                                                       value="{{ game.away_team.pk }}"
-                                                       data-team="away">
-                                                <span class="team-icon">
-                                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                                         alt="{{ game.away_team.name }}"
-                                                         nonce="{{ request.csp_nonce }}">
-                                                </span>
-                                                <span class="team-name">{{ game.away_team.name }}</span>
-                                            </label>
-                                            <label class="single-bet-place draw-box">
-                                                <input type="radio" name="team" value="">
-                                                <span class="bet-ratio">
-                                                    {% if line.is_pick %}P{% endif %}
-                                                {{ line.spread }}</span>
-                                            </label>
-                                            <label class="single-bet-place home
-                                                          {% if line.picked_team == game.home_team.pk %}placed{% endif %}">
-                                                <input type="radio"
-                                                       name="team"
-                                                       value="{{ game.home_team.pk }}"
-                                                       data-team="home">
-                                                <span class="team-icon">
-                                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                                         alt="{{ game.home_team.name }}"
-                                                         nonce="{{ request.csp_nonce }}">
-                                                </span>
-                                                <span class="team-name">{{ game.home_team.name }}</span>
-                                            </label>
-                                        </fieldset>
-                                        {% if line.under or line.over %}
-                                            <fieldset {% if game.is_finished or game_has_started or line.picked_uo %}disabled{% endif %}>
-                                                <label class="btn single-bet-place under
-                                                              {% if line.picked_uo == 'under' %}placed{% endif %}">
-                                                    <input type="radio"
-                                                           name="over_under"
-                                                           value="false"
-                                                           data-over-under="{{ line.under }}">
-                                                    <span>{% trans 'under' %}</span>
-                                                </label>
-                                                <label class="single-bet-place draw-box">
-                                                    <input type="radio" name="over_under" value="">
-                                                    {# NOTE: line.over and line.under should be same on current implementation #}
-                                                    <span class="bet-ratio">{{ line.over }}</span>
-                                                </label>
-                                                <label class="btn single-bet-place over
-                                                              {% if line.picked_uo == 'over' %}placed{% endif %}">
-                                                    <input type="radio"
-                                                           name="over_under"
-                                                           value="true"
-                                                           data-over-under="{{ line.over }}">
-                                                    <span>{% trans 'over' %}</span>
-                                                </label>
-                                            </fieldset>
-                                        {% endif %}
-                                    </div>
-                                {% endwith %}
+<div class="single-tournament">
+    <div class="tournament-title">
+        <span class="title-text">{{ governing_body }}
+            {% if league %}{{ league }}{% endif %}
+        </span>
+        <span class="match-quantity">({{ lines|length }})</span>
+    </div>
+    <div class="all-tournament-match">
+        {% for line in lines %}
+            {% ifchanged line.game.start_datetime.date %}
+                <div>{{ line.game.start_datetime|date }}</div>
+            {% endifchanged %}
+            {% with game=line.game %}
+                <div class="single-t-match
+                            {% if game.is_finished %}
+                                finished
+                            {% elif game|game_has_started %}
+                                match-in-play
+                            {% endif %}"
+                     data-betting-line="{{ line.pk }}"
+                     data-game="{{ game.pk }}">
+                    <div class="match-time">
+                        <span class="time-icon">
+                            <i class="fa-regular fa-clock"></i>
+                        </span>
+                        <span class="m-date">{{ game.start_datetime|naturalday }}</span>
+                        <span class="m-time">
+                            {% if game|game_has_started %}
+                                {% trans 'in-play' %}
+                            {% else %}
+                                {{ game.start_datetime|time }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    <div class="playing-teams">
+                        <div class="single-team">
+                            <div class="team-descr">
+                                <span class="team-icon">
+                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                         alt="{{ game.away_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name">{{ game.away_team }}</span>
                             </div>
-                        {% endwith %}
-                    {% endfor %}
-                {% endfor %}
-            </div>
-        </div>
-    {% endfor %}
-{% endfor %}
-{% endpartialdef %}
-{% partialdef bet-section-tab %}
-<div class="tab-pane fade {% if active %}show active{% endif %}" {% with suffix=tab_num|default_if_none:""|yesno:"-{{ tab_num }},," %}id="sports-{{ sport.slug_name }}{{ suffix }}"{% endwith %} role="tabpanel" {% with suffix=tab_num|default_if_none:""|yesno:"-tab-{{ tab_num }},," %}aria-labelledby="sports-{{ sport.slug_name }}{{ suffix }}"{% endwith %}>
-    <div class="single-sports-item">
-        <h2 class="accordion-header" {% with suffix=tab_num|default_if_none:""|yesno:"-{{ tab_num }},," %}id="{{ sport.slug_name }}-matches{{ suffix }}"{% endwith %}>
-            <div class="sports-header">
-                <span class="single-sports-icon">
-                    <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                         alt="{{ sport.name }}"
-                         nonce="{{ request.csp_nonce }}">
-                </span>
-                <span class="single-sports-name">{{ sport.name }} ({% num_betting_lines sport game_state %})</span>
-                <span class="single-sports-img">
-                    <img src="{% static 'peredion/images/playing-bet/'|add:sports.slug_name|add:'-bg.png' %}"
-                         alt=""
-                         nonce="{{ request.csp_nonce }}">
-                </span>
-            </div>
-        </h2>
-        <div class="sports-expanded-list">
-            <div class="sports-body">
-                <div class="playing-sports-all no-tabs-here">{% partial bet-section-tab-content %}</div>
-            </div>
-        </div>
+                            {% if game|game_has_started %}<div class="team-score">{{ game.away_team_score }}</div>{% endif %}
+                        </div>
+                        <div class="single-team">
+                            <div class="team-descr">
+                                <span class="team-icon">
+                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                         alt="{{ game.home_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name">{{ game.home_team }}</span>
+                            </div>
+                            {% if game|game_has_started %}<div class="team-score">{{ game.home_team_score }}</div>{% endif %}
+                        </div>
+                    </div>
+                    <div class="placing-bet">
+                        <fieldset {% if game.is_finished or game|game_has_started or line.picked_team %}disabled{% endif %}>
+                            <label class="single-bet-place away
+                                          {% if line.picked_team == game.away_team.pk %}placed{% endif %}">
+                                <input type="radio"
+                                       name="team"
+                                       value="{{ game.away_team.pk }}"
+                                       data-team="away">
+                                <span class="team-icon">
+                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                         alt="{{ game.away_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name">{{ game.away_team }}</span>
+                            </label>
+                            <label class="single-bet-place draw-box">
+                                <input type="radio" name="team" value="">
+                                <span class="bet-ratio">
+                                    {% if line.is_pick %}P{% endif %}
+                                {{ line.spread }}</span>
+                            </label>
+                            <label class="single-bet-place home
+                                          {% if line.picked_team == game.home_team.pk %}placed{% endif %}">
+                                <input type="radio"
+                                       name="team"
+                                       value="{{ game.home_team.pk }}"
+                                       data-team="home">
+                                <span class="team-icon">
+                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                         alt="{{ game.home_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name">{{ game.home_team }}</span>
+                            </label>
+                        </fieldset>
+                        {% if line.under or line.over %}
+                            <fieldset {% if game.is_finished or game|game_has_started or line.picked_uo %}disabled{% endif %}>
+                                <label class="btn single-bet-place under
+                                              {% if line.picked_uo == 'under' %}placed{% endif %}">
+                                    <input type="radio"
+                                           name="over_under"
+                                           value="false"
+                                           data-over-under="{{ line.under }}">
+                                    <span>{% trans 'under' %}</span>
+                                </label>
+                                <label class="single-bet-place draw-box">
+                                    <input type="radio" name="over_under" value="">
+                                    {# NOTE: line.over and line.under should be same on current implementation #}
+                                    <span class="bet-ratio">{{ line.over }}</span>
+                                </label>
+                                <label class="btn single-bet-place over
+                                              {% if line.picked_uo == 'over' %}placed{% endif %}">
+                                    <input type="radio"
+                                           name="over_under"
+                                           value="true"
+                                           data-over-under="{{ line.over }}">
+                                    <span>{% trans 'over' %}</span>
+                                </label>
+                            </fieldset>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
     </div>
 </div>
 {% endpartialdef %}
-{% partialdef bet-section %}
+{% partialdef bet-section-tab %}
+{% with suffix=tab.num|default_if_none:""|yesno:"-{{ tab.num }}
+    ,," %}
+    <div class="tab-pane fade
+                {% if active %}show active{% endif %}"
+         id="sports-{{ sport.slug_name }}{{ suffix }}"
+         role="tabpanel"
+         aria-labelledby="sports-{{ sport.slug_name }}-tab{{ suffix }}">
+        <div class="single-sports-item">
+            <h2 class="accordion-header"
+                id="{{ sport.slug_name }}-matches{{ suffix }}">
+                <div class="sports-header">
+                    <span class="single-sports-icon">
+                        <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
+                             alt="{{ sport }}"
+                             nonce="{{ request.csp_nonce }}">
+                    </span>
+                    <span class="single-sports-name">{{ sport }} ({% num_betting_lines sport game_state %})</span>
+                    <span class="single-sports-img">
+                        <img src="{% static 'peredion/images/playing-bet/'|add:sport.slug_name|add:'-bg.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                    </span>
+                </div>
+            </h2>
+            <div class="sports-expanded-list">
+                <div class="sports-body">
+                    <div class="playing-sports-all no-tabs-here">
+                        {% for governing_body__league, lines in lines_dict.items %}
+                            {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
+                                {% partial bet-section-tab-content %}
+                            {% endwith %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endwith %}
 {% endpartialdef %}
 {% block js %}
     {{ block.super }}
@@ -219,156 +228,73 @@
                  data-aos-duration="500"
                  data-aos-easing="ease-in">
                 <ul class="nav nav-pills" id="bet-tab" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="bet-upcoming-tab"
-                                data-bs-toggle="pill"
-                                data-bs-target="#bet-upcoming"
-                                type="button"
-                                role="tab"
-                                aria-controls="bet-upcoming"
-                                aria-selected="false">{% trans 'upcoming' %}</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="bet-inplay-tab"
-                                data-bs-toggle="pill"
-                                data-bs-target="#bet-inplay"
-                                type="button"
-                                role="tab"
-                                aria-controls="bet-inplay"
-                                aria-selected="false">
-                            <i class="fa-solid fa-signal-stream"></i> {% trans 'in-play' %}
+                    {% for tab in tabs %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link"
+                                    id="bet-upcoming-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#bet-{{ tab.id }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="bet-{{ tab.id }}"
+                                    aria-selected="false">
+                                {% tab.id == 'inplay' %}<i class="fa-solid fa-signal-stream"></i>
+                            {% endif %}
+                            {% trans tab.name %}
                         </button>
                     </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link"
-                                id="bet-finished-tab"
-                                data-bs-toggle="pill"
-                                data-bs-target="#bet-finished"
-                                type="button"
-                                role="tab"
-                                aria-controls="bet-finished"
-                                aria-selected="false">{% trans 'finished' %}</button>
-                    </li>
-                </ul>
-            </div>
-            <div class="tab-content" id="bet-tabContent">
-                {% with tab_num=1 %}
-                    <div class="tab-pane fade show active"
-                         id="bet-upcoming"
-                         role="tabpanel"
-                         aria-labelledby="bet-upcoming-tab">
-                        <div class="sports-menu scrollable-menu">
-                            <ul class="nav nav-pills" id="sports-tab-{{ tab_num }}" role="tablist">
-                                {% for sport in upcoming_entries %}
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link
-                                                       {% if forloop.first %}active{% endif %}"
-                                                id="sports-{{ sport.slug_name }}-tab-{{ tab_num }}"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                aria-selected="true">
-                                            <span class="sport-icon">
-                                                <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
-                                                     alt=""
-                                                     nonce="{{ request.csp_nonce }}">
-                                            </span>
-                                            <span class="sport-name">{{ sport.name }}</span>
-                                        </button>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            {% for sport, games in upcoming_entries.items %}
-                                {% with active=forloop.first game_state='upcoming' %}
-                                    {% partial bet-section-tab %}
-                                {% endwith %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="tab-content" id="bet-tabContent">
+            {% for tab in tabs %}
+                <div class="tab-pane fade
+                            {% if forloop.first %}show active{% endif %}"
+                     id="bet-{{ tab.id }}"
+                     role="tabpanel"
+                     aria-labelledby="bet-{{ tab.id }}-tab">
+                    <div class="sports-menu scrollable-menu">
+                        <ul class="nav nav-pills" id="sports-tab-{{ tab.num }}" role="tablist">
+                            {% for sport in tab.entries %}
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link
+                                                   {% if forloop.first %}active{% endif %}"
+                                            id="sports-{{ sport.slug_name }}-tab-{{ tab.num }}"
+                                            data-bs-toggle="pill"
+                                            data-bs-target="#sports-{{ sport.slug_name }}-{{ tab.num }}"
+                                            type="button"
+                                            role="tab"
+                                            aria-controls="sports-{{ sport.slug_name }}-{{ tab.num }}"
+                                            aria-selected="{% if forloop.first %}
+                                                               true
+                                                           {% else %}
+                                                               false
+                                                           {% endif %}">
+                                        <span class="sport-icon">
+                                            <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
+                                                 alt="{{ sport.name }}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        </span>
+                                        <span class="sport-name">{{ sport.name }}</span>
+                                    </button>
+                                </li>
+                            {% empty %}
+                                <li class="nav-item">{% trans "No sports available" %}</li>
                             {% endfor %}
-                        </div>
+                        </ul>
                     </div>
-                {% endwith %}
-                {% with tab_num=2 %}
-                    <div class="tab-pane fade"
-                         id="bet-inplay"
-                         role="tabpanel"
-                         aria-labelledby="bet-inplay-tab">
-                        <div class="sports-menu scrollable-menu">
-                            <ul class="nav nav-pills" id="sports-tab-{{ tab_num }}" role="tablist">
-                                {% for sport in in_play_entries %}
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link
-                                                       {% if forloop.first %}active{% endif %}"
-                                                id="sports-{{ sport.slug_name }}-tab-{{ tab_num }}"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                aria-selected="true">
-                                            <span class="sport-icon">
-                                                <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
-                                                     alt=""
-                                                     nonce="{{ request.csp_nonce }}">
-                                            </span>
-                                            <span class="sport-name">{{ sport.name }}</span>
-                                        </button>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            {% for sport, games in upcoming_entries.items %}
-                                {% with active=forloop.first game_state='in_play' %}
-                                    {% partial bet-section-tab %}
-                                {% endwith %}
-                            {% endfor %}
-                        </div>
+                    <div class="tab-content" id="sports-tabContent-{{ tab.num }}">
+                        {% for sport, games in tab.entries.items %}
+                            {% with active=forloop.first game_state=tab.id %}
+                                {% partial bet-section-tab %}
+                            {% endwith %}
+                        {% empty %}
+                            <p>{% trans "No games available for this tab." %}</p>
+                        {% endfor %}
                     </div>
-                {% endwith %}
-                {% with tab_num=3 %}
-                    <div class="tab-pane fade"
-                         id="bet-finished"
-                         role="tabpanel"
-                         aria-labelledby="bet-finished-tab">
-                        <div class="sports-menu scrollable-menu">
-                            <ul class="nav nav-pills" id="sports-tab-{{ tab_num }}" role="tablist">
-                                {% for sport in finished_entries %}
-                                    <li class="nav-item" role="presentation">
-                                        <button class="nav-link
-                                                       {% if forloop.first %}active{% endif %}"
-                                                id="sports-{{ sport.slug_name }}-tab-{{ tab_num }}"
-                                                data-bs-toggle="pill"
-                                                data-bs-target="#sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                type="button"
-                                                role="tab"
-                                                aria-controls="sports-{{ sport.slug_name }}-{{ tab_num }}"
-                                                aria-selected="true">
-                                            <span class="sport-icon">
-                                                <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
-                                                     alt=""
-                                                     nonce="{{ request.csp_nonce }}">
-                                            </span>
-                                            <span class="sport-name">{{ sport.name }}</span>
-                                        </button>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        <div class="tab-content" id="sports-tabContent-{{ tab_num }}">
-                            {% for sport, games in finished_entries.items %}
-                                {% with active=forloop.first game_state='finished' %}
-                                    {% partial bet-section-tab %}
-                                {% endwith %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                {% endwith %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
+</div>
 {% endblock %}

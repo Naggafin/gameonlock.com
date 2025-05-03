@@ -1,4 +1,5 @@
 import itertools
+from functools import cache
 
 from django import template
 from django.utils import timezone
@@ -7,10 +8,12 @@ register = template.Library()
 
 
 @register.filter
-def game_has_started(game):
+@cache
+def game_has_started(game, time=None):
+	time = time or timezone.now().time()
 	if not game.start_datetime:
 		return False
-	return timezone.now().time() > game.start_datetime.time()
+	return time > game.start_datetime.time()
 
 
 @register.filter
@@ -43,26 +46,30 @@ def int_filter(value):
 
 
 @register.simple_tag
+@cache
 def num_betting_lines(obj, state=None):
+	breakpoint()
 	# NOTE: we do this in a prefetch_related() efficient manner
 	if not state:
 		lines = itertools.chain.from_iterable(
 			[game.betting_lines.all() for game in obj.scheduled_games.all()]
 		)
 	elif state == "upcoming":
+		time = timezone.now().time()
 		lines = itertools.chain.from_iterable(
 			[
 				game.betting_lines.all()
 				for game in obj.scheduled_games.all()
-				if not game_has_started(game)
+				if not game_has_started(game, time)
 			]
 		)
 	elif state == "in_play":
+		time = timezone.now().time()
 		lines = itertools.chain.from_iterable(
 			[
 				game.betting_lines.all()
 				for game in obj.scheduled_games.all()
-				if game_has_started(game) and not game.is_finished
+				if game_has_started(game, time) and not game.is_finished
 			]
 		)
 	elif state == "finished":

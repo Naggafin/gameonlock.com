@@ -2,13 +2,12 @@ from django.contrib import messages
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
-from django.utils.timezone import localdate
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PlayForm, PlayPickFormSet
-from .models import BettingLine, Play, PlayPick, ScheduledGame
+from .models import BettingLine, Play, PlayPick
 from .munger import BettingLineMunger
 from .util import calculate_play_stakes
 
@@ -16,12 +15,14 @@ from .util import calculate_play_stakes
 class SportsBettingContextMixin:
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		betting_lines = BettingLine.objects.select_related("game__sport").filter(
-			start_datetime__gt=timezone.now()
-		)
-		plays = Play.objects.prefetch_related("picks").get(
-			purchaser=self.request.user, date__gte=localdate()
-		)
+		betting_lines = BettingLine.objects.select_related(
+			"game__sport",
+			"game__governing_body",
+			"game__league",
+			"game__home_team",
+			"game__away_team",
+		).all()
+		plays = Play.objects.prefetch_related("picks").filter(user=self.request.user.pk)
 		munger = BettingLineMunger(betting_lines, plays)
 		upcoming_entries, in_play_entries, finished_entries = (
 			munger.categorize_and_sort()
@@ -32,21 +33,34 @@ class SportsBettingContextMixin:
 		return context
 
 
-class HomeView(SportsBettingContextMixin, TemplateView):
-	template_name = "peredion/index.html"
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["upcoming_games"] = ScheduledGame.objects.select_related(
-			"home_team", "away_team"
-		).filter(start_datetime__gt=timezone.now())
-		return context
-
-
 class BettingView(SportsBettingContextMixin, ListBreadcrumbMixin, TemplateView):
 	model = BettingLine
 	template_name = "peredion/playing-bet.html"
 	list_view_url = reverse_lazy("sportsbetting:bet")
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["tabs"] = [
+			{
+				"id": "upcoming",
+				"name": "upcoming",
+				"num": 1,
+				"entries": context["upcoming_entries"],
+			},
+			{
+				"id": "inplay",
+				"name": "in-play",
+				"num": 2,
+				"entries": context["in_play_entries"],
+			},
+			{
+				"id": "finished",
+				"name": "finished",
+				"num": 3,
+				"entries": context["finished_entries"],
+			},
+		]
+		return context
 
 
 class PlayCreateUpdateView(UpdateView):

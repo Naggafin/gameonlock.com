@@ -1,4 +1,4 @@
-from collections import OrderedDict, defaultdict
+from collections import defaultdict
 from typing import Dict, Tuple
 
 from django.utils import timezone
@@ -9,23 +9,19 @@ class BettingLineMunger:
 		self.betting_lines = betting_lines
 		self.picks = defaultdict(dict)
 		self.current_time = timezone.now()
-		self.sports = set()
 
 		for play in plays:
 			for pick in play.picks.all():
 				self.picks[pick.betting_line_id][pick.type] = pick
 
 	def categorize_and_sort(self) -> Tuple[Dict, Dict, Dict]:
-		upcoming_entries = defaultdict(lambda: defaultdict(lambda: OrderedDict()))
-		in_play_entries = defaultdict(lambda: defaultdict(lambda: OrderedDict()))
-		finished_entries = defaultdict(lambda: defaultdict(lambda: OrderedDict()))
+		entries = defaultdict(lambda: defaultdict())
 
 		for line in self.betting_lines:
 			game = line.game
 			sport = game.sport
-			league = game.league
-			governing_body = league.governing_body
-			self.sports.add(sport)
+			league = game.league or ""
+			governing_body = game.governing_body
 
 			game_date = game.start_datetime.date()
 			game_time = game.start_datetime
@@ -40,56 +36,24 @@ class BettingLineMunger:
 					line.picked_uo = "over" if pick.is_over else "under"
 
 			if game_time > self.current_time:
-				upcoming_entries[sport][governing_body][league].setdefault(
-					game_date, []
+				entries["upcoming"][sport].setdefault(
+					(governing_body, league), []
 				).append(line)
 			elif game.is_finished or game_date < self.current_time.date():
-				finished_entries[sport][governing_body][league].setdefault(
-					game_date, []
+				entries["finished"][sport].setdefault(
+					(governing_body, league), []
 				).append(line)
 			else:
-				in_play_entries[sport][governing_body][league].setdefault(
-					game_date, []
+				entries["in_play"][sport].setdefault(
+					(governing_body, league), []
 				).append(line)
 
-		# Sort upcoming games within each date bucket and maintain date order
-		for sport in self.sports:
-			if sport in upcoming_entries:
-				for governing_body in upcoming_entries[sport]:
-					for league in upcoming_entries[sport][governing_body]:
-						for game_date in upcoming_entries[sport][league]:
-							upcoming_entries[sport][league][game_date].sort(
-								key=lambda item: item[0].game.start_datetime
-							)
-						# Sort the dates and reassign to OrderedDict to maintain order
-						upcoming_entries[sport][league] = OrderedDict(
-							sorted(upcoming_entries[sport][league].items())
-						)
+		# Sort games within each bucket and maintain date order
+		for segment in entries:
+			_entries = entries[segment]
+			for sport in _entries:
+				_entries[sport] = dict(sorted(_entries[sport].items()))
+				for key in _entries[sport]:
+					_entries[sport][key].sort(key=lambda line: line.game.start_datetime)
 
-			# Sort in-play games by datetime
-			if sport in in_play_entries:
-				for governing_body in in_play_entries[sport]:
-					for league in in_play_entries[sport][governing_body]:
-						for game_date in in_play_entries[sport][league]:
-							in_play_entries[sport][league][game_date].sort(
-								key=lambda item: item[0].game.start_datetime
-							)
-						# Sort the dates and reassign to OrderedDict to maintain order
-						in_play_entries[sport][league] = OrderedDict(
-							sorted(in_play_entries[sport][league].items())
-						)
-
-			# Sort finished games by datetime (newest first)
-			if sport in finished_entries:
-				for governing_body in finished_entries[sport]:
-					for league in finished_entries[sport][governing_body]:
-						for game_date in finished_entries[sport][league]:
-							finished_entries[sport][league][game_date].sort(
-								key=lambda item: item[0].game.start_datetime
-							)
-						# Sort the dates and reassign to OrderedDict to maintain order
-						finished_entries[sport][league] = OrderedDict(
-							sorted(finished_entries[sport][league].items())
-						)
-
-		return upcoming_entries, in_play_entries, finished_entries
+		return entries["upcoming"], entries["in_play"], entries["finished"]

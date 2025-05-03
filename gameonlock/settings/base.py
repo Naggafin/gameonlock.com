@@ -420,7 +420,7 @@ SILKY_PYTHON_PROFILER_EXTENDED_FILE_NAME = True
 SILKY_AUTHENTICATION = True  # User must login
 SILKY_AUTHORISATION = True  # User must have permissions
 SILKY_META = True
-SILKY_INTERCEPT_PERCENT = 25  # log 25% of requests
+SILKY_INTERCEPT_PERCENT = 25
 
 
 # django-view-breadcrumbs
@@ -442,6 +442,24 @@ CONTENT_SECURITY_POLICY = {
 		"frame-ancestors": [SELF],
 		"img-src": [SELF, "data:", "opencollective.com"],
 		"font-src": [SELF, "data:", "fonts.gstatic.com"],
+		"object-src": [NONE],
+		"form-action": [SELF],
+		"report-uri": "/csp-report/",
+	},
+}
+
+CONTENT_SECURITY_POLICY_REPORT_ONLY = {
+	"EXCLUDE_URL_PREFIXES": [],
+	"DIRECTIVES": {
+		"default-src": [SELF],
+		"script-src": [NONCE],
+		"script-src-elem": [NONCE],
+		"style-src": [NONCE],
+		"style-src-elem": [SELF, UNSAFE_INLINE, "fonts.googleapis.com"],
+		"style-src-attr": [SELF, UNSAFE_INLINE],
+		"frame-ancestors": [SELF],
+		"img-src": [NONCE, "opencollective.com"],
+		"font-src": [NONCE, "fonts.gstatic.com"],
 		"object-src": [NONE],
 		"form-action": [SELF],
 		"report-uri": "/csp-report/",
