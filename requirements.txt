@@ -1,10 +1,10 @@
 cachetools
 celery
-celerybeat
 django-allauth
+django-celery-beat
 django-auto-prefetch
 django-debug-toolbar
-django-fastdev
+git+https://github.com/Naggafin/django-fastdev.git
 django-guardian
 django-htmx
 django-localflavor
@@ -28,7 +28,6 @@ hiredis
 isort
 jwt
 nplusone
-nplusone
 parameterized
 pillow
 pinax-messages
@@ -37,10 +36,10 @@ psycopg[c]
 psycopg_pool
 pycountry
 python-dotenv
+python-slugify
 python-telegram-handler
 redis
 ruff
-slugify
 sorl-thumbnail
 uv
 Whoosh

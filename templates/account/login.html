@@ -99,9 +99,10 @@
                                         {% trans "Sign In" %} <i class="fa-duotone fa-arrow-right"></i>
                                     </button>
                                     <p>
+                                        {% url 'account_signup' as url %}
                                         {% blocktrans %}
                                             No account yet in Game-on-Lock?<br />
-                                            <a href="{% url 'account_signup' %}" class="reg-link">Register</a> here to sign up.
+                                            <a href="{{ url }}" class="reg-link">Register</a> here to sign up.
                                         {% endblocktrans %}
                                     </p>
                                 </div>
@@ -124,12 +125,13 @@
                                             <i class="fa-brands fa-facebook-f"></i>
                                         </a>
                                     </li>
+                                    {% comment %}
                                     <li>
-                                        <a href="{% provider_login_url 'twitter' %}"
-                                           class="single-social s-twitter">
+                                        <a href="{% provider_login_url 'twitter' %}" class="single-social s-twitter">
                                             <i class="fa-brands fa-twitter"></i>
                                         </a>
                                     </li>
+                                    {% endcomment %}
                                 </ul>
                             </div>
                         </div>

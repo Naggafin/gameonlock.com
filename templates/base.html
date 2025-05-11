@@ -17,7 +17,8 @@
         <title>{% trans 'Game-on-Lock' %}</title>
         <link rel="shortcut icon"
               type="image/x-icon"
-              href="{% static 'images/favicon.ico' %}" />
+              href="{% static 'images/favicon.ico' %}"
+              nonce="{{ request.csp_nonce }}">
         {% block additional_css %}{% endblock %}
         {% block global_css %}
             <!-- bootstrap -->

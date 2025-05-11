@@ -84,6 +84,7 @@ INSTALLED_APPS = [
 	"allauth.socialaccount",
 	"allauth.socialaccount.providers.facebook",
 	"allauth.socialaccount.providers.google",
+	"allauth.socialaccount.providers.twitter",
 	# wagtail
 	"wagtail.contrib.forms",
 	"wagtail.contrib.redirects",
@@ -155,6 +156,7 @@ TEMPLATES = [
 				"django.contrib.messages.context_processors.messages",
 				"oscar.apps.search.context_processors.search_form",
 				"oscar.apps.checkout.context_processors.checkout",
+				"oscar.apps.communication.notifications.context_processors.notifications",
 				"oscar.core.context_processors.metadata",
 				"htmx_utils.context_processors.htmx_utils_context",
 				"gameonlock.context.site_vars",
@@ -360,7 +362,7 @@ SITE_VARS = {
 # django-allauth
 
 ACCOUNT_FORMS = {"signup": "gameonlock.forms.SignupForm"}
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
+ACCOUNT_LOGIN_METHOD = {"email", "username"}
 SOCIALACCOUNT_PROVIDERS = {
 	"google": {
 		"APP": {
@@ -442,24 +444,6 @@ CONTENT_SECURITY_POLICY = {
 		"frame-ancestors": [SELF],
 		"img-src": [SELF, "data:", "opencollective.com"],
 		"font-src": [SELF, "data:", "fonts.gstatic.com"],
-		"object-src": [NONE],
-		"form-action": [SELF],
-		"report-uri": "/csp-report/",
-	},
-}
-
-CONTENT_SECURITY_POLICY_REPORT_ONLY = {
-	"EXCLUDE_URL_PREFIXES": [],
-	"DIRECTIVES": {
-		"default-src": [SELF],
-		"script-src": [NONCE],
-		"script-src-elem": [NONCE],
-		"style-src": [NONCE],
-		"style-src-elem": [SELF, UNSAFE_INLINE, "fonts.googleapis.com"],
-		"style-src-attr": [SELF, UNSAFE_INLINE],
-		"frame-ancestors": [SELF],
-		"img-src": [NONCE, "opencollective.com"],
-		"font-src": [NONCE, "fonts.gstatic.com"],
 		"object-src": [NONE],
 		"form-action": [SELF],
 		"report-uri": "/csp-report/",

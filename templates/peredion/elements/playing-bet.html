@@ -3,15 +3,20 @@
   document.addEventListener('DOMContentLoaded', () => {
     const betSlip = Alpine.store('betSlip', {
       addPick(bettingLine, type, team, isOver, gameData) {
-        const slip = localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET|int }};}';
-        const data = JSON.parse(slip);
-        const existingIndex = data.picks.findIndex(p => p.betting_line === bettingLine);
+        const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET|int }};}');
+        const existingIndex = slip.picks.findIndex(p => p.betting_line === bettingLine);
         if (existingIndex !== -1) {
-          data.picks[existingIndex] = { betting_line: bettingLine, type, team, is_over: isOver, game: gameData.game, game_data: gameData };
+          slip.picks[existingIndex] = { betting_line: bettingLine, type, team, is_over: isOver, game: gameData.game, game_data: gameData };
         } else {
-          data.picks.push({ betting_line: bettingLine, type, team, is_over: isOver, game: gameData.game, game_data: gameData });
+          slip.picks.push({ betting_line: bettingLine, type, team, is_over: isOver, game: gameData.game, game_data: gameData });
         }
-        localStorage.setItem('betslip', JSON.stringify(data));
+        localStorage.setItem('betslip', JSON.stringify(slip));
+        window.dispatchEvent(new Event('betslip-updated'));
+      },
+      removePick(bettingLine) {
+        const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET|int }};}');
+        slip.picks = slip.picks.filter(p => p.betting_line !== bettingLine);
+        localStorage.setItem('betslip', JSON.stringify(slip));
         window.dispatchEvent(new Event('betslip-updated'));
       }
     });
@@ -33,21 +38,20 @@
           under: fieldset.querySelector('.under input').dataset.overUnder || null
         };
 
+        // No pick (spread/none); remove from slip if exists
         if (!radio.value) {
-          // No pick (spread/none); remove from slip if exists
-          const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":{{ MIN_BET|int }};}');
-          slip.picks = slip.picks.filter(p => p.betting_line !== bettingLine);
-          localStorage.setItem('betslip', JSON.stringify(slip));
-          window.dispatchEvent(new Event('betslip-updated'));
+          betSlip.removePick(bettingLine);
           return;
         }
 
         if (radio.name === 'team') {
           const teamPk = radio.value;
           betSlip.addPick(bettingLine, 'sp', teamPk, null, game);
+          return;
         } else if (radio.name === 'over_under') {
           const isOver = (radio.value === 'true');
           betSlip.addPick(bettingLine, 'uo', null, isOver, game);
+          return;
         }
       });
     });

@@ -191,7 +191,7 @@
                     </div>
                 </div>
                 {% for sport, lines_dict in upcoming_entries.items %}
-                    {% include "peredion/playing-bet.html#bet-section-tab" with active=forloop.first %}
+                    {% include "peredion/playing-bet.html#bet-section-tab" %}
                 {% endfor %}
             {% endwith %}
         </div>

@@ -4,12 +4,13 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.core import serializers
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from faker import Faker
 from slugify import slugify
 
-from sportsbetting.models import GoverningBody, League, PlayPick
+from sportsbetting.models import GoverningBody, League, PlayPick, Sport, Team
 
 User = get_user_model()
 
@@ -52,54 +53,72 @@ class Command(BaseCommand):
 		used_combinations = set()  # To track unique constraints
 
 		# Sport fixtures
-		sports = {}
-		for i, sport in enumerate(SPORTS, 1):
-			sport = {
-				"model": "sportsbetting.Sport",
-				"pk": i,
-				"fields": {
-					"name": sport["name"],
-					"description": sport["description"],
-					"slug_name": slugify(sport["name"]),
-				},
-			}
-			sports[i] = sport
-			fixtures.append(sport)
-
-		# GoverningBody fixtures
-		governing_bodies = {}
-		for i, gb_name in enumerate(GOVERNING_BODIES, 1):
-			sport = random.choice(list(sports.values()))
-			gb = {
-				"model": "sportsbetting.GoverningBody",
-				"pk": i,
-				"fields": {
-					"sport": sport["pk"],
-					"name": gb_name,
-					"type": random.choice([t[0] for t in GoverningBody.TYPES]),
-				},
-			}
-			governing_bodies[i] = gb
-			fixtures.append(gb)
-
-		# League fixtures
-		leagues = {}
-		for gb in governing_bodies.values():
-			league_names = LEAGUE_NAMES.copy()
-			for _ in range(2):
-				id = len(leagues) + 1
-				name = f"{league_names.pop(random.randint(0, len(league_names)-1))} {gb['pk']}"
-				league = {
-					"model": "sportsbetting.League",
-					"pk": id,
+		queryset = Sport.objects.all()
+		if queryset.exists():
+			data = serializers.serialize("json", queryset)
+			objs = json.loads(data)
+			sports = {i["pk"]: i for i in objs}
+		else:
+			sports = {}
+			for i, sport in enumerate(SPORTS, 1):
+				sport = {
+					"model": "sportsbetting.Sport",
+					"pk": i,
 					"fields": {
-						"governing_body": gb["pk"],
-						"name": name,
-						"region": random.choice([r[0] for r in League.REGIONS]),
+						"name": sport["name"],
+						"description": sport["description"],
+						"slug_name": slugify(sport["name"]),
 					},
 				}
-				leagues[id] = league
-				fixtures.append(league)
+				sports[i] = sport
+				fixtures.append(sport)
+
+		# GoverningBody fixtures
+		queryset = GoverningBody.objects.all()
+		if queryset.exists():
+			data = serializers.serialize("json", queryset)
+			objs = json.loads(data)
+			governing_bodies = {i["pk"]: i for i in objs}
+		else:
+			governing_bodies = {}
+			for i, gb_name in enumerate(GOVERNING_BODIES, 1):
+				sport = random.choice(list(sports.values()))
+				gb = {
+					"model": "sportsbetting.GoverningBody",
+					"pk": i,
+					"fields": {
+						"sport": sport["pk"],
+						"name": gb_name,
+						"type": random.choice([t[0] for t in GoverningBody.TYPES]),
+					},
+				}
+				governing_bodies[i] = gb
+				fixtures.append(gb)
+
+		# League fixtures
+		queryset = League.objects.all()
+		if queryset.exists():
+			data = serializers.serialize("json", queryset)
+			objs = json.loads(data)
+			league_names = {i["pk"]: i for i in objs}
+		else:
+			leagues = {}
+			for gb in governing_bodies.values():
+				league_names = LEAGUE_NAMES.copy()
+				for _ in range(2):
+					id = len(leagues) + 1
+					name = f"{league_names.pop(random.randint(0, len(league_names)-1))} {gb['pk']}"
+					league = {
+						"model": "sportsbetting.League",
+						"pk": id,
+						"fields": {
+							"governing_body": gb["pk"],
+							"name": name,
+							"region": random.choice([r[0] for r in League.REGIONS]),
+						},
+					}
+					leagues[id] = league
+					fixtures.append(league)
 
 		# Division fixtures
 		"""
@@ -121,33 +140,39 @@ class Command(BaseCommand):
 		"""
 
 		# Team fixtures
-		teams = {}
-		for league in leagues.values():
-			for _ in range(4):
-				# division_id = random.randint(1, division_count) if random.random() > 0.51 else None
-				id = len(teams) + 1
-				location = random.choice(TEAM_LOCATIONS)
-				name = f"{location} {fake.word().capitalize()}"
-				if (
-					(name, league["pk"]) in used_combinations
-				):  # or ((name, division_id) in used_combinations):
-					continue
-				used_combinations.add((name, ("league", league["pk"])))
-				# used_combinations.add((name, ("division", division_id)))
-				team = {
-					"model": "sportsbetting.Team",
-					"pk": id,
-					"fields": {
-						"governing_body": league["fields"]["governing_body"],
-						"league": league["pk"],
-						# "division": division_id,
-						"name": name,
-						"location": location,
-						"founding_year": random.randint(1900, 2023),
-					},
-				}
-				teams[id] = team
-				fixtures.append(team)
+		queryset = Team.objects.all()
+		if queryset.exists():
+			data = serializers.serialize("json", queryset)
+			objs = json.loads(data)
+			teams = {i["pk"]: i for i in objs}
+		else:
+			teams = {}
+			for league in leagues.values():
+				for _ in range(4):
+					# division_id = random.randint(1, division_count) if random.random() > 0.51 else None
+					id = len(teams) + 1
+					location = random.choice(TEAM_LOCATIONS)
+					name = f"{location} {fake.word().capitalize()}"
+					if (
+						(name, league["pk"]) in used_combinations
+					):  # or ((name, division_id) in used_combinations):
+						continue
+					used_combinations.add((name, ("league", league["pk"])))
+					# used_combinations.add((name, ("division", division_id)))
+					team = {
+						"model": "sportsbetting.Team",
+						"pk": id,
+						"fields": {
+							"governing_body": league["fields"]["governing_body"],
+							"league": league["pk"],
+							# "division": division_id,
+							"name": name,
+							"location": location,
+							"founding_year": random.randint(1900, 2023),
+						},
+					}
+					teams[id] = team
+					fixtures.append(team)
 
 		# Player fixtures
 		"""

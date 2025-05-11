@@ -16,6 +16,7 @@ Including another URLconf
 """
 
 from allauth.account.decorators import secure_admin_login
+from django.apps import apps
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns
@@ -38,6 +39,7 @@ internatonalized_patterns = i18n_patterns(
 	path(_("pages/"), include(wagtail_urls)),
 	path("", views.HomeView.as_view(), name="index"),
 	path("sports/", include("sportsbetting.urls")),
+	path("shop/", include(apps.get_app_config("oscar").urls[0])),
 	prefix_default_language=False,
 )
 

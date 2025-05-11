@@ -8,15 +8,6 @@ register = template.Library()
 
 
 @register.filter
-@cache
-def game_has_started(game, time=None):
-	time = time or timezone.now().time()
-	if not game.start_datetime:
-		return False
-	return time > game.start_datetime.time()
-
-
-@register.filter
 def game_start_datetime(game):
 	format = "%d %b %Y %I:%M:%S %Z%z"
 	dt = game.start_datetime
@@ -48,36 +39,26 @@ def int_filter(value):
 @register.simple_tag
 @cache
 def num_betting_lines(obj, state=None):
-	breakpoint()
 	# NOTE: we do this in a prefetch_related() efficient manner
 	if not state:
-		lines = itertools.chain.from_iterable(
-			[game.betting_lines.all() for game in obj.scheduled_games.all()]
-		)
-	elif state == "upcoming":
-		time = timezone.now().time()
-		lines = itertools.chain.from_iterable(
-			[
-				game.betting_lines.all()
+		lines = [game.betting_line for game in obj.scheduled_games.all()]
+	else:
+		if state == "upcoming":
+			lines = [
+				game.betting_line
 				for game in obj.scheduled_games.all()
-				if not game_has_started(game, time)
+				if not game.has_started
 			]
-		)
-	elif state == "in_play":
-		time = timezone.now().time()
-		lines = itertools.chain.from_iterable(
-			[
-				game.betting_lines.all()
+		elif state == "in_play":
+			lines = [
+				game.betting_line
 				for game in obj.scheduled_games.all()
-				if game_has_started(game, time) and not game.is_finished
+				if game.has_started and not game.is_finished
 			]
-		)
-	elif state == "finished":
-		lines = itertools.chain.from_iterable(
-			[
-				game.betting_lines.all()
+		elif state == "finished":
+			lines = [
+				game.betting_line
 				for game in obj.scheduled_games.all()
 				if game.is_finished
 			]
-		)
 	return len(list(lines))

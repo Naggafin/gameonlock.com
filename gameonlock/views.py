@@ -9,7 +9,7 @@ from django.views.generic import TemplateView
 from sportsbetting.models import ScheduledGame
 from sportsbetting.views import SportsBettingContextMixin
 
-HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 10
+HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
 logger = logging.getLogger(__name__)
 

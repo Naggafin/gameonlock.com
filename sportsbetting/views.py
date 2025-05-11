@@ -21,7 +21,7 @@ class SportsBettingContextMixin:
 			"game__league",
 			"game__home_team",
 			"game__away_team",
-		).all()
+		).all()  # .filter(game__sport__is_active=True)
 		plays = Play.objects.prefetch_related("picks").filter(user=self.request.user.pk)
 		munger = BettingLineMunger(betting_lines, plays)
 		upcoming_entries, in_play_entries, finished_entries = (

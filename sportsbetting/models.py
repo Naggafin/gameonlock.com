@@ -2,6 +2,7 @@ import auto_prefetch
 from django.conf import settings
 from django.db import models
 from django.db.models import F, Q
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 from djmoney.models.fields import MoneyField
@@ -28,6 +29,7 @@ class Sport(models.Model):
 		null=True,
 		help_text="Optional description of the sport.",
 	)
+	# is_active = models.BooleanField(default=False, help_text="Check/uncheck to show/hide this sport in the website.")
 	slug_name = models.SlugField(
 		blank=True,
 		null=True,
@@ -97,7 +99,7 @@ class GoverningBody(auto_prefetch.Model):
 		verbose_name_plural = _("governing bodies")
 		constraints = [
 			models.UniqueConstraint(
-				fields=["key"],
+				fields=["sport", "key"],
 				condition=Q(key__isnull=False),
 				name="unique_governing_body_key_when_not_null",
 			),
@@ -233,6 +235,10 @@ class ScheduledGame(auto_prefetch.Model):
 	location = models.CharField(max_length=100, blank=True)
 	start_datetime = models.DateTimeField()
 	is_finished = models.BooleanField(default=False)
+
+	@cached_property
+	def has_started(self):
+		return timezone.now() > self.start_datetime
 
 	class Meta(auto_prefetch.Model.Meta):
 		constraints = [

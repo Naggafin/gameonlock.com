@@ -15,16 +15,13 @@ class BettingLineMunger:
 				self.picks[pick.betting_line_id][pick.type] = pick
 
 	def categorize_and_sort(self) -> Tuple[Dict, Dict, Dict]:
-		entries = defaultdict(lambda: defaultdict())
+		entries = defaultdict(lambda: defaultdict(dict))
 
 		for line in self.betting_lines:
 			game = line.game
 			sport = game.sport
 			league = game.league or ""
 			governing_body = game.governing_body
-
-			game_date = game.start_datetime.date()
-			game_time = game.start_datetime
 
 			line.picked_team = None
 			line.picked_uo = None
@@ -35,11 +32,11 @@ class BettingLineMunger:
 				elif pick := picks.get("uo"):
 					line.picked_uo = "over" if pick.is_over else "under"
 
-			if game_time > self.current_time:
+			if not game.has_started:
 				entries["upcoming"][sport].setdefault(
 					(governing_body, league), []
 				).append(line)
-			elif game.is_finished or game_date < self.current_time.date():
+			elif game.is_finished:
 				entries["finished"][sport].setdefault(
 					(governing_body, league), []
 				).append(line)
@@ -50,10 +47,23 @@ class BettingLineMunger:
 
 		# Sort games within each bucket and maintain date order
 		for segment in entries:
-			_entries = entries[segment]
-			for sport in _entries:
-				_entries[sport] = dict(sorted(_entries[sport].items()))
-				for key in _entries[sport]:
-					_entries[sport][key].sort(key=lambda line: line.game.start_datetime)
+			entries[segment] = dict(
+				sorted(entries[segment].items(), key=lambda pair: len(pair[1].values()))
+			)
+			for sport in entries[segment]:
+				entries[segment][sport] = dict(
+					sorted(
+						entries[segment][sport].items(),
+						key=lambda pair: (str(pair[0][0]), str(pair[0][1])),
+					)
+				)
+				for key in entries[segment][sport]:
+					entries[segment][sport][key].sort(
+						key=lambda line: line.game.start_datetime
+					)
 
-		return entries["upcoming"], entries["in_play"], entries["finished"]
+		return (
+			dict(entries["upcoming"]),
+			dict(entries["in_play"]),
+			dict(entries["finished"]),
+		)
