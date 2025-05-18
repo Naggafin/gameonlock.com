@@ -1,5 +1,9 @@
 {% load static i18n %}
-<div class="preloader">
+<div class="preloader"
+     x-data="{ visible: true }"
+     x-show="visible"
+     x-init="document.addEventListener('DOMContentLoaded', () => { setTimeout(() => visible = false, 1000); });"
+     x-transition.opacity.duration.1000ms>
     <div class="icon">
         <img src="{% static 'peredion/images/preloader/preload-1.gif' %}"
              alt=""

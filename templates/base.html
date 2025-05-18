@@ -20,38 +20,39 @@
               href="{% static 'images/favicon.ico' %}"
               nonce="{{ request.csp_nonce }}">
         {% block additional_css %}{% endblock %}
-        {% block global_css %}
+        {% block css %}
             <!-- bootstrap -->
             <link rel="stylesheet"
-                  href="{% static 'peredion/css/bootstrap.min.css' %}"
-                  nonce="{{ request.csp_nonce }}">
-            <!-- animate css -->
-            <link rel="stylesheet"
-                  href="{% static 'peredion/css/animate.min.css' %}"
+                  href="{% static 'bootstrap/css/bootstrap.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
             <!-- load all Font Awesome styles -->
             <link rel="stylesheet"
-                  href="{% static 'peredion/css/all.min.css' %}"
+                  href="{% static 'fontawesome/css/fontawesome.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
-            <!-- owl carousel css -->
             <link rel="stylesheet"
-                  href="{% static 'peredion/css/owl.carousel.min.css' %}"
+                  href="{% static 'fontawesome/css/solid.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
-            <!-- odometer css -->
             <link rel="stylesheet"
-                  href="{% static 'peredion/css/odometer.min.css' %}"
+                  href="{% static 'fontawesome/css/brands.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
             <!-- overlay scrollbar css -->
             <link rel="stylesheet"
-                  href="{% static 'peredion/css/OverlayScrollbars.min.css' %}"
+                  href="{% static 'overlayscrollbars/css/overlayscrollbars.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
             <!-- aos css -->
-            <link href="{% static 'peredion/css/aos.css' %}"
+            <link href="{% static 'aos/css/aos.css' %}"
                   rel="stylesheet"
                   nonce="{{ request.csp_nonce }}">
             <!-- main css -->
             <link rel="stylesheet"
                   href="{% static 'peredion/css/style.css' %}"
+                  nonce="{{ request.csp_nonce }}">
+            <!-- animate css -->
+            <link rel="stylesheet"
+                  href="{% static 'css/animate.min.css' %}"
+                  nonce="{{ request.csp_nonce }}">
+            <link rel="stylesheet"
+                  href="{% static 'css/bootstrap-overrides.css' %}"
                   nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
                   href="{% static 'css/style.css' %}"
@@ -66,23 +67,6 @@
                     eruda.init();
                 </script>
             {% endif %}
-            <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
-            {% if debug %}
-                <script src="{% static 'js/htmx.js' %}"
-                        defer="true"
-                        nonce="{{ request.csp_nonce }}"></script>
-                <script src="{% static 'js/alpine.js' %}"
-                        defer="true"
-                        nonce="{{ request.csp_nonce }}"></script>
-            {% else %}
-                <script src="{% static 'js/htmx.min.js' %}"
-                        defer="true"
-                        nonce="{{ request.csp_nonce }}"></script>
-                <script src="{% static 'js/alpine.min.js' %}"
-                        defer="true"
-                        nonce="{{ request.csp_nonce }}"></script>
-            {% endif %}
-            {% django_htmx_script %}
         {% endblock %}
     </head>
     <body>
@@ -107,40 +91,75 @@
         </div>
         {% block footer %}
             {% include 'peredion/elements/footer.html' %}
-            <div class="back-to-top-btn">
-                <a href="#">
-                    <i class="fa-light fa-turn-up"></i>
-                </a>
+            <div x-data="{ isActive: false, isFooterBottom: false, checkScroll() { const scroll = window.scrollY; const footerSection = document.querySelector('.footer').offsetTop; const footerOffset = footerSection - window.innerHeight; this.isActive = scroll > 1500; this.isFooterBottom = scroll > footerOffset; } }"
+                 x-init="window.addEventListener('scroll', () => checkScroll()); checkScroll()">
+                <div class="back-to-top-btn">
+                    <a href="#"
+                       x-bind:class="{ 'active': isActive, 'active-plus': isActive && isFooterBottom, 'foot-on-bottom': isFooterBottom }">
+                        <i class="fa-solid fa-arrow-turn-up"></i>
+                    </a>
+                </div>
             </div>
         {% endblock %}
         {% block js %}
-            <!-- jQuery js -->
-            <script src="{% static 'peredion/js/jquery-3.6.0.min.js' %}"
+            <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'js/htmx.min.js' %}"
+                    defer="true"
+                    nonce="{{ request.csp_nonce }}"></script>
+            {% django_htmx_script %}
+            <script src="{% static 'js/alpine.min.js' %}"
+                    defer="true"
                     nonce="{{ request.csp_nonce }}"></script>
             <!-- bootstrap js -->
-            <script src="{% static 'peredion/js/bootstrap.bundle.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- owl carousel js -->
-            <script src="{% static 'peredion/js/owl.carousel.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- live clock js -->
-            <script src="{% static 'peredion/js/clock.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- appear js -->
-            <script src="{% static 'peredion/js/jquery.appear.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- odometer js -->
-            <script src="{% static 'peredion/js/odometer.min.js' %}"
+            <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"
                     nonce="{{ request.csp_nonce }}"></script>
             <!-- overlayScrollbars js -->
-            <script src="{% static 'peredion/js/jquery.overlayScrollbars.min.js' %}"
+            <script src="{% static 'overlayscrollbars/js/overlayscrollbars.browser.es6.min.js' %}"
                     nonce="{{ request.csp_nonce }}"></script>
+            <script nonce="{{ request.csp_nonce }}">
+  document.addEventListener("DOMContentLoaded", () => {
+    // Wait until the OverlayScrollbars global is available
+    const waitForOverlayScrollbars = () => {
+      if (typeof OverlayScrollbars !== "function") {
+        return setTimeout(waitForOverlayScrollbars, 50);
+      }
+
+      // Once it's available, initialize scrollbars
+      const elements = document.querySelectorAll("[data-overlayscrollbars-initialize]");
+      elements.forEach(el => {
+        try {
+          const rawOptions = el.getAttribute("data-overlayscrollbars-options");
+          const options = rawOptions ? JSON.parse(rawOptions) : {};
+          OverlayScrollbars(el, options);
+        } catch (e) {
+          console.error("OverlayScrollbars initialization failed for element:", el, e);
+        }
+      });
+    };
+
+    waitForOverlayScrollbars();
+  });
+            </script>
             <!-- aos js -->
-            <script src="{% static 'peredion/js/aos.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
-            <!-- main script js -->
-            <script src="{% static 'peredion/js/main.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'aos/js/aos.js' %}" nonce="{{ request.csp_nonce }}"></script>
+            <script nonce="{{ request.csp_nonce }}">
+  document.addEventListener("DOMContentLoaded", () => {
+    // Wait until the AOS global is available
+    const waitForAOS = () => {
+      if (typeof AOS === "undefined") {
+        return setTimeout(waitForAOS, 50);
+      }
+
+      try {
+        AOS.init({once: true});
+      } catch (e) {
+        console.error("AOS initialization failed:", e);
+      }
+    }
+    
+    waitForAOS();
+  });
+            </script>
         {% endblock %}
     </body>
 </html>

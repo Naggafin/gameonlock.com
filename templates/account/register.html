@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 {% load static i18n socialaccount %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="{% static 'flatpickr/js/flatpickr.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+{% endblock %}
 {% block js %}
     {{ block.super }}
+    <script src="{% static 'flatpickr/js/flatpickr.js' %}"
+            nonce="{{ request.csp_nonce }}"></script>
     <script nonce="{{ request.csp_nonce }}">
 document.addEventListener('DOMContentLoaded', () => {
     const processingSteps = document.querySelector('.processing-steps');
@@ -18,6 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
             headingTitle.classList.remove('steps-heading-fixed');
         }
     });
+
+    // initialize flatpickr inputs
+    flatpickr("input[type='date']");
 });
     </script>
 {% endblock %}
@@ -63,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <a href="/" class="text">{% trans "Home" %}</a>
                         </li>
                         <li>
-                            <span class="icon"><i class="fa-light fa-caret-right fa-xl"></i></span>
+                            <span class="icon"><i class="fa-solid fa-caret-right fa-xl"></i></span>
                             <span class="text">{% trans "Sign Up" %}</span>
                         </li>
                     </ul>
@@ -301,19 +312,19 @@ document.addEventListener('DOMContentLoaded', () => {
                                             :class="{ 'disabled': currentStep === 0 }"
                                             @click="prevStep"
                                             type="button">
-                                        <i class="fa-duotone fa-arrow-left"></i>
+                                        <i class="fa-solid fa-arrow-left"></i>
                                     </button>
                                     <button class="prd-btn-1"
                                             @click="nextStep"
                                             type="button"
                                             x-show="currentStep < 3">
-                                        {% trans "Next Step" %} <i class="fa-duotone fa-arrow-right"></i>
+                                        {% trans "Next Step" %} <i class="fa-solid fa-arrow-right"></i>
                                     </button>
                                     <button class="prd-btn-1"
                                             type="submit"
                                             x-show="currentStep === 3"
                                             :disabled="!termsConfirmed || !ageConfirmed">
-                                        {% trans "Sign Up" %} <i class="fa-duotone fa-arrow-right"></i>
+                                        {% trans "Sign Up" %} <i class="fa-solid fa-arrow-right"></i>
                                     </button>
                                 </div>
                             </form>

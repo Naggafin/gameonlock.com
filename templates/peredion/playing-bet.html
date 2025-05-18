@@ -16,7 +16,7 @@
                 <div>{{ line.game.start_datetime|date }}</div>
             {% endifchanged %}
             {% with game=line.game %}
-                <div class="single-t-match
+                <div class="single-t-match card mb-3
                             {% if game.is_finished %}
                                 finished
                             {% elif game.has_started %}
@@ -24,102 +24,110 @@
                             {% endif %}"
                      data-betting-line="{{ line.pk }}"
                      data-game="{{ game.pk }}">
-                    <div class="match-time">
-                        <span class="time-icon">
-                            <i class="fa-regular fa-clock"></i>
-                        </span>
-                        <span class="m-date">{{ game.start_datetime|naturalday }}</span>
-                        <span class="m-time">
-                            {% if game.has_started %}
-                                {% trans 'in-play' %}
-                            {% else %}
-                                {{ game.start_datetime|time }}
-                            {% endif %}
-                        </span>
-                    </div>
-                    <div class="playing-teams">
-                        <div class="single-team">
-                            <div class="team-descr">
-                                <span class="team-icon">
-                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                         alt="{{ game.away_team }}"
-                                         nonce="{{ request.csp_nonce }}">
+                    <div class="card-body">
+                        <!-- Match Time Row -->
+                        <div class="match-time-row row mb-3 text-center">
+                            <div class="col-12">
+                                <span class="time-icon">
+                                    <i class="fa-solid fa-clock"></i>
                                 </span>
-                                <span class="team-name">{{ game.away_team }}</span>
+                                <span class="m-date text-uppercase">{{ game.start_datetime|naturalday }}</span>
+                                <span class="m-time text-uppercase text-secondary">
+                                    {% if game.has_started %}
+                                        {% trans 'in-play' %}
+                                    {% else %}
+                                        {{ game.start_datetime|time }}
+                                    {% endif %}
+                                </span>
                             </div>
-                            {% if game.has_started %}<div class="team-score">{{ game.away_team_score }}</div>{% endif %}
                         </div>
-                        <div class="single-team">
-                            <div class="team-descr">
-                                <span class="team-icon">
-                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                         alt="{{ game.home_team }}"
-                                         nonce="{{ request.csp_nonce }}">
-                                </span>
-                                <span class="team-name">{{ game.home_team }}</span>
+                        <!-- Teams and Spread Row -->
+                        <div class="teams-row row mb-3 align-items-center">
+                            <div class="col-12 col-md-5 team-selection">
+                                <label class="single-bet-place away btn btn-outline-secondary w-100 text-start
+                                              {% if line.picked_team == game.away_team.pk %}placed{% endif %}"
+                                       {% if game.is_finished or game.has_started or line.picked_team %}disabled{% endif %}>
+                                    <input type="radio"
+                                           name="team"
+                                           value="{{ game.away_team.pk }}"
+                                           data-team="away"
+                                           class="d-none"
+                                           {% if game.is_finished or game.has_started or line.picked_team %}disabled{% endif %}>
+                                    <span class="team-icon me-2">
+                                        <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
+                                             alt="{{ game.away_team }}"
+                                             nonce="{{ request.csp_nonce }}"
+                                             class="rounded-circle">
+                                    </span>
+                                    <span class="team-name">{{ game.away_team }}</span>
+                                    {% if game.has_started %}<span class="team-score ms-2">{{ game.away_team_score }}</span>{% endif %}
+                                </label>
                             </div>
-                            {% if game.has_started %}<div class="team-score">{{ game.home_team_score }}</div>{% endif %}
-                        </div>
-                    </div>
-                    <div class="placing-bet">
-                        <fieldset {% if game.is_finished or game.has_started or line.picked_team %}disabled{% endif %}>
-                            <label class="single-bet-place away
-                                          {% if line.picked_team == game.away_team.pk %}placed{% endif %}">
-                                <input type="radio"
-                                       name="team"
-                                       value="{{ game.away_team.pk }}"
-                                       data-team="away">
-                                <span class="team-icon">
-                                    <img src="{% if game.away_team.icon %}{{ game.away_team.icon.url }}{% endif %}"
-                                         alt="{{ game.away_team }}"
-                                         nonce="{{ request.csp_nonce }}">
-                                </span>
-                                <span class="team-name">{{ game.away_team }}</span>
-                            </label>
-                            <label class="single-bet-place draw-box">
-                                <input type="radio" name="team" value="">
-                                <span class="bet-ratio">
+                            <div class="col-12 col-md-2 spread-box text-center">
+                                <span class="bet-ratio badge bg-light text-dark">
                                     {% if line.is_pick %}P{% endif %}
-                                {{ line.spread }}</span>
-                            </label>
-                            <label class="single-bet-place home
-                                          {% if line.picked_team == game.home_team.pk %}placed{% endif %}">
-                                <input type="radio"
-                                       name="team"
-                                       value="{{ game.home_team.pk }}"
-                                       data-team="home">
-                                <span class="team-icon">
-                                    <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
-                                         alt="{{ game.home_team }}"
-                                         nonce="{{ request.csp_nonce }}">
+                                    {{ line.spread }}
                                 </span>
-                                <span class="team-name">{{ game.home_team }}</span>
-                            </label>
-                        </fieldset>
+                            </div>
+                            <div class="col-12 col-md-5 team-selection">
+                                <label class="single-bet-place home btn btn-outline-secondary w-100 text-start
+                                              {% if line.picked_team == game.home_team.pk %}placed{% endif %}"
+                                       {% if game.is_finished or game.has_started or line.picked_team %}disabled{% endif %}>
+                                    <input type="radio"
+                                           name="team"
+                                           value="{{ game.home_team.pk }}"
+                                           data-team="home"
+                                           class="d-none"
+                                           {% if game.is_finished or game.has_started or line.picked_team %}disabled{% endif %}>
+                                    <span class="team-icon me-2">
+                                        <img src="{% if game.home_team.icon %}{{ game.home_team.icon.url }}{% endif %}"
+                                             alt="{{ game.home_team }}"
+                                             nonce="{{ request.csp_nonce }}"
+                                             class="rounded-circle">
+                                    </span>
+                                    <span class="team-name">{{ game.home_team }}</span>
+                                    {% if game.has_started %}<span class="team-score ms-2">{{ game.home_team_score }}</span>{% endif %}
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Under/Over Row -->
                         {% if line.under or line.over %}
-                            <fieldset {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
-                                <label class="btn single-bet-place under
-                                              {% if line.picked_uo == 'under' %}placed{% endif %}">
-                                    <input type="radio"
-                                           name="over_under"
-                                           value="false"
-                                           data-over-under="{{ line.under }}">
-                                    <span>{% trans 'under' %}</span>
-                                </label>
-                                <label class="single-bet-place draw-box">
-                                    <input type="radio" name="over_under" value="">
-                                    {# NOTE: line.over and line.under should be same on current implementation #}
-                                    <span class="bet-ratio">{{ line.over }}</span>
-                                </label>
-                                <label class="btn single-bet-place over
-                                              {% if line.picked_uo == 'over' %}placed{% endif %}">
-                                    <input type="radio"
-                                           name="over_under"
-                                           value="true"
-                                           data-over-under="{{ line.over }}">
-                                    <span>{% trans 'over' %}</span>
-                                </label>
-                            </fieldset>
+                            <div class="under-over-row row justify-content-center">
+                                <div class="col-12">
+                                    <div class="btn-group w-100" role="group">
+                                        <label class="single-bet-place under btn btn-outline-secondary
+                                                      {% if line.picked_uo == 'under' %}placed{% endif %}"
+                                               {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
+                                            <input type="radio"
+                                                   name="over_under"
+                                                   value="false"
+                                                   data-over-under="{{ line.under }}"
+                                                   class="d-none"
+                                                   {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
+                                            <span>{% trans 'under' %}</span>
+                                        </label>
+                                        <label class="single-bet-place draw-box btn btn-light">
+                                            <input type="radio"
+                                                   name="over_under"
+                                                   value=""
+                                                   class="d-none"
+                                                   {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
+                                            <span class="bet-ratio">{{ line.over }}</span>
+                                        </label>
+                                        <label class="single-bet-place over btn btn-outline-secondary
+                                                      {% if line.picked_uo == 'over' %}placed{% endif %}"
+                                               {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
+                                            <input type="radio"
+                                                   name="over_under"
+                                                   value="true"
+                                                   data-over-under="{{ line.over }}"
+                                                   class="d-none"
+                                                   {% if game.is_finished or game.has_started or line.picked_uo %}disabled{% endif %}>
+                                            <span>{% trans 'over' %}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         {% endif %}
                     </div>
                 </div>
@@ -129,43 +137,44 @@
 </div>
 {% endpartialdef %}
 {% partialdef bet-section-tab %}
-{% with suffix=tab.num|default_if_none:""|yesno:"-{{ tab.num }}
-    ,," %}
-    <div class="tab-pane fade
-                {% if active %}show active{% endif %}"
-         id="sports-{{ sport.slug_name }}{{ suffix }}"
-         role="tabpanel"
-         aria-labelledby="sports-{{ sport.slug_name }}-tab{{ suffix }}">
-        <div class="single-sports-item">
-            <h2 class="accordion-header"
-                id="{{ sport.slug_name }}-matches{{ suffix }}">
-                <div class="sports-header">
-                    <span class="single-sports-icon">
-                        <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                             alt="{{ sport }}"
-                             nonce="{{ request.csp_nonce }}">
-                    </span>
-                    <span class="single-sports-name">{{ sport }} ({% num_betting_lines sport game_state %})</span>
-                    <span class="single-sports-img">
-                        <img src="{% static 'peredion/images/playing-bet/'|add:sport.slug_name|add:'-bg.png' %}"
-                             alt=""
-                             nonce="{{ request.csp_nonce }}">
-                    </span>
-                </div>
-            </h2>
-            <div class="sports-expanded-list">
-                <div class="sports-body">
-                    <div class="playing-sports-all no-tabs-here">
-                        {% for governing_body__league, lines in lines_dict.items %}
-                            {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
-                                {% partial bet-section-tab-content %}
-                            {% endwith %}
-                        {% endfor %}
-                    </div>
+{# djlint:off #}
+{% with suffix=tab.num|default_if_none:""|yesno:"-{{ tab.num }},," %}
+{# djlint:on #}
+<div class="tab-pane fade
+            {% if active %}show active{% endif %}"
+     id="sports-{{ sport.slug_name }}{{ suffix }}"
+     role="tabpanel"
+     aria-labelledby="sports-{{ sport.slug_name }}-tab{{ suffix }}">
+    <div class="single-sports-item">
+        <h2 class="accordion-header"
+            id="{{ sport.slug_name }}-matches{{ suffix }}">
+            <div class="sports-header">
+                <span class="single-sports-icon">
+                    <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
+                         alt="{{ sport }}"
+                         nonce="{{ request.csp_nonce }}">
+                </span>
+                <span class="single-sports-name">{{ sport }} ({% num_betting_lines sport game_state %})</span>
+                <span class="single-sports-img">
+                    <img src="{% static 'peredion/images/playing-bet/'|add:sport.slug_name|add:'-bg.png' %}"
+                         alt=""
+                         nonce="{{ request.csp_nonce }}">
+                </span>
+            </div>
+        </h2>
+        <div class="sports-expanded-list">
+            <div class="sports-body">
+                <div class="playing-sports-all no-tabs-here">
+                    {% for governing_body__league, lines in lines_dict.items %}
+                        {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
+                            {% partial bet-section-tab-content %}
+                        {% endwith %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endwith %}
 {% endpartialdef %}
 {% block js %}
@@ -252,7 +261,7 @@
                          id="bet-{{ tab.id }}"
                          role="tabpanel"
                          aria-labelledby="bet-{{ tab.id }}-tab">
-                        <div class="sports-menu scrollable-menu">
+                        <div class="sports-menu scrollable-menu" data-overlayscrollbars-initialize>
                             <ul class="nav nav-pills" id="sports-tab-{{ tab.num }}" role="tablist">
                                 {% for sport in tab.entries %}
                                     <li class="nav-item" role="presentation">

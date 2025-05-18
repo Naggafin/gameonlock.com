@@ -1688,7 +1688,7 @@ ul {
     01. Header 
 ==========================================*/
 .header-fixed {
-  position: fixed !important;
+  position: fixed;
   background: #161D35;
   z-index: 60 !important;
 }

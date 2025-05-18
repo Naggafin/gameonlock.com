@@ -1,0 +1,257 @@
+/* Override Bootstrap color variables */
+:root {
+    --bs-primary: #D03355;
+    --bs-primary-rgb: 208, 51, 85;
+    --bs-secondary: #5C6172;
+    --bs-secondary-rgb: 92, 97, 114;
+    --bs-success: #4D8E53;
+    --bs-success-rgb: 77, 142, 83;
+    --bs-danger: #FB7A6B;
+    --bs-danger-rgb: 251, 122, 107;
+    --bs-info: #305B9F;
+    --bs-info-rgb: 48, 91, 159;
+    --bs-warning: #4D233F;
+    --bs-warning-rgb: 77, 35, 63;
+    --bs-light: #fff;
+    --bs-light-rgb: 255, 255, 255;
+    --bs-dark: rgb(22, 29, 53);
+    --bs-dark-rgb: 22, 29, 53;
+
+    /* Border colors */
+    --bs-border-color: rgba(22, 29, 53, 0.2);
+}
+
+/* Button styles with gradients */
+.btn-primary {
+    background: linear-gradient(135.89deg, var(--bs-primary) -5.11%, var(--bs-danger) 97.89%);
+    border-color: var(--bs-primary);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active,
+.btn-primary.active {
+    background: var(--bs-danger);
+    border-color: var(--bs-danger);
+    color: #fff;
+}
+
+.btn-primary:disabled {
+    background: linear-gradient(135.89deg, var(--bs-primary) -5.11%, var(--bs-danger) 97.89%);
+    opacity: 0.6;
+    border-color: var(--bs-primary);
+}
+
+.btn-secondary {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus,
+.btn-secondary:active,
+.btn-secondary.active {
+    background-color: #4a4f5e;
+    border-color: #4a4f5e;
+    color: #fff;
+}
+
+.btn-success {
+    background-color: var(--bs-success);
+    border-color: var(--bs-success);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-success:hover,
+.btn-success:focus,
+.btn-success:active,
+.btn-success.active {
+    background-color: #3d6f42;
+    border-color: #3d6f42;
+    color: #fff;
+}
+
+.btn-danger {
+    background: linear-gradient(135.89deg, var(--bs-primary) -5.11%, var(--bs-danger) 97.89%);
+    border-color: var(--bs-danger);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-danger:hover,
+.btn-danger:focus,
+.btn-danger:active,
+.btn-danger.active {
+    background: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff;
+}
+
+.btn-info {
+    background-color: var(--bs-info);
+    border-color: var(--bs-info);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-info:hover,
+.btn-info:focus,
+.btn-info:active,
+.btn-info.active {
+    background-color: #274a7f;
+    border-color: #274a7f;
+    color: #fff;
+}
+
+.btn-warning {
+    background-color: var(--bs-warning);
+    border-color: var(--bs-warning);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning:active,
+.btn-warning.active {
+    background-color: #3d1c32;
+    border-color: #3d1c32;
+    color: #fff;
+}
+
+.btn-light {
+    background-color: #fff;
+    border-color: rgba(22, 29, 53, 0.2);
+    color: var(--bs-secondary);
+    font-family: "Asap", sans-serif;
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.btn-light:active,
+.btn-light.active {
+    background-color: #f5f5f5;
+    border-color: rgba(22, 29, 53, 0.2);
+    color: var(--bs-secondary);
+}
+
+.btn-dark {
+    background-color: rgb(22, 29, 53);
+    border-color: rgb(22, 29, 53);
+    color: #fff;
+    font-family: "Asap", sans-serif;
+}
+
+.btn-dark:hover,
+.btn-dark:focus,
+.btn-dark:active,
+.btn-dark.active {
+    background-color: #1a213b;
+    border-color: #1a213b;
+    color: #fff;
+}
+
+/* Outline buttons */
+.btn-outline-primary {
+    border-color: var(--bs-primary);
+    color: var(--bs-primary);
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    background: linear-gradient(135.89deg, var(--bs-primary) -5.11%, var(--bs-danger) 97.89%);
+    border-color: var(--bs-primary);
+    color: #fff;
+}
+
+.btn-outline-secondary {
+    border-color: var(--bs-secondary);
+    color: var(--bs-secondary);
+}
+
+.btn-outline-secondary:hover,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active,
+.btn-outline-secondary.active {
+    background-color: var(--bs-secondary);
+    border-color: var(--bs-secondary);
+    color: #fff;
+}
+
+/* Text and background classes */
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.text-secondary {
+    color: var(--bs-secondary) !important;
+}
+
+.text-success {
+    color: var(--bs-success) !important;
+}
+
+.text-danger {
+    color: var(--bs-danger) !important;
+}
+
+.text-info {
+    color: var(--bs-info) !important;
+}
+
+.text-warning {
+    color: var(--bs-warning) !important;
+}
+
+.text-light {
+    color: #fff !important;
+}
+
+.text-dark {
+    color: rgb(22, 29, 53) !important;
+}
+
+.bg-primary {
+    background-color: var(--bs-primary) !important;
+}
+
+.bg-secondary {
+    background-color: var(--bs-secondary) !important;
+}
+
+.bg-success {
+    background-color: var(--bs-success) !important;
+}
+
+.bg-danger {
+    background-color: var(--bs-danger) !important;
+}
+
+.bg-info {
+    background-color: var(--bs-info) !important;
+}
+
+.bg-warning {
+    background-color: var(--bs-warning) !important;
+}
+
+.bg-light {
+    background-color: #fff !important;
+}
+
+.bg-dark {
+    background-color: rgb(22, 29, 53) !important;
+}
+
+/* Disabled states for buttons */
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+}

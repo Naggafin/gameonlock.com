@@ -98,70 +98,174 @@
 
 /****** peredion overrides *******/
 
-/* Hide the actual radio input */
-.single-bet-place input[type="radio"] {
-  display: none;
+/* Single Tournament Match */
+.single-t-match.card {
+    border: 1px solid var(--bs-border-color);
+    border-radius: 10px;
+    transition: all 0.3s ease-in;
 }
 
-/* Style the parent container */
-.single-bet-place {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 15px;
-  border: 2px solid #D03355;
-  background-color: #fff;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+.single-t-match.finished,
+.single-t-match.match-in-play {
+    opacity: 0.7;
 }
 
-/* Style when the radio is checked */
-.single-bet-place input[type="radio"]:checked + .team-icon,
-.single-bet-place input[type="radio"]:checked + .bet-ratio,
-.single-bet-place input[type="radio"]:checked + .team-name {
-  background-color: #FB7A6B;
-  transform: scale(1.05);
+.single-t-match.finished .team-selection label,
+.single-t-match.match-in-play .team-selection label {
+    cursor: not-allowed;
 }
 
-/* Hover effect */
-.single-bet-place:hover {
-  background-color: #F5F5F5;
+/* Match Time Row */
+.match-time-row .time-icon {
+    font-size: 16px;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(136deg, var(--bs-primary) -5%, var(--bs-danger) 98%);
 }
 
-/* Selected state */
-.single-bet-place input[type="radio"]:checked + span {
-  color: white;
+.match-time-row .m-date,
+.match-time-row .m-time {
+    font-family: "Asap", sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    margin: 0 5px;
 }
 
-/* Button styles for the over/under buttons */
+@media (max-width: 576px) {
+    .match-time-row .m-date,
+    .match-time-row .m-time {
+        font-size: 13px;
+        line-height: 22px;
+        display: block;
+        margin: 2px 0;
+    }
+}
+
+/* Teams Row */
+.teams-row .team-selection .single-bet-place {
+    font-family: "Asap", sans-serif;
+    padding: 10px 15px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.teams-row .team-selection .single-bet-place.placed {
+    background: linear-gradient(136deg, var(--bs-primary) -5%, var(--bs-danger) 98%);
+    color: #fff;
+    border-color: transparent;
+}
+
+.teams-row .team-selection .single-bet-place.placed .team-name,
+.teams-row .team-selection .single-bet-place.placed .team-score {
+    -webkit-text-fill-color: #fff;
+    -webkit-background-clip: unset;
+    background: unset;
+}
+
+.teams-row .team-selection .single-bet-place input[type="radio"]:checked + .team-icon,
+.teams-row .team-selection .single-bet-place input[type="radio"]:checked + .team-name,
+.teams-row .team-selection .single-bet-place input[type="radio"]:checked + .team-score {
+    transform: scale(1.05);
+}
+
+.teams-row .team-selection .team-icon img {
+    max-height: 24px;
+    width: auto;
+}
+
+.teams-row .team-selection .team-name {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(144deg, var(--bs-warning) -12%, var(--bs-info) 124%);
+    opacity: 0.8;
+}
+
+.teams-row .team-selection .team-score {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 24px;
+    color: var(--bs-success);
+}
+
+.teams-row .spread-box .bet-ratio {
+    font-family: "Asap", sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 26px;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-image: linear-gradient(144deg, var(--bs-warning) -12%, var(--bs-info) 124%);
+}
+
+/* Under/Over Row */
+.under-over-row .single-bet-place {
+    font-family: "Asap", sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    text-transform: uppercase;
+    padding: 10px 15px;
+    border: 2px solid var(--bs-primary);
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.under-over-row .single-bet-place.under.placed,
+.under-over-row .single-bet-place.over.placed {
+    background: linear-gradient(136deg, var(--bs-primary) -5%, var(--bs-danger) 98%);
+    color: #fff;
+    border-color: transparent;
+}
+
+.under-over-row .single-bet-place.under input[type="radio"]:checked + span,
+.under-over-row .single-bet-place.over input[type="radio"]:checked + span {
+    transform: scale(1.05);
+}
+
+.under-over-row .single-bet-place.draw-box {
+    background: var(--bs-border-color);
+}
+
+@media (max-width: 576px) {
+    .under-over-row .btn-group {
+        flex-direction: column;
+    }
+
+    .under-over-row .single-bet-place {
+        font-size: 13px;
+        line-height: 22px;
+    }
+}
+
+/* Placing Bet Buttons (e.g., for modals or other UI sections) */
 .placing-bet .btn {
-  background-color: #D03355;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin: 5px;
-  transition: background-color 0.3s ease-in-out;
+    font-family: "Asap", sans-serif;
+    background-color: var(--bs-primary);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
 }
 
 .placing-bet .btn:hover {
-  background-color: #FB7A6B;
+    background-color: var(--bs-danger);
 }
 
 .placing-bet .btn.placed {
-  background-color: #4D8E53;
+    background-color: var(--bs-success);
 }
 
-/* Prevent <label> from being clickable when inside a disabled fieldset */
 .placing-bet fieldset:disabled label {
-  pointer-events: none;
-  opacity: 0.6; /* Optional: Make it look visually disabled */
+    pointer-events: none;
+    opacity: 0.6;
 }
 
-/* Grey out <span> text when inside a disabled fieldset */
 .placing-bet fieldset:disabled span {
-  color: gray;
-  opacity: 0.5;
+    color: gray;
+    opacity: 0.5;
 }

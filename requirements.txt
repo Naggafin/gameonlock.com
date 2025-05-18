@@ -4,7 +4,7 @@ django-allauth
 django-celery-beat
 django-auto-prefetch
 django-debug-toolbar
-git+https://github.com/Naggafin/django-fastdev.git
+git+https://github.com/boxed/django-fastdev.git
 django-guardian
 django-htmx
 django-localflavor
@@ -39,6 +39,8 @@ python-dotenv
 python-slugify
 python-telegram-handler
 redis
+requests
+requests-oauthlib
 ruff
 sorl-thumbnail
 uv

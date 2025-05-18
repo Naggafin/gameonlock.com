@@ -50,7 +50,7 @@
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
                             {{ home_page.about_content|safe }}
-                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -90,7 +90,8 @@
              data-aos="fade-up"
              data-aos-delay="150"
              data-aos-duration="500"
-             data-aos-easing="ease-in">
+             data-aos-easing="ease-in"
+             data-overlayscrollbars-initialize>
             <ul class="nav nav-pills" id="sports-tab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active"
@@ -200,7 +201,7 @@
              data-aos-delay="150"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -254,7 +255,7 @@
                                                 <span class="team-name">{{ game.home_team.name }}</span>
                                             </div>
                                             <div class="date-times-vs">
-                                                <span class="time"><i class="fa-regular fa-clock"></i> {{ game.start_datetime|time }}</span>
+                                                <span class="time"><i class="fa-solid fa-clock"></i> {{ game.start_datetime|time }}</span>
                                                 <span class="date">{{ game.start_datetime|naturalday }}</span>
                                                 <img class="versace-icon"
                                                      src="{% static 'peredion/images/sports-schedule/vs.png' %}"
@@ -280,7 +281,8 @@
                                         {% endcomment %}
                                     </div>
                                     <div class="schedue-timer timer"
-                                         data-date="{{ game|game_start_datetime }}">
+                                         x-data="{ days: 0, hours: '00', minutes: '00', seconds: '00', targetDate: '{{ game|game_start_datetime }}', updateCountdown() { const endTime = Date.parse(this.targetDate) / 1000; const now = Date.parse(new Date()) / 1000; const timeLeft = endTime - now; this.days = Math.floor(timeLeft / 86400); this.hours = Math.floor((timeLeft - (this.days * 86400)) / 3600).toString().padStart(2, '0'); this.minutes = Math.floor((timeLeft - (this.days * 86400) - (this.hours * 3600)) / 60).toString().padStart(2, '0'); this.seconds = Math.floor(timeLeft - (this.days * 86400) - (this.hours * 3600) - (this.minutes * 60)).toString().padStart(2, '0'); } }"
+                                         x-init="updateCountdown(); setInterval(() => updateCountdown(), 1000)">
                                         <div class="time-starting-text">
                                             <span class="txt">{% trans 'starting in' %}</span>
                                             <img class="icon"
@@ -290,19 +292,19 @@
                                         </div>
                                         <div class="all-timer-task">
                                             <div class="single-time">
-                                                <span class="number day">01</span>
+                                                <span class="number day" x-text="days"></span>
                                                 <span class="title">{% trans 'Days' %}</span>
                                             </div>
                                             <div class="single-time">
-                                                <span class="number hour">24</span>
+                                                <span class="number hour" x-text="hours"></span>
                                                 <span class="title">{% trans 'Hours' %}</span>
                                             </div>
                                             <div class="single-time">
-                                                <span class="number minute">60</span>
+                                                <span class="number minute" x-text="minutes"></span>
                                                 <span class="title">{% trans 'Minutes' %}</span>
                                             </div>
                                             <div class="single-time">
-                                                <span class="number second">60</span>
+                                                <span class="number second" x-text="seconds"></span>
                                                 <span class="title">{% trans 'Seconds' %}</span>
                                             </div>
                                         </div>
@@ -366,7 +368,7 @@
              data-aos-delay="200"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-duotone fa-arrow-right"></i></a>
+            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-4">{% trans 'see all sports' %} <i class="fa-solid fa-arrow-right"></i></a>
         </div>
     </div>
 </section>
@@ -386,7 +388,7 @@
             </div>
             <div class="col-xl-3 col-lg-3 col-md-5 d-xl-flex d-lg-flex d-md-flex d-block align-items-center">
                 <div class="part-btn">
-                    <a href="#TODO" class="prd-btn-1">{% trans 'How It Works' %} <i class="fa-regular fa-circle-info"></i></a>
+                    <a href="#TODO" class="prd-btn-1">{% trans 'How It Works' %} <i class="fa-solid fa-circle-info"></i></a>
                 </div>
             </div>
         </div>
@@ -728,7 +730,9 @@
 </section>
 {% endpartialdef %}
 {% block banner %}
-    <section class="banner">
+    <section class="banner"
+             x-init="setTimeout(() => {$el.querySelectorAll('.part-img').forEach(el => el.classList.add('animated'))}, 700)"
+             x-data>
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-xxl-2 col-xl-2 col-lg-2 d-xl-flex d-lg-flex d-none align-items-end">
@@ -760,8 +764,8 @@
                              data-aos-delay="350"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-duotone fa-arrow-right"></i></a>
-                            <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-duotone fa-arrow-right"></i></a>
+                            <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-solid fa-arrow-right"></i></a>
+                            <a href="#TODO" class="prd-btn-2">{% trans 'EXPLORE' %} <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -789,12 +793,12 @@
     </section>
     <div class="scroll-down">
         <div class="container">
-            <a href="javascript:void(0);" class="scroll-down-btn">
+            <a href="#aboutUs" class="scroll-down-btn">
                 <span class="straight-line"></span>
                 <span class="arrow-icon">
-                    <i class="fa-light fa-angle-down"></i>
-                    <i class="fa-light fa-angle-down"></i>
-                    <i class="fa-light fa-angle-down"></i>
+                    <i class="fa-solid fa-angle-down"></i>
+                    <i class="fa-solid fa-angle-down"></i>
+                    <i class="fa-solid fa-angle-down"></i>
                 </span>
             </a>
         </div>

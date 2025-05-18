@@ -6,7 +6,7 @@
                     <span class="icon"><i class="{% if forloop.first %}
               fa-solid fa-house
           {% else %}
-              fa-light fa-caret-right fa-xl
+              fa-solid fa-caret-right fa-xl
           {% endif %}"></i></span>
                     <span class="text"
                           {% if forloop.counter == breadcrumbs_total %}aria-current="page"{% endif %}>{{ label|safe }}</span>
@@ -16,7 +16,7 @@
                     <span class="icon"><i class="{% if forloop.first %}
               fa-solid fa-house
           {% else %}
-              fa-light fa-caret-right fa-xl
+              fa-solid fa-caret-right fa-xl
           {% endif %}"></i></span>
                     <a href="{{ url }}" class="text">{{ label|safe }}</a>
                 </li>
