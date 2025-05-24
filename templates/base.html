@@ -52,9 +52,6 @@
                   href="{% static 'css/animate.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
             <link rel="stylesheet"
-                  href="{% static 'css/bootstrap-overrides.css' %}"
-                  nonce="{{ request.csp_nonce }}">
-            <link rel="stylesheet"
                   href="{% static 'css/style.css' %}"
                   nonce="{{ request.csp_nonce }}">
         {% endblock %}
@@ -80,9 +77,7 @@
                  x-data></div>
         {% endblock %}
         {% block header %}
-            {% if request.user.is_authenticated %}
-                {% include 'peredion/elements/bet-slip.html' %}
-            {% endif %}
+            {% include 'peredion/elements/bet-slip.html' %}
             {% include 'peredion/elements/header.html' %}
         {% endblock %}
         <div>

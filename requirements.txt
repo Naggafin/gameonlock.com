@@ -42,6 +42,7 @@ redis
 requests
 requests-oauthlib
 ruff
+slippers
 sorl-thumbnail
 uv
 Whoosh

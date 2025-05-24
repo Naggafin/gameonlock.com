@@ -1,22 +1,25 @@
 {% load static i18n %}
 {% load sportsbetting_tags %}
 <div class="bet-slip" x-data="betSlip" x-init="init()">
-    {% csrf_token %}
     <!-- Header -->
     <button class="bet-slip-header"
-            :class="{ 'collapsed': !isOpen }"
             @click="toggle()"
             type="button"
-            aria-expanded="false"
-            aria-controls="collapseBetSlip">
+            :aria-expanded="isOpen"
+            aria-controls="bet-slip-body">
         <span class="icon"><i class="fa-solid fa-clipboard-list"></i></span>
         <span class="text">{% trans 'Bet Slip' %}</span>
         <span class="slip-quantity-badge" x-text="picks.length"></span>
     </button>
     <!-- Body -->
-    <div class="collapse"
-         id="collapseBetSlip"
+    <div class="bet-slip-body"
          x-show="isOpen"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0 transform translate-y-4"
+         x-transition:enter-end="opacity-100 transform translate-y-0"
+         x-transition:leave="transition ease-in duration-200"
+         x-transition:leave-start="opacity-100 transform translate-y-0"
+         x-transition:leave-end="opacity-0 transform translate-y-4"
          @click.outside="isOpen = false">
         <div class="bet-slip-body">
             <div class="part-slip-header">
@@ -27,7 +30,7 @@
                              alt=""
                              nonce="{{ request.csp_nonce }}">
                         <h4 class="empty-title">{% trans 'Your bet slip is empty!' %}</h4>
-                        <p>{% trans 'Looks like you haven't placed a bet yet.' %}</p>
+                        <p>{% trans "Looks like you haven't placed a bet yet." %}</p>
                     </div>
                     <!-- Success State -->
                     <div class="successfull-card" x-show="submitted" x-transition>
@@ -74,7 +77,7 @@
                         <span class="text">{% trans 'Total stake:' %}</span>
                         <input type="number"
                                x-model="amount"
-                               min="{{ MIN_BET|int }}"
+                               min="{{ MIN_BET.amount|int }}"
                                step="0.01"
                                class="form-control d-inline w-auto">
                     </div>
@@ -84,12 +87,18 @@
                     </div>
                 </div>
                 <div class="calc-finish">
-                    <button class="prd-btn-1 medium"
-                            @click="submitBet()"
-                            :disabled="amount < {{ MIN_BET|int }} || picks.length < 4">
-                        <span x-text="amount < {{ MIN_BET|int }} ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : (picks.length < 4 ? '{% trans "Must place at least 4 bets" %}' : '{% trans "Place Bet" %}')"></span>
-                        <i class="fa-solid fa-arrow-right"></i>
-                    </button>
+                    {% if request.user.is_authenticated %}
+                        <button class="prd-btn-1 medium"
+                                @click="submitBet()"
+                                :disabled="amount < {{ MIN_BET|int }} || picks.length < 4">
+                            <span x-text="amount < {{ MIN_BET|int }} ? '{% trans "Must bet at least" %} {{ MIN_BET }}' : (picks.length < 4 ? '{% trans "Must place at least 4 bets" %}' : '{% trans "Place Bets" %}')"></span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    {% else %}
+                        <a href="{% url 'account_login' %}" class="prd-btn-1 medium">
+                            {% trans 'Log In To Place Bets' %} <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    {% endif %}
                     <button class="calc-dlt" @click="clearSlip()">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
@@ -99,114 +108,225 @@
     </div>
 </div>
 <script nonce="{{ request.csp_nonce }}">
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('betSlip', () => ({
-            isOpen: false,
-            picks: [],
-            amount: {{ MIN_BET|int }},
-            submitted: false,
+document.addEventListener('alpine:init', () => {
+    // Constants for configuration
+    const CONFIG = {
+        MIN_BET: {{ MIN_BET.amount|int }},
+        BASE_BET_STAKES: {{ BASE_BET_STAKES }},
+        MIN_NUM_BETS: {{ MIN_NUM_BETS }},
+        BET_STEP: {{ BET_STEP }},
+        BET_MULTIPLIER: {{ BET_MULTIPLIER }},
+        LOGIN_URL: '{% url "account_login" %}',
+        SUBMIT_URL: '{% url "sportsbetting:play_create" %}',
+        CSRF_TOKEN: '{{ csrf_token }}'
+    };
 
-            init() {
-                this.loadSlip();
-                window.addEventListener('betslip-updated', () => this.loadSlip());
-            },
+    // Register betSlip store
+    Alpine.store('betSlip', {
+        /**
+         * Adds a pick to the bet slip, updating or appending it in localStorage.
+         * @param {string} bettingLine - Unique betting line ID
+         * @param {string} type - Pick type ('sp' or 'uo')
+         * @param {string|null} team - Team PK for spread bets
+         * @param {boolean|null} isOver - Over/under flag
+         * @param {Object} gameData - Game metadata
+         */
+        addPick(bettingLine, type, team, isOver, gameData) {
+            if (!bettingLine || !type || !gameData) {
+                console.error('Invalid pick data:', { bettingLine, type, gameData });
+                return;
+            }
 
-            toggle() {
-                this.isOpen = !this.isOpen;
-            },
+            const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":' + CONFIG.MIN_BET + '}');
+            const pick = {
+                betting_line: bettingLine,
+                type,
+                team: team || null,
+                is_over: isOver ?? null,
+                game: gameData.game || null,
+                game_data: gameData
+            };
 
-            loadSlip() {
+            const existingIndex = slip.picks.findIndex(p => p.betting_line === bettingLine && p.type === type);
+            if (existingIndex !== -1) {
+                slip.picks[existingIndex] = pick;
+            } else {
+                slip.picks.push(pick);
+            }
+
+            localStorage.setItem('betslip', JSON.stringify(slip));
+            window.dispatchEvent(new Event('betslip-updated'));
+        },
+
+        /**
+         * Removes a pick from the bet slip by betting line ID.
+         * @param {string} bettingLine - Unique betting line ID
+         * @param {string} type - Pick type ('sp' or 'uo')
+         */
+        removePick(bettingLine, type) {
+            if (!bettingLine || !type) return;
+
+            const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":' + CONFIG.MIN_BET + '}');
+            slip.picks = slip.picks.filter(p => p.betting_line !== bettingLine && p.type !== type);
+            localStorage.setItem('betslip', JSON.stringify(slip));
+            window.dispatchEvent(new Event('betslip-updated'));
+        }
+    });
+
+    // Register betSlip component
+    Alpine.data('betSlip', () => ({
+        isOpen: false,
+        picks: [],
+        amount: CONFIG.MIN_BET,
+        submitted: false,
+        isAuthenticated: {{ request.user.is_authenticated|lower }},
+
+        /**
+         * Initializes the bet slip by loading from localStorage and setting up listeners.
+         */
+        init() {
+        	console.debug('BetSlip initialized');
+            this.loadSlip();
+            window.addEventListener('betslip-updated', () => this.loadSlip());
+        },
+
+        /**
+         * Toggles the bet slip visibility.
+         */
+        toggle() {
+            this.isOpen = !this.isOpen;
+        },
+
+        /**
+         * Loads the bet slip from localStorage, ensuring defaults.
+         */
+        loadSlip() {
+            try {
                 const slip = localStorage.getItem('betslip');
                 if (slip) {
                     const data = JSON.parse(slip);
-                    this.picks = data.picks.map(pick => ({
+                    this.picks = (data.picks || []).map(pick => ({
                         ...pick,
-                        game_data: pick.game_data || {} // Ensure game_data exists for display
+                        game_data: pick.game_data || {}
                     }));
-                    this.amount = data.amount || {{ MIN_BET|int }};
+                    this.amount = data.amount || CONFIG.MIN_BET;
                 }
-                this.submitted = false;
-            },
+            } catch (error) {
+                console.error('Failed to load bet slip:', error);
+                this.picks = [];
+                this.amount = CONFIG.MIN_BET;
+            }
+            this.submitted = false;
+        },
 
-            saveSlip() {
-                localStorage.setItem('betslip', JSON.stringify({
-                    picks: this.picks,
-                    amount: this.amount
-                }));
-                window.dispatchEvent(new Event('betslip-updated'));
-            },
+        /**
+         * Saves the current bet slip to localStorage.
+         */
+        saveSlip() {
+            localStorage.setItem('betslip', JSON.stringify({
+                picks: this.picks,
+                amount: this.amount
+            }));
+            window.dispatchEvent(new Event('betslip-updated'));
+        },
 
-            removePick(index) {
+        /**
+         * Removes a pick by index.
+         * @param {number} index - Index of the pick to remove
+         */
+        removePick(index) {
+            if (index >= 0 && index < this.picks.length) {
                 this.picks.splice(index, 1);
                 this.saveSlip();
-            },
-
-            clearSlip() {
-                this.picks = [];
-                this.amount = {{ MIN_BET|int }};
-                this.submitted = false;
-                localStorage.removeItem('betslip');
-                window.dispatchEvent(new Event('betslip-updated'));
-            },
-
-            displayPick(pick) {
-                if (pick.type === 'sp') {
-                    return pick.game_data[pick.team === pick.game_data.away_team_pk ? 'away_team' : 'home_team'];
-                } else if (pick.type === 'uo') {
-                    return pick.is_over ? `{% trans 'Over' %} ${pick.game_data.over}` : `{% trans 'Under' %} ${pick.game_data.under}`;
-                }
-            },
-
-            calculateReturn() {
-                return Math.max(
-                    this.amount * Math.floor(
-                        {{ BASE_BET_STAKES }} +
-                        ((this.picks.length - {{ MIN_NUM_BETS }}) / {{ BET_STEP }}) *
-                        {{ BET_MULTIPLIER }}
-                    ),
-                    0).toFixed(2);
-            },
-
-            async submitBet() {
-                const formData = new FormData();
-                formData.append('amount', this.amount);
-                this.picks.forEach((pick, index) => {
-                    formData.append(`form-${index}-betting_line`, pick.betting_line);
-                    formData.append(`form-${index}-type`, pick.type);
-                    if (pick.type === 'sp') formData.append(`form-${index}-team`, pick.team);
-                    if (pick.type === 'uo') formData.append(`form-${index}-is_over`, pick.is_over);
-                });
-                formData.append('form-TOTAL_FORMS', this.picks.length);
-                formData.append('form-INITIAL_FORMS', 0);
-                formData.append('form-MIN_NUM_FORMS', 0);
-                formData.append('form-MAX_NUM_FORMS', 1000);
-
-                try {
-                    const response = await fetch("{% url 'sportsbetting:play_create_update' %}", {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-                            'X-Requested-With': 'XMLHttpRequest'
-                        }
-                    });
-
-                    if (response.ok) {
-                        this.submitted = true; // Show success message
-                        setTimeout(() => {
-                            this.clearSlip(); // Clear slip after 2 seconds
-                        }, 2000);
-                    } else {
-                        console.error('Submission failed:', response.statusText);
-                        window.alert("{% trans 'There was an error submitting your bet.' %}");
-                        this.submitted = false; // Reset on failure
-                    }
-                } catch (error) {
-                    console.error('Error submitting bet:', error);
-                    window.alert("{% trans 'There was an error submitting your bet.' %}");
-                    this.submitted = false; // Reset on error
-                }
             }
-        }));
-    });
+        },
+
+        /**
+         * Clears the bet slip and resets state.
+         */
+        clearSlip() {
+            this.picks = [];
+            this.amount = CONFIG.MIN_BET;
+            this.submitted = false;
+            localStorage.removeItem('betslip');
+            window.dispatchEvent(new Event('betslip-updated'));
+        },
+
+        /**
+         * Formats a pick for display.
+         * @param {Object} pick - Pick data
+         * @returns {string} Display text
+         */
+        displayPick(pick) {
+            if (!pick || !pick.game_data) return '';
+            if (pick.type === 'sp' && pick.team) {
+                return pick.game_data[pick.team === pick.game_data.away_team_pk ? 'away_team' : 'home_team'] || '';
+            } else if (pick.type === 'uo') {
+                return pick.is_over ? `{% trans 'Over' %} ${pick.game_data.over || ''}` : `{% trans 'Under' %} ${pick.game_data.under || ''}`;
+            }
+            return '';
+        },
+
+        /**
+         * Calculates the estimated return based on stake and picks.
+         * @returns {string} Formatted return
+         */
+        calculateReturn() {
+            const multiplier = Math.floor(CONFIG.BASE_BET_STAKES +
+                ((this.picks.length - CONFIG.MIN_NUM_BETS) / CONFIG.BET_STEP) * CONFIG.BET_MULTIPLIER);
+            return Math.max(this.amount * multiplier, 0).toFixed(2);
+        },
+
+        /**
+         * Submits the bet slip to the server.
+         */
+        async submitBet() {
+            if (!this.isAuthenticated) {
+                window.location.href = CONFIG.LOGIN_URL;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('amount', this.amount);
+            this.picks.forEach((pick, index) => {
+                formData.append(`form-${index}-betting_line`, pick.betting_line);
+                formData.append(`form-${index}-type`, pick.type);
+                if (pick.type === 'sp' && pick.team) {
+                    formData.append(`form-${index}-team`, pick.team);
+                }
+                if (pick.type === 'uo') {
+                    formData.append(`form-${index}-is_over`, pick.is_over);
+                }
+            });
+            formData.append('form-TOTAL_FORMS', this.picks.length);
+            formData.append('form-INITIAL_FORMS', 0);
+            formData.append('form-MIN_NUM_FORMS', 0);
+            formData.append('form-MAX_NUM_FORMS', 1000);
+
+            try {
+                const response = await fetch(CONFIG.SUBMIT_URL, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': CONFIG.CSRF_TOKEN,
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (response.ok) {
+                    this.submitted = true;
+                    setTimeout(() => this.clearSlip(), 2000);
+                } else {
+                    console.error('Submission failed:', response.statusText);
+                    window.alert("{% trans 'There was an error submitting your bet.' %}");
+                    this.submitted = false;
+                }
+            } catch (error) {
+                console.error('Error submitting bet:', error);
+                window.alert("{% trans 'There was an error submitting your bet.' %}");
+                this.submitted = false;
+            }
+        }
+    }));
+});
 </script>

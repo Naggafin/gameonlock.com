@@ -8,13 +8,6 @@ register = template.Library()
 
 
 @register.filter
-def game_start_datetime(game):
-	format = "%d %b %Y %I:%M:%S %Z%z"
-	dt = game.start_datetime
-	return dt.strftime(format)
-
-
-@register.filter
 def get_pending_games(queryset):
 	now = timezone.now()
 	games = [game for game in queryset if game.start_datetime > now]
