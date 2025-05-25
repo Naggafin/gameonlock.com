@@ -15,50 +15,63 @@ INTERNAL_IPS = ["*", "127.0.0.1", "localhost"]
 INSTALLED_APPS.append("django_fastdev")  # noqa: F405
 
 
+# Remove Silk from dev/test environment to avoid test errors
+if "test" in sys.argv:
+    try:
+        INSTALLED_APPS.remove("silk")
+    except (ValueError, NameError):
+        pass
+    try:
+        MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")
+    except (ValueError, NameError):
+        pass
+
+
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 if "test" not in sys.argv and os.environ.get("DB_HOST"):
-	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.postgresql",
-			"NAME": os.environ.get("DB_NAME"),
-			"USER": os.environ.get("DB_USER"),
-			"PASSWORD": os.environ.get("DB_PASSWORD"),
-			"HOST": os.environ.get("DB_HOST"),
-			"PORT": os.environ.get("DB_PORT"),
-			"ATOMIC_REQUESTS": True,
-		},
-	}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("DB_NAME"),
+            "USER": os.environ.get("DB_USER"),
+            "PASSWORD": os.environ.get("DB_PASSWORD"),
+            "HOST": os.environ.get("DB_HOST"),
+            "PORT": os.environ.get("DB_PORT"),
+            "ATOMIC_REQUESTS": True,
+        },
+    }
 elif "test" in sys.argv and os.environ.get("TEST_DB_HOST"):
-	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.postgresql",
-			"NAME": os.environ.get("TEST_DB_NAME"),
-			"USER": os.environ.get("TEST_DB_USER"),
-			"PASSWORD": os.environ.get("TEST_DB_PASSWORD"),
-			"HOST": os.environ.get("TEST_DB_HOST"),
-			"PORT": os.environ.get("TEST_DB_PORT"),
-			"ATOMIC_REQUESTS": True,
-		},
-	}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.environ.get("TEST_DB_NAME"),
+            "USER": os.environ.get("TEST_DB_USER"),
+            "PASSWORD": os.environ.get("TEST_DB_PASSWORD"),
+            "HOST": os.environ.get("TEST_DB_HOST"),
+            "PORT": os.environ.get("TEST_DB_PORT"),
+            "ATOMIC_REQUESTS": True,
+        },
+    }
 else:
-	DATABASES = {
-		"default": {
-			"ENGINE": "django.db.backends.sqlite3",
-			"NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
-			"ATOMIC_REQUESTS": True,
-		},
-	}
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",  # noqa: F405
+            "ATOMIC_REQUESTS": True,
+        },
+    }
 
 
 # Cache
 # https://docs.djangoproject.com/en/5.0/topics/cache
 
 CACHES = {
-	"default": {
-		"BACKEND": "django.core.cache.backends.locmem.LocMemCache",
-	},
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    },
 }
 
 
@@ -80,26 +93,26 @@ WAGTAILADMIN_BASE_URL = OSCAR_URL_SCHEMA + "://www.gameonlock.com"
 
 
 HAYSTACK_CONNECTIONS = {
-	"default": {
-		"ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
-		"PATH": BASE_DIR / "whoosh_index",  # noqa: F405
-		"EXCLUDED_INDEXES": [
-			"oscar.apps.search.search_indexes.ProductIndex",
-			"oscar_apps.search.search_indexes.CoreProductIndex",
-		],
-	},
+    "default": {
+        "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+        "PATH": BASE_DIR / "whoosh_index",  # noqa: F405
+        "EXCLUDED_INDEXES": [
+            "oscar.apps.search.search_indexes.ProductIndex",
+            "oscar_apps.search.search_indexes.CoreProductIndex",
+        ],
+    },
 }
 
 
 # Debug Toolbar settings
 INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
 try:
-	index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
+    index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
 except ValueError:
-	index = 0
+    index = 0
 MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
 DEBUG_TOOLBAR_CONFIG = {
-	"SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
+    "SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
 }
 
 
@@ -110,8 +123,8 @@ NPLUSONE_LOGGER = logging.getLogger("nplusone")
 NPLUSONE_LOG_LEVEL = logging.WARN
 NPLUSONE_RAISE = False
 LOGGING["loggers"]["nplusone"] = {  # noqa: F405
-	"handlers": ["console"],
-	"level": logging.WARN,
+    "handlers": ["console"],
+    "level": logging.WARN,
 }
 
 

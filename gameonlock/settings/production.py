@@ -14,15 +14,15 @@ ALLOWED_HOSTS = []
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-	"default": {
-		"ENGINE": "django.db.backends.postgresql",
-		"NAME": os.environ.get("DB_NAME"),
-		"USER": os.environ.get("DB_USER"),
-		"PASSWORD": os.environ.get("DB_PASSWORD"),
-		"HOST": os.environ.get("DB_HOST"),
-		"PORT": os.environ.get("DB_PORT"),
-		"ATOMIC_REQUESTS": True,
-	},
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get("DB_NAME"),
+        "USER": os.environ.get("DB_USER"),
+        "PASSWORD": os.environ.get("DB_PASSWORD"),
+        "HOST": os.environ.get("DB_HOST"),
+        "PORT": os.environ.get("DB_PORT"),
+        "ATOMIC_REQUESTS": True,
+    },
 }
 
 
@@ -30,14 +30,14 @@ DATABASES = {
 # https://docs.djangoproject.com/en/5.0/topics/cache
 
 CACHES = {
-	"default": {
-		"BACKEND": "django_redis.cache.RedisCache",
-		"LOCATION": os.environ.get("REDIS_URL"),
-		"OPTIONS": {
-			"CLIENT_CLASS": "django_redis.client.DefaultClient",
-			"PARSER_CLASS": "redis.connection._HiredisParser",
-		},
-	},
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": os.environ.get("REDIS_URL"),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "PARSER_CLASS": "redis.connection._HiredisParser",
+        },
+    },
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
@@ -70,11 +70,11 @@ WAGTAILADMIN_BASE_URL = OSCAR_URL_SCHEMA + "://www.gameonlock.com"
 
 
 HAYSTACK_CONNECTIONS = {
-	"default": {
-		"ENGINE": "haystack.backends.solr_backend.SolrEngine",
-		"URL": os.getenv("SOLR_URL"),
-		"INCLUDE_SPELLING": True,
-	},
+    "default": {
+        "ENGINE": "haystack.backends.solr_backend.SolrEngine",
+        "URL": os.getenv("SOLR_URL"),
+        "INCLUDE_SPELLING": True,
+    },
 }
 
 # django-allauth
