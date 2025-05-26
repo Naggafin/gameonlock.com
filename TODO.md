@@ -10,7 +10,7 @@
 - **Bet Slip & Betting Logic**
   - Fix AlpineJS undefined picks error and ensure localStorage sync. [Implemented]
   - Correct pick removal logic and prevent duplicate picks. [Implemented]
-  - Validate bet submission (min 4 picks, no duplicates, min stake). [In Progress]
+  - Validate bet submission (min 4 picks, no duplicates, min stake). [Implemented]
   - Persist bet slip for unauthenticated users and restore on login. [Implemented]
   - Remove duplicate markup and optimize transitions in bet-slip.html.
 
