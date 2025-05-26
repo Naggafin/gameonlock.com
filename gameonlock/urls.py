@@ -49,7 +49,10 @@ urlpatterns = [
     path("i18n/set_language/", set_language, name="set_language"),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
+    # PayPal and payment URLs
+    path("payment/", include("golpayment.urls")),
 ] + internatonalized_patterns
+
 
 if not settings.DEBUG and "silk" in settings.INSTALLED_APPS:
     urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))

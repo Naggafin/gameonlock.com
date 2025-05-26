@@ -1,0 +1,543 @@
+/workspace/gameonlock.com
+├── .env_example
+├── .github
+│   └── workflows
+│       └── ci.yml
+├── .gitignore
+├── .ruff_cache
+│   ├── .gitignore
+│   ├── 0.11.11
+│   │   ├── 10042220137660436354
+│   │   ├── 11233151841279774636
+│   │   ├── 15677470535717273979
+│   │   ├── 16987678427815326310
+│   │   ├── 17334684139135313570
+│   │   ├── 18289105067143626947
+│   │   ├── 5196398874634557823
+│   │   └── 8017082087277767388
+│   └── CACHEDIR.TAG
+├── .vscode
+│   └── settings.json
+├── 0002_populate_sports_and_bodies.py.bak
+├── README.md
+├── TODO.md
+├── directory_structure.txt
+├── django.log
+├── gameonlock
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── celery.py
+│   ├── context.py
+│   ├── forms.py
+│   ├── middleware.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_alter_user_date_of_birth_alter_user_state.py
+│   │   ├── 0003_alter_user_alternate_email_address_and_more.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── pages.py
+│   ├── settings
+│   │   ├── __init__.py
+│   │   ├── base.py
+│   │   ├── dev.py
+│   │   └── production.py
+│   ├── urls.py
+│   ├── views.py
+│   └── wsgi.py
+├── gameonlock.com
+├── manage.py
+├── pyproject.toml
+├── requirements.txt
+├── result.log
+├── setup.cfg
+├── specifications.md
+├── sportsbetting
+│   ├── admin
+│   │   ├── __init__.py
+│   │   ├── forms.py
+│   │   ├── resources.py
+│   │   └── views.py
+│   ├── apps.py
+│   ├── forms.py
+│   ├── management
+│   │   ├── __init__.py
+│   │   └── commands
+│   │       ├── __init__.py
+│   │       └── generate_sportsbetting_fixtures.py
+│   ├── migrations
+│   │   ├── 0001_initial.py
+│   │   ├── 0002_populate_sports_and_bodies.py
+│   │   └── __init__.py
+│   ├── models.py
+│   ├── munger.py
+│   ├── signals.py
+│   ├── tasks.py
+│   ├── templatetags
+│   │   ├── __init__.py
+│   │   └── sportsbetting_tags.py
+│   ├── urls.py
+│   ├── util.py
+│   └── views.py
+├── static
+│   ├── aos
+│   │   ├── css
+│   │   │   └── aos.css
+│   │   └── js
+│   │       └── aos.js
+│   ├── bootstrap
+│   │   ├── css
+│   │   │   └── bootstrap.min.css
+│   │   └── js
+│   │       └── bootstrap.bundle.min.js
+│   ├── css
+│   │   ├── animate.min.css
+│   │   ├── bootstrap-overrides.css
+│   │   └── style.css
+│   ├── flatpickr
+│   │   ├── css
+│   │   │   └── flatpickr.min.css
+│   │   └── js
+│   │       └── flatpickr.js
+│   ├── fontawesome
+│   │   ├── css
+│   │   │   ├── brands.min.css
+│   │   │   ├── fontawesome.min.css
+│   │   │   └── solid.min.css
+│   │   └── webfonts
+│   │       ├── fa-brands-400.ttf
+│   │       ├── fa-brands-400.woff2
+│   │       ├── fa-solid-900.ttf
+│   │       └── fa-solid-900.woff2
+│   ├── images
+│   │   ├── favicon.ico
+│   │   └── site-logo.jpg
+│   ├── js
+│   │   ├── alpine.js
+│   │   ├── alpine.min.js
+│   │   ├── eruda-code.js
+│   │   ├── eruda.js
+│   │   ├── htmx.js
+│   │   ├── htmx.min.js
+│   │   └── main.js
+│   ├── overlayscrollbars
+│   │   ├── css
+│   │   │   └── overlayscrollbars.min.css
+│   │   └── js
+│   │       └── overlayscrollbars.browser.es6.min.js
+│   └── peredion
+│       ├── css
+│       │   ├── OverlayScrollbars.min.css
+│       │   ├── all.min.css
+│       │   ├── animate.css
+│       │   ├── animate.min.css
+│       │   ├── aos.css
+│       │   ├── bootstrap.min.css
+│       │   ├── gemini-scrollbar.css
+│       │   ├── modal-video.min.css
+│       │   ├── odometer.min.css
+│       │   ├── owl.carousel.min.css
+│       │   ├── style.css
+│       │   └── style.css.map
+│       ├── date-p
+│       │   ├── mc-calendar.min.css
+│       │   └── mc-calendar.min.js
+│       ├── images
+│       │   ├── about
+│       │   │   ├── about-img-shape.png
+│       │   │   ├── about-img.png
+│       │   │   ├── icon-1.png
+│       │   │   ├── icon-2.png
+│       │   │   ├── icon-3.png
+│       │   │   └── list-icon.png
+│       │   ├── activity
+│       │   │   ├── flag-1.png
+│       │   │   ├── flag-2.png
+│       │   │   ├── flag-3.png
+│       │   │   ├── flag-4.png
+│       │   │   ├── flag-5.png
+│       │   │   └── flag-6.png
+│       │   ├── affiliate
+│       │   │   ├── affiliate-img.png
+│       │   │   ├── icon
+│       │   │   │   ├── arrow-2.png
+│       │   │   │   ├── arrow.png
+│       │   │   │   ├── icon-1.png
+│       │   │   │   ├── icon-2.png
+│       │   │   │   ├── icon-3.png
+│       │   │   │   ├── icon-4.png
+│       │   │   │   └── icon-5.png
+│       │   │   ├── reffer-bg.jpg
+│       │   │   └── reffer-img.png
+│       │   ├── authority
+│       │   │   ├── member-pic-1.png
+│       │   │   ├── member-pic-2.png
+│       │   │   ├── member-pic-3.png
+│       │   │   ├── member-pic-4.png
+│       │   │   ├── rank-pic-1.png
+│       │   │   ├── rank-pic-2.png
+│       │   │   ├── rank-pic-3.png
+│       │   │   ├── rank-pic-4.png
+│       │   │   ├── rank-pic-5.png
+│       │   │   ├── rank-pic-6.png
+│       │   │   ├── rank-pic-7.png
+│       │   │   ├── rank-pic-8.png
+│       │   │   ├── shape-1.png
+│       │   │   ├── shape-2.png
+│       │   │   └── shape-3.png
+│       │   ├── banner
+│       │   │   ├── banner-bg-2.jpg
+│       │   │   ├── banner-bg-3.jpg
+│       │   │   ├── banner-bg-4.jpg
+│       │   │   ├── banner-bg-5.jpg
+│       │   │   ├── banner-bg.png
+│       │   │   ├── banner-img-1.png
+│       │   │   ├── banner-img-10.png
+│       │   │   ├── banner-img-11.png
+│       │   │   ├── banner-img-12.png
+│       │   │   ├── banner-img-13.png
+│       │   │   ├── banner-img-14.png
+│       │   │   ├── banner-img-15.png
+│       │   │   ├── banner-img-16.png
+│       │   │   ├── banner-img-2.png
+│       │   │   ├── banner-img-3.png
+│       │   │   ├── banner-img-4.png
+│       │   │   ├── banner-img-5.png
+│       │   │   ├── banner-img-6.png
+│       │   │   ├── banner-img-7.png
+│       │   │   ├── banner-img-8.png
+│       │   │   ├── banner-img-9.png
+│       │   │   ├── img-shape-1.png
+│       │   │   ├── img-shape-2.png
+│       │   │   ├── img-shape-3.png
+│       │   │   ├── img-shape-4.png
+│       │   │   ├── img-shape-5.png
+│       │   │   ├── img-shape-6.png
+│       │   │   ├── img-shape-7.png
+│       │   │   ├── slide-img-1.jpg
+│       │   │   ├── slide-img-2.jpg
+│       │   │   ├── slide-img-3.jpg
+│       │   │   ├── slide-nxt-img-1.jpg
+│       │   │   ├── slide-nxt-img-2.jpg
+│       │   │   └── slide-nxt-img-3.jpg
+│       │   ├── blog
+│       │   │   ├── blog-details-user-1.jpg
+│       │   │   ├── blog-details.jpg
+│       │   │   ├── blog-post-1.jpg
+│       │   │   ├── blog-post-2.jpg
+│       │   │   ├── blog-post-3.jpg
+│       │   │   ├── blog-post-4.jpg
+│       │   │   ├── blog-post-5.jpg
+│       │   │   ├── blog-post-6.jpg
+│       │   │   ├── comment-submit-btn.png
+│       │   │   ├── comment-user-1.jpg
+│       │   │   ├── comment-user-2.jpg
+│       │   │   ├── random-user.png
+│       │   │   ├── recent-post-1.jpg
+│       │   │   ├── recent-post-2.jpg
+│       │   │   ├── sidebar-title-bg.png
+│       │   │   ├── user-1.jpg
+│       │   │   ├── user-2.jpg
+│       │   │   ├── user-3.jpg
+│       │   │   ├── user-4.jpg
+│       │   │   ├── user-5.jpg
+│       │   │   └── user-6.jpg
+│       │   ├── breadcrumb
+│       │   │   ├── bg-shadow.png
+│       │   │   ├── brd-img-1.png
+│       │   │   ├── brd-img-2.png
+│       │   │   ├── breadcrumb-bg.png
+│       │   │   └── line.png
+│       │   ├── contact
+│       │   │   ├── address-shape-bg.png
+│       │   │   ├── contact-img.png
+│       │   │   └── title-shape.png
+│       │   ├── cta
+│       │   │   └── cta-bg.png
+│       │   ├── error
+│       │   │   ├── error-image.png
+│       │   │   └── vector.png
+│       │   ├── faq
+│       │   │   ├── img-1.png
+│       │   │   ├── img-2.png
+│       │   │   ├── img-3.png
+│       │   │   ├── shape-2.png
+│       │   │   ├── shape.png
+│       │   │   ├── signature.png
+│       │   │   └── support-man.png
+│       │   ├── feature
+│       │   │   ├── feature-bg.png
+│       │   │   ├── feature-img.png
+│       │   │   ├── icon-1.png
+│       │   │   ├── icon-2.png
+│       │   │   ├── icon-3.png
+│       │   │   ├── icon-4.png
+│       │   │   ├── icon-5.png
+│       │   │   └── icon-6.png
+│       │   ├── flags
+│       │   │   ├── brazil.png
+│       │   │   ├── nigeria.png
+│       │   │   ├── switzerland.png
+│       │   │   ├── united-kingdom.png
+│       │   │   └── united-states.png
+│       │   ├── footer
+│       │   │   └── footer-bg.jpg
+│       │   ├── get-live
+│       │   │   └── img-1.png
+│       │   ├── icon
+│       │   │   ├── icon-1.png
+│       │   │   ├── icon-2.png
+│       │   │   ├── long-arrow.png
+│       │   │   ├── nav-btn-open.png
+│       │   │   ├── nav-btn.png
+│       │   │   ├── play-video-btn.png
+│       │   │   ├── section-title-2.png
+│       │   │   └── section-title.png
+│       │   ├── logo
+│       │   │   ├── logo-1.png
+│       │   │   ├── logo-2.png
+│       │   │   └── mobile-logo.png
+│       │   ├── match-details
+│       │   │   ├── icon-bg.png
+│       │   │   ├── team-1.png
+│       │   │   ├── team-2.png
+│       │   │   └── vs.png
+│       │   ├── newsletter
+│       │   │   ├── newsletter-img-bg.png
+│       │   │   └── newsletter-img.png
+│       │   ├── playing-bet
+│       │   │   ├── basket-bg.png
+│       │   │   ├── bet-slip
+│       │   │   │   ├── bs-card-bg.png
+│       │   │   │   ├── empty-card-bg.png
+│       │   │   │   ├── empty-icon.png
+│       │   │   │   ├── live-icon.png
+│       │   │   │   ├── radio-2.svg
+│       │   │   │   ├── radio.svg
+│       │   │   │   ├── sports-icon.png
+│       │   │   │   └── success-icon.png
+│       │   │   ├── football-bg.png
+│       │   │   ├── icon
+│       │   │   │   ├── baseball.png
+│       │   │   │   ├── basketball.png
+│       │   │   │   ├── football.png
+│       │   │   │   ├── hockey.png
+│       │   │   │   ├── modal-vs.png
+│       │   │   │   ├── shuttlecock.png
+│       │   │   │   ├── soccer.png
+│       │   │   │   ├── tennis.png
+│       │   │   │   └── volleyball.png
+│       │   │   ├── lock-icon.png
+│       │   │   ├── modal
+│       │   │   │   ├── selected-match-bg.jpg
+│       │   │   │   └── team-logo-bg.png
+│       │   │   ├── shape
+│       │   │   │   ├── down-placed.png
+│       │   │   │   ├── down.png
+│       │   │   │   ├── line-shape-1.png
+│       │   │   │   ├── up-placed.png
+│       │   │   │   └── up.png
+│       │   │   ├── soccer-bg.png
+│       │   │   ├── sports-icon
+│       │   │   │   ├── all-sports.png
+│       │   │   │   ├── badminton.png
+│       │   │   │   ├── baseball.png
+│       │   │   │   ├── basketball.png
+│       │   │   │   ├── football.png
+│       │   │   │   ├── hockey.png
+│       │   │   │   ├── soccer.png
+│       │   │   │   ├── tennis.png
+│       │   │   │   └── volleyball.png
+│       │   │   ├── team-icon
+│       │   │   │   ├── team-1.png
+│       │   │   │   ├── team-2.png
+│       │   │   │   ├── team-3.png
+│       │   │   │   ├── team-4.png
+│       │   │   │   ├── team-5.png
+│       │   │   │   └── team-6.png
+│       │   │   └── tennis-bg.png
+│       │   ├── preloader
+│       │   │   ├── preload-1.gif
+│       │   │   ├── preload-2.gif
+│       │   │   ├── preload-3.gif
+│       │   │   ├── preload-4.gif
+│       │   │   └── preload-5.gif
+│       │   ├── promotion
+│       │   │   ├── black-friday.png
+│       │   │   ├── cashback.png
+│       │   │   ├── get20.png
+│       │   │   ├── promotion-details-img.jpg
+│       │   │   ├── promotion-img-1.jpg
+│       │   │   ├── promotion-img-2.jpg
+│       │   │   ├── promotion-img-3.jpg
+│       │   │   ├── promotion-img-4.jpg
+│       │   │   ├── promotion-img-5.jpg
+│       │   │   ├── promotion-img-6.jpg
+│       │   │   └── promotion-img-7.jpg
+│       │   ├── register
+│       │   │   ├── arrow-1.png
+│       │   │   ├── arrow-2.png
+│       │   │   ├── step-1.png
+│       │   │   ├── step-2.png
+│       │   │   ├── step-3.png
+│       │   │   └── step-4.png
+│       │   ├── shapes
+│       │   │   ├── shape-1.png
+│       │   │   └── sweet-red.png
+│       │   ├── sign-in
+│       │   │   └── sign-in-img.png
+│       │   ├── sports-schedule
+│       │   │   ├── team-icon
+│       │   │   │   ├── icon-1.png
+│       │   │   │   ├── icon-2.png
+│       │   │   │   ├── icon-3.png
+│       │   │   │   ├── icon-5.png
+│       │   │   │   ├── icon-6.png
+│       │   │   │   └── icon-7.png
+│       │   │   ├── team-icon-bg.png
+│       │   │   ├── vector-line.png
+│       │   │   ├── vs-sm.png
+│       │   │   └── vs.png
+│       │   ├── testimonial
+│       │   │   ├── border.png
+│       │   │   ├── left-arrow.png
+│       │   │   ├── quot-icon-1.png
+│       │   │   ├── quot-icon-2.png
+│       │   │   ├── right-arrow.png
+│       │   │   ├── shape-1.png
+│       │   │   ├── user-1.jpg
+│       │   │   ├── user-1.png
+│       │   │   ├── user-2.png
+│       │   │   └── user-3.png
+│       │   └── working-process
+│       │       ├── icon-1.png
+│       │       ├── icon-2.png
+│       │       ├── icon-3.png
+│       │       ├── icon-4.png
+│       │       ├── icon-shape.png
+│       │       └── step-arrow.png
+│       ├── js
+│       │   ├── aos.js
+│       │   ├── bootstrap.bundle.min.js
+│       │   ├── circle-progress.js
+│       │   ├── clock.min.js
+│       │   ├── imagesloaded.pkgd.min.js
+│       │   ├── jquery-3.6.0.min.js
+│       │   ├── jquery.appear.min.js
+│       │   ├── jquery.overlayScrollbars.min.js
+│       │   ├── main.js
+│       │   ├── modal-video.min.js
+│       │   ├── odometer.min.js
+│       │   ├── owl.carousel.min.js
+│       │   ├── placing-bet.js
+│       │   ├── progress-circle-init.js
+│       │   └── register.js
+│       ├── scss
+│       │   ├── inner_pages_section
+│       │   │   ├── _affiliate-percentage.scss
+│       │   │   ├── _authority.scss
+│       │   │   ├── _bettor-ranking.scss
+│       │   │   ├── _blog-details.scss
+│       │   │   ├── _blog.scss
+│       │   │   ├── _breadcrumb.scss
+│       │   │   ├── _contact.scss
+│       │   │   ├── _error.scss
+│       │   │   ├── _faq.scss
+│       │   │   ├── _match-details.scss
+│       │   │   ├── _newsletter.scss
+│       │   │   ├── _promotion.scss
+│       │   │   ├── _sign-in.scss
+│       │   │   └── _sign-up.scss
+│       │   ├── main
+│       │   │   ├── _animation.scss
+│       │   │   ├── _breakpoints.scss
+│       │   │   ├── _glitch.scss
+│       │   │   ├── _global.scss
+│       │   │   ├── _mixins.scss
+│       │   │   ├── _normalize.scss
+│       │   │   ├── _shapes.scss
+│       │   │   └── _variables.scss
+│       │   ├── sections
+│       │   │   ├── _about.scss
+│       │   │   ├── _banner.scss
+│       │   │   ├── _bet-slip.scss
+│       │   │   ├── _call-to-action.scss
+│       │   │   ├── _feature.scss
+│       │   │   ├── _footer.scss
+│       │   │   ├── _get-live.scss
+│       │   │   ├── _header.scss
+│       │   │   ├── _mobile-navigation.scss
+│       │   │   ├── _playing-bet.scss
+│       │   │   ├── _sports-schedule.scss
+│       │   │   ├── _testimonial.scss
+│       │   │   └── _working-process.scss
+│       │   └── style.scss
+│       └── webfonts
+│           ├── fa-brands-400.ttf
+│           ├── fa-brands-400.woff2
+│           ├── fa-duotone-900.ttf
+│           ├── fa-duotone-900.woff2
+│           ├── fa-light-300.ttf
+│           ├── fa-light-300.woff2
+│           ├── fa-regular-400.ttf
+│           ├── fa-regular-400.woff2
+│           ├── fa-solid-900.ttf
+│           ├── fa-solid-900.woff2
+│           ├── fa-thin-100.ttf
+│           ├── fa-thin-100.woff2
+│           ├── fa-v4compatibility.ttf
+│           └── fa-v4compatibility.woff2
+├── templates
+│   ├── account
+│   │   ├── login.html
+│   │   └── register.html
+│   ├── admin
+│   │   └── sportsbetting
+│   │       ├── generate_ticket.html
+│   │       └── ticket
+│   │           ├── admin_add_ticket_form.html
+│   │           ├── admin_change_ticket_form.html
+│   │           ├── change_list_object_tools.html
+│   │           └── includes
+│   │               └── generate_ticket_choiceset.html
+│   ├── base.html
+│   ├── emails
+│   │   ├── admin_play_notification.txt
+│   │   └── play_confirmation.txt
+│   ├── peredion
+│   │   ├── about.html
+│   │   ├── affiliate.html
+│   │   ├── blog-details.html
+│   │   ├── blog-posts.html
+│   │   ├── contact.html
+│   │   ├── dashboard
+│   │   │   ├── dashboard-bet-history.html
+│   │   │   ├── dashboard-deposit.html
+│   │   │   ├── dashboard-referral.html
+│   │   │   ├── dashboard-settings.html
+│   │   │   ├── dashboard-transaction-history.html
+│   │   │   ├── dashboard-withdraw.html
+│   │   │   └── index.html
+│   │   ├── elements
+│   │   │   ├── bet-slip.html
+│   │   │   ├── breadcrumbs.html
+│   │   │   ├── footer.html
+│   │   │   ├── header.html
+│   │   │   └── preloader.html
+│   │   ├── error.html
+│   │   ├── faq.html
+│   │   ├── index.html
+│   │   ├── match-details.html
+│   │   ├── playing-bet.html
+│   │   ├── promotion-details.html
+│   │   ├── promotion.html
+│   │   └── ranking.html
+│   └── robots.txt
+├── test_output.log
+└── tests
+    ├── __init__.py
+    ├── conftest.py
+    ├── test_betting_views.py
+    └── test_gb_import_export.py
+
+92 directories, 449 files

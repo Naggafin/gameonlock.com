@@ -11,6 +11,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import FormView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from ..models import Sport, Team
 from ..util import process_uploaded_ticket
@@ -22,9 +23,19 @@ class UploadTicketForm(forms.Form):
     file = forms.FileField(label="Upload Ticket Spreadsheet (CSV)")
 
 
-class UploadTicketView(FormView):
+class UploadTicketView(LoginRequiredMixin, FormView):
     template_name = "admin/sportsbetting/ticket/admin_add_ticket_form.html"
     form_class = UploadTicketForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["title"] = "Upload Ticket Spreadsheet"
+        return context
+
+    def form_invalid(self, form):
+        if not self.request.FILES.get("file"):
+            messages.error(self.request, "No file uploaded")
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         process_uploaded_ticket(self.request)
@@ -32,7 +43,7 @@ class UploadTicketView(FormView):
         return redirect(reverse("admin:index"))
 
 
-class GenerateTicketView(FormView):
+class GenerateTicketView(LoginRequiredMixin, FormView):
     """A standalone admin view to display and generate a ticket spreadsheet."""
 
     template_name = "admin/sportsbetting/generate_ticket.html"

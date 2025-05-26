@@ -1,0 +1,4 @@
+<h1>PayPal Payment Successful</h1>
+<p>Thank you for your payment.</p>
+{% if pdt_obj %}<pre>{{ pdt_obj|safe }}</pre>{% endif %}
+{% if failed %}<p>Verification failed.</p>{% endif %}

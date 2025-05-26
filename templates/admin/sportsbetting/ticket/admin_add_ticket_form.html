@@ -1,5 +1,13 @@
 {% extends 'admin/base_site.html' %}
-{% block object-tools %}
+{% block content %}
+    {% if messages %}
+        <ul class="messagelist">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
     <h4>Upload ticket spreadsheet</h4>
     <form enctype="multipart/form-data"
           action="{% url 'admin:upload_ticket' %}"

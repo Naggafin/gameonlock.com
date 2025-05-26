@@ -8,18 +8,20 @@ git+https://github.com/boxed/django-fastdev.git
 django-guardian
 django-htmx
 django-localflavor
-django-machina
+# django-machina  # Not used, can be removed if not needed for forum features
 django-model-utils
 django-money
-django-oscar
-django-paypal
-django-phonenumber-field[phonenumbers]
+# django-oscar  # For future e-commerce/shop features, not used in MVP
+django-paypal  # Required for payment integration (MVP)
+# django-phonenumber-field[phonenumbers]  # Not used, can be removed if not needed for phone number validation
 django-redis
 django-silk
 django-taggit
 django-template-partials
 django-user-agents
 django>=5.1
+djangorestframework  # Required for API endpoints (MVP)
+
 git+https://github.com/Naggafin/django-extensions.git
 git+https://github.com/Naggafin/django-htmx-utils.git
 git+https://github.com/mozilla/django-csp.git
@@ -30,7 +32,7 @@ jwt
 nplusone
 parameterized
 pillow
-pinax-messages
+# pinax-messages  # Not used, can be removed if not needed for messaging features
 pip
 psycopg[c]
 psycopg_pool
@@ -45,6 +47,6 @@ ruff
 slippers
 sorl-thumbnail
 uv
-Whoosh
-wagtail
+# Whoosh  # Not used, can be removed if not needed for search features
+wagtail  # Required for CMS (MVP)
 wheel

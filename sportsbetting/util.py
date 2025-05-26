@@ -1,8 +1,8 @@
 import csv
 import logging
+import datetime
 from io import StringIO
 from typing import Optional
-import requests  # For external API fallback
 
 
 from django.conf import settings
@@ -37,9 +37,10 @@ def calculate_play_stakes(obj: Play) -> int:
 def get_sport(sport_id_or_name: str, request: HttpRequest) -> Optional[Sport]:
     """Retrieve a Sport instance by ID or name."""
     try:
-        return Sport.objects.filter(
-            Q(id=sport_id_or_name) | Q(name__iexact=sport_id_or_name)
-        ).get()
+        if sport_id_or_name.isdigit():
+            return Sport.objects.get(id=int(sport_id_or_name))
+        else:
+            return Sport.objects.get(name__iexact=sport_id_or_name)
     except Sport.DoesNotExist:
         messages.error(
             request,
@@ -163,6 +164,16 @@ def process_uploaded_ticket(request: HttpRequest) -> None:
                     under = row.get("under", "").strip()
                     commence_time_str = row["commence_time"].strip()
 
+                    # Parse commence_time_str into a datetime object
+                    from django.utils.dateparse import parse_datetime
+                    commence_time = parse_datetime(commence_time_str)
+                    if not commence_time:
+                        try:
+                            commence_time = timezone.make_aware(datetime.strptime(commence_time_str, "%Y-%m-%d %H:%M:%S"))
+                        except Exception as err:
+                            messages.error(request, _(f"Invalid commence_time format for line {line}: {commence_time_str}"))
+                            raise ValueError("Invalid commence_time format") from err
+
                     # Validate critical fields
                     if not all(
                         [
@@ -216,11 +227,19 @@ def process_uploaded_ticket(request: HttpRequest) -> None:
                             governing_body_id_or_name, request
                         )
 
+                    # Fetch or create home and away team objects
+                    home_team_obj = Team.objects.filter(name__iexact=home_team_name, governing_body=governing_body).first()
+                    if not home_team_obj:
+                        home_team_obj = Team.objects.create(name=home_team_name, governing_body=governing_body)
+                    away_team_obj = Team.objects.filter(name__iexact=away_team_name, governing_body=governing_body).first()
+                    if not away_team_obj:
+                        away_team_obj = Team.objects.create(name=away_team_name, governing_body=governing_body)
+
                     scheduled_game = ScheduledGame.objects.update_or_create(
                         sport=sport,
                         governing_body=governing_body,
-                        home_team=home_team,
-                        away_team=away_team,
+                        home_team=home_team_obj,
+                        away_team=away_team_obj,
                         start_datetime__date=commence_time.date(),
                         defaults={"start_datetime": commence_time},
                     )[0]
@@ -238,7 +257,6 @@ def process_uploaded_ticket(request: HttpRequest) -> None:
                             "is_pick": is_pick,
                             "over": over_value,
                             "under": under_value,
-                            "start_datetime": commence_time,
                         },
                     )
 

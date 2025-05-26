@@ -115,7 +115,7 @@ class PlayListView(LoginRequiredMixin, ListBreadcrumbMixin, ListView):
 
 
 """
-class PlayDetailView(FormMixin, DetailView):
+class PlayDetailView(LoginRequiredMixin, FormMixin, DetailView):
 	model = TicketPlay
 	form_class = PayPalPaymentsForm
 	template_name = "sportsbetting/ticket_order_page.html"
@@ -142,10 +142,10 @@ class PlayDetailView(FormMixin, DetailView):
 		}
 
 
-class PaymentCompleteView(TemplateView):
+class PaymentCompleteView(LoginRequiredMixin, TemplateView):
 	template_name = "sportsbetting/payment_complete.html"
 
 
-class PaymentCancelledView(TemplateView):
+class PaymentCancelledView(LoginRequiredMixin, TemplateView):
 	template_name = "sportsbetting/payment_cancelled.html"
 """

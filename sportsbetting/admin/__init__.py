@@ -13,6 +13,9 @@ from ..models import (
     Team,
 )
 from .views import GenerateTicketView, UploadTicketView
+from import_export.admin import ImportExportModelAdmin
+from .resources import GoverningBodyResource
+
 
 
 class SportsbettingAdminSite(admin.AdminSite):
@@ -58,7 +61,8 @@ class SportAdmin(admin.ModelAdmin):
 
 
 @admin.register(GoverningBody)
-class GoverningBodyAdmin(admin.ModelAdmin):
+class GoverningBodyAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    resource_class = GoverningBodyResource
     list_display = ("name", "sport", "type_display")
     list_filter = ("sport", "type")
     search_fields = ("name", "sport__name")

@@ -31,6 +31,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
+# PayPal PDT identity token (required for django-paypal)
+PAYPAL_IDENTITY_TOKEN = os.environ.get('PAYPAL_IDENTITY_TOKEN', 'test-identity-token')
+
 
 # Application definition
 
@@ -57,8 +60,8 @@ INSTALLED_APPS = [
     "oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig",
     "oscar.apps.communication.apps.CommunicationConfig",
     "oscar.apps.partner.apps.PartnerConfig",
-    "oscar.apps.basket.apps.BasketConfig",
     "oscar.apps.payment.apps.PaymentConfig",
+    "oscar.apps.basket.apps.BasketConfig",
     "oscar.apps.offer.apps.OfferConfig",
     "oscar.apps.order.apps.OrderConfig",
     "oscar.apps.customer.apps.CustomerConfig",
@@ -104,6 +107,7 @@ INSTALLED_APPS = [
     "taggit",
     "guardian",
     "paypal.standard.ipn",
+    "paypal.standard.pdt",
     "widget_tweaks",
     "slippers",
     "haystack",
@@ -116,6 +120,8 @@ INSTALLED_APPS = [
     "django_extensions",
     "view_breadcrumbs",
     "csp",
+    "golpayment.apps.GolpaymentConfig",
+    "golcms",
 ]
 
 SITE_ID = 1
@@ -290,17 +296,12 @@ LOGGING = {
             "filename": BASE_DIR / "django.log",
             "formatter": "verbose",
         },
-        "telegram": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "telegram_handler.TelegramHandler",
-            "token": TELEGRAM_TOKEN,
-            "chat_id": TELEGRAM_LOGS_CHAT_ID,
-        },
+
     },
     "loggers": {
         "django": {
-            "handlers": ["console", "mail_admins", "file", "telegram"],
+            # "handlers": ["console", "mail_admins", "file", "telegram"],
+    "handlers": ["console", "mail_admins", "file"],
             "level": "INFO",
         },
         "django.server": {
@@ -449,3 +450,5 @@ CONTENT_SECURITY_POLICY = {
         "report-uri": "/csp-report/",
     },
 }
+
+HAYSTACK_CONNECTIONS = {"default": {"ENGINE": "haystack.backends.simple_backend.SimpleEngine"}}

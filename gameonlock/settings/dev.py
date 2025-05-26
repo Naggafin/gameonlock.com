@@ -4,6 +4,11 @@ import sys
 
 from .base import *  # noqa: F403
 
+from typing import List
+
+INSTALLED_APPS: List[str] = list(INSTALLED_APPS)  # type: ignore # noqa: F405
+MIDDLEWARE: List[str] = list(MIDDLEWARE)  # type: ignore # noqa: F405
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
@@ -105,15 +110,27 @@ HAYSTACK_CONNECTIONS = {
 
 
 # Debug Toolbar settings
-INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
-try:
-    index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
-except ValueError:
-    index = 0
-MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
-DEBUG_TOOLBAR_CONFIG = {
-    "SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
-}
+
+if "test" not in sys.argv and not os.environ.get("PYTEST_CURRENT_TEST"):
+    INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
+    try:
+        index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
+    except ValueError:
+        index = 0
+    MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
+    }
+else:
+    # Remove debug_toolbar from test runs if present
+    try:
+        INSTALLED_APPS.remove("debug_toolbar")
+    except (ValueError, NameError):
+        pass
+    try:
+        MIDDLEWARE.remove("debug_toolbar.middleware.DebugToolbarMiddleware")
+    except (ValueError, NameError):
+        pass
 
 
 # nplusone

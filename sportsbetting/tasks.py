@@ -27,11 +27,19 @@ def fetch_and_store_team_data(self):
 
             if response.status_code == HTTPStatus.OK:
                 data = response.json()
-                logo_url = data.get("strLogo")
-                brand_url = data.get("strBadge")
-                website = data.get("strWebsite")
-                location = data.get("strLocation")
-                founding_year = data.get("intFormedYear")
+                team_data = None
+                if isinstance(data, dict) and "teams" in data and data["teams"]:
+                    team_data = data["teams"][0]
+                elif isinstance(data, dict):
+                    team_data = data
+                else:
+                    team_data = {}
+
+                logo_url = team_data.get("strLogo")
+                brand_url = team_data.get("strBadge")
+                website = team_data.get("strWebsite")
+                location = team_data.get("strLocation")
+                founding_year = team_data.get("intFormedYear")
 
                 team.website = website
                 team.location = location
@@ -48,7 +56,7 @@ def fetch_and_store_team_data(self):
                     image = download_image(brand_url)
                     team.brand.save(filename, image, save=False)
 
-                team.save(update_fields=["logo", "brand", "website", "downloaded"])
+                team.save(update_fields=["logo", "brand", "website", "location", "founding_year", "downloaded"])
                 logger.info(f"Successfully updated team: {team.name}")
 
             else:
