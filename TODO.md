@@ -15,8 +15,8 @@
   - Remove duplicate markup and optimize transitions in bet-slip.html.
 
 - **Celery Tasks**
-  - Implement tasks for score syncing, outcome resolution, and admin notifications.
-  - Add tests for Celery task scheduling and error handling.
+  - Implement tasks for score syncing, outcome resolution, and admin notifications. [Implemented]
+  - Add tests for Celery task scheduling and error handling. [Implemented]
 
 - **Admin Tools**
   - Finalize spreadsheet import/export for betting lines (CSV/JSON).
