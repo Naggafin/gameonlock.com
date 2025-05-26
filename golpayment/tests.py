@@ -2,6 +2,11 @@ from unittest.mock import MagicMock, patch
 
 from django.test import Client, TestCase
 from django.urls import reverse
+from django.core import mail
+from django.conf import settings
+
+from .forms import PayPalPaymentForm
+from .tasks import process_payment_confirmation
 
 
 class PayPalPaymentFlowTests(TestCase):
@@ -15,7 +20,7 @@ class PayPalPaymentFlowTests(TestCase):
         response = self.client.post(
             reverse("paypal-ipn"),
             data={
-                "golpayment_status": "Completed",
+                "payment_status": "Completed",
                 "mc_gross": "10.00",
                 "mc_currency": "USD",
                 "txn_id": "12345",
@@ -32,7 +37,7 @@ class PayPalPaymentFlowTests(TestCase):
         response = self.client.post(
             reverse("paypal-ipn"),
             data={
-                "golpayment_status": "Failed",
+                "payment_status": "Failed",
                 "mc_gross": "0.00",
                 "mc_currency": "USD",
                 "txn_id": "54321",
@@ -122,3 +127,70 @@ class PayPalReturnViewTests(TestCase):
         response = self.client.get(reverse("paypal-return"))
         self.assertTemplateUsed(response, "golpayment/paypal_invalid.html")
         self.assertIsNone(response.context["pdt_obj"])
+
+
+class PayPalPaymentFormTests(TestCase):
+    def test_valid_form_data(self):
+        form_data = {
+            'amount': 10.00,
+            'item_name': 'Test Play',
+            'item_number': '123',
+            'custom': 'user123'
+        }
+        form = PayPalPaymentForm(data=form_data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_amount_negative(self):
+        form_data = {
+            'amount': -10.00,
+            'item_name': 'Test Play',
+            'item_number': '123',
+            'custom': 'user123'
+        }
+        form = PayPalPaymentForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('amount', form.errors)
+
+    def test_invalid_amount_zero(self):
+        form_data = {
+            'amount': 0.00,
+            'item_name': 'Test Play',
+            'item_number': '123',
+            'custom': 'user123'
+        }
+        form = PayPalPaymentForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('amount', form.errors)
+
+    def test_missing_required_fields(self):
+        form_data = {
+            'item_number': '123',
+            'custom': 'user123'
+        }
+        form = PayPalPaymentForm(data=form_data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('amount', form.errors)
+        self.assertIn('item_name', form.errors)
+
+
+class PayPalTasksTests(TestCase):
+    def test_process_payment_confirmation_task(self):
+        # Test the Celery task for payment confirmation
+        txn_id = "TEST123"
+        amount = 10.00
+        user_email = "user@example.com"
+        
+        # Call the task
+        result = process_payment_confirmation(txn_id, amount, user_email)
+        
+        # Check email was sent
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, 'Payment Confirmation')
+        self.assertIn(str(amount), mail.outbox[0].body)
+        self.assertIn(txn_id, mail.outbox[0].body)
+        self.assertEqual(mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL)
+        self.assertIn(user_email, mail.outbox[0].to)
+        self.assertIn(settings.ADMIN_EMAIL, mail.outbox[0].to)
+        
+        # Check task return value
+        self.assertEqual(result, f"Payment confirmation sent for transaction {txn_id}")
