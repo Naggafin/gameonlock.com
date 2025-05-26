@@ -79,7 +79,8 @@
                            x-model="amount"
                            min="{{ MIN_BET.amount|int }}"
                            step="0.01"
-                           class="form-control d-inline w-auto">
+                           class="form-control d-inline w-auto"
+                           @change="saveAmount()">
                 </div>
                 <div class="single-calc">
                     <span class="text">{% trans 'Total est. return:' %}</span>
@@ -127,11 +128,29 @@ document.addEventListener('alpine:init', () => {
             const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":' + CONFIG.MIN_BET + '}');
             return (slip.picks || []).map(pick => ({
                 ...pick,
-                game_data: pick.game_data || {}
+                game_data: pick.game_data || {},
+                betting_line: pick.betting_line || '',
+                type: pick.type || '',
+                team: pick.team || null,
+                is_over: pick.is_over !== undefined ? pick.is_over : null,
+                game: pick.game || null
             }));
         } catch (error) {
             console.error('Failed to load bet slip:', error);
             return [];
+        }
+    }
+
+    // Save picks to localStorage
+    function savePicks(picks, amount) {
+        try {
+            localStorage.setItem('betslip', JSON.stringify({
+                picks: picks,
+                amount: amount || CONFIG.MIN_BET
+            }));
+            window.dispatchEvent(new Event('betslip-updated'));
+        } catch (error) {
+            console.error('Failed to save bet slip:', error);
         }
     }
 
@@ -148,29 +167,28 @@ document.addEventListener('alpine:init', () => {
          * @param {Object} gameData - Game metadata
          */
         addPick(bettingLine, type, team, isOver, gameData) {
-            if (!bettingLine || !type || !gameData) {
-                console.error('Invalid pick data:', { bettingLine, type, gameData });
+            if (!bettingLine || !type) {
+                console.error('Invalid pick data: missing betting line or type', { bettingLine, type });
                 return;
             }
 
+            // Ensure gameData is an object to prevent undefined errors
+            gameData = gameData || {};
+
             const pick = {
                 betting_line: bettingLine,
-                type,
+                type: type,
                 team: team || null,
-                is_over: isOver ?? null,
+                is_over: isOver !== undefined ? isOver : null,
                 game: gameData.game || null,
                 game_data: gameData
             };
 
-            // Remove existing pick for this bettingLine to ensure only one pick
+            // Remove existing pick for this bettingLine to prevent duplicates
             this.picks = this.picks.filter(p => p.betting_line !== bettingLine);
             this.picks.push(pick);
 
-            localStorage.setItem('betslip', JSON.stringify({
-                picks: this.picks,
-                amount: CONFIG.MIN_BET
-            }));
-            window.dispatchEvent(new Event('betslip-updated'));
+            savePicks(this.picks, CONFIG.MIN_BET);
         },
 
         /**
@@ -179,14 +197,21 @@ document.addEventListener('alpine:init', () => {
          * @param {string} type - Pick type ('sp' or 'uo')
          */
         removePick(bettingLine, type) {
-            if (!bettingLine || !type) return;
+            if (!bettingLine || !type) {
+                console.error('Cannot remove pick: missing betting line or type', { bettingLine, type });
+                return;
+            }
 
             this.picks = this.picks.filter(p => !(p.betting_line === bettingLine && p.type === type));
-            localStorage.setItem('betslip', JSON.stringify({
-                picks: this.picks,
-                amount: CONFIG.MIN_BET
-            }));
-            window.dispatchEvent(new Event('betslip-updated'));
+            savePicks(this.picks, CONFIG.MIN_BET);
+        },
+
+        /**
+         * Clears all picks from the bet slip.
+         */
+        clearPicks() {
+            this.picks = [];
+            savePicks(this.picks, CONFIG.MIN_BET);
         }
     });
 
@@ -197,6 +222,101 @@ document.addEventListener('alpine:init', () => {
         amount: CONFIG.MIN_BET,
         submitted: false,
         isAuthenticated: {{ request.user.is_authenticated|lower }},
+
+        init() {
+            // Load picks and amount from store or localStorage on initialization
+            this.picks = Alpine.store('betSlip').picks;
+            const storedSlip = JSON.parse(localStorage.getItem('betslip') || '{}');
+            this.amount = storedSlip.amount || CONFIG.MIN_BET;
+            // Sync picks with store on component initialization
+            window.addEventListener('betslip-updated', () => {
+                this.picks = Alpine.store('betSlip').picks;
+            });
+        },
+
+        toggle() {
+            this.isOpen = !this.isOpen;
+        },
+
+        clearSlip() {
+            Alpine.store('betSlip').clearPicks();
+            this.picks = [];
+            this.amount = CONFIG.MIN_BET;
+        },
+
+        removePick(index) {
+            const pick = this.picks[index];
+            if (pick) {
+                Alpine.store('betSlip').removePick(pick.betting_line, pick.type);
+            }
+        },
+
+        calculateReturn() {
+            // Placeholder for return calculation logic
+            // This should be updated based on odds or a fixed multiplier
+            return (this.amount * CONFIG.BET_MULTIPLIER).toFixed(2);
+        },
+
+        saveAmount() {
+            // Save amount to localStorage whenever it changes
+            savePicks(this.picks, this.amount);
+        },
+
+        async submitBet() {
+            if (this.amount < CONFIG.MIN_BET || this.picks.length < 4) {
+                alert('Validation failed: Minimum bet or picks not met.');
+                return;
+            }
+
+            const payload = {
+                amount: this.amount,
+                picks: this.picks.map(pick => ({
+                    betting_line: pick.betting_line,
+                    pick_type: pick.type,
+                    team: pick.team,
+                    is_over: pick.is_over,
+                    game: pick.game
+                }))
+            };
+
+            try {
+                const response = await fetch(CONFIG.SUBMIT_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': CONFIG.CSRF_TOKEN
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                if (result.success) {
+                    this.submitted = true;
+                    Alpine.store('betSlip').clearPicks();
+                    this.picks = [];
+                    this.amount = CONFIG.MIN_BET;
+                } else {
+                    alert(`Bet submission failed: ${result.error || 'Unknown error'}`);
+                }
+            } catch (error) {
+                console.error('Error submitting bet:', error);
+                alert(`Error submitting bet: ${error.message}`);
+            }
+        },
+
+        displayPick(pick) {
+            if (pick.type === 'sp') {
+                return `${pick.team || 'N/A'} Spread`;
+            } else if (pick.type === 'uo') {
+                return pick.is_over ? 'Over' : 'Under';
+            }
+            return 'Unknown Pick';
+        }
+    }));
 
         /**
          * Initializes the bet slip by loading from localStorage and setting up listeners.
