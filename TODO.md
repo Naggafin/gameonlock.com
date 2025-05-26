@@ -19,9 +19,9 @@
   - Add tests for Celery task scheduling and error handling. [Implemented]
 
 - **Admin Tools**
-  - Finalize spreadsheet import/export for betting lines (CSV/JSON).
-  - Validate admin data before saving.
-  - Add tests for admin import/export and error cases.
+  - Finalize spreadsheet import/export for betting lines (CSV/JSON). [Implemented]
+  - Validate admin data before saving. [Implemented]
+  - Add tests for admin import/export and error cases. [Implemented]
 
 - **REST API**
   - Implement endpoints: `/api/betting-lines/`, `/api/plays/`, `/api/results/` using DRF.
