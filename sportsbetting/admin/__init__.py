@@ -1,6 +1,9 @@
+import dateutil
 from django.contrib import admin
-from django.urls import path
-from django.utils.translation import gettext_lazy as _
+from django.http import HttpResponseRedirect
+from django.urls import path, reverse
+from django.utils.translation import translation_text as _
+from import_export.admin import ImportExportModelAdmin
 
 from ..models import (
     BettingLine,
@@ -12,45 +15,8 @@ from ..models import (
     Sport,
     Team,
 )
-from .views import GenerateTicketView, UploadTicketView
-from import_export.admin import ImportExportModelAdmin
-from .resources import GoverningBodyResource
-
-
-
-class SportsbettingAdminSite(admin.AdminSite):
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                "sportsbetting/generate-ticket/",
-                self.admin_view(GenerateTicketView.as_view()),
-                name="sportsbetting_generate_ticket",
-            ),
-            path(
-                "sportsbetting/upload-ticket/",
-                self.admin_view(UploadTicketView.as_view()),
-                name="upload_ticket",
-            ),
-        ]
-        return custom_urls + urls
-
-    def get_app_list(self, request):
-        app_list = super().get_app_list(request)
-        sportsbetting_app = {
-            "name": "Sportsbetting Tools",
-            "app_label": "sportsbetting_tools",
-            "models": [
-                {
-                    "name": "Generate Ticket",
-                    "object_name": "generate_ticket",
-                    "admin_url": f"{self.name}:sportsbetting_generate_ticket",
-                    "perms": {"view": True},
-                },
-            ],
-        }
-        app_list.append(sportsbetting_app)
-        return app_list
+from ..resources import BettingLineResource
+from .views import GenerateTicketView
 
 
 @admin.register(Sport)
@@ -61,8 +27,7 @@ class SportAdmin(admin.ModelAdmin):
 
 
 @admin.register(GoverningBody)
-class GoverningBodyAdmin(ImportExportModelAdmin, admin.ModelAdmin):
-    resource_class = GoverningBodyResource
+class GoverningBodyAdmin(admin.ModelAdmin):
     list_display = ("name", "sport", "type_display")
     list_filter = ("sport", "type")
     search_fields = ("name", "sport__name")
@@ -149,7 +114,7 @@ class TeamAdmin(admin.ModelAdmin):
 class BettingLineInline(admin.StackedInline):
     model = BettingLine
     extra = 0
-    fields = ("spread", "is_pick", "over", "under", "start_datetime")
+    fields = ("spread", "is_pick", "over", "under")
     show_change_link = True
 
 
@@ -203,7 +168,8 @@ class ScheduledGameAdmin(admin.ModelAdmin):
 
 
 @admin.register(BettingLine)
-class BettingLineAdmin(admin.ModelAdmin):
+class BettingLineAdmin(ImportExportModelAdmin):
+    resource_class = BettingLineResource
     list_display = (
         "game",
         "spread_display",
@@ -221,6 +187,24 @@ class BettingLineAdmin(admin.ModelAdmin):
     )
     list_per_page = 25
     date_hierarchy = "game__start_datetime"
+
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path(
+                "generate-ticket/",
+                self.admin_site.admin_view(GenerateTicketView.as_view()),
+                name="sportsbetting_generate_ticket",
+            ),
+        ]
+        return custom_urls + urls
+
+    def get_import_resource_kwargs(self, request, *args, **kwargs):
+        return {"request": request}
+
+    def dehydrate_spread(self, obj):
+        """Format spread for export to match import format."""
+        return f"P{obj.spread}" if obj.is_pick else obj.spread
 
     def spread_display(self, obj):
         return f"P{obj.spread}" if obj.is_pick else obj.spread
@@ -291,6 +275,3 @@ class PlayPickAdmin(admin.ModelAdmin):
         return "Over" if obj.is_over else "Under"
 
     is_over_display.short_description = _("Over/Under")
-
-
-admin.site = SportsbettingAdminSite(name="sportsbetting_admin")

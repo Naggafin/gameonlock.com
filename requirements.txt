@@ -37,6 +37,7 @@ pip
 psycopg[c]
 psycopg_pool
 pycountry
+python-dateutil
 python-dotenv
 python-slugify
 python-telegram-handler
@@ -47,6 +48,6 @@ ruff
 slippers
 sorl-thumbnail
 uv
-# Whoosh  # Not used, can be removed if not needed for search features
+Whoosh  # Used when running in dev/testing mode
 wagtail  # Required for CMS (MVP)
 wheel

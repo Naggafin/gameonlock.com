@@ -29,8 +29,8 @@ jobs:
         run: djlint --reformat templates/
       - name: Commit and push changes
         run: |
-          git config --global user.name 'openhands'
-          git config --global user.email 'openhands@all-hands.dev'
+          git config --global user.name 'Naggafin'
+          git config --global user.email 'nevincoutu@gmail.com'
           git add .
           git diff --cached --quiet || git commit -m 'ci: auto-format and lint fixes'
           git push || echo 'No changes to push.'

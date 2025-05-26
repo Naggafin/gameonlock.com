@@ -1,14 +1,22 @@
-from django.test import TestCase, override_settings
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+
+from django.test import TestCase
+
 from sportsbetting.models import Team
 from sportsbetting.tasks import fetch_and_store_team_data
 
+
 class CeleryTaskTests(TestCase):
     def setUp(self):
-        from sportsbetting.models import Sport, GoverningBody
+        from sportsbetting.models import GoverningBody, Sport
+
         self.sport = Sport.objects.create(name="Soccer")
-        self.gov_body = GoverningBody.objects.create(sport=self.sport, name="FIFA", type="pro")
-        self.team = Team.objects.create(name="Test Team", downloaded=False, governing_body=self.gov_body)
+        self.gov_body = GoverningBody.objects.create(
+            sport=self.sport, name="FIFA", type="pro"
+        )
+        self.team = Team.objects.create(
+            name="Test Team", downloaded=False, governing_body=self.gov_body
+        )
 
     @patch("sportsbetting.tasks.requests.get")
     def test_fetch_and_store_team_data_success(self, mock_get):

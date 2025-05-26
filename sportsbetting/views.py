@@ -1,10 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, TemplateView, UpdateView
-from django.contrib.auth.mixins import LoginRequiredMixin
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PlayForm, PlayPickFormSet
@@ -34,7 +34,9 @@ class SportsBettingContextMixin:
         return context
 
 
-class BettingView(LoginRequiredMixin, SportsBettingContextMixin, ListBreadcrumbMixin, TemplateView):
+class BettingView(
+    LoginRequiredMixin, SportsBettingContextMixin, ListBreadcrumbMixin, TemplateView
+):
     model = BettingLine
     template_name = "peredion/playing-bet.html"
     list_view_url = reverse_lazy("sportsbetting:bet")

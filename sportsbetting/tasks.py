@@ -56,7 +56,16 @@ def fetch_and_store_team_data(self):
                     image = download_image(brand_url)
                     team.brand.save(filename, image, save=False)
 
-                team.save(update_fields=["logo", "brand", "website", "location", "founding_year", "downloaded"])
+                team.save(
+                    update_fields=[
+                        "logo",
+                        "brand",
+                        "website",
+                        "location",
+                        "founding_year",
+                        "downloaded",
+                    ]
+                )
                 logger.info(f"Successfully updated team: {team.name}")
 
             else:

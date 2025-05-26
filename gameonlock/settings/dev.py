@@ -1,10 +1,9 @@
 import logging
 import os
 import sys
+from typing import List
 
 from .base import *  # noqa: F403
-
-from typing import List
 
 INSTALLED_APPS: List[str] = list(INSTALLED_APPS)  # type: ignore # noqa: F405
 MIDDLEWARE: List[str] = list(MIDDLEWARE)  # type: ignore # noqa: F405
@@ -30,7 +29,6 @@ if "test" in sys.argv:
         MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")
     except (ValueError, NameError):
         pass
-
 
 
 # Database

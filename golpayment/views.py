@@ -1,17 +1,28 @@
-from django.views.decorators.http import require_GET
-from django.shortcuts import render
+from django.views.generic import TemplateView
 from paypal.standard.pdt.views import process_pdt
 
-@require_GET
-def paypal_return(request):
-    pdt_obj, failed = process_pdt(request)
-    context = {"failed": failed, "pdt_obj": pdt_obj}
-    if not failed and pdt_obj and getattr(pdt_obj, 'receiver_email', None) == "receiver_email@example.com":
-        # TODO: Replace with actual receiver email and add more checks as needed
-        return render(request, 'golpayment/paypal_return.html', context)
-    return render(request, 'golpayment/paypal_invalid.html', context)
 
-@require_GET
-def paypal_cancel(request):
-    # Optionally handle cancel logic here
-    return render(request, 'golpayment/paypal_cancel.html')
+class PayPalReturnView(TemplateView):
+    template_name = "golpayment/paypal_return.html"
+    invalid_template_name = "golpayment/paypal_invalid.html"
+
+    def get(self, request, *args, **kwargs):
+        pdt_obj, failed = process_pdt(request)
+        context = {"failed": failed, "pdt_obj": pdt_obj}
+
+        if (
+            not failed
+            and pdt_obj
+            and getattr(pdt_obj, "receiver_email", None) == "receiver_email@example.com"
+        ):
+            return self.render_to_response(context)
+        return self.response_class(
+            request=request,
+            template=self.invalid_template_name,
+            context=context,
+            using=self.template_engine,
+        )
+
+
+class PayPalCancelView(TemplateView):
+    template_name = "golpayment/paypal_cancel.html"

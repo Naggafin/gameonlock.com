@@ -1,50 +1,25 @@
-import csv
-import datetime
-import io
-from typing import Optional
+import logging
+from datetime import datetime
 
+import dateutil
 import requests
-from django import forms
 from django.conf import settings
 from django.contrib import messages
-from django.http import HttpResponse
-from django.shortcuts import redirect
-from django.urls import reverse
-from django.views.generic import FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+from django.utils import timezone
+from django.utils.translation import translation_text as _
+from django.views.generic import FormView
 
-from ..models import Sport, Team
-from ..util import process_uploaded_ticket
-from . import admin
-from .forms import GenerateTicketForm
+from ..forms import GenerateTicketForm
+from ..models import GoverningBody, ScheduledGame, Sport, Team
+from ..resources import BettingLineResource
 
-
-class UploadTicketForm(forms.Form):
-    file = forms.FileField(label="Upload Ticket Spreadsheet (CSV)")
-
-
-class UploadTicketView(LoginRequiredMixin, FormView):
-    template_name = "admin/sportsbetting/ticket/admin_add_ticket_form.html"
-    form_class = UploadTicketForm
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["title"] = "Upload Ticket Spreadsheet"
-        return context
-
-    def form_invalid(self, form):
-        if not self.request.FILES.get("file"):
-            messages.error(self.request, "No file uploaded")
-        return super().form_invalid(form)
-
-    def form_valid(self, form):
-        process_uploaded_ticket(self.request)
-        messages.success(self.request, "Ticket spreadsheet processed.")
-        return redirect(reverse("admin:index"))
+logger = logging.getLogger(__name__)
 
 
 class GenerateTicketView(LoginRequiredMixin, FormView):
-    """A standalone admin view to display and generate a ticket spreadsheet."""
+    """Admin view to generate a ticket spreadsheet from API data."""
 
     template_name = "admin/sportsbetting/generate_ticket.html"
     form_class = GenerateTicketForm
@@ -53,24 +28,16 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
         selected_keys = form.get_selected_keys()
         if not selected_keys:
             messages.warning(
-                self.request, "No sports selected. Please choose at least one option."
+                self.request,
+                _("No sports selected. Please choose at least one option."),
             )
             return self.form_invalid(form)
 
-        # Generate CSV in memory
-        csv_buffer = io.StringIO()
-        pair_prominence = settings.SPORTS["PAIR_PROMINENCE"]
-        fields = self._get_csv_fields(pair_prominence)
+        # Initialize resource for export
+        resource = BettingLineResource()
+        dataset = []
 
-        # Optionally include governing_body in CSV if requested or always
-        include_gb = True  # Set to True to always include, or make configurable
-        if include_gb and "governing_body" not in fields:
-            fields.insert(1, "governing_body")
-
-        spreadsheet = csv.DictWriter(csv_buffer, fieldnames=fields)
-        spreadsheet.writeheader()
-
-        # Fetch and process data for each selected key
+        # Fetch and process API data
         for key in selected_keys:
             params = {
                 "apiKey": settings.SPORTS["SPORTS_API_KEY"],
@@ -84,79 +51,116 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
             try:
                 api_url = f"{settings.SPORTS['SPORTS_API_PROVIDER_URL']}/{key}/odds"
                 response = requests.get(url=api_url, params=params)
+                response.raise_for_status()
                 remaining = response.headers.get("X-Requests-Remaining")
                 data = response.json()
             except requests.RequestException as e:
-                messages.error(self.request, f"Error fetching sports data: {str(e)}")
+                messages.error(
+                    self.request, _("Error fetching sports data: %s") % str(e)
+                )
+                logger.error("API request failed: %s", str(e))
                 return self.form_invalid(form)
 
             for game_data in data:
-                spread, totals = self._extract_markets(game_data)
-                if spread is None or totals is None:
+                try:
+                    spread, totals = self._extract_markets(game_data)
+                    if spread is None or totals is None:
+                        messages.warning(
+                            self.request,
+                            _(
+                                "Skipping game (api_id: %s) due to missing spread or totals."
+                            )
+                            % game_data.get("id"),
+                        )
+                        continue
+
+                    # Resolve Sport and Teams
+                    sport, _ = Sport.objects.get_or_create(
+                        name=game_data.get("sport_title")
+                    )
+                    home_team = self._get_or_create_team(
+                        sport, game_data.get("home_team")
+                    )
+                    away_team = self._get_or_create_team(
+                        sport, game_data.get("away_team")
+                    )
+
+                    # Resolve GoverningBody
+                    governing_body = self._resolve_governing_body(sport, home_team)
+                    if not governing_body:
+                        messages.warning(
+                            self.request,
+                            _("No governing body for game (api_id: %s).")
+                            % game_data.get("id"),
+                        )
+                        continue
+
+                    # Parse commence time
+                    commence_time = self._parse_commence_time(
+                        game_data.get("commence_time")
+                    )
+                    if not commence_time:
+                        messages.warning(
+                            self.request,
+                            _("Invalid commence time for game (api_id: %s).")
+                            % game_data.get("id"),
+                        )
+                        continue
+
+                    # Create temporary ScheduledGame
+                    scheduled_game, _ = ScheduledGame.objects.get_or_create(
+                        sport=sport,
+                        governing_body=governing_body,
+                        home_team=home_team,
+                        away_team=away_team,
+                        start_datetime__date=commence_time.date(),
+                        defaults={"start_datetime": commence_time},
+                    )
+
+                    # Prepare BettingLine data
+                    spread_value = f"P{abs(int(spread))}" if spread < 0 else int(spread)
+                    row = {
+                        "sport": sport.name,
+                        "governing_body": governing_body.name,
+                        "home_team": home_team.name,
+                        "away_team": away_team.name,
+                        "commence_time": commence_time.isoformat(),
+                        "spread": spread_value,
+                        "over": int(totals + settings.SPORTS.get("TOTALS_SPREAD", 0)),
+                        "under": int(totals - settings.SPORTS.get("TOTALS_SPREAD", 0)),
+                    }
+                    dataset.append(row)
+
+                except Exception as e:
                     messages.warning(
                         self.request,
-                        f"Skipping game (api_id: {game_data.get('id')}) due to missing spread or totals.",
+                        _("Error processing game (api_id: %s): %s")
+                        % (game_data.get("id"), str(e)),
+                    )
+                    logger.error(
+                        "Error processing game %s: %s", game_data.get("id"), str(e)
                     )
                     continue
 
-                sport = Sport.objects.get_or_create(name=game_data.get("sport_title"))[
-                    0
-                ]
-                home_team = self._get_or_create_team(sport, game_data.get("home_team"))
-                away_team = self._get_or_create_team(sport, game_data.get("away_team"))
-                commence_time = self._parse_commence_time(
-                    game_data.get("commence_time")
-                )
+        # Export dataset using BettingLineResource
+        export_dataset = resource.export(data=dataset)
+        csv_content = export_dataset.csv
 
-                row = {}
-
-                # Add governing_body to row if included in fields
-                if "governing_body" in fields:
-                    # Try to get governing_body from home_team, fallback to sport's first governing_body
-                    gb = getattr(home_team, "governing_body", None)
-                    if gb:
-                        row["governing_body"] = gb.name
-                    else:
-                        gbs = getattr(sport, "governing_bodies", None)
-                        if gbs and hasattr(gbs, "all"):
-                            first_gb = gbs.all().first()
-                            if first_gb:
-                                row["governing_body"] = first_gb.name
-                            else:
-                                row["governing_body"] = ""
-                        else:
-                            row["governing_body"] = ""
-
-                row.update(
-                    {
-                        "sport": game_data.get("sport_title"),
-                        "under": totals - settings.SPORTS.get("TOTALS_SPREAD", 0),
-                        "over": totals + settings.SPORTS.get("TOTALS_SPREAD", 0),
-                        "commence_time": commence_time,
-                        "api_id": game_data.get("id"),
-                    }
-                )
-                self._populate_team_fields(
-                    row, pair_prominence, spread, home_team, away_team
-                )
-                spreadsheet.writerow(row)
-
-        # Prepare CSV response
-        csv_buffer.seek(0)
+        # Prepare response
         response = HttpResponse(
-            csv_buffer.getvalue(),
+            csv_content,
             content_type="text/csv",
             headers={"Content-Disposition": 'attachment; filename="ticket.csv"'},
         )
-        csv_buffer.close()
 
         if remaining:
-            messages.info(self.request, f"You have {remaining} sports data pulls left")
+            messages.info(
+                self.request, _("You have %s sports data pulls left.") % remaining
+            )
         return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         sports = Sport.objects.prefetch_related("governing_bodies").all()
         choices = [
             {
@@ -172,32 +176,14 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
 
         context.update(
             {
-                "title": "Generate Ticket",
-                "site_title": admin.site.site_title,
-                "site_header": admin.site.site_header,
-                "site_url": admin.site.site_url,
-                "has_permission": admin.site.has_permission(self.request),
-                "available_apps": admin.site.get_app_list(self.request),
-                "is_popup": False,
-                "is_nav_sidebar_enabled": True,
-                "form_url": self.request.path,
+                "title": _("Generate Ticket"),
+                "opts": ScheduledGame._meta,
                 "sports": choices,
             }
         )
         return context
 
-    def _get_csv_fields(self, pair_prominence: str) -> list[str]:
-        """Determine CSV field order based on PAIR_PROMINENCE setting."""
-        base_fields = ["sport", "under", "over", "commence_time", "api_id"]
-        if pair_prominence == "unfavored":
-            return ["sport", "unfavored", "spread", "favored"] + base_fields[1:]
-        elif pair_prominence == "favored":
-            return ["sport", "favored", "spread", "unfavored"] + base_fields[1:]
-        return ["sport", "home_team", "spread", "away_team"] + base_fields[1:]
-
-    def _extract_markets(
-        self, game_data: dict
-    ) -> tuple[Optional[float], Optional[float]]:
+    def _extract_markets(self, game_data: dict) -> tuple[float, float]:
         """Extract spread and totals from the first successful bookmaker."""
         spread = totals = None
         for bookmaker in game_data.get("bookmakers", []):
@@ -225,47 +211,24 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
         return spread, totals
 
     def _get_or_create_team(self, sport: Sport, name: str) -> Team:
-        """Get or create a Team (team) with ASCII-safe name."""
+        """Get or create a Team with ASCII-safe name."""
         clean_name = name.encode("ascii", "ignore").decode()
-        return Team.objects.get_or_create(type="TM", sport=sport, name=clean_name)[0]
+        return Team.objects.get_or_create(sport=sport, name=clean_name)[0]
 
-    def _parse_commence_time(self, commence_time: str) -> str:
+    def _resolve_governing_body(self, sport: Sport, home_team: Team) -> GoverningBody:
+        """Resolve governing body from home team or sport."""
+        governing_body = getattr(home_team, "governing_body", None)
+        if not governing_body:
+            governing_bodies = GoverningBody.objects.filter(sport=sport)
+            if governing_bodies.count() == 1:
+                governing_body = governing_bodies.first()
+        return governing_body
+
+    def _parse_commence_time(self, commence_time: str) -> datetime:
         """Parse commence time based on UNIX_TIME setting."""
-        if settings.SPORTS.get("UNIX_TIME"):
-            return datetime.datetime.fromtimestamp(int(commence_time)).isoformat()
-        return commence_time.rstrip("Z")  # Remove trailing 'Z' from ISO format
-
-    def _populate_team_fields(
-        self,
-        row: dict,
-        pair_prominence: str,
-        spread: float,
-        home_team: Team,
-        away_team: Team,
-    ) -> None:
-        """Populate team-related fields based on PAIR_PROMINENCE."""
-        home_name = home_team.short or home_team.name
-        away_name = away_team.short or away_team.name
-
-        if pair_prominence == "unfavored":
-            if spread < 0:
-                row["unfavored"] = home_name
-                row["spread"] = spread
-                row["favored"] = away_name
-            else:
-                row["unfavored"] = away_name
-                row["spread"] = -spread
-                row["favored"] = home_name
-        elif pair_prominence == "favored":
-            if spread < 0:
-                row["favored"] = home_name
-                row["spread"] = spread
-                row["unfavored"] = away_name
-            else:
-                row["favored"] = away_name
-                row["spread"] = -spread
-                row["unfavored"] = home_name
-        else:  # home_team
-            row["home_team"] = home_name
-            row["away_team"] = away_name
-            row["spread"] = spread if spread > 0 else -spread
+        try:
+            if settings.SPORTS.get("UNIX_TIME"):
+                return timezone.make_aware(datetime.fromtimestamp(int(commence_time)))
+            return timezone.make_aware(dateutil.parser.parse(commence_time))
+        except (ValueError, TypeError):
+            return None

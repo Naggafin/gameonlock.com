@@ -20,14 +20,13 @@ from django.apps import apps
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns
+from django.contrib.admin import admin
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
 from django.views.i18n import set_language
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
-
-from sportsbetting.admin import admin
 
 from . import views
 
@@ -49,7 +48,6 @@ urlpatterns = [
     path("i18n/set_language/", set_language, name="set_language"),
     path("cms/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
-    # PayPal and payment URLs
     path("payment/", include("golpayment.urls")),
 ] + internatonalized_patterns
 

@@ -189,11 +189,6 @@ No legal/regulatory compliance currently required.
 
 ---
 
-> This specification will serve as the roadmap for development using GPT-4.1 assistance. Future iterations may be tracked in a changelog or using a project board (e.g., GitHub Projects, Trello, etc.).
-
-
----
-
 ## 10. Implementation Status, Testing & CI/CD
 
 - **Backend:** Core models (Sport, GoverningBody, League, Team, ScheduledGame, BettingLine, Play, PlayPick) implemented and tested.
