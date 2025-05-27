@@ -20,7 +20,7 @@ from django.apps import apps
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns
-from django.contrib.admin import admin
+from django.contrib import admin
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
 from django.views.i18n import set_language

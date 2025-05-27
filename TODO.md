@@ -12,7 +12,7 @@
   - Correct pick removal logic and prevent duplicate picks. [Implemented]
   - Validate bet submission (min 4 picks, no duplicates, min stake). [Implemented]
   - Persist bet slip for unauthenticated users and restore on login. [Implemented]
-  - Remove duplicate markup and optimize transitions in bet-slip.html.
+  - Remove duplicate markup and optimize transitions in bet-slip.html. [Implemented]
 
 - **Celery Tasks**
   - Implement tasks for score syncing, outcome resolution, and admin notifications. [Implemented]
@@ -23,7 +23,7 @@
   - Validate admin data before saving. [Implemented]
   - Add tests for admin import/export and error cases. [Implemented]
 
-- **REST API**
+- **REST API** [Stretch Goal]
   - Implement endpoints: `/api/betting-lines/`, `/api/plays/`, `/api/results/` using DRF.
   - Secure endpoints with authentication and permissions.
   - Add tests for API endpoints and edge cases.

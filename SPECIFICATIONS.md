@@ -137,6 +137,11 @@ No legal/regulatory compliance currently required.
 * Custom branding (logo, palette)
 * Fast, fluid interactivity
 
+### Detailed Frontend Specifications
+
+* **Bet Slip**: Dynamic component for adding/removing picks, calculating potential returns, and submitting plays (AlpineJS for interactivity). Located in `templates/peredion/elements/bet-slip.html` as an HTML fragment for use with `{% include %}` tag.
+* **Dashboard**: User account dashboard for viewing betting history, payouts, and managing settings. Consolidate essential elements from `templates/peredion/dashboard/dashboard-bet-history.html` and `templates/peredion/dashboard/dashboard-transaction-history.html` into `templates/peredion/dashboard/index.html` to reduce the number of pages. `templates/peredion/dashboard/index.html` should extend from `base.html` and eliminate redundant code (e.g., head, navigation, footer). Keep `templates/peredion/dashboard/dashboard-settings.html` as an independent page for account settings.
+
 ---
 
 ## 5. Background Jobs
@@ -222,7 +227,7 @@ No legal/regulatory compliance currently required.
 
 ## 11. API Endpoints & Data Flow
 
-- **API Endpoints:**
+- **API Endpoints:** [Stretch Goal]
   - (Planned) `/api/betting-lines/` – List available betting lines
   - (Planned) `/api/plays/` – Submit a play (bet slip)
   - (Planned) `/api/results/` – Get results for completed games

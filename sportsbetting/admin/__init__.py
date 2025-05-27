@@ -2,7 +2,7 @@ import dateutil
 from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path, reverse
-from django.utils.translation import translation_text as _
+from django.utils.translation import gettext_lazy as _
 from import_export.admin import ImportExportModelAdmin
 
 from ..models import (
@@ -15,7 +15,7 @@ from ..models import (
     Sport,
     Team,
 )
-from ..resources import BettingLineResource
+from .resources import BettingLineResource
 from .views import GenerateTicketView
 
 

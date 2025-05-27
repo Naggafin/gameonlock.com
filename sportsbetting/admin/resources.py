@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.db.models import Q
 from django.utils import timezone
-from django.utils.translation import translation_text as _
+from django.utils.translation import gettext_lazy as _
 from import_export import fields, resources
 from import_export.widgets import (
     DateTimeWidget,
@@ -14,7 +14,7 @@ from import_export.widgets import (
     Widget,
 )
 
-from .models import BettingLine, GoverningBody, ScheduledGame, Sport, Team
+from ..models import BettingLine, GoverningBody, ScheduledGame, Sport, Team
 
 logger = logging.getLogger(__name__)
 
@@ -44,30 +44,30 @@ class SpreadIsPickWidget(Widget):
             return False
         return value.lower().startswith("p")
 
-
+# TODO: Are our ForeignKeyWidgets configured correctly? Do they point to the correct field? Moreover, will they "cross-reference" given only a "name" field and not an ID? Refer to models.py to ensure consistency.
 class ScheduledGameResource(resources.ModelResource):
     """Resource for ScheduledGame model, used by BettingLineResource."""
 
     sport = fields.Field(
         column_name="sport",
         attribute="sport",
-        widget=ForeignKeyWidget(Sport, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Sport, field="name"),
     )
     governing_body = fields.Field(
         column_name="governing_body",
         attribute="governing_body",
-        widget=ForeignKeyWidget(GoverningBody, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(GoverningBody, field="name"),
         default=None,
     )
     home_team = fields.Field(
         column_name="home_team",
         attribute="home_team",
-        widget=ForeignKeyWidget(Team, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Team, field="name"),
     )
     away_team = fields.Field(
         column_name="away_team",
         attribute="away_team",
-        widget=ForeignKeyWidget(Team, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Team, field="name"),
     )
     start_datetime = fields.Field(
         column_name="commence_time",
@@ -167,28 +167,28 @@ class BettingLineResource(resources.ModelResource):
     game = fields.Field(
         column_name="game",
         attribute="game",
-        widget=ForeignKeyWidget(ScheduledGame, use_natural_keys=True),
+        widget=ForeignKeyWidget(ScheduledGame),
     )
     sport = fields.Field(
         column_name="sport",
         attribute="game__sport",
-        widget=ForeignKeyWidget(Sport, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Sport, field="name"),
     )
     governing_body = fields.Field(
         column_name="governing_body",
         attribute="game__governing_body",
-        widget=ForeignKeyWidget(GoverningBody, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(GoverningBody, field="name"),
         default=None,
     )
     home_team = fields.Field(
         column_name="home_team",
         attribute="game__home_team",
-        widget=ForeignKeyWidget(Team, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Team, field="name"),
     )
     away_team = fields.Field(
         column_name="away_team",
         attribute="game__away_team",
-        widget=ForeignKeyWidget(Team, field="name", use_natural_keys=True),
+        widget=ForeignKeyWidget(Team, field="name"),
     )
     commence_time = fields.Field(
         column_name="commence_time",

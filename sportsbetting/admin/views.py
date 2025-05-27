@@ -8,12 +8,12 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse
 from django.utils import timezone
-from django.utils.translation import translation_text as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
-from ..forms import GenerateTicketForm
+from .forms import GenerateTicketForm
 from ..models import GoverningBody, ScheduledGame, Sport, Team
-from ..resources import BettingLineResource
+from .resources import BettingLineResource
 
 logger = logging.getLogger(__name__)
 
