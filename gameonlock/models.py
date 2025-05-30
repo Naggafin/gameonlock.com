@@ -12,5 +12,3 @@ class User(AbstractUser):
     alternate_email_address = models.EmailField(
         _("alternate email address"), blank=True, null=True
     )
-
-

@@ -29,7 +29,7 @@
   - Add tests for API endpoints and edge cases.
 
 - **Data Models**
-  - Finalize and validate models (Sport, GoverningBody, League, Team, ScheduledGame, BettingLine, Play, PlayPick).
+  - Finalize and validate models (Sport, GoverningBody, League, Team, Game, BettingLine, Play, Pick).
   - Ensure constraints and run migrations.
 
 ---

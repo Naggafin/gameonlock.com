@@ -7,8 +7,8 @@ from django.conf import settings
 from django.core import mail
 from django.test import TestCase
 
-from .models import BettingLine, Game, Pick, Play, Team
-from .tasks import (
+from sportsbetting.models import BettingLine, Game, Pick, Play, Team
+from sportsbetting.tasks import (
     fetch_and_store_team_data,
     notify_admin_of_issues,
     resolve_play_outcomes,

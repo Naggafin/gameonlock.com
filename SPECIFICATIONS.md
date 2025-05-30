@@ -31,7 +31,7 @@
 - **Pick:** A user's selection on a specific betting line (e.g., Team A to cover the spread).
 - **Ticket:** Uploaded or generated spreadsheet of betting lines for admin management.
 - **GoverningBody:** Organization overseeing a sport or league (e.g., NCAA, NFL).
-- **ScheduledGame:** A game scheduled between two teams, with associated betting lines.
+- **Game:** A game scheduled between two teams, with associated betting lines.
 - **Celery Task:** Background job for data sync, score processing, etc.
 - **Admin Tool:** Any feature or view restricted to admin users (e.g., ticket upload).
 
@@ -196,7 +196,7 @@ No legal/regulatory compliance currently required.
 
 ## 10. Implementation Status, Testing & CI/CD
 
-- **Backend:** Core models (Sport, GoverningBody, League, Team, ScheduledGame, BettingLine, Play, PlayPick) implemented and tested.
+- **Backend:** Core models (Sport, GoverningBody, League, Team, Game, BettingLine, Play, Pick) implemented and tested.
 - **Admin:** Import/export (via django-import-export), ticket upload/generation, and model management in place and tested.
 - **Celery:** Team data sync task implemented; further tasks (score syncing, payout logic) planned.
 - **Security:** All betting and admin views protected by LoginRequiredMixin.
@@ -232,7 +232,7 @@ No legal/regulatory compliance currently required.
   - (Planned) `/api/plays/` – Submit a play (bet slip)
   - (Planned) `/api/results/` – Get results for completed games
 - **Data Flow:**
-  - Admin uploads ticket → System parses and creates ScheduledGames/BettingLines
+  - Admin uploads ticket → System parses and creates Games/BettingLines
   - User selects lines and submits play → Payment processed (PayPal, planned)
   - Celery tasks sync scores and resolve outcomes
   - Admin reviews payouts

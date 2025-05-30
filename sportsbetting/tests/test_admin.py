@@ -7,7 +7,11 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from import_export import resources
 
-from sportsbetting.admin import BettingLineResource, GameResource, TeamResource
+from sportsbetting.admin.resources import (
+    BettingLineResource,
+    GameResource,
+    TeamResource,
+)
 from sportsbetting.models import BettingLine, Game, Team
 
 

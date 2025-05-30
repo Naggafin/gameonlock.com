@@ -16,27 +16,17 @@ SECRET_KEY = "*j_o2lfiu(ajl*z2m!m4*$aqiaulxaqyedwluc6)c2p1)az1%z"
 ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ["*", "127.0.0.1", "localhost"]
 
-INSTALLED_APPS.append("django_fastdev")  # noqa: F405
 
-
-# Remove Silk from dev/test environment to avoid test errors
-if "test" in sys.argv:
+if "test" not in sys.argv and not os.environ.get("PYTEST_CURRENT_TEST"):
+    INSTALLED_APPS.append("django_fastdev")  # noqa: F405
+    INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
+    INSTALLED_APPS.append("nplusone.ext.django")  # noqa: F405
     try:
-        INSTALLED_APPS.remove("silk")
-    except (ValueError, NameError):
-        pass
-    try:
-        INSTALLED_APPS.remove("oscar")
-    except (ValueError, NameError):
-        pass
-    try:
-        INSTALLED_APPS.remove("offer")
-    except (ValueError, NameError):
-        pass
-    try:
-        MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")
-    except (ValueError, NameError):
-        pass
+        index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
+    except ValueError:
+        index = 0
+    MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
+    MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")  # noqa: F405
 
 
 # Database
@@ -115,33 +105,13 @@ HAYSTACK_CONNECTIONS = {
 }
 
 
-# Debug Toolbar settings
-
-if "test" not in sys.argv and not os.environ.get("PYTEST_CURRENT_TEST"):
-    INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
-    try:
-        index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1  # noqa: F405
-    except ValueError:
-        index = 0
-    MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")  # noqa: F405
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
-    }
-else:
-    # Remove debug_toolbar from test runs if present
-    try:
-        INSTALLED_APPS.remove("debug_toolbar")
-    except (ValueError, NameError):
-        pass
-    try:
-        MIDDLEWARE.remove("debug_toolbar.middleware.DebugToolbarMiddleware")
-    except (ValueError, NameError):
-        pass
+# django-debug-toolbar
+DEBUG_TOOLBAR_CONFIG = {
+    "SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
+}
 
 
 # nplusone
-INSTALLED_APPS.append("nplusone.ext.django")  # noqa: F405
-MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")  # noqa: F405
 NPLUSONE_LOGGER = logging.getLogger("nplusone")
 NPLUSONE_LOG_LEVEL = logging.WARN
 NPLUSONE_RAISE = False

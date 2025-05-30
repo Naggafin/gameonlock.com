@@ -14,7 +14,7 @@ from import_export.widgets import (
     Widget,
 )
 
-from ..models import BettingLine, GoverningBody, ScheduledGame, Sport, Team
+from ..models import BettingLine, Game, GoverningBody, Sport, Team
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +46,8 @@ class SpreadIsPickWidget(Widget):
 
 
 # TODO: Are our ForeignKeyWidgets configured correctly? Do they point to the correct field? Moreover, will they "cross-reference" given only a "name" field and not an ID? Refer to models.py to ensure consistency.
-class ScheduledGameResource(resources.ModelResource):
-    """Resource for ScheduledGame model, used by BettingLineResource."""
+class GameResource(resources.ModelResource):
+    """Resource for Game model, used by BettingLineResource."""
 
     sport = fields.Field(
         column_name="sport",
@@ -77,7 +77,7 @@ class ScheduledGameResource(resources.ModelResource):
     )
 
     class Meta:
-        model = ScheduledGame
+        model = Game
         fields = (
             "id",
             "sport",
@@ -163,12 +163,12 @@ class ScheduledGameResource(resources.ModelResource):
 
 
 class BettingLineResource(resources.ModelResource):
-    """Resource for importing/exporting BettingLine data, including ScheduledGame dependencies."""
+    """Resource for importing/exporting BettingLine data, including Game dependencies."""
 
     game = fields.Field(
         column_name="game",
         attribute="game",
-        widget=ForeignKeyWidget(ScheduledGame),
+        widget=ForeignKeyWidget(Game),
     )
     sport = fields.Field(
         column_name="sport",
@@ -260,7 +260,7 @@ class BettingLineResource(resources.ModelResource):
             raise ValidationError(_("Over value is less than the under value."))
 
     def after_import_row(self, row, row_result, **kwargs):
-        """Create or update ScheduledGame and Team before saving BettingLine."""
+        """Create or update Game and Team before saving BettingLine."""
         request = kwargs.get("request")
         sport_name = row.get("sport", "").strip()
         governing_body_name = row.get("governing_body", "").strip()
@@ -268,16 +268,16 @@ class BettingLineResource(resources.ModelResource):
         away_team_name = row.get("away_team", "").strip().title()
         commence_time = row.get("commence_time")
 
-        scheduled_game_data = {
+        game_data = {
             "sport": sport_name,
             "governing_body": governing_body_name,
             "home_team": home_team_name,
             "away_team": away_team_name,
             "commence_time": commence_time,
         }
-        scheduled_game_resource = ScheduledGameResource()
-        dataset = scheduled_game_resource.export(data=[scheduled_game_data])
-        result = scheduled_game_resource.import_data(
+        game_resource = GameResource()
+        dataset = game_resource.export(data=[game_data])
+        result = game_resource.import_data(
             dataset,
             dry_run=False,
             raise_errors=True,
@@ -288,10 +288,10 @@ class BettingLineResource(resources.ModelResource):
         if result.has_errors():
             for error in result.row_errors():
                 raise ValidationError(
-                    _("Failed to create ScheduledGame: %s") % error[1][0].error
+                    _("Failed to create Game: %s") % error[1][0].error
                 )
 
-        scheduled_game = ScheduledGame.objects.get(
+        game = Game.objects.get(
             sport__name__iexact=sport_name,
             governing_body__name__iexact=governing_body_name
             if governing_body_name
@@ -301,7 +301,7 @@ class BettingLineResource(resources.ModelResource):
             start_datetime__date=commence_time.date(),
         )
 
-        row["game"] = scheduled_game
+        row["game"] = game
 
     def after_import(self, dataset, result, using_transactions, dry_run, **kwargs):
         """Log import completion and errors."""

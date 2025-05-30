@@ -3,7 +3,7 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
-from sportsbetting.models import ScheduledGame, Sport
+from sportsbetting.models import Game, Sport
 
 
 class HomePage(Page):
@@ -79,11 +79,9 @@ class HomePage(Page):
     def get_context(self, request):
         context = super().get_context(request)
         context["sports"] = Sport.objects.prefetch_related(
-            "governing_bodies__leagues__schedule_games__betting_lines",
-            "governing_bodies__leagues__schedule_games__betting_lines__home_team",
-            "governing_bodies__leagues__schedule_games__betting_lines__away_team",
+            "governing_bodies__leagues__games__betting_lines",
+            "governing_bodies__leagues__games__betting_lines__home_team",
+            "governing_bodies__leagues__games__betting_lines__away_team",
         ).all()
-        context["scheduled_games"] = ScheduledGame.objects.prefetch_related(
-            "home_team", "away_team"
-        ).all()
+        context["games"] = Game.objects.prefetch_related("home_team", "away_team").all()
         return context

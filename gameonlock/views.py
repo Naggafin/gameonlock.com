@@ -9,12 +9,11 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django_tables2 import SingleTableMixin
 
-from sportsbetting.models import ScheduledGame
+from golpayment.models import Transaction
+from sportsbetting.models import Game, Play
 from sportsbetting.views import SportsBettingContextMixin
 
 from .filters import BetHistoryFilter, TransactionHistoryFilter
-from sportsbetting.models import Play
-from golpayment.models import Transaction
 from .tables import BetHistoryTable, TransactionHistoryTable
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
@@ -39,9 +38,9 @@ class HomeView(SportsBettingContextMixin, TemplateView):
             upcoming_entries[sport] = tmp
         context["upcoming_entries"] = upcoming_entries
         context["upcoming_games"] = SimpleLazyObject(
-            lambda: ScheduledGame.objects.select_related(
-                "home_team", "away_team"
-            ).filter(start_datetime__gt=timezone.now())[:3]
+            lambda: Game.objects.select_related("home_team", "away_team").filter(
+                start_datetime__gt=timezone.now()
+            )[:3]
         )
         return context
 

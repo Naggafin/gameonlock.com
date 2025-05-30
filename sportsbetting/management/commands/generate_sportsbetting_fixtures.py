@@ -10,7 +10,7 @@ from django.utils import timezone
 from faker import Faker
 from slugify import slugify
 
-from sportsbetting.models import GoverningBody, League, PlayPick, Sport, Team
+from sportsbetting.models import GoverningBody, League, Pick, Sport, Team
 
 User = get_user_model()
 
@@ -212,7 +212,7 @@ class Command(BaseCommand):
 				)
 		"""
 
-        # ScheduledGame fixtures
+        # Game fixtures
         games = {}
         for league in leagues.values():
             gb = governing_bodies[league["fields"]["governing_body"]]
@@ -244,7 +244,7 @@ class Command(BaseCommand):
 
                 id = len(games) + 1
                 game = {
-                    "model": "sportsbetting.ScheduledGame",
+                    "model": "sportsbetting.Game",
                     "pk": id,
                     "fields": {
                         "sport": gb["fields"]["sport"],
@@ -285,7 +285,7 @@ class Command(BaseCommand):
             betting_lines[id] = betting_line
             fixtures.append(betting_line)
 
-        # Play and PlayPick fixtures (assuming 2 users exist)
+        # Play and Pick fixtures (assuming 2 users exist)
         plays = {}
         users = User.objects.filter(is_active=True)
         for _ in range(5 * len(users)):
@@ -310,7 +310,7 @@ class Command(BaseCommand):
                 while True:
                     betting_line = random.choice(list(betting_lines.values()))
                     game = games[betting_line["fields"]["game"]]
-                    type = random.choice([t[0] for t in PlayPick.TYPES])
+                    type = random.choice([t[0] for t in Pick.TYPES])
                     pick_key = (play["pk"], betting_line["pk"], type)
                     if pick_key not in unique_pick:
                         break
@@ -318,7 +318,7 @@ class Command(BaseCommand):
 
                 id = len(picks) + 1
                 pick = {
-                    "model": "sportsbetting.PlayPick",
+                    "model": "sportsbetting.Pick",
                     "pk": id,
                     "fields": {
                         "play": play["pk"],
@@ -330,10 +330,10 @@ class Command(BaseCommand):
                                 game["fields"]["away_team"],
                             ]
                         )
-                        if type == PlayPick.TYPES.spread
+                        if type == Pick.TYPES.spread
                         else None,
                         "is_over": random.choice([True, False])
-                        if type == PlayPick.TYPES.under_over
+                        if type == Pick.TYPES.under_over
                         else None,
                     },
                 }

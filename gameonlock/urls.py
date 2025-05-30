@@ -16,7 +16,6 @@ Including another URLconf
 """
 
 from allauth.account.decorators import secure_admin_login
-from django.apps import apps
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns

@@ -5,11 +5,11 @@ from import_export.admin import ImportExportModelAdmin
 
 from ..models import (
     BettingLine,
+    Game,
     GoverningBody,
     League,
+    Pick,
     Play,
-    PlayPick,
-    ScheduledGame,
     Sport,
     Team,
 )
@@ -116,8 +116,8 @@ class BettingLineInline(admin.StackedInline):
     show_change_link = True
 
 
-@admin.register(ScheduledGame)
-class ScheduledGameAdmin(admin.ModelAdmin):
+@admin.register(Game)
+class GameAdmin(admin.ModelAdmin):
     list_display = (
         "matchup",
         "sport",
@@ -217,8 +217,8 @@ class BettingLineAdmin(ImportExportModelAdmin):
     over_under_display.short_description = _("Over/Under")
 
 
-class PlayPickInline(admin.TabularInline):
-    model = PlayPick
+class PickInline(admin.TabularInline):
+    model = Pick
     extra = 0
     fields = ("betting_line", "type", "team", "is_over", "display_pick")
     readonly_fields = ("display_pick",)
@@ -236,7 +236,7 @@ class PlayAdmin(admin.ModelAdmin):
     search_fields = ("user__username", "user__email")
     list_select_related = ("user",)
     list_per_page = 25
-    inlines = [PlayPickInline]
+    inlines = [PickInline]
     date_hierarchy = "placed_datetime"
     fieldsets = (
         (None, {"fields": ("user", "amount", "placed_datetime")}),
@@ -244,8 +244,8 @@ class PlayAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(PlayPick)
-class PlayPickAdmin(admin.ModelAdmin):
+@admin.register(Pick)
+class PickAdmin(admin.ModelAdmin):
     list_display = ("play", "betting_line", "type_display", "team", "is_over_display")
     list_filter = ("type", "is_over", "play__user", "betting_line__game__sport")
     search_fields = (

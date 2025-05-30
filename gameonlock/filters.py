@@ -1,8 +1,7 @@
 from django_filters import CharFilter, DateFilter, FilterSet
 
-from sportsbetting.models import Play
-
 from golpayment.models import Transaction
+from sportsbetting.models import Play
 
 
 # TODO: Ensure that out filter fields map accurate with sportsbetting.models.Play

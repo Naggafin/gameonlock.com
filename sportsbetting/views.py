@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import ListView, TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
-from .forms import PlayForm, PlayPickFormSet
-from .models import BettingLine, Play, PlayPick
+from .forms import PickFormSet, PlayForm
+from .models import BettingLine, Pick, Play
 from .munger import BettingLineMunger
 from .util import calculate_play_stakes
 
@@ -81,14 +81,14 @@ class PlayCreateUpdateView(LoginRequiredMixin, UpdateView):
             return None
 
     def form_valid(self, form):
-        formset = PlayPickFormSet(
+        formset = PickFormSet(
             self.request.POST,
-            queryset=PlayPick.objects.filter(
+            queryset=Pick.objects.filter(
                 play__user_id=self.request.user.pk,
                 betting_line__game__start_datetime__gt=timezone.now(),
             )
             if self.object
-            else PlayPick.objects.none(),
+            else Pick.objects.none(),
         )
 
         if formset.is_valid():

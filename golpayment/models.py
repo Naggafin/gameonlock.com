@@ -1,6 +1,8 @@
 # Create your models here.
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+
+
 class Transaction(models.Model):
     transaction_id = models.CharField(
         max_length=100,
@@ -19,6 +21,6 @@ class Transaction(models.Model):
         related_name="transactions",
         help_text=_("Associated user"),
     )
-    
+
     def __str__(self):
         return f"Transaction {self.transaction_id}"

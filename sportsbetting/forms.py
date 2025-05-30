@@ -4,7 +4,7 @@ from django.forms import inlineformset_factory
 from django.utils.translation import get_language, gettext_lazy as _, to_locale
 from moneyed.l10n import format_money
 
-from .models import Play, PlayPick
+from .models import Pick, Play
 
 
 class PlayForm(forms.ModelForm):
@@ -23,16 +23,16 @@ class PlayForm(forms.ModelForm):
         fields = ["amount"]
 
 
-class PlayPickForm(forms.ModelForm):
+class PickForm(forms.ModelForm):
     class Meta:
-        model = PlayPick
+        model = Pick
         fields = ["betting_line", "type", "team", "is_over"]
 
 
-# Inline formset (Play is the parent, PlayPick is the child)
-PlayPickFormSet = inlineformset_factory(
+# Inline formset (Play is the parent, Pick is the child)
+PickFormSet = inlineformset_factory(
     Play,
-    PlayPick,
-    form=PlayPickForm,
+    Pick,
+    form=PickForm,
     extra=0,
 )

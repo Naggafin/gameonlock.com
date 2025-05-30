@@ -203,25 +203,25 @@ class Player(auto_prefetch.Model):
 """
 
 
-class ScheduledGame(auto_prefetch.Model):
+class Game(auto_prefetch.Model):
     sport = auto_prefetch.ForeignKey(
-        Sport, on_delete=models.CASCADE, related_name="scheduled_games"
+        Sport, on_delete=models.CASCADE, related_name="games"
     )
     governing_body = auto_prefetch.ForeignKey(
-        GoverningBody, on_delete=models.CASCADE, related_name="scheduled_games"
+        GoverningBody, on_delete=models.CASCADE, related_name="games"
     )
     league = auto_prefetch.ForeignKey(
         League,
         on_delete=models.CASCADE,
-        related_name="scheduled_games",
+        related_name="games",
         blank=True,
         null=True,
     )
     home_team = auto_prefetch.ForeignKey(
-        Team, on_delete=models.CASCADE, related_name="scheduled_games_home_teams"
+        Team, on_delete=models.CASCADE, related_name="games_home_teams"
     )
     away_team = auto_prefetch.ForeignKey(
-        Team, on_delete=models.CASCADE, related_name="scheduled_games_away_teams"
+        Team, on_delete=models.CASCADE, related_name="games_away_teams"
     )
     home_team_score = models.IntegerField(blank=True, null=True)
     away_team_score = models.IntegerField(blank=True, null=True)
@@ -230,7 +230,7 @@ class ScheduledGame(auto_prefetch.Model):
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="schedule_game_wins",
+        related_name="game_wins",
     )
     location = models.CharField(max_length=100, blank=True)
     start_datetime = models.DateTimeField()
@@ -244,11 +244,11 @@ class ScheduledGame(auto_prefetch.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=["home_team", "away_team", "start_datetime"],
-                name="unique_scheduled_game",
+                name="unique_game",
             ),
             models.CheckConstraint(
                 condition=~Q(home_team=F("away_team")),
-                name="scheduled_game_home_team_not_away_team",
+                name="game_home_team_not_away_team",
                 violation_error_message="Home and away teams cannot be the same.",
             ),
         ]
@@ -256,7 +256,7 @@ class ScheduledGame(auto_prefetch.Model):
 
 class BettingLine(auto_prefetch.Model):
     game = auto_prefetch.OneToOneField(
-        ScheduledGame,
+        Game,
         on_delete=models.CASCADE,
         related_name="betting_line",
         unique=True,
@@ -329,7 +329,7 @@ class Play(auto_prefetch.Model):
         verbose_name_plural = _("plays")
 
 
-class PlayPick(auto_prefetch.Model):
+class Pick(auto_prefetch.Model):
     TYPES = Choices(
         ("sp", "spread", _("Spread")),
         ("uo", "under_over", _("Under/Over")),
@@ -340,17 +340,17 @@ class PlayPick(auto_prefetch.Model):
         Play, on_delete=models.CASCADE, related_name="picks"
     )
     betting_line = auto_prefetch.ForeignKey(
-        BettingLine, on_delete=models.CASCADE, related_name="play_picks"
+        BettingLine, on_delete=models.CASCADE, related_name="picks"
     )
     type = models.CharField(max_length=2, choices=TYPES)
     team = auto_prefetch.ForeignKey(
         Team,
         on_delete=models.SET_NULL,
-        related_name="play_picks",
+        related_name="picks",
         null=True,
         blank=True,
     )
-    # player = auto_prefetch.ForeignKey(Player, on_delete=models.SET_NULL, related_name="play_picks", null=True, blank=True)
+    # player = auto_prefetch.ForeignKey(Player, on_delete=models.SET_NULL, related_name="picks", null=True, blank=True)
     # stat_type = None  # TODO
     # target_value = None  # TODO
     is_over = models.BooleanField(null=True, blank=True)
@@ -426,6 +426,6 @@ class PlayPick(auto_prefetch.Model):
         verbose_name_plural = _("picks")
         constraints = [
             models.UniqueConstraint(
-                name="unique_play_pick", fields=["play", "betting_line", "type"]
+                name="unique_pick", fields=["play", "betting_line", "type"]
             ),
         ]

@@ -1,8 +1,7 @@
 import django_tables2 as tables
 
-from sportsbetting.models import Play
-
 from golpayment.models import Transaction
+from sportsbetting.models import Play
 
 
 # TODO: Ensure that out table fields map accurate with sportsbetting.models.Play

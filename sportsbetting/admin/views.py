@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
-from ..models import GoverningBody, ScheduledGame, Sport, Team
+from ..models import Game, GoverningBody, Sport, Team
 from .forms import GenerateTicketForm
 from .resources import BettingLineResource
 
@@ -107,8 +107,8 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
                         )
                         continue
 
-                    # Create temporary ScheduledGame
-                    scheduled_game, _ = ScheduledGame.objects.get_or_create(
+                    # Create temporary Game
+                    game, _ = Game.objects.get_or_create(
                         sport=sport,
                         governing_body=governing_body,
                         home_team=home_team,
@@ -177,7 +177,7 @@ class GenerateTicketView(LoginRequiredMixin, FormView):
         context.update(
             {
                 "title": _("Generate Ticket"),
-                "opts": ScheduledGame._meta,
+                "opts": Game._meta,
                 "sports": choices,
             }
         )
