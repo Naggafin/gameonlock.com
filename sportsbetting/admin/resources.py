@@ -29,11 +29,11 @@ class SpreadValueWidget(Widget):
             if value.lower().startswith("p"):
                 return int(value[1:])
             return int(value)
-        except ValueError:
+        except ValueError as e:
             raise ValidationError(
                 _("Invalid spread '%s', expected integer or 'P' followed by integer.")
                 % value
-            )
+            ) from e
 
 
 class SpreadIsPickWidget(Widget):
@@ -43,6 +43,7 @@ class SpreadIsPickWidget(Widget):
         if not value:
             return False
         return value.lower().startswith("p")
+
 
 # TODO: Are our ForeignKeyWidgets configured correctly? Do they point to the correct field? Moreover, will they "cross-reference" given only a "name" field and not an ID? Refer to models.py to ensure consistency.
 class ScheduledGameResource(resources.ModelResource):
@@ -120,8 +121,8 @@ class ScheduledGameResource(resources.ModelResource):
 
         try:
             sport = Sport.objects.filter(Q(name__iexact=sport_name)).get()
-        except Sport.DoesNotExist:
-            raise ValidationError(_("Sport '%s' not found.") % sport_name)
+        except Sport.DoesNotExist as e:
+            raise ValidationError(_("Sport '%s' not found.") % sport_name) from e
 
         if not governing_body_name:
             try:
@@ -144,10 +145,10 @@ class ScheduledGameResource(resources.ModelResource):
                 governing_body = GoverningBody.objects.filter(
                     Q(name__iexact=governing_body_name)
                 ).get()
-            except GoverningBody.DoesNotExist:
+            except GoverningBody.DoesNotExist as e:
                 raise ValidationError(
                     _("Governing body '%s' not found.") % governing_body_name
-                )
+                ) from e
 
         home_team_obj, _ = Team.objects.get_or_create(
             name=home_team_name, governing_body=governing_body

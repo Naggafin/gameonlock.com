@@ -107,7 +107,7 @@ class Command(BaseCommand):
                 league_names = LEAGUE_NAMES.copy()
                 for _ in range(2):
                     id = len(leagues) + 1
-                    name = f"{league_names.pop(random.randint(0, len(league_names)-1))} {gb['pk']}"
+                    name = f"{league_names.pop(random.randint(0, len(league_names) - 1))} {gb['pk']}"
                     league = {
                         "model": "sportsbetting.League",
                         "pk": id,

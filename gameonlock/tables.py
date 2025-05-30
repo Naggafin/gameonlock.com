@@ -1,6 +1,11 @@
 import django_tables2 as tables
-from .models import Play, Transaction  # Ensure these models are defined in models.py
 
+from sportsbetting.models import Play
+
+from .models import Transaction
+
+
+# TODO: Ensure that out table fields map accurate with sportsbetting.models.Play
 class BetHistoryTable(tables.Table):
     event = tables.Column()
     bet_slip = tables.Column()
@@ -9,11 +14,21 @@ class BetHistoryTable(tables.Table):
     bet_amount = tables.Column()
     bet_odd = tables.Column()
     status = tables.Column()
+
     class Meta:
         model = Play
-        template_name = 'django_tables2/semantic.html'
-        fields = ['event', 'bet_slip', 'date_time', 'bet_type', 'bet_amount', 'bet_odd', 'status']
+        template_name = "django_tables2/semantic.html"
+        fields = [
+            "event",
+            "bet_slip",
+            "date_time",
+            "bet_type",
+            "bet_amount",
+            "bet_odd",
+            "status",
+        ]
         orderable = True
+
 
 class TransactionHistoryTable(tables.Table):
     transaction_id = tables.Column()
@@ -21,8 +36,9 @@ class TransactionHistoryTable(tables.Table):
     type = tables.Column()
     amount = tables.Column()
     status = tables.Column()
+
     class Meta:
         model = Transaction
-        template_name = 'django_tables2/semantic.html'
-        fields = ['transaction_id', 'date_time', 'type', 'amount', 'status']
+        template_name = "django_tables2/semantic.html"
+        fields = ["transaction_id", "date_time", "type", "amount", "status"]
         orderable = True

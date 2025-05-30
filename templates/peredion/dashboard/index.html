@@ -1,85 +1,98 @@
 {% extends 'base.html' %}
 {% load static i18n %}
-
 {% comment %}
 TODO: Ensure to make comprehensive use of AlpineJS for retaining client state variables (such as total wins, total bets, etc...) that will be given by the server, and utilize AlpineJS to the fullest reasonable extent possible for page reactivity.
 {% endcomment %}
-
 {% block banner %}
-<div class="page-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="page-breadcrumb">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{% url 'home' %}" class="breadcrumb-link">{% trans 'Home' %}</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">{% trans 'Dashboard' %}</li>
-                        </ol>
-                    </nav>
+    <div class="page-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="page-breadcrumb">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item">
+                                    <a href="{% url 'home' %}" class="breadcrumb-link">{% trans 'Home' %}</a>
+                                </li>
+                                <li class="breadcrumb-item active" aria-current="page">{% trans 'Dashboard' %}</li>
+                            </ol>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="bg-white pinside30">
-                    <div class="row align-items-center">
-                        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-                            <h1 class="page-title">{% trans 'Dashboard' %}</h1>
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="bg-white pinside30">
+                        <div class="row align-items-center">
+                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
+                                <h1 class="page-title">{% trans 'Dashboard' %}</h1>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
-
 {% block content %}
-<div class="dashboard-content">
-    <div class="container">
-        <div class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                <div class="dashboard-page">
-                    <div class="dashboard-sidebar">
-                        <button class="btn btn-primary sidebar-toggle-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                            <i class="fa-solid fa-bars"></i>
-                        </button>
-                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                            <div class="offcanvas-header">
-                                <a href="{% url 'home' %}" class="offcanvas-logo">
-                                    <img src="{% static 'peredion/images/logo/mobile-logo.png' %}" alt="">
-                                </a>
-                                <button type="button" class="btn-offcanvas-reset text-reset" data-bs-dismiss="offcanvas" aria-label="Close">
-                                    <i class="fa-solid fa-xmark"></i>
-                                </button>
-                            </div>
-                            <div class="offcanvas-body">
-                                <div class="mainmenu-9">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item">
-                                            <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">
-                                                <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Overview' %}</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'dashboard_referral' %}">
-                                                <i class="fa-solid fa-users fa-lg" style="font-size: 18px;"></i>{% trans 'Referral' %}</a>
-                                        </li>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="{% url 'dashboard_settings' %}">
-                                                <i class="fa-solid fa-gear fa-lg" style="--fa-primary-opacity: 0.4; --fa-secondary-opacity: 1"></i>
+    <div class="dashboard-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="dashboard-page">
+                        <div class="dashboard-sidebar">
+                            <button class="btn btn-primary sidebar-toggle-btn"
+                                    type="button"
+                                    data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasExample"
+                                    aria-controls="offcanvasExample">
+                                <i class="fa-solid fa-bars"></i>
+                            </button>
+                            <div class="offcanvas offcanvas-start"
+                                 tabindex="-1"
+                                 id="offcanvasExample"
+                                 aria-labelledby="offcanvasExampleLabel">
+                                <div class="offcanvas-header">
+                                    <a href="{% url 'home' %}" class="offcanvas-logo">
+                                        <img src="{% static 'peredion/images/logo/mobile-logo.png' %}" alt="">
+                                    </a>
+                                    <button type="button"
+                                            class="btn-offcanvas-reset text-reset"
+                                            data-bs-dismiss="offcanvas"
+                                            aria-label="Close">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </button>
+                                </div>
+                                <div class="offcanvas-body">
+                                    <div class="mainmenu-9">
+                                        <ul class="navbar-nav">
+                                            <li class="nav-item">
+                                                <a class="nav-link active"
+                                                   aria-current="page"
+                                                   href="{% url 'dashboard' %}">
+                                                    <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Overview' %}</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'dashboard_referral' %}">
+                                                    <i class="fa-solid fa-users fa-lg" style="font-size: 18px;"></i>{% trans 'Referral' %}</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link" href="{% url 'dashboard_settings' %}">
+                                                    <i class="fa-solid fa-gear fa-lg"
+                                                       style="--fa-primary-opacity: 0.4;
+                                                              --fa-secondary-opacity: 1"></i>
                                                 {% trans 'Settings' %}</a>
-                                        </li>
-                                    </ul>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="dashboard-main-content">
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="section-block" id="overview">
-                                    <h3 class="section-heading">{% trans 'Overview' %}</h3>
-                                    <div class="row dashboard-stats">
-                                        {% comment %}
+                        <div class="dashboard-main-content">
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="section-block" id="overview">
+                                        <h3 class="section-heading">{% trans 'Overview' %}</h3>
+                                        <div class="row dashboard-stats">
+                                            {% comment %}
                                         <!-- NOTE: This section is unused for now, as we don't maintain account balances at present -->
                                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
                                             <div class="card stat-card">
@@ -94,46 +107,46 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                                 </div>
                                             </div>
                                         </div>
-                                        {% endcomment %}
-                                        
-                                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                                            <div class="card stat-card">
-                                                <div class="card-body">
-                                                    <div class="stat-icon">
-                                                        <i class="fa-solid fa-dice"></i>
-                                                    </div>
-                                                    <div class="stat-content">
-                                                        <h6 class="card-title">{% trans 'Total Bets' %}</h6>
-                                                        <!-- TODO: The <p> below should be populated the user's total number of plays–{{ request.user.plays.count }} -->
-                                                        <p class="card-text"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                                            <div class="card stat-card">
-                                                <div class="card-body">
-                                                    <div class="stat-icon">
-                                                        <i class="fa-solid fa-trophy"></i>
-                                                    </div>
-                                                    <div class="stat-content">
-                                                        <h6 class="card-title">{% trans 'Wins' %}</h6>
-                                                        <!-- TODO: The <p> below should be populated the user's total number of winning plays–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays -->
-                                                        <p class="card-text"></p>
+                                            {% endcomment %}
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                                <div class="card stat-card">
+                                                    <div class="card-body">
+                                                        <div class="stat-icon">
+                                                            <i class="fa-solid fa-dice"></i>
+                                                        </div>
+                                                        <div class="stat-content">
+                                                            <h6 class="card-title">{% trans 'Total Bets' %}</h6>
+                                                            <!-- TODO: The <p> below should be populated the user's total number of plays–{{ request.user.plays.count }} -->
+                                                            <p class="card-text"></p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                                            <div class="card stat-card">
-                                                <div class="card-body">
-                                                    <div class="stat-icon">
-                                                        <i class="fa-solid fa-money-bill-wave"></i>
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                                <div class="card stat-card">
+                                                    <div class="card-body">
+                                                        <div class="stat-icon">
+                                                            <i class="fa-solid fa-trophy"></i>
+                                                        </div>
+                                                        <div class="stat-content">
+                                                            <h6 class="card-title">{% trans 'Wins' %}</h6>
+                                                            <!-- TODO: The <p> below should be populated the user's total number of winning plays–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays -->
+                                                            <p class="card-text"></p>
+                                                        </div>
                                                     </div>
-                                                    <div class="stat-content">
-                                                        <h6 class="card-title">{% trans 'Total Payout' %}</h6>
-                                                        <!-- TODO: The <p> below should be populated the user's total winnings–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays and then summing their 'amount' fields. Ideally this should display as USD.-->
-                                                        <p class="card-text"></p>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                                <div class="card stat-card">
+                                                    <div class="card-body">
+                                                        <div class="stat-icon">
+                                                            <i class="fa-solid fa-money-bill-wave"></i>
+                                                        </div>
+                                                        <div class="stat-content">
+                                                            <h6 class="card-title">{% trans 'Total Payout' %}</h6>
+                                                            <!-- TODO: The <p> below should be populated the user's total winnings–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays and then summing their 'amount' fields. Ideally this should display as USD.-->
+                                                            <p class="card-text"></p>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -141,65 +154,65 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Bet History Section -->
-                        <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="section-block" id="bet-history">
-                                    <h3 class="section-heading">{% trans 'Bet History' %}</h3>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table custom-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">{% trans 'Event' %}</th>
-                                                            <th scope="col">{% trans 'Bet Slip' %}</th>
-                                                            <th scope="col">{% trans 'Date & Time' %}</th>
-                                                            <th scope="col">{% trans 'Bet Type' %}</th>
-                                                            <th scope="col">{% trans 'Bet Amount' %}</th>
-                                                            <th scope="col">{% trans 'Bet Odd' %}</th>
-                                                            <th scope="col">{% trans 'Status' %}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="7" class="text-center">{% trans 'No bet history available.' %}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                            <!-- Bet History Section -->
+                            <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="section-block" id="bet-history">
+                                        <h3 class="section-heading">{% trans 'Bet History' %}</h3>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table custom-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">{% trans 'Event' %}</th>
+                                                                <th scope="col">{% trans 'Bet Slip' %}</th>
+                                                                <th scope="col">{% trans 'Date & Time' %}</th>
+                                                                <th scope="col">{% trans 'Bet Type' %}</th>
+                                                                <th scope="col">{% trans 'Bet Amount' %}</th>
+                                                                <th scope="col">{% trans 'Bet Odd' %}</th>
+                                                                <th scope="col">{% trans 'Status' %}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="7" class="text-center">{% trans 'No bet history available.' %}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Transaction History Section -->
-                        <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
-                        <div class="row">
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <div class="section-block" id="transaction-history">
-                                    <h3 class="section-heading">{% trans 'Transaction History' %}</h3>
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="table-responsive">
-                                                <table class="table custom-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">{% trans 'Transaction ID' %}</th>
-                                                            <th scope="col">{% trans 'Date & Time' %}</th>
-                                                            <th scope="col">{% trans 'Type' %}</th>
-                                                            <th scope="col">{% trans 'Amount' %}</th>
-                                                            <th scope="col">{% trans 'Status' %}</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td colspan="5" class="text-center">{% trans 'No transaction history available.' %}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                            <!-- Transaction History Section -->
+                            <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
+                            <div class="row">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                    <div class="section-block" id="transaction-history">
+                                        <h3 class="section-heading">{% trans 'Transaction History' %}</h3>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table custom-table">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">{% trans 'Transaction ID' %}</th>
+                                                                <th scope="col">{% trans 'Date & Time' %}</th>
+                                                                <th scope="col">{% trans 'Type' %}</th>
+                                                                <th scope="col">{% trans 'Amount' %}</th>
+                                                                <th scope="col">{% trans 'Status' %}</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td colspan="5" class="text-center">{% trans 'No transaction history available.' %}</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -211,9 +224,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
             </div>
         </div>
     </div>
-</div>
 {% endblock %}
-
 {% block js %}
     {{ block.super }}
     <script src="{% static 'js/apexcharts.js' %}" nonce="{{ request.csp_nonce }}"></script>
@@ -329,8 +340,6 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
         chart.render();
     </script>
 {% endblock %}
-
-
 {% comment %}
 <!-- TODO: Below is an extract from dashboard-bet-history.html of a section showing pending bets. Clean it up by removing dummy data from it, then find somewhere appropriate to include this in the main template -->
 <div class="col-xl-12 col-lg-12">
@@ -341,8 +350,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
         </h4>
         <div class="pending-slips-scrollable">
             <div class="pending-slips">
-                <div class="single-bs-card singleBS disabled"
-                     data-match-id="1689493708887">
+                <div class="single-bs-card singleBS disabled" data-match-id="1689493708887">
                     <span class="locked">
                         <i class="fa-solid fa-lock"></i> Closed
                     </span>
@@ -366,9 +374,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                         <span class="team-2">Bodo-Glimt</span>
                     </div>
                     <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Stake  :<span class="stake-number">1<span></span></span>
                         </button>
                         <div class="return-amount">
@@ -386,9 +392,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                             </span>
                             <span class="team-name">Maccabi Haifa</span>
                             <span class="attherate">@</span>
-                            <span class="bet-ratio"
-                                  style="-webkit-text-fill-color: rgb(77, 142, 83);
-                                         font-weight: 500">1.00</span>
+                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(77, 142, 83); font-weight: 500">1.00</span>
                         </div>
                         <button class="slip-dlt">
                             <i class="fa-solid fa-trash-can"></i>
@@ -403,9 +407,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                         <span class="team-2">Red Star Belgrade</span>
                     </div>
                     <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Stake  :<span class="stake-number">1<span></span></span>
                         </button>
                         <div class="return-amount">
@@ -435,9 +437,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                         <span class="team-2">Bodo-Glimt</span>
                     </div>
                     <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Stake  :<span class="stake-number">1<span></span></span>
                         </button>
                         <div class="return-amount">
@@ -455,9 +455,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                             </span>
                             <span class="team-name">draw</span>
                             <span class="attherate">@</span>
-                            <span class="bet-ratio"
-                                  style="-webkit-text-fill-color: rgb(239, 102, 101);
-                                         font-weight: 500">2.44</span>
+                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500">2.44</span>
                         </div>
                         <button class="slip-dlt">
                             <i class="fa-solid fa-trash-can"></i>
@@ -472,9 +470,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                         <span class="team-2">Red Star Belgrade</span>
                     </div>
                     <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Stake  :<span class="stake-number">6<span></span></span>
                         </button>
                         <div class="return-amount">
@@ -492,9 +488,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                             </span>
                             <span class="team-name">draw</span>
                             <span class="attherate">@</span>
-                            <span class="bet-ratio"
-                                  style="-webkit-text-fill-color: rgb(239, 102, 101);
-                                         font-weight: 500">2.44</span>
+                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500">2.44</span>
                         </div>
                         <button class="slip-dlt">
                             <i class="fa-solid fa-trash-can"></i>
@@ -509,9 +503,7 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                         <span class="team-2">Red Star Belgrade</span>
                     </div>
                     <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium"
-                                data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">
+                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             Stake  :<span class="stake-number">6<span></span></span>
                         </button>
                         <div class="return-amount">

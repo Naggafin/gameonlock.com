@@ -1,12 +1,19 @@
-from unittest.mock import patch, MagicMock
-from django.test import TestCase
-from django.core import mail
-from django.conf import settings
 from datetime import datetime
-import requests
+from http import HTTPStatus
+from unittest.mock import MagicMock, patch
 
-from .models import Game, Play, Pick, BettingLine, Team
-from .tasks import sync_game_scores, resolve_play_outcomes, notify_admin_of_issues, fetch_and_store_team_data
+import requests
+from django.conf import settings
+from django.core import mail
+from django.test import TestCase
+
+from .models import BettingLine, Game, Pick, Play, Team
+from .tasks import (
+    fetch_and_store_team_data,
+    notify_admin_of_issues,
+    resolve_play_outcomes,
+    sync_game_scores,
+)
 
 
 class SportsBettingTasksTests(TestCase):
@@ -21,45 +28,34 @@ class SportsBettingTasksTests(TestCase):
             status="scheduled",
             home_score=0,
             away_score=0,
-            start_time=datetime.now()
+            start_time=datetime.now(),
         )
         self.betting_line = BettingLine.objects.create(
-            game=self.game,
-            home_spread=-3.5,
-            over_under=45.5
+            game=self.game, home_spread=-3.5, over_under=45.5
         )
-        self.play = Play.objects.create(
-            user_id=1,
-            amount=10.00,
-            status="pending"
-        )
+        self.play = Play.objects.create(user_id=1, amount=10.00, status="pending")
         self.pick1 = Pick.objects.create(
             play=self.play,
             game=self.game,
             betting_line=self.betting_line,
             pick_type="sp",
-            team=self.team1
+            team=self.team1,
         )
         self.pick2 = Pick.objects.create(
             play=self.play,
             game=self.game,
             betting_line=self.betting_line,
             pick_type="uo",
-            is_over=True
+            is_over=True,
         )
 
-    @patch('requests.get')
+    @patch("requests.get")
     def test_sync_game_scores_success(self, mock_get):
         # Mock API response for successful score sync
         mock_response = MagicMock()
         mock_response.json.return_value = {
             "games": [
-                {
-                    "id": "G1",
-                    "status": "completed",
-                    "home_score": 24,
-                    "away_score": 21
-                }
+                {"id": "G1", "status": "completed", "home_score": 24, "away_score": 21}
             ]
         }
         mock_response.raise_for_status.return_value = None
@@ -75,11 +71,13 @@ class SportsBettingTasksTests(TestCase):
         self.assertEqual(self.game.away_score, 21)
         self.assertIn("Updated scores for 1 games", result)
 
-    @patch('requests.get')
+    @patch("requests.get")
     def test_sync_game_scores_api_failure(self, mock_get):
         # Mock API failure
         mock_response = MagicMock()
-        mock_response.raise_for_status.side_effect = requests.exceptions.RequestException("API Error")
+        mock_response.raise_for_status.side_effect = (
+            requests.exceptions.RequestException("API Error")
+        )
         mock_get.return_value = mock_response
 
         # Run the task
@@ -141,18 +139,20 @@ class SportsBettingTasksTests(TestCase):
         self.assertIn(settings.ADMIN_EMAIL, mail.outbox[0].to)
         self.assertIn(f"Admin notified of {issue_type}", result)
 
-    @patch('requests.get')
+    @patch("requests.get")
     def test_fetch_and_store_team_data_success(self, mock_get):
         # Mock API response for team data
         mock_response = MagicMock()
         mock_response.json.return_value = {
-            "teams": [{
-                "strLogo": "http://example.com/logo.jpg",
-                "strBadge": "http://example.com/badge.jpg",
-                "strWebsite": "http://teamwebsite.com",
-                "strLocation": "Test City",
-                "intFormedYear": "2000"
-            }]
+            "teams": [
+                {
+                    "strLogo": "http://example.com/logo.jpg",
+                    "strBadge": "http://example.com/badge.jpg",
+                    "strWebsite": "http://teamwebsite.com",
+                    "strLocation": "Test City",
+                    "intFormedYear": "2000",
+                }
+            ]
         }
         mock_response.status_code = HTTPStatus.OK
         mock_response.content = b"image data"

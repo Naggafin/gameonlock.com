@@ -309,7 +309,12 @@ class Play(auto_prefetch.Model):
     paid = models.BooleanField(default=False, editable=False)
     won = models.BooleanField(default=False)
     # TODO: Add choices for the status field.
-    status = models.CharField(max_length=50, blank=True, null=True, help_text=_('Status of the play, e.g., \'pending\', \'completed\''))
+    status = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True,
+        help_text=_("Status of the play, e.g., 'pending', 'completed'"),
+    )
 
     def __str__(self):
         return _("Play %(id)d : %(user)s (Paid: %(paid)s; Won: %(won)s)") % {
@@ -424,4 +429,3 @@ class PlayPick(auto_prefetch.Model):
                 name="unique_play_pick", fields=["play", "betting_line", "type"]
             ),
         ]
-

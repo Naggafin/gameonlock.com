@@ -11,8 +11,8 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import FormView
 
-from .forms import GenerateTicketForm
 from ..models import GoverningBody, ScheduledGame, Sport, Team
+from .forms import GenerateTicketForm
 from .resources import BettingLineResource
 
 logger = logging.getLogger(__name__)

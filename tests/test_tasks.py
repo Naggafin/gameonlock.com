@@ -1,6 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 from django.core.files.base import ContentFile
 
 from sportsbetting.models import GoverningBody, Sport, Team
@@ -51,9 +52,6 @@ def test_fetch_and_store_team_data_success(monkeypatch):
 
 @pytest.mark.django_db
 def test_fetch_and_store_team_data_api_failure(monkeypatch, caplog):
-    sport = Sport.objects.create(name="Fail Sport")
-    gb = GoverningBody.objects.create(name="Fail GB", sport=sport, type="pro")
-    team = Team.objects.create(name="Fail Team", downloaded=False, governing_body=gb)
     mock_response = MagicMock()
     mock_response.status_code = 500
     monkeypatch.setattr(
@@ -66,18 +64,13 @@ def test_fetch_and_store_team_data_api_failure(monkeypatch, caplog):
 
 @pytest.mark.django_db
 def test_fetch_and_store_team_data_request_exception(monkeypatch, caplog):
-    sport = Sport.objects.create(name="Except Sport")
-    gb = GoverningBody.objects.create(name="Except GB", sport=sport, type="pro")
-    team = Team.objects.create(name="Except Team", downloaded=False, governing_body=gb)
-    import requests
-
     def raise_exc(*a, **kw):
         raise requests.RequestException("Network error")
 
     monkeypatch.setattr("sportsbetting.tasks.requests.get", raise_exc)
     with patch.object(
         fetch_and_store_team_data, "retry", side_effect=Exception("retry called")
-    ) as mock_retry:
+    ):
         try:
             fetch_and_store_team_data.run()
         except Exception as e:

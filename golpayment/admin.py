@@ -1,5 +1,3 @@
-from django.contrib import admin
-
 # TODO: Fix PayPalIPN import issue (module not found)
 # from paypal.standard.models import PayPalIPN  # Commented out due to ImportError
 

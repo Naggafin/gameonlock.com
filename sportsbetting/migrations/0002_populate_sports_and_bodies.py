@@ -1,3 +1,4 @@
+import os
 import sys
 
 import requests
@@ -7,9 +8,8 @@ from requests.exceptions import ConnectionError
 
 
 def create_sports_fixtures(apps, schema_editor):
-	# TODO: It might not be a good a idea to skip this, even in the testing environment. If possible, every effort should be made to get it working in a testing environment, and fail only with a warning if any errors are encountered.
+    # TODO: It might not be a good a idea to skip this, even in the testing environment. If possible, every effort should be made to get it working in a testing environment, and fail only with a warning if any errors are encountered.
     # Robustly skip in all test environments (pytest, Django test runner, CI)
-    import os
 
     if (
         os.environ.get("PYTEST_CURRENT_TEST")
