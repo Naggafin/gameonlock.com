@@ -38,7 +38,7 @@ internatonalized_patterns = i18n_patterns(
     path(_("pages/"), include(wagtail_urls)),
     path("", views.HomeView.as_view(), name="index"),
     path("sports/", include("sportsbetting.urls")),
-    path("shop/", include(apps.get_app_config("oscar").urls[0])),
+    # path("shop/", include(apps.get_app_config("oscar").urls[0])),
     prefix_default_language=False,
 )
 

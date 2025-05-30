@@ -13,7 +13,8 @@ from sportsbetting.models import ScheduledGame
 from sportsbetting.views import SportsBettingContextMixin
 
 from .filters import BetHistoryFilter, TransactionHistoryFilter
-from .models import Play, Transaction
+from sportsbetting.models import Play
+from golpayment.models import Transaction
 from .tables import BetHistoryTable, TransactionHistoryTable
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5

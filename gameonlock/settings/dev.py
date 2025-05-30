@@ -26,6 +26,14 @@ if "test" in sys.argv:
     except (ValueError, NameError):
         pass
     try:
+        INSTALLED_APPS.remove("oscar")
+    except (ValueError, NameError):
+        pass
+    try:
+        INSTALLED_APPS.remove("offer")
+    except (ValueError, NameError):
+        pass
+    try:
         MIDDLEWARE.remove("silk.middleware.SilkyMiddleware")
     except (ValueError, NameError):
         pass
@@ -100,8 +108,8 @@ HAYSTACK_CONNECTIONS = {
         "ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
         "PATH": BASE_DIR / "whoosh_index",  # noqa: F405
         "EXCLUDED_INDEXES": [
-            "oscar.apps.search.search_indexes.ProductIndex",
-            "oscar_apps.search.search_indexes.CoreProductIndex",
+            # "oscar.apps.search.search_indexes.ProductIndex",
+            # "oscar_apps.search.search_indexes.CoreProductIndex",
         ],
     },
 }

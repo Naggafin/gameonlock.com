@@ -7,6 +7,7 @@ django-debug-toolbar
 git+https://github.com/boxed/django-fastdev.git
 django-guardian
 django-htmx
+django-import-export
 django-localflavor
 # django-machina  # Not used, can be removed if not needed for forum features
 django-model-utils
