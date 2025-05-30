@@ -8,26 +8,12 @@ from sportsbetting.tasks import fetch_and_store_team_data
 
 class CeleryTaskTests(TestCase):
     def setUp(self):
-        from sportsbetting.models import GoverningBody, Sport
+        from sportsbetting.tests.helpers import create_common_test_data
 
-        self.sport = Sport.objects.create(name="Soccer")
-        self.gov_body = GoverningBody.objects.create(
-            sport=self.sport, name="FIFA", type="pro"
-        )
-        self.team = Team.objects.create(
-            name="Test Team", downloaded=False, governing_body=self.gov_body
-        )
-
-    @patch("sportsbetting.tasks.requests.get")
-    def test_fetch_and_store_team_data_success(self, mock_get):
-        mock_response = MagicMock()
-        mock_response.status_code = 200
-        mock_response.content = b"fake image data"
-        mock_get.return_value = mock_response
-
-        fetch_and_store_team_data()
-        self.team.refresh_from_db()
-        self.assertTrue(self.team.downloaded)
+        common_data = create_common_test_data()
+        self.sport = common_data['sport']
+        self.gov_body = common_data['gov_body']
+        self.team = common_data['team1']  # Using team1 from helpers as it's similar
 
     @patch("sportsbetting.tasks.requests.get")
     def test_fetch_and_store_team_data_no_teams(self, mock_get):

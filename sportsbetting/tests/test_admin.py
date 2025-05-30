@@ -25,18 +25,11 @@ class AdminImportExportTests(TestCase):
         self.client.login(username="admin", password="adminpass123")
 
         # Create test data
-        self.team1 = Team.objects.create(name="Team 1", external_id="T1")
-        self.team2 = Team.objects.create(name="Team 2", external_id="T2")
-        self.game = Game.objects.create(
-            external_id="G1",
-            home_team=self.team1,
-            away_team=self.team2,
-            status="scheduled",
-            start_time=datetime.now(),
-        )
-        self.betting_line = BettingLine.objects.create(
-            game=self.game, home_spread=-3.5, over_under=45.5
-        )
+        common_data = create_common_test_data()
+        self.team1 = common_data['team1']
+        self.team2 = common_data['team2']
+        self.game = common_data['game']
+        self.betting_line = common_data['betting_line']
 
     def test_team_export(self):
         # Test exporting team data

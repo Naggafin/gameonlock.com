@@ -99,8 +99,8 @@ def sync_game_scores(self):
     """
     Task to sync game scores from an external API and update the database.
     """
-    api_key = settings.SPORTS_API_KEY
-    url = f"{settings.SPORTS_API_URL}/games"
+    api_key = settings.SPORTS['SPORTS_API_KEY']
+    url = f"{settings.SPORTS['SPORTS_API_PROVIDER_URL']}/games"
     headers = {"Authorization": f"Bearer {api_key}"}
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
     today = datetime.now().strftime("%Y-%m-%d")
@@ -150,7 +150,7 @@ def resolve_play_outcomes():
     """
     Task to resolve outcomes of plays based on game results.
     """
-    unresolved_plays = Play.objects.filter(status="pending", game__status="completed")
+    unresolved_plays = Play.objects.filter(status="pending", picks__betting_line__game__status="completed").distinct()
     resolved_count = 0
 
     for play in unresolved_plays:

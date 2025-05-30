@@ -38,6 +38,7 @@ pip
 psycopg[c]
 psycopg_pool
 pycountry
+pytest
 python-dateutil
 python-dotenv
 python-slugify

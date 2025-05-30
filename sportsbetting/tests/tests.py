@@ -1,6 +1,7 @@
 from datetime import datetime
 from http import HTTPStatus
 from unittest.mock import MagicMock, patch
+from sportsbetting.models import Sport, GoverningBody, Team  # Import necessary models
 
 import requests
 from django.conf import settings
@@ -19,33 +20,32 @@ from sportsbetting.tasks import (
 class SportsBettingTasksTests(TestCase):
     def setUp(self):
         # Setup test data for games and plays
-        self.team1 = Team.objects.create(name="Team 1", external_id="T1")
-        self.team2 = Team.objects.create(name="Team 2", external_id="T2")
+        # First, create necessary related objects
+        sport = Sport.objects.create(name="Test Sport")
+        governing_body = GoverningBody.objects.create(sport=sport, name="Test GB", type="pro")
+        self.team1 = Team.objects.create(name="Team 1", governing_body=governing_body)
+        self.team2 = Team.objects.create(name="Team 2", governing_body=governing_body)
         self.game = Game.objects.create(
-            external_id="G1",
+            sport=sport,
+            governing_body=governing_body,
             home_team=self.team1,
             away_team=self.team2,
-            status="scheduled",
-            home_score=0,
-            away_score=0,
-            start_time=datetime.now(),
+            start_datetime=datetime.now(),
         )
         self.betting_line = BettingLine.objects.create(
-            game=self.game, home_spread=-3.5, over_under=45.5
+            game=self.game, spread=-3.5, over=45.5, under=45.5  # Added under to satisfy constraint
         )
         self.play = Play.objects.create(user_id=1, amount=10.00, status="pending")
         self.pick1 = Pick.objects.create(
             play=self.play,
-            game=self.game,
             betting_line=self.betting_line,
-            pick_type="sp",
+            type="sp",
             team=self.team1,
         )
         self.pick2 = Pick.objects.create(
             play=self.play,
-            game=self.game,
             betting_line=self.betting_line,
-            pick_type="uo",
+            type="uo",
             is_over=True,
         )
 

@@ -19,9 +19,10 @@ def test_fetch_and_store_team_data_no_teams(caplog):
 
 @pytest.mark.django_db
 def test_fetch_and_store_team_data_success(monkeypatch):
-    sport = Sport.objects.create(name="Test Sport")
-    gb = GoverningBody.objects.create(name="Test GB", sport=sport, type="pro")
-    team = Team.objects.create(name="Test Team", downloaded=False, governing_body=gb)
+    common_data = create_common_test_data()
+    sport = common_data['sport']
+    gb = common_data['gov_body']  # Adjusted to match helper key
+    team = common_data['team1']   # Using team1 from helpers as it's similar
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {
