@@ -204,9 +204,6 @@ class Player(auto_prefetch.Model):
 
 
 class Game(auto_prefetch.Model):
-    sport = auto_prefetch.ForeignKey(
-        Sport, on_delete=models.CASCADE, related_name="games"
-    )
     governing_body = auto_prefetch.ForeignKey(
         GoverningBody, on_delete=models.CASCADE, related_name="games"
     )
@@ -235,6 +232,7 @@ class Game(auto_prefetch.Model):
     location = models.CharField(max_length=100, blank=True)
     start_datetime = models.DateTimeField()
     is_finished = models.BooleanField(default=False)
+    boxscore = models.CharField(max_length=100, null=True, editable=False)
 
     @cached_property
     def has_started(self):
@@ -245,6 +243,11 @@ class Game(auto_prefetch.Model):
             models.UniqueConstraint(
                 fields=["home_team", "away_team", "start_datetime"],
                 name="unique_game",
+            ),
+            models.UniqueConstraint(
+                fields=["boxscore"],
+                condition=Q(boxscore__isnull=False),
+                name="unique_game_boxscore_when_not_null",
             ),
             models.CheckConstraint(
                 condition=~Q(home_team=F("away_team")),

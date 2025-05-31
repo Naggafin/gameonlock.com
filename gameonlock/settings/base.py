@@ -103,6 +103,8 @@ INSTALLED_APPS = [
     "wagtail.search",
     "wagtail.admin",
     "wagtail",
+    "wagtail_localize",
+    "wagtail_localize.locales",
     # other 3rd party dependencies
     "celery",
     "django_celery_beat",
@@ -307,8 +309,7 @@ LOGGING = {
     },
     "loggers": {
         "django": {
-            # "handlers": ["console", "mail_admins", "file", "telegram"],
-            "handlers": ["console", "mail_admins", "file"],
+            "handlers": ["console", "mail_admins", "file", "telegram"],
             "level": "INFO",
         },
         "django.server": {
@@ -334,7 +335,7 @@ NOTIFY_EMAILS = ["admin@gameonlock.com"]
 SPORTS = {
     "default_ticket_name": "GOL SPORTS TICKET",
     "SPORTS_API_PROVIDER_URL": "https://api.the-odds-api.com/v4/sports",
-    "SPORTS_API_KEY": "5ed47c5e81db044905626ee9bb0ba019",
+    "SPORTS_API_KEY": os.environ.get("SPORTS_API_KEY"),
     "UNIX_TIME": True,
     "ROUND_SPREADS": True,
     "ROUND_TOTALS": True,
@@ -350,6 +351,7 @@ SPORTS = {
 
 
 SITE_VARS = {
+    # TODO: These are locale context variables used on the homepage. Ideally, they should be manageable via Wagtail when the homepage is redone as a Page object, not here.
     "home_page": {
         "about_title": _("About us"),
         "about_subtitle": _("We provide the most reliable & legal betting"),
@@ -418,6 +420,8 @@ OSCAR_GOOGLE_ANALYTICS_ID = None
 # wagtail
 
 WAGTAIL_SITE_NAME = "Game-on-Lock"
+WAGTAIL_I18N_ENABLED = True
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 # WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 
 

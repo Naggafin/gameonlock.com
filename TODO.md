@@ -148,3 +148,9 @@
 
 - Track known issues and technical debt.
 - Maintain changelog and update documentation as features evolve.
+
+---
+
+# TODO: Integrate the below into a structure format like the above TODO task lists
+
+- Add pre-commit hooks

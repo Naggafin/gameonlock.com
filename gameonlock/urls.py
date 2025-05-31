@@ -34,10 +34,11 @@ admin.site.login = secure_admin_login(admin.site.login)
 
 internatonalized_patterns = i18n_patterns(
     path(_("accounts/"), include("allauth.urls")),
+    # path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
     path(_("pages/"), include(wagtail_urls)),
     path("", views.HomeView.as_view(), name="index"),
-    path("sports/", include("sportsbetting.urls")),
-    # path("shop/", include(apps.get_app_config("oscar").urls[0])),
+    path(_("sports/"), include("sportsbetting.urls")),
+    # path(_("shop/"), include(apps.get_app_config("oscar").urls[0])),
     prefix_default_language=False,
 )
 
@@ -51,7 +52,7 @@ urlpatterns = [
 ] + internatonalized_patterns
 
 
-if not settings.DEBUG and "silk" in settings.INSTALLED_APPS:
+if "silk" in settings.INSTALLED_APPS:
     urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))
 
 if settings.DEBUG:

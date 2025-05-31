@@ -5,11 +5,17 @@ import requests
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
+
+from sportsipy.nfl.schedule import Schedule as NFLSchedule
+from sportsipy.nba.schedule import Schedule as NBASchedule
+from sportsipy.mlb.schedule import Schedule as MLBSchedule
+from sportsipy.ncaab.schedule import Schedule as NCAABSchedule
+from sportsipy.ncaaf.schedule import Schedule as NCAAFSchedule
 from django.core.files.base import ContentFile
 from django.core.mail import send_mail
 from slugify import slugify
 
-from .models import Game, Pick, Play, Team
+from .models import Game, Pick, Play, Team, GoverningBody
 
 logger = get_task_logger(__name__)
 
@@ -94,7 +100,51 @@ def download_image(url):
     return None
 
 
-@shared_task(bind=True, max_retries=3)
+@shared_task(max_retries=3,rate_limit='1/m')
+def fetch_and_sync_games():
+    """Fetch and update/create Game data."""
+    gbs = GoverningBody.objects.all()
+    gb_keys = set(gbs.values_list('key', flat=True))
+    gb_map = {
+        'nfl': NFLSchedule,
+        'nba': NBASchedule,
+        'mlb': MLBSchedule,
+        'ncaab': NCAABSchedule,
+        'ncaaf': NCAAFSchedule,
+    }
+
+    for key, schedule in gb_map.items():
+        if key not in gb_keys:
+            continue
+        try:
+            gb = gbs.get(key=key)
+            for game in schedule:
+                if game.result is None:
+                    continue
+                try:
+                    home_team = Team.objects.get_or_create(name=game.home_name, governing_body=gb)[0]
+                    away_team = Team.objects.get_or_create(name=game.away_name, governing_body=gb)[0]
+                    
+                    game = Game.objects.get(
+                        governing_body=gb,
+                        home_team=home_team,
+                        away_team=away_team,
+                        start_datetime__date=game.datetime.date()
+                    )
+                    game.home_team_score = game.home_points
+                    game.away_team_score = game.away_points
+                    game.is_finished = True
+                    game.save()
+                    logger.info(f"Updated scores for {sport} game {game.id}")
+                except Game.DoesNotExist:
+                    logger.warning(f"Game not found: {game.boxscore_index}")
+                except Exception as e:
+                    logger.error(f"Error updating {league} game {game.boxscore_index}: {str(e)}")
+        except Exception as e:
+            logger.error(f"Failed to sync {league} scores: {str(e)}")
+
+
+@shared_task(bind=True, max_retries=3, rate_limit='1/s')
 def sync_game_scores(self):
     """
     Task to sync game scores from an external API and update the database.

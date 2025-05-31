@@ -8,16 +8,6 @@ from requests.exceptions import ConnectionError
 
 
 def create_sports_fixtures(apps, schema_editor):
-    # TODO: It might not be a good a idea to skip this, even in the testing environment. If possible, every effort should be made to get it working in a testing environment, and fail only with a warning if any errors are encountered.
-    # Robustly skip in all test environments (pytest, Django test runner, CI)
-
-    if (
-        os.environ.get("PYTEST_CURRENT_TEST")
-        or any(x in sys.argv for x in ("pytest", "test"))
-        or os.environ.get("CI")
-        or os.environ.get("DJANGO_SETTINGS_MODULE", "").endswith("test")
-    ):
-        return
     Sport = apps.get_model("sportsbetting", "Sport")
     GoverningBody = apps.get_model("sportsbetting", "GoverningBody")
 
@@ -29,9 +19,6 @@ def create_sports_fixtures(apps, schema_editor):
         )
         response.raise_for_status()
         sports_data = response.json()
-    except Exception:
-        # If network request fails, skip network-dependent logic
-        return
     except ConnectionError:
         return
 

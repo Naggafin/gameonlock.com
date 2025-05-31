@@ -52,4 +52,5 @@ sorl-thumbnail
 uv
 Whoosh  # Used when running in dev/testing mode
 wagtail  # Required for CMS (MVP)
+wagtail-localize
 wheel
