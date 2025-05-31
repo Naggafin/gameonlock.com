@@ -16,9 +16,39 @@
                 <div>{{ line.game.start_datetime|date }}</div>
             {% endifchanged %}
             {% with game=line.game %}
-                <div class="single-t-match card mb-3 {% if line.game.is_finished %}finished {% elif line.game.has_started %}match-in-play {% endif %}" data-betting-line="{{ line.pk }}" data-game="{{ line.game.pk }}" x-data="{ bettingLine: '{{ line.pk }}', game: { away_team: '{{ line.game.away_team|escapejs }}', home_team: '{{ line.game.home_team|escapejs }}', away_team_pk: '{{ line.game.away_team.pk }}', home_team_pk: '{{ line.game.home_team.pk }}', spread: '
-                    {% if line.is_pick %}P{% endif %}
-                    {{ line.spread|escapejs }}', over: '{{ line.over|default_if_none:''|escapejs }}', under: '{{ line.under|default_if_none:''|escapejs }}' }, isPickSelected(type, value) { const picks = Alpine.store('betSlip').picks; const pick = picks.find(p => p.betting_line === this.bettingLine); if (!pick) return !value; if (type === 'sp') return pick.type === 'sp' && pick.team === value; if (type === 'uo') return pick.type === 'uo' && pick.is_over === (value === 'true'); return false; }, addPick(type, team, isOver) { const store = Alpine.store('betSlip'); if (team || isOver !== null) { store.addPick(this.bettingLine, type, team, isOver, this.game); } else { store.removePick(this.bettingLine, type); } } }">
+                <div class="single-t-match card mb-3 {% if line.game.is_finished %}finished {% elif line.game.has_started %}match-in-play {% endif %}" data-betting-line="{{ line.pk }}" data-game="{{ line.game.pk }}"
+                    {# djlint:off #}
+                     x-data="{
+                         bettingLine: '{{ line.pk }}',
+                         game: {
+                             away_team: '{{ line.game.away_team|escapejs }}',
+                             home_team: '{{ line.game.home_team|escapejs }}',
+                             away_team_pk: '{{ line.game.away_team.pk }}',
+                             home_team_pk: '{{ line.game.home_team.pk }}',
+                             spread: '{% if line.is_pick %}P{% endif %}{{ line.spread|escapejs }}',
+                             over: '{{ line.over|default_if_none:''|escapejs }}',
+                             under: '{{ line.under|default_if_none:''|escapejs }}'
+                         },
+                         isPickSelected(type, value) {
+                             const store = Alpine.store('betSlip');
+                             if (!store || !store.picks) return !value;
+                             const pick = store.picks.find(p => p.betting_line === this.bettingLine);
+                             if (!pick) return !value;
+                             if (type === 'sp') return pick.type === 'sp' && pick.team === value;
+                             if (type === 'uo') return pick.type === 'uo' && pick.is_over === (value === 'true');
+                             return false;
+                         },
+                         addPick(type, team, isOver) {
+                             const store = Alpine.store('betSlip');
+                             if (!store) return;
+                             if (team || isOver !== null) {
+                                 store.addPick(this.bettingLine, type, team, isOver, this.game);
+                             } else {
+                                 store.removePick(this.bettingLine, type);
+                             }
+                         }
+                     }">
+                    {# djlint:on #}
                     <div class="card-body">
                         <!-- Match Time Row -->
                         <div class="match-time-row row mb-3 text-center">

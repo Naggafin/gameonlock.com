@@ -11,8 +11,8 @@ app.autodiscover_tasks()
 
 # Periodic Task Setup
 app.conf.beat_schedule = {
-	"fetch_team_data_every_hour": {
-		"task": "sportsbetting.tasks.fetch_and_store_team_data",
-		"schedule": crontab(minute=0, hour="*/1"),  # Runs every hour
-	},
+    "fetch_team_data_every_hour": {
+        "task": "sportsbetting.tasks.fetch_and_store_team_data",
+        "schedule": crontab(minute=0, hour="*/1"),  # Runs every hour
+    },
 }
