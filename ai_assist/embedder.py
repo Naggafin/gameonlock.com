@@ -65,13 +65,23 @@ def save_to_cache(key: str, text: str, embedding, model):
         )
 
 
+def batch_generator(iterable, batch_size):
+    batch = []
+    for item in iterable:
+        batch.append(item)
+        if len(batch) == batch_size:
+            yield batch
+            batch = []
+    if batch:
+        yield batch
+
+
 def embed(chunks, batch_size=32):
     if not MODEL_AVAILABLE:
         raise RuntimeError("Models unavailable. Install required packages.")
 
     results = []
-    for i in range(0, len(chunks), batch_size):
-        batch = chunks[i : i + batch_size]
+    for batch in batch_generator(chunks, batch_size):
         for file_path, chunk_data in batch:
             model_name = (
                 "codebert-base"

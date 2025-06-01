@@ -49,8 +49,7 @@ def index_project(project_path, progress_callback=None):
     all_chunks = []
 
     # Scan files with progress
-    file_iterator = scan_project(project_path)
-    file_iterator = tqdm(file_iterator, desc="Scanning files", leave=False)
+    file_iterator = tqdm(scan_project(project_path), desc="Scanning files", leave=False)
 
     for file, chunks in file_iterator:
         for chunk in chunks:
@@ -75,8 +74,7 @@ def index_project_incremental(project_path, progress_callback=None):
     all_chunks = []
 
     # Scan files with progress
-    file_iterator = scan_project(project_path)
-    file_iterator = tqdm(file_iterator, desc="Scanning files", leave=False)
+    file_iterator = tqdm(scan_project(project_path), desc="Scanning files", leave=False)
 
     for file, chunks in file_iterator:
         current_mtime = get_file_mtime(file)
