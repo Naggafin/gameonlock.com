@@ -4,7 +4,7 @@ import pytest
 import requests
 from django.core.files.base import ContentFile
 
-from sportsbetting.models import GoverningBody, Sport, Team
+from sportsbetting.models import Team
 from sportsbetting.tasks import fetch_and_store_team_data
 
 
@@ -20,9 +20,9 @@ def test_fetch_and_store_team_data_no_teams(caplog):
 @pytest.mark.django_db
 def test_fetch_and_store_team_data_success(monkeypatch):
     common_data = create_common_test_data()
-    sport = common_data['sport']
-    gb = common_data['gov_body']  # Adjusted to match helper key
-    team = common_data['team1']   # Using team1 from helpers as it's similar
+    sport = common_data["sport"]
+    gb = common_data["gov_body"]  # Adjusted to match helper key
+    team = common_data["team1"]  # Using team1 from helpers as it's similar
     mock_response = MagicMock()
     mock_response.status_code = 200
     mock_response.json.return_value = {

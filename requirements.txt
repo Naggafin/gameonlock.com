@@ -14,7 +14,7 @@ django-model-utils
 django-money
 # django-oscar  # For future e-commerce/shop features, not used in MVP
 django-paypal  # Required for payment integration (MVP)
-# django-phonenumber-field[phonenumbers]  # Not used, can be removed if not needed for phone number validation
+django-phonenumber-field[phonenumbers]
 django-redis
 django-silk
 django-taggit
@@ -33,7 +33,6 @@ jwt
 nplusone
 parameterized
 pillow
-# pinax-messages  # Not used, can be removed if not needed for messaging features
 pip
 psycopg[c]
 psycopg_pool

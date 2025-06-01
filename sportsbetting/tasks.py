@@ -5,17 +5,16 @@ import requests
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.conf import settings
-
-from sportsipy.nfl.schedule import Schedule as NFLSchedule
-from sportsipy.nba.schedule import Schedule as NBASchedule
-from sportsipy.mlb.schedule import Schedule as MLBSchedule
-from sportsipy.ncaab.schedule import Schedule as NCAABSchedule
-from sportsipy.ncaaf.schedule import Schedule as NCAAFSchedule
 from django.core.files.base import ContentFile
 from django.core.mail import send_mail
 from slugify import slugify
+from sportsipy.mlb.schedule import Schedule as MLBSchedule
+from sportsipy.nba.schedule import Schedule as NBASchedule
+from sportsipy.ncaab.schedule import Schedule as NCAABSchedule
+from sportsipy.ncaaf.schedule import Schedule as NCAAFSchedule
+from sportsipy.nfl.schedule import Schedule as NFLSchedule
 
-from .models import Game, Pick, Play, Team, GoverningBody
+from .models import Game, GoverningBody, Pick, Play, Team
 
 logger = get_task_logger(__name__)
 
@@ -100,17 +99,17 @@ def download_image(url):
     return None
 
 
-@shared_task(max_retries=3,rate_limit='1/m')
+@shared_task(max_retries=3, rate_limit="1/m")
 def fetch_and_sync_games():
     """Fetch and update/create Game data."""
     gbs = GoverningBody.objects.all()
-    gb_keys = set(gbs.values_list('key', flat=True))
+    gb_keys = set(gbs.values_list("key", flat=True))
     gb_map = {
-        'nfl': NFLSchedule,
-        'nba': NBASchedule,
-        'mlb': MLBSchedule,
-        'ncaab': NCAABSchedule,
-        'ncaaf': NCAAFSchedule,
+        "nfl": NFLSchedule,
+        "nba": NBASchedule,
+        "mlb": MLBSchedule,
+        "ncaab": NCAABSchedule,
+        "ncaaf": NCAAFSchedule,
     }
 
     for key, schedule in gb_map.items():
@@ -122,14 +121,18 @@ def fetch_and_sync_games():
                 if game.result is None:
                     continue
                 try:
-                    home_team = Team.objects.get_or_create(name=game.home_name, governing_body=gb)[0]
-                    away_team = Team.objects.get_or_create(name=game.away_name, governing_body=gb)[0]
-                    
+                    home_team = Team.objects.get_or_create(
+                        name=game.home_name, governing_body=gb
+                    )[0]
+                    away_team = Team.objects.get_or_create(
+                        name=game.away_name, governing_body=gb
+                    )[0]
+
                     game = Game.objects.get(
                         governing_body=gb,
                         home_team=home_team,
                         away_team=away_team,
-                        start_datetime__date=game.datetime.date()
+                        start_datetime__date=game.datetime.date(),
                     )
                     game.home_team_score = game.home_points
                     game.away_team_score = game.away_points
@@ -139,17 +142,19 @@ def fetch_and_sync_games():
                 except Game.DoesNotExist:
                     logger.warning(f"Game not found: {game.boxscore_index}")
                 except Exception as e:
-                    logger.error(f"Error updating {league} game {game.boxscore_index}: {str(e)}")
+                    logger.error(
+                        f"Error updating {league} game {game.boxscore_index}: {str(e)}"
+                    )
         except Exception as e:
             logger.error(f"Failed to sync {league} scores: {str(e)}")
 
 
-@shared_task(bind=True, max_retries=3, rate_limit='1/s')
+@shared_task(bind=True, max_retries=3, rate_limit="1/s")
 def sync_game_scores(self):
     """
     Task to sync game scores from an external API and update the database.
     """
-    api_key = settings.SPORTS['SPORTS_API_KEY']
+    api_key = settings.SPORTS["SPORTS_API_KEY"]
     url = f"{settings.SPORTS['SPORTS_API_PROVIDER_URL']}/games"
     headers = {"Authorization": f"Bearer {api_key}"}
     yesterday = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
@@ -200,7 +205,9 @@ def resolve_play_outcomes():
     """
     Task to resolve outcomes of plays based on game results.
     """
-    unresolved_plays = Play.objects.filter(status="pending", picks__betting_line__game__status="completed").distinct()
+    unresolved_plays = Play.objects.filter(
+        status="pending", picks__betting_line__game__status="completed"
+    ).distinct()
     resolved_count = 0
 
     for play in unresolved_plays:

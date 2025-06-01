@@ -1,6 +1,5 @@
 import csv
 import io
-from datetime import datetime
 
 from django.contrib.auth.models import User
 from django.test import Client, TestCase
@@ -26,10 +25,10 @@ class AdminImportExportTests(TestCase):
 
         # Create test data
         common_data = create_common_test_data()
-        self.team1 = common_data['team1']
-        self.team2 = common_data['team2']
-        self.game = common_data['game']
-        self.betting_line = common_data['betting_line']
+        self.team1 = common_data["team1"]
+        self.team2 = common_data["team2"]
+        self.game = common_data["game"]
+        self.betting_line = common_data["betting_line"]
 
     def test_team_export(self):
         # Test exporting team data

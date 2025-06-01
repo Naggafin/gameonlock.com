@@ -1,14 +1,21 @@
 from datetime import datetime
 from http import HTTPStatus
 from unittest.mock import MagicMock, patch
-from sportsbetting.models import Sport, GoverningBody, Team  # Import necessary models
 
 import requests
 from django.conf import settings
 from django.core import mail
 from django.test import TestCase
 
-from sportsbetting.models import BettingLine, Game, Pick, Play, Team
+from sportsbetting.models import (  # Import necessary models
+    BettingLine,
+    Game,
+    GoverningBody,
+    Pick,
+    Play,
+    Sport,
+    Team,
+)
 from sportsbetting.tasks import (
     fetch_and_store_team_data,
     notify_admin_of_issues,
@@ -22,7 +29,9 @@ class SportsBettingTasksTests(TestCase):
         # Setup test data for games and plays
         # First, create necessary related objects
         sport = Sport.objects.create(name="Test Sport")
-        governing_body = GoverningBody.objects.create(sport=sport, name="Test GB", type="pro")
+        governing_body = GoverningBody.objects.create(
+            sport=sport, name="Test GB", type="pro"
+        )
         self.team1 = Team.objects.create(name="Team 1", governing_body=governing_body)
         self.team2 = Team.objects.create(name="Team 2", governing_body=governing_body)
         self.game = Game.objects.create(
@@ -33,7 +42,10 @@ class SportsBettingTasksTests(TestCase):
             start_datetime=datetime.now(),
         )
         self.betting_line = BettingLine.objects.create(
-            game=self.game, spread=-3.5, over=45.5, under=45.5  # Added under to satisfy constraint
+            game=self.game,
+            spread=-3.5,
+            over=45.5,
+            under=45.5,  # Added under to satisfy constraint
         )
         self.play = Play.objects.create(user_id=1, amount=10.00, status="pending")
         self.pick1 = Pick.objects.create(
