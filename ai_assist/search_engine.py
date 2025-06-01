@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from pathlib import Path
 
@@ -6,7 +7,9 @@ from embedder import embed
 from sentence_transformers import CrossEncoder
 from token_counter import count_tokens
 from tqdm import tqdm
-from vector_store import add_chunks, query
+from vector_store import add_chunks, code_collection, text_collection
+
+logger = logging.getLogger(__name__)
 
 DB_PATH = Path(".embed_cache/file_timestamps.db")
 
@@ -64,9 +67,9 @@ def index_project(project_path, progress_callback=None):
         chunk_iterator = tqdm(all_chunks, desc="Embedding chunks", leave=False)
         embeddings = embed(chunk_iterator)
         add_chunks(all_chunks, embeddings)
-        print(f"Indexed {len(all_chunks)} code chunks.")
+        logger.info(f"Indexed {len(all_chunks)} code chunks.")
     else:
-        print("No chunks to index.")
+        logger.info("No chunks to index.")
 
 
 def index_project_incremental(project_path, progress_callback=None):
@@ -92,9 +95,9 @@ def index_project_incremental(project_path, progress_callback=None):
         chunk_iterator = tqdm(all_chunks, desc="Embedding chunks", leave=False)
         embeddings = embed(chunk_iterator)
         add_chunks(all_chunks, embeddings)
-        print(f"Incrementally indexed {len(all_chunks)} code chunks.")
+        logger.info(f"Incrementally indexed {len(all_chunks)} code chunks.")
     else:
-        print("No changes detected.")
+        logger.info("No changes detected.")
 
 
 def context_aggregator(chunks, metadatas, max_tokens=8000):
@@ -119,19 +122,52 @@ def context_aggregator(chunks, metadatas, max_tokens=8000):
 
 def search_code_hybrid(query_text, k=5, max_tokens=8000, metadata_filter=None):
     query_text = " ".join(query_text.lower().split())
-    # Apply metadata filter (e.g., {"type": "class"})
     where_clause = metadata_filter if metadata_filter else None
-    docs, metas = query(query_text, embed, k=k * 2, where=where_clause)
 
-    if not docs:
+    # Embed query using both models and query both collections
+    def embed_query(text):
+        code_emb = embed([text])[0][0]  # CodeBERT embedding
+        text_emb = (
+            embed([text])[0][0]
+            if embed([text])[0][1] == "all-MiniLM-L6-v2"
+            else embed([{"text": text, "metadata": {"path": "dummy.txt"}}])[0][0]
+        )
+        return code_emb, text_emb
+
+    code_emb, text_emb = embed_query(query_text)
+
+    # Query both collections
+    code_results = (
+        code_collection.query(
+            query_embeddings=[code_emb], n_results=k, where=where_clause
+        )
+        if code_collection.count() > 0
+        else {"documents": [[]], "metadatas": [[]]}
+    )
+
+    text_results = (
+        text_collection.query(
+            query_embeddings=[text_emb], n_results=k, where=where_clause
+        )
+        if text_collection.count() > 0
+        else {"documents": [[]], "metadatas": [[]]}
+    )
+
+    # Combine results
+    documents = code_results["documents"][0] + text_results["documents"][0]
+    metadatas = code_results["metadatas"][0] + text_results["metadatas"][0]
+
+    if not documents:
         return {"content": "", "metadata": [], "tokens": 0}
 
     cross_encoder = CrossEncoder("cross-encoder/ms-marco-MiniLM-L-6-v2")
-    pairs = [[query_text, doc] for doc in docs]
+    pairs = [[query_text, doc] for doc in documents]
     scores = cross_encoder.predict(pairs)
 
     ranked = sorted(
-        zip(scores, docs, metas, strict=False), key=lambda x: x[0], reverse=True
+        zip(scores, documents, metadatas, strict=False),
+        key=lambda x: x[0],
+        reverse=True,
     )[:k]
     ranked_docs = [doc for _, doc, _ in ranked]
     ranked_metas = [meta for _, _, meta in ranked]

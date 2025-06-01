@@ -1,6 +1,6 @@
 import logging
 from pathlib import Path
-from typing import Iterable, Union
+from typing import Iterable, Optional, Union
 
 import libcst as cst
 import pathspec
@@ -110,10 +110,10 @@ def load_gitignore_patterns(project_path: Path) -> pathspec.PathSpec:
     return pathspec.PathSpec.from_lines("gitwildmatch", patterns + default_patterns)
 
 
-def scan_project(
-    path: Path, suffixes: Union[str, Iterable[str]] = (".py", ".html", ".md")
-):
-    if isinstance(suffixes, str):
+def scan_project(path: Path, suffixes: Optional[Union[str, Iterable[str]]] = None):
+    if suffixes is None:
+        suffixes = [""]  # Match all files
+    elif isinstance(suffixes, str):
         suffixes = [suffixes]
 
     # Load .gitignore patterns

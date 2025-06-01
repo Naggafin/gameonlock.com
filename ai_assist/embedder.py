@@ -5,7 +5,44 @@ from hashlib import md5
 from pathlib import Path
 from sqlite3 import OperationalError
 
+import magic
+from pygments.lexers import guess_lexer
+from pygments.util import ClassNotFound
+
 logger = logging.getLogger(__name__)
+
+# Common code-related MIME type prefixes
+CODE_MIME_PREFIXES = ("text/x-", "application/x-")
+
+# Known file extensions for source code (extend as needed)
+KNOWN_CODE_EXTENSIONS = {
+    ".py",
+    ".js",
+    ".ts",
+    ".java",
+    ".c",
+    ".cpp",
+    ".cs",
+    ".rb",
+    ".go",
+    ".php",
+    ".rs",
+    ".swift",
+    ".kt",
+    ".kts",
+    ".sh",
+    ".pl",
+    ".r",
+    ".lua",
+    ".sql",
+    ".scala",
+    ".html",
+    ".css",
+    ".json",
+    ".xml",
+    ".yml",
+    ".yaml",
+}
 
 DB_PATH = Path(".embed_cache/code_embeddings.db")
 DB_PATH.parent.mkdir(exist_ok=True)
@@ -76,19 +113,49 @@ def batch_generator(iterable, batch_size):
         yield batch
 
 
+def is_probably_code(file_path: Path, mime_detector) -> bool:
+    try:
+        mime_type = mime_detector.from_file(str(file_path))
+
+        # 1. MIME type check
+        if mime_type.startswith(CODE_MIME_PREFIXES):
+            return True
+
+        # 2. Extension-based fallback
+        if file_path.suffix.lower() in KNOWN_CODE_EXTENSIONS:
+            return True
+
+        # 3. Pygments lexer-based detection from file content
+        try:
+            text = file_path.read_text(encoding="utf-8", errors="ignore")
+            guess_lexer(text)
+            return True
+        except ClassNotFound:
+            return False
+
+    except Exception:
+        return False
+
+
 def embed(chunks, batch_size=32):
     if not MODEL_AVAILABLE:
         raise RuntimeError("Models unavailable. Install required packages.")
 
+    mime = magic.Magic(mime=True)
     results = []
+
     for batch in batch_generator(chunks, batch_size):
         for file_path, chunk_data in batch:
             model_name = (
                 "codebert-base"
-                if Path(file_path).suffix in [".py"]
+                if is_probably_code(Path(file_path), mime)
                 else "all-MiniLM-L6-v2"
             )
+
             text = chunk_data["text"]
+            metadata = chunk_data["metadata"]
+            metadata["model"] = model_name
+
             key = get_cache_key(text, model_name)
             cached = load_from_cache(key)
             if cached:

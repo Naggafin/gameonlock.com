@@ -1,10 +1,14 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
 try:
     import tiktoken
 
     TOKENIZER = tiktoken.get_encoding("cl100k_base")
 except ImportError:
     TOKENIZER = None
-    print("Install `tiktoken` for token counting.")
+    logger.error("Install `tiktoken` for token counting.")
 
 
 def count_tokens(text: str) -> int:
