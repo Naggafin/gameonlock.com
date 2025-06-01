@@ -3,6 +3,7 @@ import logging
 import sqlite3
 from hashlib import md5
 from pathlib import Path
+from sqlite3 import OperationalError
 
 logger = logging.getLogger(__name__)
 
@@ -45,12 +46,15 @@ def get_cache_key(text: str, model: str) -> str:
 
 
 def load_from_cache(key: str):
-    with sqlite3.connect(DB_PATH) as conn:
-        cur = conn.execute("SELECT embedding FROM embeddings WHERE id = ?", (key,))
-        row = cur.fetchone()
-        if row:
-            return json.loads(row[0])
-        return None
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            cur = conn.execute("SELECT embedding FROM embeddings WHERE id = ?", (key,))
+            row = cur.fetchone()
+            if row:
+                return json.loads(row[0])
+    except OperationalError:
+        init_db()
+    return None
 
 
 def save_to_cache(key: str, text: str, embedding, model):
@@ -61,17 +65,20 @@ def save_to_cache(key: str, text: str, embedding, model):
         )
 
 
-def embed(texts, batch_size=32):
+def embed(chunks, batch_size=32):
     if not MODEL_AVAILABLE:
         raise RuntimeError("Models unavailable. Install required packages.")
 
     results = []
-    for i in range(0, len(texts), batch_size):
-        batch = texts[i : i + batch_size]
-        for file, text in batch:
+    for i in range(0, len(chunks), batch_size):
+        batch = chunks[i : i + batch_size]
+        for file_path, chunk_data in batch:
             model_name = (
-                "codebert-base" if Path(file).suffix in [".py"] else "all-MiniLM-L6-v2"
+                "codebert-base"
+                if Path(file_path).suffix in [".py"]
+                else "all-MiniLM-L6-v2"
             )
+            text = chunk_data["text"]
             key = get_cache_key(text, model_name)
             cached = load_from_cache(key)
             if cached:

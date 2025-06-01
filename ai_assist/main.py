@@ -25,7 +25,7 @@ def setup_argparse():
     )
     parser.add_argument(
         "--action",
-        choices=["reindex", "full-reindex"],
+        choices=["reindex", "index"],
         default="reindex",
         help="Action to perform: reindex (incremental) or full-reindex (full indexing).",
     )

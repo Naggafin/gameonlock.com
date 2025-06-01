@@ -48,6 +48,7 @@ def index_project(project_path):
     all_chunks = []
     for file, chunks in scan_project(project_path):
         for chunk in chunks:
+            chunk["metadata"]["path"] = str(file)
             all_chunks.append((file, chunk))
         update_cached_mtime(file, get_file_mtime(file))
     embeddings = embed(all_chunks)
@@ -63,10 +64,11 @@ def index_project_incremental(project_path):
         cached_mtime = get_cached_mtime(file)
         if cached_mtime is None or current_mtime > cached_mtime:
             for chunk in chunks:
+                chunk["metadata"]["path"] = str(file)
                 all_chunks.append((file, chunk))
             update_cached_mtime(file, current_mtime)
     if all_chunks:
-        embeddings = embed([chunk for _, chunk in all_chunks])
+        embeddings = embed(all_chunks)
         add_chunks(all_chunks, embeddings)
         print(f"Incrementally indexed {len(all_chunks)} code chunks.")
     else:
@@ -74,7 +76,6 @@ def index_project_incremental(project_path):
 
 
 def context_aggregator(chunks, metadatas, max_tokens=8000):
-    """Summarize chunks, respecting token limits."""
     summary = []
     total_tokens = 0
 
@@ -85,17 +86,20 @@ def context_aggregator(chunks, metadatas, max_tokens=8000):
         path = meta.get("path", "unknown")
         code_type = meta.get("type", "unknown")
         start_line = meta.get("start_line", 1)
-        content = f"File: {path}, Type: {code_type}, Line: {start_line}\n{chunk}\n"
+        end_line = meta.get("end_line", 1)
+        name = meta.get("name", "")
+        content = f"File: {path}, Type: {code_type}, Name: {name}, Lines: {start_line}-{end_line}\n{chunk}\n"
         summary.append(content)
         total_tokens += chunk_tokens
 
     return "\n".join(summary), total_tokens
 
 
-def search_code_hybrid(query_text, k=5, max_tokens=8000):
-    """MCP-compliant search with re-ranking and token limits."""
+def search_code_hybrid(query_text, k=5, max_tokens=8000, metadata_filter=None):
     query_text = " ".join(query_text.lower().split())
-    docs, metas = query(query_text, embed, k=k * 2)
+    # Apply metadata filter (e.g., {"type": "class"})
+    where_clause = metadata_filter if metadata_filter else None
+    docs, metas = query(query_text, embed, k=k * 2, where=where_clause)
 
     if not docs:
         return {"content": "", "metadata": [], "tokens": 0}
@@ -115,7 +119,13 @@ def search_code_hybrid(query_text, k=5, max_tokens=8000):
     return {
         "content": context,
         "metadata": [
-            {"path": m["path"], "type": m["type"], "start_line": m["start_line"]}
+            {
+                "path": m["path"],
+                "type": m["type"],
+                "name": m.get("name", ""),
+                "start_line": m["start_line"],
+                "end_line": m.get("end_line", 1),
+            }
             for m in ranked_metas
         ],
         "tokens": tokens,
