@@ -130,6 +130,9 @@ def is_probably_code(file_path: Path, mime_detector) -> bool:
             text = file_path.read_text(encoding="utf-8", errors="ignore")
             guess_lexer(text)
             return True
+        except UnicodeDecodeError as e:
+            logger.error(f"Can't decode {file_path}: {e}")
+            raise
         except ClassNotFound:
             return False
 

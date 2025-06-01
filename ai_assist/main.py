@@ -3,6 +3,7 @@ import logging
 import os
 from pathlib import Path
 
+import uvicorn
 from search_engine import index_project, index_project_incremental
 from tqdm import tqdm
 
@@ -26,9 +27,20 @@ def setup_argparse():
     )
     parser.add_argument(
         "--action",
-        choices=["reindex", "index"],
+        choices=["reindex", "index", "serve"],
         default="reindex",
-        help="Action to perform: reindex (incremental) or index (full indexing).",
+        help="Action to perform: reindex (incremental), index (full indexing), or serve (run API server).",
+    )
+    parser.add_argument(
+        "--host",
+        default="0.0.0.0",
+        help="Host to bind the server (used with --action serve)",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=5000,
+        help="Port to run the server on (used with --action serve)",
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Enable verbose logging."
@@ -37,7 +49,7 @@ def setup_argparse():
 
 
 def main():
-    """Main entry point for command-line indexing."""
+    """Main entry point for command-line indexing or serving."""
     parser = setup_argparse()
     args = parser.parse_args()
 
@@ -45,10 +57,15 @@ def main():
     if args.verbose:
         logging.getLogger().setLevel(logging.DEBUG)
 
+    if args.action == "serve":
+        logger.info(f"Starting Uvicorn server at http://{args.host}:{args.port}")
+        uvicorn.run("mcp_server.api:app", host=args.host, port=args.port, reload=True)
+        return
+
     logger.info(f"Starting indexing for project at {args.project_path}")
 
     try:
-        # Estimate total files for progress bar (optional, can be slow for large projects)
+        # Estimate total files for progress bar
         total_files = sum(1 for _ in args.project_path.rglob("*") if _.is_file())
 
         with tqdm(
