@@ -5,6 +5,7 @@ from chunker import scan_project
 from embedder import embed
 from sentence_transformers import CrossEncoder
 from token_counter import count_tokens
+from tqdm import tqdm
 from vector_store import add_chunks, query
 
 DB_PATH = Path(".embed_cache/file_timestamps.db")
@@ -43,23 +44,41 @@ def update_cached_mtime(file_path, mtime):
         )
 
 
-def index_project(project_path):
+def index_project(project_path, progress_callback=None):
     init_timestamp_db()
     all_chunks = []
-    for file, chunks in scan_project(project_path):
+
+    # Scan files with progress
+    file_iterator = scan_project(project_path)
+    file_iterator = tqdm(file_iterator, desc="Scanning files", leave=False)
+
+    for file, chunks in file_iterator:
         for chunk in chunks:
             chunk["metadata"]["path"] = str(file)
             all_chunks.append((file, chunk))
         update_cached_mtime(file, get_file_mtime(file))
-    embeddings = embed(all_chunks)
-    add_chunks(all_chunks, embeddings)
-    print(f"Indexed {len(all_chunks)} code chunks.")
+        if progress_callback:
+            progress_callback()
+
+    # Embed chunks with progress
+    if all_chunks:
+        chunk_iterator = tqdm(all_chunks, desc="Embedding chunks", leave=False)
+        embeddings = embed(chunk_iterator)
+        add_chunks(all_chunks, embeddings)
+        print(f"Indexed {len(all_chunks)} code chunks.")
+    else:
+        print("No chunks to index.")
 
 
-def index_project_incremental(project_path):
+def index_project_incremental(project_path, progress_callback=None):
     init_timestamp_db()
     all_chunks = []
-    for file, chunks in scan_project(project_path):
+
+    # Scan files with progress
+    file_iterator = scan_project(project_path)
+    file_iterator = tqdm(file_iterator, desc="Scanning files", leave=False)
+
+    for file, chunks in file_iterator:
         current_mtime = get_file_mtime(file)
         cached_mtime = get_cached_mtime(file)
         if cached_mtime is None or current_mtime > cached_mtime:
@@ -67,8 +86,13 @@ def index_project_incremental(project_path):
                 chunk["metadata"]["path"] = str(file)
                 all_chunks.append((file, chunk))
             update_cached_mtime(file, current_mtime)
+        if progress_callback:
+            progress_callback()
+
+    # Embed chunks with progress
     if all_chunks:
-        embeddings = embed(all_chunks)
+        chunk_iterator = tqdm(all_chunks, desc="Embedding chunks", leave=False)
+        embeddings = embed(chunk_iterator)
         add_chunks(all_chunks, embeddings)
         print(f"Incrementally indexed {len(all_chunks)} code chunks.")
     else:

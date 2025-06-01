@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 
 from search_engine import index_project, index_project_incremental
+from tqdm import tqdm
 
 # MCP-compliant logging
 logging.basicConfig(
@@ -27,7 +28,7 @@ def setup_argparse():
         "--action",
         choices=["reindex", "index"],
         default="reindex",
-        help="Action to perform: reindex (incremental) or full-reindex (full indexing).",
+        help="Action to perform: reindex (incremental) or index (full indexing).",
     )
     parser.add_argument(
         "--verbose", action="store_true", help="Enable verbose logging."
@@ -45,13 +46,26 @@ def main():
         logging.getLogger().setLevel(logging.DEBUG)
 
     logger.info(f"Starting indexing for project at {args.project_path}")
+
     try:
-        if args.action == "reindex":
-            index_project_incremental(args.project_path)
-            logger.info("Incremental indexing completed successfully.")
-        elif args.action == "index":
-            index_project(args.project_path)
-            logger.info("Full indexing completed successfully.")
+        # Estimate total files for progress bar (optional, can be slow for large projects)
+        total_files = sum(1 for _ in args.project_path.rglob("*") if _.is_file())
+
+        with tqdm(
+            total=total_files, desc="Indexing files", disable=args.verbose
+        ) as pbar:
+
+            def progress_callback():
+                pbar.update(1)
+
+            if args.action == "reindex":
+                index_project_incremental(
+                    args.project_path, progress_callback=progress_callback
+                )
+                logger.info("Incremental indexing completed successfully.")
+            elif args.action == "index":
+                index_project(args.project_path, progress_callback=progress_callback)
+                logger.info("Full indexing completed successfully.")
     except Exception as e:
         logger.error(f"Indexing failed: {e}")
         raise
