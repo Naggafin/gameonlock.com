@@ -49,7 +49,7 @@ def main():
         if args.action == "reindex":
             index_project_incremental(args.project_path)
             logger.info("Incremental indexing completed successfully.")
-        elif args.action == "full-reindex":
+        elif args.action == "index":
             index_project(args.project_path)
             logger.info("Full indexing completed successfully.")
     except Exception as e:

@@ -50,7 +50,7 @@ def index_project(project_path):
         for chunk in chunks:
             all_chunks.append((file, chunk))
         update_cached_mtime(file, get_file_mtime(file))
-    embeddings = embed([chunk for _, chunk in all_chunks])
+    embeddings = embed(all_chunks)
     add_chunks(all_chunks, embeddings)
     print(f"Indexed {len(all_chunks)} code chunks.")
 

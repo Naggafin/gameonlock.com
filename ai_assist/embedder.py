@@ -68,9 +68,9 @@ def embed(texts, batch_size=32):
     results = []
     for i in range(0, len(texts), batch_size):
         batch = texts[i : i + batch_size]
-        for text in batch:
+        for file, text in batch:
             model_name = (
-                "codebert-base" if Path(text).suffix in [".py"] else "all-MiniLM-L6-v2"
+                "codebert-base" if Path(file).suffix in [".py"] else "all-MiniLM-L6-v2"
             )
             key = get_cache_key(text, model_name)
             cached = load_from_cache(key)
