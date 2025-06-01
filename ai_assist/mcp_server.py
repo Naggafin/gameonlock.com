@@ -1,13 +1,12 @@
 import logging
 from pathlib import Path
 
+from auth import verify_api_key
+from config import settings
 from fastapi import Depends, FastAPI, HTTPException
 from pydantic import BaseModel
-
-from .auth import verify_api_key
-from .config import settings
-from .search_engine import index_project_incremental, search_code_hybrid
-from .token_counter import count_tokens
+from search_engine import index_project_incremental, search_code_hybrid
+from token_counter import count_tokens
 
 BASE_DIR = Path(settings.project_path)
 

@@ -1,12 +1,11 @@
 import sqlite3
 from pathlib import Path
 
+from chunker import scan_project
+from embedder import embed
 from sentence_transformers import CrossEncoder
-
-from .chunker import scan_project
-from .embedder import embed
-from .token_counter import count_tokens
-from .vector_store import add_chunks, query
+from token_counter import count_tokens
+from vector_store import add_chunks, query
 
 DB_PATH = Path(".embed_cache/file_timestamps.db")
 

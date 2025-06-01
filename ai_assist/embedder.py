@@ -1,7 +1,10 @@
 import json
+import logging
 import sqlite3
 from hashlib import md5
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 
 DB_PATH = Path(".embed_cache/code_embeddings.db")
 DB_PATH.parent.mkdir(exist_ok=True)
@@ -19,7 +22,7 @@ try:
 except ImportError:
     MODEL_AVAILABLE = False
     CODE_TOKENIZER, CODE_MODEL, TEXT_MODEL = None, None, None
-    print(
+    logger.info(
         "Models unavailable. Install `transformers`, `sentence-transformers`, `torch`."
     )
 
