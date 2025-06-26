@@ -8,46 +8,46 @@ import sportsbetting.models
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ("sportsbetting", "0002_populate_sports_and_bodies"),
-    ]
+	dependencies = [
+		("sportsbetting", "0002_populate_sports_and_bodies"),
+	]
 
-    operations = [
-        migrations.AddField(
-            model_name="play",
-            name="status",
-            field=models.CharField(
-                blank=True,
-                help_text="Status of the play, e.g., 'pending', 'completed'",
-                max_length=50,
-                null=True,
-            ),
-        ),
-        migrations.AlterField(
-            model_name="bettingline",
-            name="game",
-            field=auto_prefetch.OneToOneField(
-                on_delete=django.db.models.deletion.CASCADE,
-                related_name="betting_line",
-                to="sportsbetting.game",
-            ),
-        ),
-        migrations.AlterField(
-            model_name="team",
-            name="brand",
-            field=models.ImageField(
-                blank=True,
-                null=True,
-                upload_to=sportsbetting.models.save_uploaded_brands,
-            ),
-        ),
-        migrations.AlterField(
-            model_name="team",
-            name="logo",
-            field=models.ImageField(
-                blank=True,
-                null=True,
-                upload_to=sportsbetting.models.save_uploaded_logos,
-            ),
-        ),
-    ]
+	operations = [
+		migrations.AddField(
+			model_name="play",
+			name="status",
+			field=models.CharField(
+				blank=True,
+				help_text="Status of the play, e.g., 'pending', 'completed'",
+				max_length=50,
+				null=True,
+			),
+		),
+		migrations.AlterField(
+			model_name="bettingline",
+			name="game",
+			field=auto_prefetch.OneToOneField(
+				on_delete=django.db.models.deletion.CASCADE,
+				related_name="betting_line",
+				to="sportsbetting.game",
+			),
+		),
+		migrations.AlterField(
+			model_name="team",
+			name="brand",
+			field=models.ImageField(
+				blank=True,
+				null=True,
+				upload_to=sportsbetting.models.save_uploaded_brands,
+			),
+		),
+		migrations.AlterField(
+			model_name="team",
+			name="logo",
+			field=models.ImageField(
+				blank=True,
+				null=True,
+				upload_to=sportsbetting.models.save_uploaded_logos,
+			),
+		),
+	]

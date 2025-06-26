@@ -6,62 +6,62 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    initial = True
+	initial = True
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+	dependencies = [
+		migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+	]
 
-    operations = [
-        migrations.CreateModel(
-            name="Transaction",
-            fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                (
-                    "transaction_id",
-                    models.CharField(
-                        help_text="Unique identifier for the transaction",
-                        max_length=100,
-                        unique=True,
-                    ),
-                ),
-                (
-                    "date_time",
-                    models.DateTimeField(help_text="Date and time of the transaction"),
-                ),
-                (
-                    "type",
-                    models.CharField(help_text="Type of transaction", max_length=50),
-                ),
-                (
-                    "amount",
-                    models.DecimalField(
-                        decimal_places=2, help_text="Transaction amount", max_digits=10
-                    ),
-                ),
-                (
-                    "status",
-                    models.CharField(
-                        help_text="Status of the transaction", max_length=50
-                    ),
-                ),
-                (
-                    "user",
-                    models.ForeignKey(
-                        help_text="Associated user",
-                        on_delete=django.db.models.deletion.CASCADE,
-                        related_name="transactions",
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
-            ],
-        ),
-    ]
+	operations = [
+		migrations.CreateModel(
+			name="Transaction",
+			fields=[
+				(
+					"id",
+					models.BigAutoField(
+						auto_created=True,
+						primary_key=True,
+						serialize=False,
+						verbose_name="ID",
+					),
+				),
+				(
+					"transaction_id",
+					models.CharField(
+						help_text="Unique identifier for the transaction",
+						max_length=100,
+						unique=True,
+					),
+				),
+				(
+					"date_time",
+					models.DateTimeField(help_text="Date and time of the transaction"),
+				),
+				(
+					"type",
+					models.CharField(help_text="Type of transaction", max_length=50),
+				),
+				(
+					"amount",
+					models.DecimalField(
+						decimal_places=2, help_text="Transaction amount", max_digits=10
+					),
+				),
+				(
+					"status",
+					models.CharField(
+						help_text="Status of the transaction", max_length=50
+					),
+				),
+				(
+					"user",
+					models.ForeignKey(
+						help_text="Associated user",
+						on_delete=django.db.models.deletion.CASCADE,
+						related_name="transactions",
+						to=settings.AUTH_USER_MODEL,
+					),
+				),
+			],
+		),
+	]

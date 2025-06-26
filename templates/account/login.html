@@ -1,51 +1,5 @@
 {% extends 'base.html' %}
-{% load static i18n socialaccount %}
-{% block banner %}
-    <div class="prd-breadcrumb">
-        <div class="brd-shape">
-            <div class="brd-img brd-img-1"
-                 data-aos="fade-right"
-                 data-aos-delay="200"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
-                     alt=""
-                     nonce="{{ request.csp_nonce }}">
-            </div>
-            <div class="brd-img brd-img-2"
-                 data-aos="fade-left"
-                 data-aos-delay="200"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
-                     alt=""
-                     nonce="{{ request.csp_nonce }}">
-            </div>
-        </div>
-        <div class="container">
-            <div class="brd-content">
-                <div data-aos="fade-up"
-                     data-aos-delay="200"
-                     data-aos-duration="500"
-                     data-aos-easing="ease-in">
-                    <span class="sub-title">{% trans "Sign In" %}</span>
-                </div>
-                <div class="page-direction">
-                    <ul>
-                        <li>
-                            <span class="icon"><i class="fa-solid fa-house"></i></span>
-                            <a href="/" class="text">{% trans "Home" %}</a>
-                        </li>
-                        <li>
-                            <span class="icon"><i class="fa-solid fa-caret-right fa-xl"></i></span>
-                            <span class="text">{% trans "Sign In" %}</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+{% load static i18n socialaccount widget_tweaks %}
 {% block content %}
     <div class="sign-in">
         <div class="global-shape"
@@ -76,32 +30,34 @@
                                 {% endif %}
                                 <div class="row">
                                     <div class="col-xl-12">
-                                        <label for="id_login" class="form-label">
+                                        <label for="id_login">
                                             <span>{% trans "Email or Username" %}</span>
                                         </label>
                                         {{ form.login }}
                                     </div>
                                     <div class="col-xl-12">
-                                        <label for="id_password" class="form-label">
+                                        <label for="id_password">
                                             <span>{% trans "Password" %}</span>
                                         </label>
                                         {{ form.password }}
                                     </div>
                                     <div class="col-xl-12">
-                                        <div class="form-check">
-                                            {{ form.remember }}
-                                            <label class="form-check-label" for="id_remember">{% trans "Remember Me" %}</label>
+                                        <div class="d-flex align-items-center ps-2 pb-4">
+                                            {{ form.remember|attr:"style:width: 50px; height: 50px; margin: 0;" }}
+                                            <label for="id_remember" class="ps-3 m-0">
+                                                <span>{% trans "Remember Me" %}</span>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="part-submit">
                                     <button type="submit" class="prd-btn-1">
-                                        {% trans "Sign In" %} <i class="fa-solid fa-arrow-right"></i>
+                                        {% trans "Login" %} <i class="fa-solid fa-arrow-right"></i>
                                     </button>
                                     <p>
                                         {% url 'account_signup' as url %}
                                         {% blocktrans %}
-                                            No account yet in Game-on-Lock?<br />
+                                            No account with <span style="word-break: keep-all;">Game-on-Lock?</span><br />
                                             <a href="{{ url }}" class="reg-link">Register</a> here to sign up.
                                         {% endblocktrans %}
                                     </p>

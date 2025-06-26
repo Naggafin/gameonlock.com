@@ -9,7 +9,7 @@ ignore = ["E501"]
 convention = "pep257"
 
 [tool.ruff.format]
-# indent-style = "tab"
+indent-style = "tab"
 docstring-code-format = true
 
 [tool.djlint]

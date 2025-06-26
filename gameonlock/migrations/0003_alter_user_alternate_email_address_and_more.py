@@ -6,42 +6,42 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ("gameonlock", "0002_alter_user_date_of_birth_alter_user_state"),
-    ]
+	dependencies = [
+		("gameonlock", "0002_alter_user_date_of_birth_alter_user_state"),
+	]
 
-    operations = [
-        migrations.AlterField(
-            model_name="user",
-            name="alternate_email_address",
-            field=models.EmailField(
-                blank=True,
-                max_length=254,
-                null=True,
-                verbose_name="alternate email address",
-            ),
-        ),
-        migrations.AlterField(
-            model_name="user",
-            name="date_of_birth",
-            field=models.DateField(blank=True, null=True, verbose_name="date of birth"),
-        ),
-        migrations.AlterField(
-            model_name="user",
-            name="phone_number",
-            field=phonenumber_field.modelfields.PhoneNumberField(
-                blank=True,
-                max_length=128,
-                null=True,
-                region=None,
-                verbose_name="phone number",
-            ),
-        ),
-        migrations.AlterField(
-            model_name="user",
-            name="state",
-            field=localflavor.us.models.USStateField(
-                blank=True, max_length=2, null=True, verbose_name="state"
-            ),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name="user",
+			name="alternate_email_address",
+			field=models.EmailField(
+				blank=True,
+				max_length=254,
+				null=True,
+				verbose_name="alternate email address",
+			),
+		),
+		migrations.AlterField(
+			model_name="user",
+			name="date_of_birth",
+			field=models.DateField(blank=True, null=True, verbose_name="date of birth"),
+		),
+		migrations.AlterField(
+			model_name="user",
+			name="phone_number",
+			field=phonenumber_field.modelfields.PhoneNumberField(
+				blank=True,
+				max_length=128,
+				null=True,
+				region=None,
+				verbose_name="phone number",
+			),
+		),
+		migrations.AlterField(
+			model_name="user",
+			name="state",
+			field=localflavor.us.models.USStateField(
+				blank=True, max_length=2, null=True, verbose_name="state"
+			),
+		),
+	]

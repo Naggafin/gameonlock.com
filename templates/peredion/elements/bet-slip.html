@@ -1,6 +1,6 @@
 {% load static i18n %}
 {% load sportsbetting_tags %}
-<div class="bet-slip" x-data="betSlip" x-init="init()">
+<div class="bet-slip" x-data="betSlip" x-init="init()" x-cloak>
     <!-- Header -->
     <button class="bet-slip-header"
             @click="toggle()"

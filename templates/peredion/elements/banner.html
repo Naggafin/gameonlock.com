@@ -1,0 +1,40 @@
+{% load static i18n view_breadcrumbs %}
+<div class="prd-breadcrumb">
+    <div class="brd-shape">
+        <div class="brd-img brd-img-1"
+             data-aos="fade-right"
+             data-aos-delay="200"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
+                 alt=""
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="brd-img brd-img-2"
+             data-aos="fade-left"
+             data-aos-delay="200"
+             data-aos-duration="500"
+             data-aos-easing="ease-in">
+            <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
+                 alt=""
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+    </div>
+    <div class="container">
+        <div class="brd-content">
+            <div data-aos="fade-up"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <span class="sub-title">
+                    {% if page %}
+                        {{ page.title }}
+                    {% else %}
+                        {{ title }}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="page-direction">{% render_breadcrumbs %}</div>
+        </div>
+    </div>
+</div>

@@ -32,41 +32,42 @@ from . import views
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)
 
-internatonalized_patterns = i18n_patterns(
-    path(_("accounts/"), include("allauth.urls")),
-    # path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
-    path(_("pages/"), include(wagtail_urls)),
-    path("", views.HomeView.as_view(), name="index"),
-    path(_("sports/"), include("sportsbetting.urls")),
-    # path(_("shop/"), include(apps.get_app_config("oscar").urls[0])),
-    prefix_default_language=False,
+internationalized_patterns = i18n_patterns(
+	path(_("accounts/login/"), views.LoginView.as_view(), name="account_login"),
+	path(_("accounts/"), include("allauth.urls")),
+	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
+	path(_("pages/"), include(wagtail_urls)),
+	path(_("sports/"), include("sportsbetting.urls")),
+	# path(_("shop/"), include(apps.get_app_config("oscar").urls[0])),
+	path("", views.HomeView.as_view(), name="index"),
+	prefix_default_language=False,
 )
 
 urlpatterns = [
-    path("admin/", admin.site.urls),
-    path("csp-report/", views.csp_report_view, name="csp_report"),
-    path("i18n/set_language/", set_language, name="set_language"),
-    path("cms/", include(wagtailadmin_urls)),
-    path("documents/", include(wagtaildocs_urls)),
-    path("payment/", include("golpayment.urls")),
-] + internatonalized_patterns
+	path("admin/", admin.site.urls),
+	path("csp-report/", views.csp_report_view, name="csp_report"),
+	path("i18n/set_language/", set_language, name="set_language"),
+	path("cms/", include(wagtailadmin_urls)),
+	path("documents/", include(wagtaildocs_urls)),
+	path("payment/", include("golpayment.urls")),
+] + internationalized_patterns
 
 
 if "silk" in settings.INSTALLED_APPS:
-    urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))
+	urlpatterns.append(path("silk/", include("silk.urls", namespace="silk")))
 
 if settings.DEBUG:
-    import debug_toolbar
-    from django.conf.urls.static import static
-    from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+	import debug_toolbar
+	from django.conf.urls.static import static
+	from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
-    # Serve static and media files from development server
-    urlpatterns += staticfiles_urlpatterns()
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls)),
-        path("400/", handler400, kwargs={"exception": Exception("Bad request")}),
-        path("403/", handler403, kwargs={"exception": Exception("Forbidden")}),
-        path("404/", handler404, kwargs={"exception": Exception("Page not found")}),
-        path("500/", handler500, kwargs={"exception": Exception("Server error")}),
-    ] + urlpatterns
+	# Serve static and media files from development server
+	urlpatterns += staticfiles_urlpatterns()
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+	urlpatterns = [
+		path("__debug__/", include(debug_toolbar.urls)),
+		path("400/", handler400, kwargs={"exception": Exception("Bad request")}),
+		path("403/", handler403, kwargs={"exception": Exception("Forbidden")}),
+		path("404/", handler404, kwargs={"exception": Exception("Page not found")}),
+		path("500/", handler500, kwargs={"exception": Exception("Server error")}),
+	] + urlpatterns

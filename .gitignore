@@ -98,3 +98,5 @@ local_settings.py
 *.bak
 schema.yml
 fixtures/
+ai_assist/
+code-search-mcp/

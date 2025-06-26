@@ -365,6 +365,11 @@
     opacity: 0.6;
 }
 
+.breadcrumb {
+    --bs-breadcrumb-divider: '\203A';
+    --bs-breadcrumb-divider-color: #fff;
+}
+
 
 /****** peredion overrides *******/
 
@@ -380,6 +385,7 @@
     opacity: 0.7;
     cursor: not-allowed;
 }
+
 
 /* Match Time Row */
 .match-time-row .m-icon {
@@ -405,6 +411,7 @@
         margin: 2px 0;
     }
 }
+
 
 /* Teams Row */
 .teams-row .team-selection .single-bet-place {
@@ -439,6 +446,7 @@
     -webkit-background-clip: text;
     background-image: linear-gradient(144deg, var(--bs-warning) -12%, var(--bs-info) 124%);
 }
+
 
 /* Under/Over Row */
 .under-over-row .single-bet-place {
@@ -475,4 +483,50 @@
         font-size: 13px;
         line-height: 22px;
     }
+}
+
+
+/* Breadcrumnbs */
+.prd-breadcrumb .brd-content .page-direction:after {
+  pointer-events: none;
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  white-space: nowrap;
+  list-style: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+  text-transform: uppercase;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 991.98px) {
+  .prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+    font-size: 13px;
+  }
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item:first-child icon {
+  font-size: 12.5px;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(108.99deg, #FF5176 -21.01%, #FB7A6B 45.45%);
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+  color: #fff;
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item a {
+  color: inherit;
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item .icon {
+  font-size: 13px;
+}
+.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item .text {
+  font-weight: 500;
+  letter-spacing: 0.03em;
 }

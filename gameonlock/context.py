@@ -7,4 +7,4 @@ _cache = TTLCache(maxsize=10000, ttl=datetime.timedelta(days=1).total_seconds())
 
 
 def site_vars(request):
-    return settings.SITE_VARS
+	return settings.SITE_VARS
