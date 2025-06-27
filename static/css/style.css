@@ -366,8 +366,17 @@
 }
 
 .breadcrumb {
-    --bs-breadcrumb-divider: '\203A';
+    --bs-breadcrumb-divider: '\f0da';
     --bs-breadcrumb-divider-color: #fff;
+}
+
+
+.invalid-feedback {
+    display: none;
+}
+.was-validated .invalid-feedback,
+.is-invalid ~ .invalid-feedback {
+    display: block;
 }
 
 
@@ -486,7 +495,24 @@
 }
 
 
-/* Breadcrumnbs */
+/* Forms */
+.poklotto-form .part-form input[type="checkbox"] {
+	width: 50px;
+	height: 50px;
+	margin: 0;
+}
+.poklotto-form .part-form input[type="checkbox"] + label {
+	margin: 0;
+	padding-left: 1rem;
+}
+
+
+/* Breadcrumbs */
+.breadcrumb-item + .breadcrumb-item::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  color: #fff;
+}
 .prd-breadcrumb .brd-content .page-direction:after {
   pointer-events: none;
 }
@@ -499,7 +525,7 @@
   margin-bottom: 0;
   padding-bottom: 0;
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li {
   text-transform: uppercase;
   font-size: 14px;
   display: flex;
@@ -507,26 +533,164 @@
   gap: 8px;
 }
 @media (max-width: 991.98px) {
-  .prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+  .prd-breadcrumb .brd-content .page-direction .breadcrumb li {
     font-size: 13px;
   }
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item:first-child icon {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li:first-child .icon {
   font-size: 12.5px;
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-image: linear-gradient(108.99deg, #FF5176 -21.01%, #FB7A6B 45.45%);
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li {
   color: #fff;
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item a {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li a {
   color: inherit;
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item .icon {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li .icon {
   font-size: 13px;
 }
-.prd-breadcrumb .brd-content .page-direction .breadcrumb .breadcrumb-item .text {
+.prd-breadcrumb .brd-content .page-direction .breadcrumb li .text {
   font-weight: 500;
   letter-spacing: 0.03em;
+}
+
+
+/* Sign up */
+.sign-up .part-form .part-connect-social-info .title-overlap {
+  text-align: center;
+  position: relative;
+  z-index: 2;
+  margin: 34px 0 33px;
+}
+.sign-up .part-form .part-connect-social-info .title-overlap:after {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  transform: translateX(-50%) translateY(-50%);
+  width: 100%;
+  background: linear-gradient(135.89deg, #D03355 -5.11%, #FB7A6B 97.89%);
+  height: 1px;
+  opacity: 0.8;
+  z-index: -2;
+}
+@media (max-width: 1399.98px) {
+  .sign-up .part-form .part-connect-social-info .title-overlap {
+    margin: 24px 0 23px;
+  }
+}
+@media (max-width: 575.98px) {
+  .sign-up .part-form .part-connect-social-info .title-overlap {
+    margin: 24px 0 23px;
+  }
+}
+@media (max-width: 479.98px) {
+  .sign-up .part-form .part-connect-social-info .title-overlap {
+    margin: 21px 0 17px;
+  }
+}
+.sign-up .part-form .part-connect-social-info h4.title {
+  letter-spacing: 0.01em;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(144.14deg, #4D233F -11.44%, #305B9F 123.42%);
+  font-size: 18px;
+  line-height: 23px;
+  font-weight: 600;
+  display: inline-block;
+  padding: 0 20px;
+  margin-bottom: 0;
+  position: relative;
+}
+.sign-up .part-form .part-connect-social-info h4.title:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  z-index: -1;
+}
+.sign-up .part-form .part-connect-social-info ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 0px 12px 19px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  line-height: 50px;
+  font-size: 15px;
+  color: #fff;
+  background-color: #fff;
+  margin-right: 25px;
+  transition: all 0.3s ease-in;
+  position: relative;
+}
+@media (max-width: 575.98px) {
+  .sign-up .part-form .part-connect-social-info ul li a.single-social {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+  }
+}
+@media (max-width: 479.98px) {
+  .sign-up .part-form .part-connect-social-info ul li a.single-social {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 13px;
+    margin-right: 20px;
+  }
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social:after {
+  position: absolute;
+  content: "";
+  left: 2px;
+  right: 2px;
+  top: 2px;
+  bottom: 2px;
+  border: 1px solid rgba(22, 29, 53, 0.4);
+  border-radius: 50%;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-pinterest {
+  color: #bd081c;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-pinterest:hover {
+  background: #bd081c;
+  color: #fff;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-pinterest:after {
+  border-color: rgba(189, 8, 28, 0.4);
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-facebook {
+  color: #3b5999;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-facebook:hover {
+  background: #3b5999;
+  color: #fff;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-facebook:after {
+  border-color: rgba(59, 89, 153, 0.6);
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-twitter {
+  color: #55acee;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-twitter:hover {
+  background: #55acee;
+  color: #fff;
+}
+.sign-up .part-form .part-connect-social-info ul li a.single-social.s-twitter:after {
+  border-color: rgba(85, 172, 238, 0.6);
+}
+.sign-up .part-form .part-connect-social-info ul li:last-child a {
+  margin-right: 0;
 }

@@ -34,6 +34,17 @@
                     {% endif %}
                 </span>
             </div>
+            <h2 class="title"
+                data-aos="fade-up"
+                data-aos-delay="350"
+                data-aos-duration="500"
+                data-aos-easing="ease-in">
+                {% if page %}
+                    {{ page.subtitle|default:'' }}
+                {% else %}
+                    {{ subtitle|default:'' }}
+                {% endif %}
+            </h2>
             <div class="page-direction">{% render_breadcrumbs %}</div>
         </div>
     </div>

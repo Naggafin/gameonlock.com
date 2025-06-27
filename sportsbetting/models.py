@@ -1,5 +1,9 @@
+import logging
+
 import auto_prefetch
 from django.conf import settings
+from django.contrib import messages
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Q
 from django.db.models.functions import Lower
@@ -10,6 +14,8 @@ from djmoney.models.fields import MoneyField
 from djmoney.models.validators import MinMoneyValidator
 from model_utils import Choices
 from slugify import slugify
+
+logger = logging.getLogger(__name__)
 
 
 class Sport(models.Model):

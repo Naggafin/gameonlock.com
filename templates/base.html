@@ -19,7 +19,6 @@
               type="image/x-icon"
               href="{% static 'images/favicon.ico' %}"
               nonce="{{ request.csp_nonce }}">
-        {% block additional_css %}{% endblock %}
         {% block css %}
             <!-- bootstrap -->
             <link rel="stylesheet"

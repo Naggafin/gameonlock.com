@@ -1,0 +1,559 @@
+{% extends 'base.html' %}
+{% load static i18n socialaccount widget_tweaks %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="{% static 'flatpickr/css/flatpickr.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script src="{% static 'flatpickr/js/flatpickr.js' %}"
+            nonce="{{ request.csp_nonce }}"></script>
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('DOMContentLoaded', () => {
+            flatpickr("input[type='date']", {
+                onChange: function(selectedDates, dateStr, instance) {
+                    Alpine.store('registrationProcess').formFields.date_of_birth.value = dateStr;
+                    Alpine.store('registrationProcess').checkAge();
+                }
+            });
+        });
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="sign-up">
+        <div class="global-shape style-3">
+            <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+                 alt="{% trans 'Decorative background shape' %}"
+                 data-aos="fade-left"
+                 data-aos-duration="500"
+                 data-aos-offset="200"
+                 data-aos-easing="ease-in"
+                 data-aos-delay="400"
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="container" x-data="registrationProcess">
+            <div class="row justify-content-center">
+                <div class="col-xl-8 col-lg-9 col-md-11">
+                    <div class="processing-steps"
+                         role="navigation"
+                         aria-label="{% trans 'Sign-up progress steps' %}">
+                        <div class="single-steps first-step"
+                             :class="{ 'current-step': currentStep >= 0 }"
+                             :aria-current="currentStep >= 0 ? 'step' : null"
+                             data-aos="fade-up"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-1.png' %}"
+                                     alt="{% trans 'Step 1: Basic Info' %}"
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Basic Info" %}</span>
+                            </div>
+                        </div>
+                        <div class="arrow-img"
+                             :class="{ 'current-arrow': currentStep >= 1 }"
+                             data-aos="fade-right"
+                             data-aos-delay="150"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-1.png' %}"
+                                 alt="{% trans 'Progress arrow between steps 1 and 2' %}"
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps second-step"
+                             :class="{ 'current-step': currentStep >= 1 }"
+                             :aria-current="currentStep >= 1 ? 'step' : null"
+                             data-aos="fade-up"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-2.png' %}"
+                                     alt="{% trans 'Step 2: Personal Details' %}"
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Personal Details" %}</span>
+                            </div>
+                        </div>
+                        <div class="arrow-img second"
+                             :class="{ 'current-arrow': currentStep >= 2 }"
+                             data-aos="fade-right"
+                             data-aos-delay="200"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-2.png' %}"
+                                 alt="{% trans 'Progress arrow between steps 2 and 3' %}"
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps third-step"
+                             :class="{ 'current-step': currentStep >= 2 }"
+                             :aria-current="currentStep >= 2 ? 'step' : null"
+                             data-aos="fade-up"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-3.png' %}"
+                                     alt="{% trans 'Step 3: Contact Info' %}"
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Contact Info" %}</span>
+                            </div>
+                        </div>
+                        <div class="arrow-img"
+                             :class="{ 'current-arrow': currentStep >= 3 }"
+                             data-aos="fade-right"
+                             data-aos-delay="250"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <img src="{% static 'peredion/images/register/arrow-1.png' %}"
+                                 alt="{% trans 'Progress arrow between steps 3 and 4' %}"
+                                 class="arrow-icon"
+                                 nonce="{{ request.csp_nonce }}">
+                        </div>
+                        <div class="single-steps last-step"
+                             :class="{ 'current-step': currentStep >= 3 }"
+                             :aria-current="currentStep >= 3 ? 'step' : null"
+                             data-aos="fade-up"
+                             data-aos-delay="300"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <div class="part-icon">
+                                <img src="{% static 'peredion/images/register/step-4.png' %}"
+                                     alt="{% trans 'Step 4: Security & Confirmation' %}"
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="step-line-title">{% trans "Security & Confirmation" %}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-xl-10 col-lg-10"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <div class="poklotto-form"
+                         id="poklotto_register_form"
+                         role="form"
+                         aria-label="{% trans 'Sign-up form' %}">
+                        <h3 class="steps-heading-title title" x-text="steps[currentStep].title"></h3>
+                        <div class="part-form">
+                            <form method="post"
+                                  action="{% url 'account_signup' %}"
+                                  :class="{ 'was-validated': submitted }"
+                                  @submit.prevent="submitForm">
+                                {% csrf_token %}
+                                <div x-show="formErrors.length"
+                                     class="alert alert-danger"
+                                     role="alert"
+                                     aria-live="polite">
+                                    <div x-text="formErrors.join(', ')"></div>
+                                </div>
+                                <div class="form-all-step">
+                                    <!-- Step 1: Basic Info -->
+                                    <div class="first-step-form per-step animate__animated active"
+                                         :class="{ 'animate__fadeInRight': currentStep === 0 }"
+                                         x-show="currentStep === 0"
+                                         x-transition>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.username.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.username.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.username.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.username x-on:click="validateStep" x-bind:class="{is-invalid:formFields.username.errors.length}" x-model="formFields.username.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.username.errors.length"
+                                                         x-text="formFields.username.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.email.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.email.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.email.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.email x-on:click="validateStep" x-bind:class="{is-invalid:formFields.email.errors.length}" x-model="formFields.email.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.email.errors.length"
+                                                         x-text="formFields.email.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Step 2: Personal Details -->
+                                    <div class="second-step-form per-step animate__animated"
+                                         :class="{ 'animate__fadeInRight': currentStep === 1 }"
+                                         x-show="currentStep === 1"
+                                         x-transition>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.first_name.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.first_name.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.first_name.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.first_name x-on:click="validateStep" x-bind:class="{is-invalid:formFields.first_name.errors.length}" x-model="formFields.first_name.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.first_name.errors.length"
+                                                         x-text="formFields.first_name.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.last_name.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.last_name.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.last_name.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.last_name x-on:click="validateStep" x-bind:class="{is-invalid:formFields.last_name.errors.length}" x-model="formFields.last_name.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.last_name.errors.length"
+                                                         x-text="formFields.last_name.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.country.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.country.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.country.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.country x-on:change="updateRegions" x-bind:class="{is-invalid:formFields.country.errors.length}" x-model="formFields.country.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.country.errors.length"
+                                                         x-text="formFields.country.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.region.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.region.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.region.label }}'"></span>
+                                                    </label>
+                                                    <select id="{{ form.region.id_for_label }}"
+                                                            name="{{ form.region.html_name }}"
+                                                            class="form-control"
+                                                            x-model="formFields.region.value"
+                                                            @change="validateStep"
+                                                            :class="{is-invalid:formFields.region.errors.length }"
+                                                            aria-describedby="error_label">
+                                                        <option value="">{% trans "Select Region" %}</option>
+                                                        <template x-for="region in formFields.region.choices" :key="region[0]">
+                                                            <option :value="region[0]" x-text="region[1]"></option>
+                                                        </template>
+                                                    </select>
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.region.errors.length"
+                                                         x-text="formFields.region.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.date_of_birth.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.date_of_birth.label }}'"></span>
+                                                    </label>
+                                                    <div class="birth-date-element">
+                                                        {% render_field form.date_of_birth x-on:change="checkAge" x-bind:class="{is-invalid:formFields.date_of_birth.errors.length}" x-model="formFields.date_of_birth.value" aria-describedby=error_label %}
+                                                        <span class="caln-icon" aria-hidden="true">
+                                                            <i class="fa-solid fa-calendars"></i>
+                                                        </span>
+                                                    </div>
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.date_of_birth.errors.length"
+                                                         x-text="formFields.date_of_birth.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Step 3: Contact Info -->
+                                    <div class="third-step-form per-step animate__animated"
+                                         :class="{ 'animate__fadeInRight': currentStep === 2 }"
+                                         x-show="currentStep === 2"
+                                         x-transition>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.phone_number.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.phone_number.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.phone_number.label }} {% trans "(Optional)" %}'"></span>
+                                                    </label>
+                                                    {% render_field form.phone_number x-on:click="validateStep" x-bind:class="{is-invalid:formFields.phone_number.errors.length}" x-model="formFields.phone_number.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.phone_number.errors.length"
+                                                         x-text="formFields.phone_number.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.alternate_email_address.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.alternate_email_address.id_for_label }}"
+                                                           class="form-label">
+                                                        <span x-text="'{{ form.alternate_email_address.label }} {% trans "(Optional)" %}'"></span>
+                                                    </label>
+                                                    {% render_field form.alternate_email_address x-on:click="validateStep" x-bind:class="{is-invalid:formFields.alternate_email_address.errors.length}" x-model="formFields.alternate_email_address.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.alternate_email_address.errors.length"
+                                                         x-text="formFields.alternate_email_address.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Step 4: Security & Confirmation -->
+                                    <div class="fourth-step-form per-step animate__animated"
+                                         :class="{ 'animate__fadeInRight': currentStep === 3 }"
+                                         x-show="currentStep === 3"
+                                         x-transition>
+                                        <div class="row">
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.password1.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.password1.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.password1.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.password1 x-on:input="checkPasswordMatch" x-bind:class="{is-invalid:formFields.password1.errors.length}" x-model="formFields.password1.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.password1.errors.length"
+                                                         x-text="formFields.password1.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                                {% with error_label=form.password2.id_for_label|add:"-error" %}
+                                                    <label for="{{ form.password2.id_for_label }}" class="form-label">
+                                                        <span x-text="'{{ form.password2.label }}'"></span>
+                                                    </label>
+                                                    {% render_field form.password2 x-on:input="checkPasswordMatch" x-bind:class="{is-invalid:formFields.password2.errors.length}" x-model="formFields.password2.value" aria-describedby=error_label %}
+                                                    <div id="{{ error_label }}"
+                                                         class="invalid-feedback"
+                                                         x-show="formFields.password2.errors.length"
+                                                         x-text="formFields.password2.errors.join(', ')"
+                                                         aria-live="polite"></div>
+                                                {% endwith %}
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <div class="agreement-article">
+                                                    <div class="form-check form-check-inline">
+                                                        {% with error_label=form.terms.id_for_label|add:"-error" %}
+                                                            {% render_field form.terms x-on:change="validateStep" x-bind:class="{is-invalid:formFields.terms.errors.length}" class="form-check-input" x-model="formFields.terms.value" aria-describedby=error_label %}
+                                                            <label for="{{ form.terms.id_for_label }}">
+                                                                <span x-text="'{{ form.terms.label|safe }}'"></span>
+                                                            </label>
+                                                            <div id="{{ error_label }}"
+                                                                 class="invalid-feedback"
+                                                                 x-show="formFields.terms.errors.length"
+                                                                 x-text="formFields.terms.errors.join(', ')"
+                                                                 aria-live="polite"></div>
+                                                        {% endwith %}
+                                                    </div>
+                                                    <div class="form-check form-check-inline">
+                                                        {% with error_label=form.age.id_for_label|add:"-error" %}
+                                                            {% render_field form.age x-on:change="validateStep" x-bind:class="{is-invalid:formFields.age.errors.length}" class="form-check-input" x-model="formFields.age.value" aria-describedby=error_label %}
+                                                            <label for="{{ form.age.id_for_label }}">
+                                                                <span x-text="'{{ form.age.label }}'"></span>
+                                                            </label>
+                                                            <div id="{{ error_label }}"
+                                                                 class="invalid-feedback"
+                                                                 x-show="formFields.age.errors.length"
+                                                                 x-text="formFields.age.errors.join(', ')"
+                                                                 aria-live="polite"></div>
+                                                        {% endwith %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-controller">
+                                    <button class="prv-stp-btn"
+                                            :class="{ 'disabled': currentStep === 0 }"
+                                            @click="prevStep"
+                                            type="button"
+                                            aria-label="{% trans 'Previous Step' %}">
+                                        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="prd-btn-1"
+                                            @click="nextStep"
+                                            type="button"
+                                            x-show="currentStep < 3"
+                                            :disabled="!canProceed"
+                                            aria-label="{% trans 'Next Step' %}">
+                                        {% trans "Next Step" %} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="prd-btn-1"
+                                            type="submit"
+                                            x-show="currentStep === 3"
+                                            :disabled="!canSubmit"
+                                            aria-label="{% trans 'Sign Up' %}">
+                                        {% trans "Sign Up" %} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <div class="part-connect-social-info">
+                                <div class="title-overlap">
+                                    <h4 class="title">{% trans "Or Sign Up With" %}</h4>
+                                </div>
+                                <ul>
+                                    <li>
+                                        <a href="{% provider_login_url 'google' %}"
+                                           class="single-social s-pinterest"
+                                           aria-label="{% trans 'Sign up with Google' %}">
+                                            <i class="fa-brands fa-google" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{% provider_login_url 'facebook' %}"
+                                           class="single-social s-facebook"
+                                           aria-label="{% trans 'Sign up with Facebook' %}">
+                                            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                    {% comment %}
+                                    <li>
+                                        <a href="{% provider_login_url 'twitter' %}" class="single-social s-twitter" aria-label="{% trans 'Sign up with Twitter' %}">
+                                            <i class="fa-brands fa-twitter" aria-hidden="true"></i>
+                                        </a>
+                                    </li>
+                                    {% endcomment %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script nonce="{{ request.csp_nonce }}">
+            document.addEventListener('alpine:init', () => {
+                Alpine.data('registrationProcess', () => ({
+                    REGIONS: {{ region_choices|safe }},
+                    currentStep: 0,
+                    submitted: false,
+                    formFields: {
+                        username: { value: '', errors: [{% for error in form.username.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        email: { value: '{{ form.email.value|default_if_none:"" }}', errors: [{% for error in form.email.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        first_name: { value: '{{ form.first_name.value|default_if_none:"" }}', errors: [{% for error in form.first_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        last_name: { value: '{{ form.last_name.value|default_if_none:"" }}', errors: [{% for error in form.last_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        country: { value: '{{ form.country.initial|default:"US" }}', errors: [{% for error in form.country.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        region: { value: '{{ form.region.value|default_if_none:"" }}', choices: {{ region_choices|safe }}['{{ form.country.initial|default:"US" }}'] || [['', 'Select Region']], errors: [{% for error in form.region.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        date_of_birth: { value: '{{ form.date_of_birth.value|default_if_none:"" }}', errors: [{% for error in form.date_of_birth.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        phone_number: { value: '{{ form.phone_number.value|default_if_none:"" }}', errors: [{% for error in form.phone_number.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        alternate_email_address: { value: '{{ form.alternate_email_address.value|default_if_none:"" }}', errors: [{% for error in form.alternate_email_address.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        password1: { value: '', errors: [{% for error in form.password1.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        password2: { value: '', errors: [{% for error in form.password2.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        terms: { value: {{ form.terms.value|default:"false" }}, errors: [{% for error in form.terms.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        age: { value: {{ form.age.value|default:"false" }}, errors: [{% for error in form.age.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] }
+                    },
+                    formErrors: [{% for error in form.non_field_errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}],
+                    steps: [
+                        { title: '{% trans "Basic Info" %}' },
+                        { title: '{% trans "Personal Details" %}' },
+                        { title: '{% trans "Contact Info" %}' },
+                        { title: '{% trans "Security & Confirmation" %}' }
+                    ],
+                    canProceed: false,
+                    canSubmit: false,
+                    init() {
+                        this.validateStep();
+                    },
+                    nextStep() {
+                        if (this.currentStep < 3 && this.canProceed) {
+                            this.currentStep++;
+                            this.validateStep();
+                        }
+                    },
+                    prevStep() {
+                        if (this.currentStep > 0) {
+                            this.currentStep--;
+                            this.validateStep();
+                        }
+                    },
+                    updateRegions() {
+                        this.formFields.region.choices = this.REGIONS[this.formFields.country.value] || [['', 'Select Region']];
+                        this.formFields.region.value = '';
+                        this.validateStep();
+                    },
+                    checkAge() {
+                        if (this.formFields.date_of_birth.value) {
+                            const dob = new Date(this.formFields.date_of_birth.value);
+                            const today = new Date();
+                            let age = today.getFullYear() - dob.getFullYear();
+                            const m = today.getMonth() - dob.getMonth();
+                            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+                                age--;
+                            }
+                            this.formFields.date_of_birth.errors = (age < 18) ? ['{% trans "You must be at least 18 years old to register." %}'] : this.formFields.date_of_birth.value ? [] : ['{% trans "Date of Birth is required." %}'];
+                        } else {
+                            this.formFields.date_of_birth.errors = ['{% trans "Date of Birth is required." %}'];
+                        }
+                    },
+                    checkPasswordMatch() {
+                        if (this.formFields.password1.value && this.formFields.password2.value) {
+                            this.formFields.password2.errors = (this.formFields.password1.value !== this.formFields.password2.value) ? ['{% trans "Passwords do not match." %}'] : this.formFields.password2.value ? [] : ['{% trans "Confirm Password is required." %}'];
+                        }
+                    },
+                    validateStep() {
+                        this.formErrors = this.formErrors.filter(error => !error.includes('Please complete all required fields'));
+                        if (this.currentStep === 0) {
+                            this.formFields.username.errors = this.formFields.username.value ? [] : ['{% trans "Username is required." %}'];
+                            this.formFields.email.errors = this.formFields.email.value ? [] : ['{% trans "Email is required." %}'];
+                            this.canProceed = this.formFields.username.errors.length === 0 && this.formFields.email.errors.length === 0;
+                        } else if (this.currentStep === 1) {
+                            this.formFields.first_name.errors = this.formFields.first_name.value ? [] : ['{% trans "First Name is required." %}'];
+                            this.formFields.last_name.errors = this.formFields.last_name.value ? [] : ['{% trans "Last Name is required." %}'];
+                            this.formFields.country.errors = this.formFields.country.value ? [] : ['{% trans "Country is required." %}'];
+                            this.formFields.region.errors = this.formFields.region.value ? [] : ['{% trans "Region is required." %}'];
+                            this.checkAge();
+                            this.canProceed = this.formFields.first_name.errors.length === 0 && this.formFields.last_name.errors.length === 0 &&
+                                              this.formFields.country.errors.length === 0 && this.formFields.region.errors.length === 0 &&
+                                              this.formFields.date_of_birth.errors.length === 0;
+                        } else if (this.currentStep === 2) {
+                            this.canProceed = true; // All fields optional
+                        } else if (this.currentStep === 3) {
+                            this.formFields.password1.errors = this.formFields.password1.value ? [] : ['{% trans "Password is required." %}'];
+                            this.checkPasswordMatch();
+                            this.formFields.terms.errors = this.formFields.terms.value ? [] : ['{% trans "You must agree to the terms and conditions." %}'];
+                            this.formFields.age.errors = this.formFields.age.value ? [] : ['{% trans "You must confirm you are at least 18 years old." %}'];
+                            this.canProceed = this.formFields.password1.errors.length === 0 && this.formFields.password2.errors.length === 0 &&
+                                              this.formFields.terms.errors.length === 0 && this.formFields.age.errors.length === 0;
+                            this.canSubmit = this.canProceed;
+                        }
+                    },
+                    submitForm(event) {
+                        this.submitted = true;
+                        this.validateStep();
+                        if (this.canSubmit) {
+                            event.target.submit();
+                        } else {
+                            this.formErrors = ['{% trans "Please complete all required fields and confirm terms and age." %}'];
+                            if (this.formFields.password1.value !== this.formFields.password2.value) {
+                                this.formErrors.push('{% trans "Passwords do not match." %}');
+                            }
+                        }
+                    }
+                }));
+            });
+        </script>
+    </div>
+{% endblock %}

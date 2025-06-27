@@ -1,6 +1,10 @@
+import json
 import logging
 
-from allauth.account.views import LoginView as AllauthLoginView
+from allauth.account.views import (
+	LoginView as AllauthLoginView,
+	SignupView as AllauthSignupView,
+)
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -18,6 +22,7 @@ from sportsbetting.models import Game, Play
 from sportsbetting.views import SportsBettingContextMixin
 
 from .filters import BetHistoryFilter, TransactionHistoryFilter
+from .forms import get_all_region_choices
 from .tables import BetHistoryTable, TransactionHistoryTable
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
@@ -63,6 +68,21 @@ class LoginView(BreadcrumbMixin, AllauthLoginView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["title"] = _("Sign in")
+		return context
+
+
+class SignupView(BreadcrumbMixin, AllauthSignupView):
+	@property
+	def crumbs(self):
+		return [
+			('<span class="text">%s</span>' % _("Sign up"), reverse("account_signup"))
+		]
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["title"] = _("Sign up")
+		context["subtitle"] = _("Sign up to create an account")
+		context["region_choices"] = json.dumps(get_all_region_choices())
 		return context
 
 

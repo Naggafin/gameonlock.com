@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static i18n socialaccount widget_tweaks %}
+{% load static i18n socialaccount %}
 {% block content %}
     <div class="sign-in">
         <div class="global-shape"
@@ -43,8 +43,8 @@
                                     </div>
                                     <div class="col-xl-12">
                                         <div class="d-flex align-items-center ps-2 pb-4">
-                                            {{ form.remember|attr:"style:width: 50px; height: 50px; margin: 0;" }}
-                                            <label for="id_remember" class="ps-3 m-0">
+                                            {{ form.remember }}
+                                            <label for="id_remember">
                                                 <span>{% trans "Remember Me" %}</span>
                                             </label>
                                         </div>

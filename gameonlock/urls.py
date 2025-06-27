@@ -32,8 +32,13 @@ from . import views
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)
 
+allauth_urls = [
+	path(_("login/"), views.LoginView.as_view(), name="account_login"),
+	path(_("signup/"), views.SignupView.as_view(), name="account_signup"),
+]
+
 internationalized_patterns = i18n_patterns(
-	path(_("accounts/login/"), views.LoginView.as_view(), name="account_login"),
+	path(_("accounts/"), include((allauth_urls, "custom_allauth"))),
 	path(_("accounts/"), include("allauth.urls")),
 	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
 	path(_("pages/"), include(wagtail_urls)),

@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import logging
 import os
 from pathlib import Path
 
@@ -21,6 +22,7 @@ from csp.constants import (
 	UNSAFE_EVAL,
 	UNSAFE_INLINE,
 )
+from debug_toolbar.settings import PANELS_DEFAULTS
 from django.utils.translation import gettext_lazy as _
 from djmoney.money import Money
 from dotenv import load_dotenv
@@ -105,6 +107,7 @@ INSTALLED_APPS = [
 	"wagtail_localize",
 	"wagtail_localize.locales",
 	# other 3rd party dependencies
+	"cachalot",
 	"celery",
 	"django_celery_beat",
 	"modelcluster",
@@ -122,6 +125,7 @@ INSTALLED_APPS = [
 	"django_htmx",
 	"django_user_agents",
 	"django_extensions",
+	"django_countries",
 	"view_breadcrumbs",
 	"csp",
 ]
@@ -459,4 +463,23 @@ CONTENT_SECURITY_POLICY = {
 		"form-action": [SELF],
 		"report-uri": "/csp-report/",
 	},
+}
+
+
+# django-debug-toolbar
+
+DEBUG_TOOLBAR_PANELS = PANELS_DEFAULTS + ["cachalot.panels.CachalotPanel"]
+DEBUG_TOOLBAR_CONFIG = {
+	"SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
+}
+
+
+# nplusone
+
+NPLUSONE_LOGGER = logging.getLogger("nplusone")
+NPLUSONE_LOG_LEVEL = logging.WARN
+NPLUSONE_RAISE = False
+LOGGING["loggers"]["nplusone"] = {  # noqa: F405
+	"handlers": ["console"],
+	"level": logging.WARN,
 }

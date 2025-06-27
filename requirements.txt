@@ -1,10 +1,11 @@
-cachetools
 celery
 django-allauth
-django-celery-beat
 django-auto-prefetch
+django-cachalot
+django-cache-memoize
+django-celery-beat
+django-countries[pyuca]
 django-debug-toolbar
-git+https://github.com/boxed/django-fastdev.git
 django-guardian
 django-htmx
 django-import-export
@@ -22,10 +23,11 @@ django-template-partials
 django-user-agents
 django>=5.1
 djangorestframework  # Required for API endpoints (MVP)
-
+djlint
+git+https://github.com/boxed/django-fastdev.git
+git+https://github.com/mozilla/django-csp.git
 git+https://github.com/Naggafin/django-extensions.git
 git+https://github.com/Naggafin/django-htmx-utils.git
-git+https://github.com/mozilla/django-csp.git
 git+https://github.com/Naggafin/django-view-breadcrumbs.git@improvements
 hiredis
 isort
@@ -49,7 +51,7 @@ ruff
 slippers
 sorl-thumbnail
 uv
-Whoosh  # Used when running in dev/testing mode
 wagtail  # Required for CMS (MVP)
 wagtail-localize
 wheel
+Whoosh  # Used when running in dev/testing mode

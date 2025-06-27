@@ -1,4 +1,3 @@
-import logging
 import os
 import sys
 from typing import List
@@ -102,22 +101,6 @@ HAYSTACK_CONNECTIONS = {
 			# "oscar_apps.search.search_indexes.CoreProductIndex",
 		],
 	},
-}
-
-
-# django-debug-toolbar
-DEBUG_TOOLBAR_CONFIG = {
-	"SHOW_TOOLBAR_CALLBACK": "gameonlock.middleware.show_toolbar_superuser"
-}
-
-
-# nplusone
-NPLUSONE_LOGGER = logging.getLogger("nplusone")
-NPLUSONE_LOG_LEVEL = logging.WARN
-NPLUSONE_RAISE = False
-LOGGING["loggers"]["nplusone"] = {  # noqa: F405
-	"handlers": ["console"],
-	"level": logging.WARN,
 }
 
 

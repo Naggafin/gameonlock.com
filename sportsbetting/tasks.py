@@ -138,15 +138,15 @@ def fetch_and_sync_games():
 					game.away_team_score = game.away_points
 					game.is_finished = True
 					game.save()
-					logger.info(f"Updated scores for {sport} game {game.id}")
+					logger.info(f"Updated scores for {gb} game {game.id}")
 				except Game.DoesNotExist:
 					logger.warning(f"Game not found: {game.boxscore_index}")
 				except Exception as e:
 					logger.error(
-						f"Error updating {league} game {game.boxscore_index}: {str(e)}"
+						f"Error updating {gb} game {game.boxscore_index}: {str(e)}"
 					)
 		except Exception as e:
-			logger.error(f"Failed to sync {league} scores: {str(e)}")
+			logger.error(f"Failed to sync {gb} scores: {str(e)}")
 
 
 @shared_task(bind=True, max_retries=3, rate_limit="1/s")
