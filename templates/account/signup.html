@@ -10,16 +10,6 @@
     {{ block.super }}
     <script src="{% static 'flatpickr/js/flatpickr.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
-    <script nonce="{{ request.csp_nonce }}">
-        document.addEventListener('DOMContentLoaded', () => {
-            flatpickr("input[type='date']", {
-                onChange: function(selectedDates, dateStr, instance) {
-                    Alpine.store('registrationProcess').formFields.date_of_birth.value = dateStr;
-                    Alpine.store('registrationProcess').checkAge();
-                }
-            });
-        });
-    </script>
 {% endblock %}
 {% block content %}
     <div class="sign-up">
@@ -169,12 +159,12 @@
                                          x-show="currentStep === 0"
                                          x-transition>
                                         <div class="row">
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.username.id_for_label|add:"-error" %}
                                                     <label for="{{ form.username.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.username.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.username x-on:click="validateStep" x-bind:class="{is-invalid:formFields.username.errors.length}" x-model="formFields.username.value" aria-describedby=error_label %}
+                                                    {% render_field form.username ::class="{'is-invalid':formFields.username.errors.length}" x-model="formFields.username.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.username.errors.length"
@@ -182,12 +172,12 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.email.id_for_label|add:"-error" %}
                                                     <label for="{{ form.email.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.email.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.email x-on:click="validateStep" x-bind:class="{is-invalid:formFields.email.errors.length}" x-model="formFields.email.value" aria-describedby=error_label %}
+                                                    {% render_field form.email ::class="{'is-invalid':formFields.email.errors.length}" x-model="formFields.email.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.email.errors.length"
@@ -203,12 +193,12 @@
                                          x-show="currentStep === 1"
                                          x-transition>
                                         <div class="row">
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.first_name.id_for_label|add:"-error" %}
                                                     <label for="{{ form.first_name.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.first_name.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.first_name x-on:click="validateStep" x-bind:class="{is-invalid:formFields.first_name.errors.length}" x-model="formFields.first_name.value" aria-describedby=error_label %}
+                                                    {% render_field form.first_name ::class="{'is-invalid':formFields.first_name.errors.length}" x-model="formFields.first_name.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.first_name.errors.length"
@@ -216,12 +206,12 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.last_name.id_for_label|add:"-error" %}
                                                     <label for="{{ form.last_name.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.last_name.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.last_name x-on:click="validateStep" x-bind:class="{is-invalid:formFields.last_name.errors.length}" x-model="formFields.last_name.value" aria-describedby=error_label %}
+                                                    {% render_field form.last_name ::class="{'is-invalid':formFields.last_name.errors.length}" x-model="formFields.last_name.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.last_name.errors.length"
@@ -229,12 +219,12 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.country.id_for_label|add:"-error" %}
                                                     <label for="{{ form.country.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.country.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.country x-on:change="updateRegions" x-bind:class="{is-invalid:formFields.country.errors.length}" x-model="formFields.country.value" aria-describedby=error_label %}
+                                                    {% render_field form.country @change="updateRegions" ::class="{'is-invalid':formFields.country.errors.length}" x-model="formFields.country.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.country.errors.length"
@@ -242,17 +232,18 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3"
+                                                 x-show="formFields.region.choices.length"
+                                                 x-transition>
                                                 {% with error_label=form.region.id_for_label|add:"-error" %}
                                                     <label for="{{ form.region.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.region.label }}'"></span>
                                                     </label>
                                                     <select id="{{ form.region.id_for_label }}"
                                                             name="{{ form.region.html_name }}"
-                                                            class="form-control"
+                                                            class="m-0"
+                                                            :class="{'is-invalid':formFields.region.errors.length}"
                                                             x-model="formFields.region.value"
-                                                            @change="validateStep"
-                                                            :class="{is-invalid:formFields.region.errors.length }"
                                                             aria-describedby="error_label">
                                                         <option value="">{% trans "Select Region" %}</option>
                                                         <template x-for="region in formFields.region.choices" :key="region[0]">
@@ -266,15 +257,15 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.date_of_birth.id_for_label|add:"-error" %}
                                                     <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.date_of_birth.label }}'"></span>
                                                     </label>
                                                     <div class="birth-date-element">
-                                                        {% render_field form.date_of_birth x-on:change="checkAge" x-bind:class="{is-invalid:formFields.date_of_birth.errors.length}" x-model="formFields.date_of_birth.value" aria-describedby=error_label %}
+                                                        {% render_field form.date_of_birth @change="checkAge" ::class="{'is-invalid':formFields.date_of_birth.errors.length}" x-model="formFields.date_of_birth.value" x-init="flatpickr($el, { onChange: ([date]) => { formFields.date_of_birth.value = $el.value; checkAge(); } })" class="m-0" aria-describedby=error_label %}
                                                         <span class="caln-icon" aria-hidden="true">
-                                                            <i class="fa-solid fa-calendars"></i>
+                                                            <i class="fa-solid fa-calendar-days"></i>
                                                         </span>
                                                     </div>
                                                     <div id="{{ error_label }}"
@@ -292,12 +283,12 @@
                                          x-show="currentStep === 2"
                                          x-transition>
                                         <div class="row">
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.phone_number.id_for_label|add:"-error" %}
                                                     <label for="{{ form.phone_number.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.phone_number.label }} {% trans "(Optional)" %}'"></span>
                                                     </label>
-                                                    {% render_field form.phone_number x-on:click="validateStep" x-bind:class="{is-invalid:formFields.phone_number.errors.length}" x-model="formFields.phone_number.value" aria-describedby=error_label %}
+                                                    {% render_field form.phone_number ::class="{'is-invalid':formFields.phone_number.errors.length}" x-model="formFields.phone_number.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.phone_number.errors.length"
@@ -305,13 +296,13 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.alternate_email_address.id_for_label|add:"-error" %}
                                                     <label for="{{ form.alternate_email_address.id_for_label }}"
                                                            class="form-label">
                                                         <span x-text="'{{ form.alternate_email_address.label }} {% trans "(Optional)" %}'"></span>
                                                     </label>
-                                                    {% render_field form.alternate_email_address x-on:click="validateStep" x-bind:class="{is-invalid:formFields.alternate_email_address.errors.length}" x-model="formFields.alternate_email_address.value" aria-describedby=error_label %}
+                                                    {% render_field form.alternate_email_address ::class="{'is-invalid':formFields.alternate_email_address.errors.length}" x-model="formFields.alternate_email_address.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.alternate_email_address.errors.length"
@@ -327,12 +318,12 @@
                                          x-show="currentStep === 3"
                                          x-transition>
                                         <div class="row">
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.password1.id_for_label|add:"-error" %}
                                                     <label for="{{ form.password1.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.password1.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.password1 x-on:input="checkPasswordMatch" x-bind:class="{is-invalid:formFields.password1.errors.length}" x-model="formFields.password1.value" aria-describedby=error_label %}
+                                                    {% render_field form.password1 @input="checkPasswordMatch" ::class="{'is-invalid':formFields.password1.errors.length}" x-model="formFields.password1.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.password1.errors.length"
@@ -340,12 +331,12 @@
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
-                                            <div class="col-xl-6 col-lg-6 col-md-6">
+                                            <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.password2.id_for_label|add:"-error" %}
                                                     <label for="{{ form.password2.id_for_label }}" class="form-label">
                                                         <span x-text="'{{ form.password2.label }}'"></span>
                                                     </label>
-                                                    {% render_field form.password2 x-on:input="checkPasswordMatch" x-bind:class="{is-invalid:formFields.password2.errors.length}" x-model="formFields.password2.value" aria-describedby=error_label %}
+                                                    {% render_field form.password2 @input="checkPasswordMatch" ::class="{'is-invalid':formFields.password2.errors.length}" x-model="formFields.password2.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
                                                          x-show="formFields.password2.errors.length"
@@ -355,9 +346,9 @@
                                             </div>
                                             <div class="col-xl-12">
                                                 <div class="agreement-article">
-                                                    <div class="form-check form-check-inline">
+                                                    <div class="form-check form-check-inline mb-3">
                                                         {% with error_label=form.terms.id_for_label|add:"-error" %}
-                                                            {% render_field form.terms x-on:change="validateStep" x-bind:class="{is-invalid:formFields.terms.errors.length}" class="form-check-input" x-model="formFields.terms.value" aria-describedby=error_label %}
+                                                            {% render_field form.terms ::class="{'is-invalid':formFields.terms.errors.length}" class="form-check-input" x-model="formFields.terms.value" class="m-0" aria-describedby=error_label %}
                                                             <label for="{{ form.terms.id_for_label }}">
                                                                 <span x-text="'{{ form.terms.label|safe }}'"></span>
                                                             </label>
@@ -368,9 +359,9 @@
                                                                  aria-live="polite"></div>
                                                         {% endwith %}
                                                     </div>
-                                                    <div class="form-check form-check-inline">
+                                                    <div class="form-check form-check-inline mb-3">
                                                         {% with error_label=form.age.id_for_label|add:"-error" %}
-                                                            {% render_field form.age x-on:change="validateStep" x-bind:class="{is-invalid:formFields.age.errors.length}" class="form-check-input" x-model="formFields.age.value" aria-describedby=error_label %}
+                                                            {% render_field form.age ::class="{'is-invalid':formFields.age.errors.length}" class="form-check-input" x-model="formFields.age.value" class="m-0" aria-describedby=error_label %}
                                                             <label for="{{ form.age.id_for_label }}">
                                                                 <span x-text="'{{ form.age.label }}'"></span>
                                                             </label>
@@ -386,11 +377,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-controller">
+                                <div class="form-controller mt-5">
                                     <button class="prv-stp-btn"
-                                            :class="{ 'disabled': currentStep === 0 }"
                                             @click="prevStep"
                                             type="button"
+                                            x-show="currentStep > 0"
                                             aria-label="{% trans 'Previous Step' %}">
                                         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
                                     </button>
@@ -398,14 +389,12 @@
                                             @click="nextStep"
                                             type="button"
                                             x-show="currentStep < 3"
-                                            :disabled="!canProceed"
                                             aria-label="{% trans 'Next Step' %}">
                                         {% trans "Next Step" %} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                     </button>
                                     <button class="prd-btn-1"
                                             type="submit"
                                             x-show="currentStep === 3"
-                                            :disabled="!canSubmit"
                                             aria-label="{% trans 'Sign Up' %}">
                                         {% trans "Sign Up" %} <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
                                     </button>
@@ -451,19 +440,19 @@
                     currentStep: 0,
                     submitted: false,
                     formFields: {
-                        username: { value: '', errors: [{% for error in form.username.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        email: { value: '{{ form.email.value|default_if_none:"" }}', errors: [{% for error in form.email.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        first_name: { value: '{{ form.first_name.value|default_if_none:"" }}', errors: [{% for error in form.first_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        last_name: { value: '{{ form.last_name.value|default_if_none:"" }}', errors: [{% for error in form.last_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        username: { value: '{{ form.username.value|default:"" }}', errors: [{% for error in form.username.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        email: { value: '{{ form.email.value|default:"" }}', errors: [{% for error in form.email.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        first_name: { value: '{{ form.first_name.value|default:"" }}', errors: [{% for error in form.first_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        last_name: { value: '{{ form.last_name.value|default:"" }}', errors: [{% for error in form.last_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
                         country: { value: '{{ form.country.initial|default:"US" }}', errors: [{% for error in form.country.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        region: { value: '{{ form.region.value|default_if_none:"" }}', choices: {{ region_choices|safe }}['{{ form.country.initial|default:"US" }}'] || [['', 'Select Region']], errors: [{% for error in form.region.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        date_of_birth: { value: '{{ form.date_of_birth.value|default_if_none:"" }}', errors: [{% for error in form.date_of_birth.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        phone_number: { value: '{{ form.phone_number.value|default_if_none:"" }}', errors: [{% for error in form.phone_number.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        alternate_email_address: { value: '{{ form.alternate_email_address.value|default_if_none:"" }}', errors: [{% for error in form.alternate_email_address.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        region: { value: '{{ form.region.value|default:"" }}', choices: {{ region_choices|safe }}['{{ form.country.initial|default:"US" }}'] || [['', 'Select Region']], errors: [{% for error in form.region.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        date_of_birth: { value: '{{ form.date_of_birth.value|default:"" }}', errors: [{% for error in form.date_of_birth.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        phone_number: { value: '{{ form.phone_number.value|default:"" }}', errors: [{% for error in form.phone_number.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        alternate_email_address: { value: '{{ form.alternate_email_address.value|default:"" }}', errors: [{% for error in form.alternate_email_address.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
                         password1: { value: '', errors: [{% for error in form.password1.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
                         password2: { value: '', errors: [{% for error in form.password2.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        terms: { value: {{ form.terms.value|default:"false" }}, errors: [{% for error in form.terms.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        age: { value: {{ form.age.value|default:"false" }}, errors: [{% for error in form.age.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] }
+                        terms: { value: false, errors: [{% for error in form.terms.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
+                        age: { value: false, errors: [{% for error in form.age.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] }
                     },
                     formErrors: [{% for error in form.non_field_errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}],
                     steps: [
@@ -472,27 +461,19 @@
                         { title: '{% trans "Contact Info" %}' },
                         { title: '{% trans "Security & Confirmation" %}' }
                     ],
-                    canProceed: false,
+                    canProceed: true,
                     canSubmit: false,
-                    init() {
-                        this.validateStep();
-                    },
                     nextStep() {
-                        if (this.currentStep < 3 && this.canProceed) {
-                            this.currentStep++;
-                            this.validateStep();
-                        }
+                        this.validateStep();
+                        if (this.currentStep < 3 && this.canProceed) this.currentStep++;
                     },
                     prevStep() {
-                        if (this.currentStep > 0) {
-                            this.currentStep--;
-                            this.validateStep();
-                        }
+                        this.validateStep();
+                        if (this.currentStep > 0) this.currentStep--;
                     },
                     updateRegions() {
-                        this.formFields.region.choices = this.REGIONS[this.formFields.country.value] || [['', 'Select Region']];
+                        this.formFields.region.choices = this.REGIONS[this.formFields.country.value] || [];
                         this.formFields.region.value = '';
-                        this.validateStep();
                     },
                     checkAge() {
                         if (this.formFields.date_of_birth.value) {
@@ -500,10 +481,8 @@
                             const today = new Date();
                             let age = today.getFullYear() - dob.getFullYear();
                             const m = today.getMonth() - dob.getMonth();
-                            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
-                                age--;
-                            }
-                            this.formFields.date_of_birth.errors = (age < 18) ? ['{% trans "You must be at least 18 years old to register." %}'] : this.formFields.date_of_birth.value ? [] : ['{% trans "Date of Birth is required." %}'];
+                            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+                            this.formFields.date_of_birth.errors = (age < 18) ? ['{% trans "You must be at least 18 years old to register." %}'] : [];
                         } else {
                             this.formFields.date_of_birth.errors = ['{% trans "Date of Birth is required." %}'];
                         }

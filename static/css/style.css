@@ -505,6 +505,52 @@
 	margin: 0;
 	padding-left: 1rem;
 }
+.poklotto-form .part-form select {
+  width: 100%;
+  border: 1px solid rgba(11, 52, 72, 0.3);
+  border-radius: 50px;
+  font-weight: 400;
+  font-size: 17px;
+  line-height: 100%;
+  color: rgba(92, 97, 114, 0.9);
+  padding: 0 25px;
+  margin-bottom: 40px;
+}
+@media (max-width: 1399.98px) {
+  .poklotto-form .part-form select {
+    margin-bottom: 30px;
+  }
+}
+@media (max-width: 1199.98px) {
+  .poklotto-form .part-form select {
+    font-size: 16px;
+  }
+}
+@media (max-width: 575.98px) {
+  .poklotto-form .part-form select {
+    margin-bottom: 25px;
+  }
+}
+@media (max-width: 479.98px) {
+  .poklotto-form .part-form select {
+    font-size: 15px;
+    padding: 0 20px;
+    margin-bottom: 20px;
+  }
+}
+.poklotto-form .part-form select {
+  height: 50px;
+}
+@media (max-width: 1199.98px) {
+  .poklotto-form .part-form select {
+    height: 45px;
+  }
+}
+@media (max-width: 767.98px) {
+  .poklotto-form .part-form select {
+    height: 40px;
+  }
+}
 
 
 /* Breadcrumbs */
@@ -559,6 +605,12 @@
 
 
 /* Sign up */
+.sign-up .poklotto-form .part-form form .agreement-article {
+  margin-top: 1.5rem;
+}
+.sign-up .poklotto-form .part-form form .agreement-article input:checked[type="checkbox"]::after {
+  font-family: "Font Awesome 6 Free";
+}
 .sign-up .part-form .part-connect-social-info .title-overlap {
   text-align: center;
   position: relative;
@@ -693,4 +745,11 @@
 }
 .sign-up .part-form .part-connect-social-info ul li:last-child a {
   margin-right: 0;
+}
+
+
+/* Bet slip */
+
+.bet-slip button.bet-slip-header:after {
+  font-family: "Font Awesome 6 Free";
 }

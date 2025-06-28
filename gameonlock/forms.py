@@ -10,53 +10,49 @@ from localflavor.ar.forms import ARProvinceSelect
 from localflavor.at.forms import ATStateSelect
 from localflavor.au.forms import AUStateSelect
 from localflavor.be.forms import BEProvinceSelect
-from localflavor.br.forms import BRStateField
-from localflavor.ca.forms import CAProvinceField
+from localflavor.br.forms import BRStateSelect
+from localflavor.ca.forms import CAProvinceSelect
 from localflavor.ch.forms import CHStateSelect
 from localflavor.cl.forms import CLRegionSelect
 from localflavor.cn.forms import CNProvinceSelect
 from localflavor.co.forms import CODepartmentSelect
 from localflavor.cz.forms import CZRegionSelect
-from localflavor.de.forms import DEStateField
-from localflavor.dk.forms import DKRegionSelect
+from localflavor.de.forms import DEStateSelect
+from localflavor.dk.forms import DKMunicipalitySelect
 from localflavor.ec.forms import ECProvinceSelect
 from localflavor.ee.forms import EECountySelect
 from localflavor.es.forms import ESProvinceSelect
-from localflavor.fi.forms import FIRegionSelect
+from localflavor.fi.forms import FIMunicipalitySelect
 from localflavor.fr.forms import FRDepartmentSelect
 from localflavor.gb.forms import GBCountySelect
-from localflavor.gr.forms import GRRegionSelect
 from localflavor.hr.forms import HRCountySelect
-from localflavor.hu.forms import HURegionSelect
-from localflavor.id.forms import IDProvinceSelect
+from localflavor.hu.forms import HUCountySelect
+from localflavor.id_.forms import IDProvinceSelect
 from localflavor.ie.forms import IECountySelect
-from localflavor.il.forms import ILAreaSelect
-from localflavor.in_.forms import INStateField
-from localflavor.is_.forms import ISRegionSelect
+from localflavor.in_.forms import INStateSelect
 from localflavor.it.forms import ITRegionSelect
-from localflavor.jp.forms import JPPrefectureField
-from localflavor.kw.forms import KWSubdivisionSelect
+from localflavor.jp.forms import JPPrefectureSelect
+from localflavor.kw.forms import KWAreaSelect
 from localflavor.lt.forms import LTCountySelect
-from localflavor.lv.forms import LVRegionSelect
+from localflavor.lv.forms import LVMunicipalitySelect
 from localflavor.mk.forms import MKMunicipalitySelect
-from localflavor.mt.forms import MTRegionSelect
-from localflavor.mx.forms import MXStateField
-from localflavor.nl.forms import NLProvinceField
-from localflavor.no.forms import NOCountySelect
+from localflavor.mx.forms import MXStateSelect
+from localflavor.nl.forms import NLProvinceSelect
+from localflavor.no.forms import NOMunicipalitySelect
 from localflavor.nz.forms import NZRegionSelect
 from localflavor.pe.forms import PERegionSelect
-from localflavor.pk.forms import PKProvinceSelect
-from localflavor.pl.forms import PLVoivodeshipSelect
+from localflavor.pk.forms import PKStateSelect
+from localflavor.pl.forms import PLCountySelect
 from localflavor.pt.forms import PTRegionSelect
-from localflavor.py.forms import PYDepartmentSelect
+from localflavor.py_.forms import PyDepartmentSelect
 from localflavor.ro.forms import ROCountySelect
 from localflavor.ru.forms import RURegionSelect
 from localflavor.se.forms import SECountySelect
-from localflavor.si.forms import SICountySelect
-from localflavor.sk.forms import SKRegionSelect
+from localflavor.si.forms import SIPostalCodeSelect
+from localflavor.sk.forms import SKDistrictSelect
 from localflavor.tn.forms import TNGovernorateSelect
 from localflavor.tr.forms import TRProvinceSelect
-from localflavor.us.forms import USStateField
+from localflavor.us.forms import USStateSelect
 from localflavor.uy.forms import UYDepartmentSelect
 from localflavor.za.forms import ZAProvinceSelect
 from phonenumber_field.formfields import PhoneNumberField
@@ -67,53 +63,49 @@ COUNTRY_REGION_FIELDS = {
 	"AT": ATStateSelect,
 	"AU": AUStateSelect,
 	"BE": BEProvinceSelect,
-	"BR": BRStateField,
-	"CA": CAProvinceField,
+	"BR": BRStateSelect,
+	"CA": CAProvinceSelect,
 	"CH": CHStateSelect,
 	"CL": CLRegionSelect,
 	"CN": CNProvinceSelect,
 	"CO": CODepartmentSelect,
 	"CZ": CZRegionSelect,
-	"DE": DEStateField,
-	"DK": DKRegionSelect,
+	"DE": DEStateSelect,
+	"DK": DKMunicipalitySelect,
 	"EC": ECProvinceSelect,
 	"EE": EECountySelect,
 	"ES": ESProvinceSelect,
-	"FI": FIRegionSelect,
+	"FI": FIMunicipalitySelect,
 	"FR": FRDepartmentSelect,
 	"GB": GBCountySelect,
-	"GR": GRRegionSelect,
 	"HR": HRCountySelect,
-	"HU": HURegionSelect,
+	"HU": HUCountySelect,
 	"ID": IDProvinceSelect,
 	"IE": IECountySelect,
-	"IL": ILAreaSelect,
-	"IN": INStateField,
-	"IS": ISRegionSelect,
+	"IN": INStateSelect,
 	"IT": ITRegionSelect,
-	"JP": JPPrefectureField,
-	"KW": KWSubdivisionSelect,
+	"JP": JPPrefectureSelect,
+	"KW": KWAreaSelect,
 	"LT": LTCountySelect,
-	"LV": LVRegionSelect,
+	"LV": LVMunicipalitySelect,
 	"MK": MKMunicipalitySelect,
-	"MT": MTRegionSelect,
-	"MX": MXStateField,
-	"NL": NLProvinceField,
-	"NO": NOCountySelect,
+	"MX": MXStateSelect,
+	"NL": NLProvinceSelect,
+	"NO": NOMunicipalitySelect,
 	"NZ": NZRegionSelect,
 	"PE": PERegionSelect,
-	"PK": PKProvinceSelect,
-	"PL": PLVoivodeshipSelect,
+	"PK": PKStateSelect,
+	"PL": PLCountySelect,
 	"PT": PTRegionSelect,
-	"PY": PYDepartmentSelect,
+	"PY": PyDepartmentSelect,
 	"RO": ROCountySelect,
 	"RU": RURegionSelect,
 	"SE": SECountySelect,
-	"SI": SICountySelect,
-	"SK": SKRegionSelect,
+	"SI": SIPostalCodeSelect,
+	"SK": SKDistrictSelect,
 	"TN": TNGovernorateSelect,
 	"TR": TRProvinceSelect,
-	"US": USStateField,
+	"US": USStateSelect,
 	"UY": UYDepartmentSelect,
 	"ZA": ZAProvinceSelect,
 }
@@ -134,7 +126,7 @@ def get_all_region_choices():
 
 			# Filter out any empty default option (typically first)
 			cleaned_choices = [
-				(value, label) for value, label in choices if value != ""
+				(str(value), str(label)) for value, label in choices if value != ""
 			]
 
 			region_choices[country_code] = cleaned_choices
@@ -149,9 +141,9 @@ def get_all_region_choices():
 class SignupForm(AllauthSignupForm):
 	first_name = forms.CharField(max_length=100, label=_("First Name"))
 	last_name = forms.CharField(max_length=100, label=_("Last Name"))
-	country = CountryField(label=_("Country"), initial="US").formfield()
+	country = CountryField().formfield(label=_("Country"), initial="US")
 	region = forms.ChoiceField(
-		label=_("State/Province"), choices=[("", "Select Region")]
+		label=_("State/Province"), choices=[("", "Select Region")], required=False
 	)
 	date_of_birth = forms.DateField(
 		label=_("Date of Birth"), widget=forms.DateInput(attrs={"type": "date"})
@@ -166,30 +158,18 @@ class SignupForm(AllauthSignupForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
+		# Add label to email field
+		self.fields["email"].label = _("Email Address")
+
 		# Determine country code from submitted data or initial value
 		country_code = self.data.get(
 			"country", self.initial.get("country", "US") or "US"
 		)
 
-		# Hot swap the region field based on country
-		region_field_class = COUNTRY_REGION_FIELDS.get(country_code)
-		if region_field_class:
-			# Replace region field with country-specific field
-			self.fields["region"] = region_field_class(
-				label=_("State/Province"),
-				required=True,
-				# Ensure choices exclude empty option if present, as template handles 'Select Region'
-				choices=region_field_class().choices[1:]
-				if region_field_class().choices[0][0] == ""
-				else region_field_class().choices,
-			)
-		else:
-			# Fallback to generic ChoiceField for unsupported countries
-			self.fields["region"] = forms.ChoiceField(
-				label=_("State/Province"),
-				choices=[("", "Select Region")],
-				required=False,
-			)
+		# Adjust region choices based upon the country
+		region_choices = get_all_region_choices().get(country_code)
+		if region_choices:
+			self.fields["region"].choices = region_choices
 
 	def clean(self):
 		cleaned_data = super().clean()

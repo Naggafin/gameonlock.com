@@ -113,48 +113,50 @@
             <script src="{% static 'overlayscrollbars/js/overlayscrollbars.browser.es6.min.js' %}"
                     nonce="{{ request.csp_nonce }}"></script>
             <script nonce="{{ request.csp_nonce }}">
-              document.addEventListener("DOMContentLoaded", () => {
-                // Wait until the OverlayScrollbars global is available
-                const waitForOverlayScrollbars = () => {
-                  if (typeof OverlayScrollbars !== "function") {
-                    return setTimeout(waitForOverlayScrollbars, 50);
-                  }
-            
-                  // Once it's available, initialize scrollbars
-                  const elements = document.querySelectorAll("[data-overlayscrollbars-initialize]");
-                  elements.forEach(el => {
-                    try {
-                      const rawOptions = el.getAttribute("data-overlayscrollbars-options");
-                      const options = rawOptions ? JSON.parse(rawOptions) : {};
-                      OverlayScrollbars(el, options);
-                    } catch (e) {
-                      console.error("OverlayScrollbars initialization failed for element:", el, e);
-                    }
-                  });
-                };
-            
-                waitForOverlayScrollbars();
-              });
+                document.addEventListener("DOMContentLoaded", () => {
+                    // Wait until the OverlayScrollbars global is available
+                    const waitForOverlayScrollbars = () => {
+                        if (typeof OverlayScrollbars !== "function") {
+                            return setTimeout(waitForOverlayScrollbars, 50);
+                        }
+
+                        // Once it's available, initialize scrollbars
+                        const elements = document.querySelectorAll("[data-overlayscrollbars-initialize]");
+                        elements.forEach(el => {
+                            try {
+                                const rawOptions = el.getAttribute("data-overlayscrollbars-options");
+                                const options = rawOptions ? JSON.parse(rawOptions) : {};
+                                OverlayScrollbars(el, options);
+                            } catch (e) {
+                                console.error("OverlayScrollbars initialization failed for element:", el, e);
+                            }
+                        });
+                    };
+
+                    waitForOverlayScrollbars();
+                });
             </script>
             <!-- aos js -->
             <script src="{% static 'aos/js/aos.js' %}" nonce="{{ request.csp_nonce }}"></script>
             <script nonce="{{ request.csp_nonce }}">
-              document.addEventListener("PreloaderFinished", () => {
-                // Wait until the AOS global is available
-                const waitForAOS = () => {
-                  if (typeof AOS === "undefined") {
-                    return setTimeout(waitForAOS, 50);
-                  }
-            
-                  try {
-                    AOS.init({once: true});
-                  } catch (e) {
-                    console.error("AOS initialization failed:", e);
-                  }
-                }
-                
-                waitForAOS();
-              });
+                document.addEventListener("PreloaderFinished", () => {
+                    // Wait until the AOS global is available
+                    const waitForAOS = () => {
+                        if (typeof AOS === "undefined") {
+                            return setTimeout(waitForAOS, 50);
+                        }
+
+                        try {
+                            AOS.init({
+                                once: true
+                            });
+                        } catch (e) {
+                            console.error("AOS initialization failed:", e);
+                        }
+                    }
+
+                    waitForAOS();
+                });
             </script>
         {% endblock %}
     </body>

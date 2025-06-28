@@ -82,7 +82,7 @@ class SignupView(BreadcrumbMixin, AllauthSignupView):
 		context = super().get_context_data(**kwargs)
 		context["title"] = _("Sign up")
 		context["subtitle"] = _("Sign up to create an account")
-		context["region_choices"] = json.dumps(get_all_region_choices())
+		context["region_choices"] = json.dumps(dict(get_all_region_choices()))
 		return context
 
 

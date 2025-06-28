@@ -276,9 +276,9 @@ class Team(auto_prefetch.Model):
 	class Meta(auto_prefetch.Model.Meta):
 		constraints = [
 			models.UniqueConstraint(
-				fields=[Lower("name"), "league"], name="unique_team_per_league"
+				Lower("name"), "league", name="unique_team_per_league"
 			),
-			# models.UniqueConstraint(fields=[Lower("name"), "division"], name="unique_team_per_division"),
+			# models.UniqueConstraint(Lower("name"), "division", name="unique_team_per_division"),
 		]
 
 

@@ -2,11 +2,31 @@
 {% load i18n static %}
 {% block extrastyle %}
     <style>
-        .sport-section { margin-bottom: 20px; border: 1px solid #ddd; padding: 10px; border-radius: 5px; }
-        .sport-section h3 { margin-top: 0; color: #333; }
-        .checkbox-list { column-count: 2; column-gap: 20px; }
-        .checkbox-list label { display: block; margin-bottom: 5px; }
-        .submit-row { margin-top: 20px; }
+        .sport-section {
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        .sport-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+
+        .checkbox-list {
+            column-count: 2;
+            column-gap: 20px;
+        }
+
+        .checkbox-list label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .submit-row {
+            margin-top: 20px;
+        }
     </style>
 {% endblock %}
 {% block title %}{{ title }} | {{ site_title|default:_("Django site admin") }}{% endblock %}
