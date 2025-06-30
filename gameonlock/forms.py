@@ -154,19 +154,18 @@ class SignupForm(AllauthSignupForm):
 	alternate_email_address = forms.EmailField(
 		required=False, label=_("Alternate Email Address")
 	)
-	terms = forms.BooleanField(
-		label=format_html(
-			_('I agree to the <a href="{url}">terms and conditions</a>.'),
-			url=reverse("terms"),
-		)
-	)
+	terms = forms.BooleanField()
 	age = forms.BooleanField(label=_("I confirm I am at least 18 years old"))
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 
-		# Add label to email field
+		# Add labels
 		self.fields["email"].label = _("Email Address")
+		self.fields["terms"].label = format_html(
+			_('I agree to the <a href="{url}">terms and conditions</a>.'),
+			url=reverse("terms"),
+		)
 
 		# Determine country code from submitted data or initial value
 		country_code = self.data.get(

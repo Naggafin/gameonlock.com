@@ -22,8 +22,6 @@ from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
-
-# urls.py
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView
