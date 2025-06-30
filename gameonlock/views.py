@@ -1,29 +1,40 @@
 import json
 import logging
+from datetime import timedelta
 
 from allauth.account.views import (
 	LoginView as AllauthLoginView,
 	SignupView as AllauthSignupView,
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import (
+	Case,
+	Count,
+	DecimalField,
+	IntegerField,
+	Q,
+	Sum,
+	When,
+)
 from django.http import JsonResponse
-from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import SimpleLazyObject
 from django.utils.translation import gettext_lazy as _
-from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import TemplateView
-from django_tables2 import SingleTableMixin
+from django.views.generic import ListView, TemplateView
+from django_tables2 import RequestConfig, SingleTableMixin
 from view_breadcrumbs import BaseBreadcrumbMixin
 
+from golpayment.filters import TransactionFilter
 from golpayment.models import Transaction
+from golpayment.tables import TransactionTable
+from sportsbetting.filters import PlayFilter
 from sportsbetting.models import Game, Play
+from sportsbetting.tables import PlayTable
 from sportsbetting.views import SportsBettingContextMixin
 
-from .filters import BetHistoryFilter, TransactionHistoryFilter
 from .forms import get_all_region_choices
-from .tables import BetHistoryTable, TransactionHistoryTable
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
@@ -59,76 +70,181 @@ class HomeView(SportsBettingContextMixin, TemplateView):
 
 
 class LoginView(BreadcrumbMixin, AllauthLoginView):
+	title = _("Sign In")
+
 	@property
 	def crumbs(self):
-		return [
-			('<span class="text">%s</span>' % _("Sign in"), reverse("account_login"))
-		]
+		return [('<span class="text">%s</span>' % self.title, reverse("account_login"))]
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["title"] = _("Sign in")
+		context["title"] = self.title
 		return context
 
 
 class SignupView(BreadcrumbMixin, AllauthSignupView):
+	title = _("Sign Up")
+
 	@property
 	def crumbs(self):
 		return [
-			('<span class="text">%s</span>' % _("Sign up"), reverse("account_signup"))
+			('<span class="text">%s</span>' % self.title, reverse("account_signup"))
 		]
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["title"] = _("Sign up")
+		context["title"] = self.title
 		context["subtitle"] = _("Sign up to create an account")
 		context["region_choices"] = json.dumps(dict(get_all_region_choices()))
 		return context
 
 
-class DashboardView(SingleTableMixin, View):
+class DashboardView(
+	LoginRequiredMixin, BreadcrumbMixin, SingleTableMixin, TemplateView
+):
+	title = _("Dashboard")
 	template_name = "peredion/dashboard/index.html"
 
-	def get(self, request, *args, **kwargs):
-		if request.htmx:  # Handle HTMX requests
-			table_name = request.GET.get("table")  # e.g., 'bet_history'
-			if table_name == "bet_history":
-				queryset = Play.objects.filter(user=request.user)
-				filterset = BetHistoryFilter(request.GET, queryset=queryset)
-				table = BetHistoryTable(filterset.qs)
-				table.paginate(page=request.GET.get("page", 1), per_page=10)
-				return render(
-					request,
-					"peredion/dashboard/partials/bet_history_table.html",
-					{"table": table},
-				)
-			elif table_name == "transaction_history":
-				queryset = Transaction.objects.filter(user=request.user)
-				filterset = TransactionHistoryFilter(request.GET, queryset=queryset)
-				table = TransactionHistoryTable(filterset.qs)
-				table.paginate(page=request.GET.get("page", 1), per_page=10)
-				return render(
-					request,
-					"peredion/dashboard/partials/transaction_history_table.html",
-					{"table": table},
-				)
-		else:  # Initial full page load
-			bet_queryset = Play.objects.filter(user=request.user)
-			bet_filter = BetHistoryFilter(request.GET, queryset=bet_queryset)
-			bet_table = BetHistoryTable(bet_filter.qs)
+	@property
+	def crumbs(self):
+		return [('<span class="text">%s</span>' % self.title, reverse("dashboard"))]
 
-			transaction_queryset = Transaction.objects.filter(user=request.user)
-			transaction_filter = TransactionHistoryFilter(
-				request.GET, queryset=transaction_queryset
-			)
-			transaction_table = TransactionHistoryTable(transaction_filter.qs)
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["title"] = self.title
 
-			context = {
-				"bet_table": bet_table,
-				"transaction_table": transaction_table,
-				# Add other context variables as needed (e.g., totals from previous TODOs)
+		user_plays = self.request.user.plays
+
+		# Aggregate totals
+		totals = user_plays.aggregate(
+			total_bets=Count("id"),
+			total_wins=Count(Case(When(won=True, then=1), output_field=IntegerField())),
+			total_payout=Sum(
+				Case(When(won=True, then="amount"), output_field=DecimalField())
+			),
+		)
+
+		context.update(
+			{
+				"total_bets": totals["total_bets"],
+				"total_wins": totals["total_wins"],
+				"total_payout": totals["total_payout"] or "0.00",
 			}
-			return render(request, self.template_name, context)
+		)
+
+		# Prepare week range
+		today = timezone.now().date()
+		week_start = today - timedelta(days=today.weekday())
+		week_days = [week_start + timedelta(days=i) for i in range(7)]
+
+		# Weekly grouped stats in one query
+		weekly_stats = (
+			user_plays.filter(
+				placed_datetime__date__range=(week_start, week_days[-1]),
+				status=Play.STATES.completed,
+			)
+			.values("placed_datetime__date")
+			.annotate(
+				wins=Count("id", filter=Q(won=True)),
+				losses=Count("id", filter=Q(won=False)),
+				profit=Sum("amount", filter=Q(won=True)),
+			)
+		)
+
+		# Map stats by date for O(1) lookup
+		stats_by_date = {
+			entry["placed_datetime__date"]: entry for entry in weekly_stats
+		}
+
+		# Fill chart data
+		chart_data = {
+			"chart_wins": [],
+			"chart_losses": [],
+			"chart_profit": [],
+		}
+
+		for day in week_days:
+			stats = stats_by_date.get(day, {})
+			chart_data["chart_wins"].append(stats.get("wins", 0))
+			chart_data["chart_losses"].append(stats.get("losses", 0))
+			chart_data["chart_profit"].append(float(stats.get("profit", 0) or 0))
+
+		context["chart_data"] = json.dumps(chart_data)
+		return context
+
+
+class PlayHistoryView(LoginRequiredMixin, BreadcrumbMixin, ListView):
+	model = Play
+	title = _("Bet History")
+	template_name = "peredion/dashboard/dashboard-bet-history.html"
+
+	def get_template_names(self):
+		if self.request.htmx:
+			return ["peredion/dashboard/dashboard-bet-history.html#bet-history-table"]
+		return super().get_template_names()
+
+	@property
+	def crumbs(self):
+		return [('<span class="text">%s</span>' % self.title, reverse("play_history"))]
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		filter = PlayFilter(self.request.GET, queryset=context["objects"])
+		table = PlayTable(filter.qs)
+		RequestConfig(self.request, paginate={"per_page": 10}).configure(table)
+
+		context["title"] = self.title
+		context["table"] = table
+		context["filter"] = filter
+		return context
+
+
+class TransactionHistoryView(LoginRequiredMixin, BreadcrumbMixin, ListView):
+	model = Transaction
+	title = _("Transaction History")
+	template_name = "peredion/dashboard/dashboard-transaction-history.html"
+
+	def get_template_names(self):
+		if self.request.htmx:
+			return [
+				"peredion/dashboard/dashboard-transaction-history.html#transaction-history-table"
+			]
+		return super().get_template_names()
+
+	@property
+	def crumbs(self):
+		return [
+			(
+				'<span class="text">%s</span>' % self.title,
+				reverse("transaction_history"),
+			)
+		]
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+
+		filter = TransactionFilter(self.request.GET, queryset=context["objects"])
+		table = TransactionTable(filter.qs)
+		RequestConfig(self.request, paginate={"per_page": 10}).configure(table)
+
+		context["title"] = self.title
+		context["table"] = table
+		return context
+
+
+class SettingsView(LoginRequiredMixin, BreadcrumbMixin, TemplateView):
+	title = _("Settings")
+	template_name = "peredion/dashboard/dashboard-settings.html"
+
+	@property
+	def crumbs(self):
+		return [('<span class="text">%s</span>' % self.title, reverse("settings"))]
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["title"] = self.title
+		return context
 
 
 @csrf_exempt

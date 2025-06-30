@@ -3,7 +3,9 @@ from datetime import date
 from allauth.account.forms import SignupForm as AllauthSignupForm
 from cache_memoize import cache_memoize
 from django import forms
-from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
+from django.utils.html import format_html
+from django.utils.translation import gettext as _, gettext_lazy as _
 from django_countries.fields import CountryField
 from django_fastdev import fastdev_ignore
 from localflavor.ar.forms import ARProvinceSelect
@@ -152,7 +154,12 @@ class SignupForm(AllauthSignupForm):
 	alternate_email_address = forms.EmailField(
 		required=False, label=_("Alternate Email Address")
 	)
-	terms = forms.BooleanField(label=_("I agree to the terms and conditions"))
+	terms = forms.BooleanField(
+		label=format_html(
+			_('I agree to the <a href="{url}">terms and conditions</a>.'),
+			url=reverse("terms"),
+		)
+	)
 	age = forms.BooleanField(label=_("I confirm I am at least 18 years old"))
 
 	def __init__(self, *args, **kwargs):

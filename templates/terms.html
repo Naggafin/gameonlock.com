@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block banner %}{% endblock %}
+{% block content %}
+    <main class="container py-5">
+        <h1>{{ title }}</h1>
+        <p>
+            {% blocktrans with last_updated=last_updated|date %}
+            Last updated: {{ last_updated }}
+        {% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}Welcome to <strong>Game On Lock</strong> ("we", "us", or "our"). By accessing or using our website and services, you ("user", "you") agree to the following terms and conditions.{% endblocktrans %}
+        </p>
+        <h2>{% trans "1. Eligibility" %}</h2>
+        <p>
+            {% trans "You must be at least 18 years old (or the legal betting age in your jurisdiction) to use this site. By using our platform, you confirm that you meet this requirement." %}
+        </p>
+        <h2>{% trans "2. Account Registration" %}</h2>
+        <p>
+            {% trans "To place bets, you must register for an account and provide accurate information. You are responsible for all activity under your credentials." %}
+        </p>
+        <h2>{% trans "3. Placing Bets" %}</h2>
+        <ul>
+            <li>{% trans "All bets are final once submitted and paid for." %}</li>
+            <li>{% trans "A minimum of 4 selections is required per play." %}</li>
+            <li>{% trans "All selected bets must be correct for a play to result in a win." %}</li>
+            <li>{% trans "Bets are valid only upon confirmation and successful payment." %}</li>
+        </ul>
+        <h2>{% trans "4. Payments" %}</h2>
+        <p>
+            {% trans "All plays require upfront payment via PayPal at submission. No wallet or balance system is in place." %}
+        </p>
+        <h2>{% trans "5. Winnings and Payouts" %}</h2>
+        <p>
+            {% trans "Winnings are calculated automatically based on actual outcomes. Only plays with all correct picks are eligible for payouts. Fraudulent activity may void eligibility." %}
+        </p>
+        <h2>{% trans "6. Cancellations and Errors" %}</h2>
+        <p>
+            {% trans "We reserve the right to cancel or void any bet due to technical errors, suspicious behavior, or incorrect data. Affected users will be notified and refunded." %}
+        </p>
+        <h2>{% trans "7. Responsible Gambling" %}</h2>
+        <p>
+            {% trans "Gamble responsibly. If you or someone you know has a gambling problem, seek help from a qualified support organization." %}
+        </p>
+        <h2>{% trans "8. No Guarantee of Accuracy" %}</h2>
+        <p>
+            {% trans "We strive to provide accurate and up-to-date information, but do not guarantee the completeness or correctness of data, odds, or schedules." %}
+        </p>
+        <h2>{% trans "9. Third-Party Services" %}</h2>
+        <p>
+            {% trans "We use third-party APIs for odds, scores, and payments (e.g., PayPal). We are not responsible for issues arising from these services." %}
+        </p>
+        <h2>{% trans "10. Termination" %}</h2>
+        <p>
+            {% trans "We may suspend or terminate accounts at any time, especially in cases of fraud or abuse. Suspected misconduct may be reported to authorities." %}
+        </p>
+        <h2>{% trans "11. Limitation of Liability" %}</h2>
+        <p>
+            {% trans "We are not liable for indirect or consequential damages from your use of the platform. Services are provided 'as is' without warranties." %}
+        </p>
+        <h2>{% trans "12. Changes to Terms" %}</h2>
+        <p>
+            {% trans "We may revise these terms at any time. Continued use of the platform constitutes your acceptance of any updates." %}
+        </p>
+        <h2>{% trans "13. Governing Law" %}</h2>
+        <p>
+            {% trans "These terms are governed by the laws of our operating jurisdiction, without regard to conflict-of-law principles." %}
+        </p>
+        <h2>{% trans "14. Contact" %}</h2>
+        <p>
+            {% blocktrans %}If you have questions about these terms, contact us at <a href="mailto:support@gameonlock.com">support@gameonlock.com</a>.{% endblocktrans %}
+        </p>
+    </main>
+{% endblock %}

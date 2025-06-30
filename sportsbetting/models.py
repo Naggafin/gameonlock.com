@@ -396,6 +396,8 @@ class BettingLine(auto_prefetch.Model):
 
 
 class Play(auto_prefetch.Model):
+	STATES = Choices(("p", "pending", _("Pending")), ("c", "completed", _("Completed")))
+
 	user = auto_prefetch.ForeignKey(
 		settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="plays"
 	)
@@ -409,9 +411,9 @@ class Play(auto_prefetch.Model):
 	placed_datetime = models.DateTimeField(auto_now=True)
 	paid = models.BooleanField(default=False, editable=False)
 	won = models.BooleanField(default=False)
-	# TODO: Add choices for the status field.
 	status = models.CharField(
-		max_length=50,
+		max_length=1,
+		choices=STATES,
 		blank=True,
 		null=True,
 		help_text=_("Status of the play, e.g., 'pending', 'completed'"),

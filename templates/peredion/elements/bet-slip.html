@@ -107,7 +107,6 @@
         </div>
     </div>
 </div>
-{# NOTE: To maintain locality of behavior, the JavaScript is kept here, as it is only used for this HTML fragment #}
 <script nonce="{{ request.csp_nonce }}">
     document.addEventListener('alpine:init', () => {
         // Constants for configuration
@@ -227,11 +226,7 @@
             picks: [],
             amount: CONFIG.MIN_BET,
             submitted: false,
-            isAuthenticated: {
-                {
-                    request.user.is_authenticated | lower
-                }
-            },
+            isAuthenticated: {{ request.user.is_authenticated | lower }},
 
             init() {
                 // Load picks and amount from store or localStorage on initialization

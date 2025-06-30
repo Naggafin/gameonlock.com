@@ -553,6 +553,12 @@
 }
 
 
+/* Navbar */
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .nav-link.dropdown-toggle::after {
+  font-family: "Font Awesome 6 Free";
+}
+
+
 /* Breadcrumbs */
 .breadcrumb-item + .breadcrumb-item::before {
   font-family: "Font Awesome 6 Free";
@@ -749,7 +755,6 @@
 
 
 /* Bet slip */
-
 .bet-slip button.bet-slip-header:after {
   font-family: "Font Awesome 6 Free";
 }

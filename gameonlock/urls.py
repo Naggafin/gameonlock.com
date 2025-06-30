@@ -15,13 +15,18 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+import datetime
+
 from allauth.account.decorators import secure_admin_login
 from django.conf import settings
 from django.conf.urls import handler400, handler403, handler404, handler500
 from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
+
+# urls.py
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
+from django.views.generic import TemplateView
 from django.views.i18n import set_language
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -44,6 +49,40 @@ internationalized_patterns = i18n_patterns(
 	path(_("pages/"), include(wagtail_urls)),
 	path(_("sports/"), include("sportsbetting.urls")),
 	# path(_("shop/"), include(apps.get_app_config("oscar").urls[0])),
+	path(_("dashboard/"), views.DashboardView.as_view(), name="dashboard"),
+	path(
+		_("dashboard/bet-history/"),
+		views.PlayHistoryView.as_view(),
+		name="play_history",
+	),
+	path(
+		_("dashboard/transaction-history/"),
+		views.TransactionHistoryView.as_view(),
+		name="transaction_history",
+	),
+	path(_("dashboard/settings/"), views.SettingsView.as_view(), name="settings"),
+	path(
+		_("terms/"),
+		TemplateView.as_view(
+			template_name="terms.html",
+			extra_context={
+				"title": _("Terms and Conditions"),
+				"last_updated": datetime.date(year=2025, day=1, month=7),
+			},
+		),
+		name="terms",
+	),
+	path(
+		_("privacy/"),
+		TemplateView.as_view(
+			template_name="privacy.html",
+			extra_context={
+				"title": _("Privacy Policy"),
+				"last_updated": datetime.date(year=2025, day=1, month=7),
+			},
+		),
+		name="privacy",
+	),
 	path("", views.HomeView.as_view(), name="index"),
 	prefix_default_language=False,
 )

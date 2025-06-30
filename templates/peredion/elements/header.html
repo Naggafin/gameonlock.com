@@ -194,29 +194,31 @@
                                            href="{{ url }}">{% trans 'faq' %}</a>
                                     </li>
                                     {% if request.user.is_authenticated %}
-                                        {# TODO #}
                                         <li class="nav-item dropdown ms-auto">
-                                            <a class="nav-link dropdown-toggle"
+                                            {% url 'dashboard' as dashboard_url %}
+                                            {% url 'play_history' as play_history_url %}
+                                            {% url 'transaction_history' as transaction_history_url %}
+                                            {% url 'settings' as settings_url %}
+                                            <a class="nav-link dropdown-toggle
+                                                      {% if request.path in (dashboard_url, play_history_url, transaction_history_url, settings_url) %}active{% endif %}"
                                                href="javascript:void(0);"
                                                id="dashboardDropdown"
                                                role="button"
                                                data-bs-toggle="dropdown"
-                                               aria-expanded="false">{% trans 'account dashboard' %}</a>
+                                               aria-expanded="false">{% trans 'account' %}</a>
                                             <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
                                                 <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">{% trans 'my account' %}</a>
+                                                    <a class="dropdown-item" href="{{ dashboard_url }}">{% trans 'dashboard' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">{% trans 'play history' %}</a>
+                                                    <a class="dropdown-item" href="{{ play_history_url }}">{% trans 'bet history' %}</a>
                                                 </li>
-                                                {% comment %}
-                                                    <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'referral' %}</a>
-                                                    </li>
-                                                    <li>
-                                                        <a class="dropdown-item" href="javascript:void(0);">{% trans 'settings' %}</a>
-                                                    </li>
-                                                {% endcomment %}
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ play_history_url }}">{% trans 'transaction history' %}</a>
+                                                </li>
+                                                <li>
+                                                    <a class="dropdown-item" href="{{ settings_url }}">{% trans 'settings' %}</a>
+                                                </li>
                                             </ul>
                                         </li>
                                     {% else %}

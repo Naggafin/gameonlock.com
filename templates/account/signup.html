@@ -138,6 +138,7 @@
                     <div class="poklotto-form"
                          id="poklotto_register_form"
                          role="form"
+                         x-ref="form"
                          aria-label="{% trans 'Sign-up form' %}">
                         <h3 class="steps-heading-title title" x-text="steps[currentStep].title"></h3>
                         <div class="part-form">
@@ -466,6 +467,20 @@
                     nextStep() {
                         this.validateStep();
                         if (this.currentStep < 3 && this.canProceed) this.currentStep++;
+
+                        // Scroll behavior
+                        const el = this.$refs.form;
+                        if (!el) return;
+
+                        const rect = el.getBoundingClientRect();
+                        const isVisible = (
+                            rect.top >= 0 &&
+                            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+                        );
+
+                        if (!isVisible) {
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     },
                     prevStep() {
                         this.validateStep();

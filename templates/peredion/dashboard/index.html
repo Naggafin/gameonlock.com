@@ -1,39 +1,9 @@
 {% extends 'base.html' %}
-{% load static i18n %}
-{% comment %}
-TODO: Ensure to make comprehensive use of AlpineJS for retaining client state variables (such as total wins, total bets, etc...) that will be given by the server, and utilize AlpineJS to the fullest reasonable extent possible for page reactivity.
-{% endcomment %}
-{% block banner %}
-    <div class="page-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="page-breadcrumb">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item">
-                                    <a href="{% url 'home' %}" class="breadcrumb-link">{% trans 'Home' %}</a>
-                                </li>
-                                <li class="breadcrumb-item active" aria-current="page">{% trans 'Dashboard' %}</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="bg-white pinside30">
-                        <div class="row align-items-center">
-                            <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12 col-12">
-                                <h1 class="page-title">{% trans 'Dashboard' %}</h1>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
+{% load static i18n django_tables2 humanize %}
 {% block content %}
-    <div class="dashboard-content">
+    <div class="dashboard-content"
+         x-data="dashboard"
+         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalPayout: '{{ total_payout|default:0.00 }}', chartData: {{ chart|safe }} })">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -43,7 +13,8 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                     type="button"
                                     data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasExample"
-                                    aria-controls="offcanvasExample">
+                                    aria-controls="offcanvasExample"
+                                    @click="sidebarOpen = !sidebarOpen">
                                 <i class="fa-solid fa-bars"></i>
                             </button>
                             <div class="offcanvas offcanvas-start"
@@ -52,7 +23,9 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                  aria-labelledby="offcanvasExampleLabel">
                                 <div class="offcanvas-header">
                                     <a href="{% url 'home' %}" class="offcanvas-logo">
-                                        <img src="{% static 'peredion/images/logo/mobile-logo.png' %}" alt="">
+                                        <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
+                                             alt=""
+                                             nonce="{{ request.csp_nonce }}">
                                     </a>
                                     <button type="button"
                                             class="btn-offcanvas-reset text-reset"
@@ -65,21 +38,36 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                     <div class="mainmenu-9">
                                         <ul class="navbar-nav">
                                             <li class="nav-item">
-                                                <a class="nav-link active"
-                                                   aria-current="page"
-                                                   href="{% url 'dashboard' %}">
-                                                    <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Overview' %}</a>
+                                                {% url 'dashboard' as url %}
+                                                <a class="nav-link
+                                                          {% if request.path == url %}active{% endif %}"
+                                                   href="{{ url }}">
+                                                    <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{% url 'dashboard_referral' %}">
-                                                    <i class="fa-solid fa-users fa-lg" style="font-size: 18px;"></i>{% trans 'Referral' %}</a>
+                                                {% url 'play_history' as url %}
+                                                <a class="nav-link
+                                                          {% if request.path == url %}active{% endif %}"
+                                                   href="{{ url }}">
+                                                    <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
                                             </li>
                                             <li class="nav-item">
-                                                <a class="nav-link" href="{% url 'dashboard_settings' %}">
+                                                {% url 'transaction_history' as url %}
+                                                <a class="nav-link
+                                                          {% if request.path == url %}active{% endif %}"
+                                                   href="{{ url }}">
+                                                    <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
+                                                       style="font-size: 20px"></i>
+                                                {% trans 'transaction history' %}</a>
+                                            </li>
+                                            <li class="nav-item">
+                                                {% url 'settings' as url %}
+                                                <a class="nav-link
+                                                          {% if request.path == url %}active{% endif %}"
+                                                   href="{{ url }}">
                                                     <i class="fa-solid fa-gear fa-lg"
                                                        style="--fa-primary-opacity: 0.4;
-                                                              --fa-secondary-opacity: 1"></i>
-                                                {% trans 'Settings' %}</a>
+                                                              --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -87,28 +75,16 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                             </div>
                         </div>
                         <div class="dashboard-main-content">
+                            <!-- Overview Section -->
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block" id="overview">
+                                    <div class="section-block"
+                                         id="overview"
+                                         data-aos="fade-up"
+                                         data-aos-duration="500">
                                         <h3 class="section-heading">{% trans 'Overview' %}</h3>
                                         <div class="row dashboard-stats">
-                                            {% comment %}
-                                        <!-- NOTE: This section is unused for now, as we don't maintain account balances at present -->
-                                        <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
-                                            <div class="card stat-card">
-                                                <div class="card-body">
-                                                    <div class="stat-icon">
-                                                        <i class="fa-solid fa-wallet"></i>
-                                                    </div>
-                                                    <div class="stat-content">
-                                                        <h6 class="card-title">{% trans 'Balance' %}</h6>
-                                                        <p class="card-text"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                            {% endcomment %}
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="card stat-card">
                                                     <div class="card-body">
                                                         <div class="stat-icon">
@@ -116,13 +92,12 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                                         </div>
                                                         <div class="stat-content">
                                                             <h6 class="card-title">{% trans 'Total Bets' %}</h6>
-                                                            <!-- TODO: The <p> below should be populated the user's total number of plays–{{ request.user.plays.count }} -->
-                                                            <p class="card-text"></p>
+                                                            <p class="card-text" x-text="totalBets"></p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="card stat-card">
                                                     <div class="card-body">
                                                         <div class="stat-icon">
@@ -130,13 +105,12 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                                         </div>
                                                         <div class="stat-content">
                                                             <h6 class="card-title">{% trans 'Wins' %}</h6>
-                                                            <!-- TODO: The <p> below should be populated the user's total number of winning plays–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays -->
-                                                            <p class="card-text"></p>
+                                                            <p class="card-text" x-text="totalWins"></p>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6 col-12">
+                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
                                                 <div class="card stat-card">
                                                     <div class="card-body">
                                                         <div class="stat-icon">
@@ -144,43 +118,37 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                                         </div>
                                                         <div class="stat-content">
                                                             <h6 class="card-title">{% trans 'Total Payout' %}</h6>
-                                                            <!-- TODO: The <p> below should be populated the user's total winnings–this will either need to be done as a context variable or a template tag since this requires filtering request.user.plays and then summing their 'amount' fields. Ideally this should display as USD.-->
-                                                            <p class="card-text"></p>
+                                                            <p class="card-text" x-text="`$${totalPayout}`"></p>
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <!-- Chart -->
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div id="chart"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <!-- Bet History Section -->
-                            <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block" id="bet-history">
+                                    <div class="section-block"
+                                         id="bet-history"
+                                         data-aos="fade-up"
+                                         data-aos-duration="500">
                                         <h3 class="section-heading">{% trans 'Bet History' %}</h3>
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table custom-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">{% trans 'Event' %}</th>
-                                                                <th scope="col">{% trans 'Bet Slip' %}</th>
-                                                                <th scope="col">{% trans 'Date & Time' %}</th>
-                                                                <th scope="col">{% trans 'Bet Type' %}</th>
-                                                                <th scope="col">{% trans 'Bet Amount' %}</th>
-                                                                <th scope="col">{% trans 'Bet Odd' %}</th>
-                                                                <th scope="col">{% trans 'Status' %}</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td colspan="7" class="text-center">{% trans 'No bet history available.' %}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="table-responsive"
+                                                     id="bet-history-table"
+                                                     hx-get="{% url 'play_history' %}"
+                                                     hx-trigger="load"
+                                                     hx-swap="innerHTML">
+                                                    <p>{% trans 'Loading bet history...' %}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -188,30 +156,21 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
                                 </div>
                             </div>
                             <!-- Transaction History Section -->
-                            <!-- TODO: This section should be redone using django-tables2 and django-filters for tabular display and realtime sorting. Dynamic updates should be handled by HTMX, and reactivity by AlpineJS -->
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block" id="transaction-history">
+                                    <div class="section-block"
+                                         id="transaction-history"
+                                         data-aos="fade-up"
+                                         data-aos-duration="500">
                                         <h3 class="section-heading">{% trans 'Transaction History' %}</h3>
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                    <table class="table custom-table">
-                                                        <thead>
-                                                            <tr>
-                                                                <th scope="col">{% trans 'Transaction ID' %}</th>
-                                                                <th scope="col">{% trans 'Date & Time' %}</th>
-                                                                <th scope="col">{% trans 'Type' %}</th>
-                                                                <th scope="col">{% trans 'Amount' %}</th>
-                                                                <th scope="col">{% trans 'Status' %}</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td colspan="5" class="text-center">{% trans 'No transaction history available.' %}</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                                <div class="table-responsive"
+                                                     id="transaction-history-table"
+                                                     hx-get="{% url 'transaction_history' %}"
+                                                     hx-trigger="load"
+                                                     hx-swap="innerHTML">
+                                                    <p>{% trans 'Loading transaction history...' %}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -229,291 +188,97 @@ TODO: Ensure to make comprehensive use of AlpineJS for retaining client state va
     {{ block.super }}
     <script src="{% static 'js/apexcharts.js' %}" nonce="{{ request.csp_nonce }}"></script>
     <script nonce="{{ request.csp_nonce }}">
-        var options = {
-            chart: {
-                height: 276,
-                type: "area",
-                zoom: {
-                    enabled: false
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('dashboard', () => ({
+                sidebarOpen: false,
+                totalBets: 0,
+                totalWins: 0,
+                totalPayout: '0.00',
+                chartData: {
+                    wins: [],
+                    losses: [],
+                    profit: []
                 },
-                toolbar: {
-                    show: false
+                init(data) {
+                    this.totalBets = data.totalBets;
+                    this.totalWins = data.totalWins;
+                    this.totalPayout = data.totalPayout;
+                    this.chartData = data.chartData;
+                    this.renderChart();
                 },
-                fontFamily: 'Asap, Arial, sans-serif'
-            },
-            legend: {
-                show: false
-            },
-            grid: {
-                show: false,
-                padding: {
-                    top: 0,
-                    right: 0,
-                    bottom: 0,
-                    left: -10
-                },
-            },
-            dataLabels: {
-                enabled: false,
-                style: {
-                    fontSize: '20px',
-                    fontFamily: 'Asap, Arial, sans-serif',
-                    fontWeight: 'bold',
-                    colors: undefined
-                },
-            },
-            {# TODO: This should be populated with real data particular to the user. Other adjustments to the chart may need to be made elsewhere. #}
-            series: [{
-                name: "Win",
-                data: [0, 350, 150, 300, 80, 250, 0]
-            }, {
-                name: "Loss",
-                data: [900, 700, 1000, 660, 880, 700, 1000]
-            }, {
-                name: "Profit",
-                data: [600, 220, 580, 50, 400, 800, 600]
-            }],
-            fill: {
-                type: "gradient",
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.45,
-                    opacityTo: 0.1,
-                    stops: [0, 90, 100]
+                renderChart() {
+                    const options = {
+                        chart: {
+                            height: 276,
+                            type: "area",
+                            zoom: { enabled: false },
+                            toolbar: { show: false },
+                            fontFamily: 'Asap, Arial, sans-serif'
+                        },
+                        legend: { show: false },
+                        grid: {
+                            show: false,
+                            padding: { top: 0, right: 0, bottom: 0, left: -10 }
+                        },
+                        dataLabels: {
+                            enabled: false,
+                            style: {
+                                fontSize: '20px',
+                                fontFamily: 'Asap, Arial, sans-serif',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        series: [
+                            { name: "Win", data: this.chartData.wins },
+                            { name: "Loss", data: this.chartData.losses },
+                            { name: "Profit", data: this.chartData.profit }
+                        ],
+                        fill: {
+                            type: "gradient",
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.45,
+                                opacityTo: 0.1,
+                                stops: [0, 90, 100]
+                            }
+                        },
+                        xaxis: {
+                            categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                            labels: {
+                                style: {
+                                    colors: [],
+                                    fontSize: '14px',
+                                    fontFamily: 'Asap, Arial, sans-serif',
+                                    fontWeight: 500
+                                }
+                            },
+                            axisBorder: { show: false }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: Math.max(...this.chartData.wins, ...this.chartData.losses, ...this.chartData.profit, 1000),
+                            tickAmount: 5,
+                            labels: {
+                                style: {
+                                    colors: [],
+                                    fontSize: '14px',
+                                    fontFamily: 'Asap, Arial, sans-serif',
+                                    fontWeight: 500
+                                }
+                            }
+                        },
+                        responsive: [{
+                            breakpoint: 1400,
+                            options: {
+                                chart: { height: 256 },
+                                legend: { position: "bottom" }
+                            }
+                        }]
+                    };
+                    const chart = new ApexCharts(document.querySelector("#chart"), options);
+                    chart.render();
                 }
-            },
-            xaxis: {
-                categories: [
-                    "Sun",
-                    "Mon",
-                    "Tue",
-                    "Wed",
-                    "Thu",
-                    "Fri",
-                    "Sat"
-                ],
-                labels: {
-                    style: {
-                        colors: [],
-                        fontSize: '14px',
-                        fontFamily: 'Asap, Arial, sans-serif',
-                        fontWeight: 500,
-                        cssClass: 'apexcharts-xaxis-label',
-                    },
-                },
-                axisBorder: {
-                    show: false,
-                    color: '#78909C',
-                    offsetX: 0,
-                    offsetY: 0
-                },
-            },
-            yaxis: {
-                min: 0,
-                max: 1000,
-                tickAmount: 5,
-                labels: {
-                    style: {
-                        colors: [],
-                        fontSize: '14px',
-                        fontFamily: 'Asap, Arial, sans-serif',
-                        fontWeight: 500,
-                        cssClass: 'noce',
-                    },
-                }
-            },
-            responsive: [{
-                breakpoint: 1400,
-                options: {
-                    chart: {
-                        height: 256
-                    },
-                    legend: {
-                        position: "bottom"
-                    }
-                },
-            }]
-        };
-
-        var chart = new ApexCharts(document.querySelector("#chart"), options);
-
-        chart.render();
+            }));
+        });
     </script>
 {% endblock %}
-{% comment %}
-<!-- TODO: Below is an extract from dashboard-bet-history.html of a section showing pending bets. Clean it up by removing dummy data from it, then find somewhere appropriate to include this in the main template -->
-<div class="col-xl-12 col-lg-12">
-    <div class="single-db-element">
-        <h4 class="title">
-            <span class="icon"><i class="fa-solid fa-clipboard-list"></i></span>
-            <span class="text">pending betslip (4)</span>
-        </h4>
-        <div class="pending-slips-scrollable">
-            <div class="pending-slips">
-                <div class="single-bs-card singleBS disabled" data-match-id="1689493708887">
-                    <span class="locked">
-                        <i class="fa-solid fa-lock"></i> Closed
-                    </span>
-                    <div class="bs-card-header">
-                        <span class="tournament-name">M8887. UEFA Champions League</span>
-                        <div class="slct-place">
-                            <span class="team-name">Dinamo Zagreb</span>
-                            <span class="attherate">@</span>
-                            <span class="bet-ratio">0.25</span>
-                        </div>
-                        <button class="slip-dlt">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="slct-match">
-                        <span class="sports-category-icon">
-                            <img src="assets/img/playing-bet/bet-slip/sports-icon.png" alt="">
-                        </span>
-                        <span class="team-1">Dinamo Zagreb</span>
-                        vs
-                        <span class="team-2">Bodo-Glimt</span>
-                    </div>
-                    <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Stake  :<span class="stake-number">1<span></span></span>
-                        </button>
-                        <div class="return-amount">
-                            <span class="text">Return :</span>
-                            <span class="number">0.25</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-bs-card singleBS" data-match-id="1689493708888">
-                    <div class="bs-card-header">
-                        <span class="tournament-name">M8888. UEFA Champions League</span>
-                        <div class="slct-place">
-                            <span class="live-icon">
-                                <img src="assets/img/playing-bet/bet-slip/live-icon.png" alt="">
-                            </span>
-                            <span class="team-name">Maccabi Haifa</span>
-                            <span class="attherate">@</span>
-                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(77, 142, 83); font-weight: 500">1.00</span>
-                        </div>
-                        <button class="slip-dlt">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="slct-match">
-                        <span class="sports-category-icon">
-                            <img src="assets/img/playing-bet/bet-slip/sports-icon.png" alt="">
-                        </span>
-                        <span class="team-1">Maccabi Haifa</span>
-                        vs
-                        <span class="team-2">Red Star Belgrade</span>
-                    </div>
-                    <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Stake  :<span class="stake-number">1<span></span></span>
-                        </button>
-                        <div class="return-amount">
-                            <span class="text">Return :</span>
-                            <span class="number">1.00</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-bs-card singleBS" data-match-id="1689493708887">
-                    <div class="bs-card-header">
-                        <span class="tournament-name">M8887. UEFA Champions League</span>
-                        <div class="slct-place">
-                            <span class="team-name">Dinamo Zagreb</span>
-                            <span class="attherate">@</span>
-                            <span class="bet-ratio">0.25</span>
-                        </div>
-                        <button class="slip-dlt">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="slct-match">
-                        <span class="sports-category-icon">
-                            <img src="assets/img/playing-bet/bet-slip/sports-icon.png" alt="">
-                        </span>
-                        <span class="team-1">Dinamo Zagreb</span>
-                        vs
-                        <span class="team-2">Bodo-Glimt</span>
-                    </div>
-                    <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Stake  :<span class="stake-number">1<span></span></span>
-                        </button>
-                        <div class="return-amount">
-                            <span class="text">Return :</span>
-                            <span class="number">0.25</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-bs-card singleBS" data-match-id="1689493708889">
-                    <div class="bs-card-header">
-                        <span class="tournament-name">M8889. UEFA Champions League</span>
-                        <div class="slct-place">
-                            <span class="live-icon">
-                                <img src="assets/img/playing-bet/bet-slip/live-icon.png" alt="">
-                            </span>
-                            <span class="team-name">draw</span>
-                            <span class="attherate">@</span>
-                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500">2.44</span>
-                        </div>
-                        <button class="slip-dlt">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="slct-match">
-                        <span class="sports-category-icon">
-                            <img src="assets/img/playing-bet/bet-slip/sports-icon.png" alt="">
-                        </span>
-                        <span class="team-1">Maccabi Haifa</span>
-                        vs
-                        <span class="team-2">Red Star Belgrade</span>
-                    </div>
-                    <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Stake  :<span class="stake-number">6<span></span></span>
-                        </button>
-                        <div class="return-amount">
-                            <span class="text">Return :</span>
-                            <span class="number">14.64</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="single-bs-card singleBS" data-match-id="1689493708889">
-                    <div class="bs-card-header">
-                        <span class="tournament-name">M8889. UEFA Champions League</span>
-                        <div class="slct-place">
-                            <span class="live-icon">
-                                <img src="assets/img/playing-bet/bet-slip/live-icon.png" alt="">
-                            </span>
-                            <span class="team-name">draw</span>
-                            <span class="attherate">@</span>
-                            <span class="bet-ratio" style="-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500">2.44</span>
-                        </div>
-                        <button class="slip-dlt">
-                            <i class="fa-solid fa-trash-can"></i>
-                        </button>
-                    </div>
-                    <div class="slct-match">
-                        <span class="sports-category-icon">
-                            <img src="assets/img/playing-bet/bet-slip/sports-icon.png" alt="">
-                        </span>
-                        <span class="team-1">Maccabi Haifa</span>
-                        vs
-                        <span class="team-2">Red Star Belgrade</span>
-                    </div>
-                    <div class="bs-card-footer">
-                        <button class="prd-btn-1 medium" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Stake  :<span class="stake-number">6<span></span></span>
-                        </button>
-                        <div class="return-amount">
-                            <span class="text">Return :</span>
-                            <span class="number">14.64</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-{% endcomment %}

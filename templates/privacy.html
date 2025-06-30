@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static i18n %}
+{% block banner %}{% endblock %}
+{% block content %}
+    <main class="container py-5">
+        <h1>{% trans "Privacy Policy" %}</h1>
+        <p>
+            {% blocktrans with last_updated=last_updated|date %}
+      Last updated: {{ last_updated }}
+    {% endblocktrans %}
+        </p>
+        <p>
+            {% blocktrans %}At <strong>Game On Lock</strong>, we value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share your information when you use our website and services.{% endblocktrans %}
+        </p>
+        <h2>{% trans "1. Information We Collect" %}</h2>
+        <ul>
+            <li>
+                {% trans "Account Information: When you register, we collect your name, email address, username, and password." %}
+            </li>
+            <li>
+                {% trans "Betting Data: We collect data related to your betting activity, including selected lines, plays, outcomes, and amounts wagered." %}
+            </li>
+            <li>
+                {% trans "Payment Information: We process transactions via PayPal. We do not store your full payment credentials." %}
+            </li>
+            <li>
+                {% trans "Usage Data: We collect IP addresses, browser type, device data, and pages visited to help improve our services." %}
+            </li>
+            <li>
+                {% trans "Cookies: We use cookies to enhance functionality, remember preferences, and analyze website traffic." %}
+            </li>
+        </ul>
+        <h2>{% trans "2. How We Use Your Information" %}</h2>
+        <ul>
+            <li>{% trans "To process bets, calculate outcomes, and issue payouts." %}</li>
+            <li>{% trans "To authenticate and manage user accounts." %}</li>
+            <li>{% trans "To detect and prevent fraud or suspicious activity." %}</li>
+            <li>{% trans "To send service-related notifications and updates." %}</li>
+            <li>{% trans "To comply with legal obligations." %}</li>
+        </ul>
+        <h2>{% trans "3. Sharing Your Data" %}</h2>
+        <p>
+            {% trans "We do not sell your personal information. We may share data with third parties only when necessary to process payments (e.g., PayPal), enforce our terms, or comply with legal requirements." %}
+        </p>
+        <h2>{% trans "4. Data Retention" %}</h2>
+        <p>
+            {% trans "We retain user data for as long as your account remains active and as required by law for auditing or compliance purposes." %}
+        </p>
+        <h2>{% trans "5. Data Security" %}</h2>
+        <p>
+            {% trans "We implement industry-standard security measures to protect your information. However, no online system is 100% secure." %}
+        </p>
+        <h2>{% trans "6. Your Rights" %}</h2>
+        <ul>
+            <li>{% trans "Access: You may request a copy of your personal data." %}</li>
+            <li>{% trans "Correction: You may update your account information at any time." %}</li>
+            <li>{% trans "Deletion: You may request deletion of your account and data, subject to retention laws." %}</li>
+            <li>{% trans "Objection: You may opt out of non-essential communications." %}</li>
+        </ul>
+        <h2>{% trans "7. Cookies and Tracking" %}</h2>
+        <p>
+            {% trans "We use cookies to personalize your experience and collect analytics. You can manage cookie preferences via your browser settings." %}
+        </p>
+        <h2>{% trans "8. Children's Privacy" %}</h2>
+        <p>
+            {% trans "This site is not intended for individuals under 18 or the legal betting age in your jurisdiction. We do not knowingly collect data from minors." %}
+        </p>
+        <h2>{% trans "9. International Users" %}</h2>
+        <p>
+            {% trans "If you are accessing our services from outside the United States, your information may be transferred and processed in jurisdictions with different privacy laws." %}
+        </p>
+        <h2>{% trans "10. Changes to This Policy" %}</h2>
+        <p>
+            {% trans "We may revise this Privacy Policy from time to time. We encourage users to review this page periodically for updates." %}
+        </p>
+        <h2>{% trans "11. Contact Us" %}</h2>
+        <p>
+            {% blocktrans %}If you have questions about this Privacy Policy, please contact us at <a href="mailto:privacy@gameonlock.com">privacy@gameonlock.com</a>.{% endblocktrans %}
+        </p>
+    </main>
+{% endblock %}
