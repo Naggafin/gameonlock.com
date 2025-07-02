@@ -1,4 +1,6 @@
 celery
+channels[daphne]
+channels-redis
 django-allauth
 django-auto-prefetch
 django-cachalot

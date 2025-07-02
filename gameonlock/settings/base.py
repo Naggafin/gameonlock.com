@@ -143,7 +143,7 @@ MIDDLEWARE = [
 	"htmx_utils.middleware.HtmxDebugMiddleware",
 	"django_htmx.middleware.HtmxMiddleware",
 	"htmx_utils.middleware.HtmxRedirectMiddleware",
-	"htmx_utils.middleware.HtmxMessagesMiddleware",
+	# "htmx_utils.middleware.HtmxMessagesMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
@@ -170,7 +170,7 @@ TEMPLATES = [
 				# "oscar.apps.checkout.context_processors.checkout",
 				# "oscar.apps.communication.notifications.context_processors.notifications",
 				# "oscar.core.context_processors.metadata",
-				"htmx_utils.context_processors.htmx_utils_context",
+				# "htmx_utils.context_processors.htmx_utils_context",
 				"gameonlock.context.site_vars",
 			],
 		},
@@ -178,6 +178,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "gameonlock.wsgi.application"
+ASGI_APPLICATION = "gameonlock.asgi.application"
 
 
 # Password validation
@@ -426,12 +427,6 @@ WAGTAIL_SITE_NAME = "Game-on-Lock"
 WAGTAIL_I18N_ENABLED = True
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 # WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
-
-
-# django-htmx-utils
-
-HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "peredion/elements/alert.html"
-HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alerts"
 
 
 # django-silk

@@ -9,8 +9,21 @@ https://docs.djangoproject.com/en/3.1/howto/deployment/asgi/
 
 import os
 
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
+from django.urls import path
+
+from notifications.routing import http_urlpatterns
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gameonlock.settings.production")
 
-application = get_asgi_application()
+django_asgi_app = get_asgi_application()
+
+application = ProtocolTypeRouter(
+	{
+		"http": AuthMiddlewareStack(
+			URLRouter(http_urlpatterns + [path("", django_asgi_app)])
+		),
+	}
+)

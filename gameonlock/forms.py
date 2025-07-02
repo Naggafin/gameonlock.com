@@ -5,7 +5,7 @@ from cache_memoize import cache_memoize
 from django import forms
 from django.urls import reverse
 from django.utils.html import format_html
-from django.utils.translation import gettext as _, gettext_lazy as _
+from django.utils.translation import gettext as _
 from django_countries.fields import CountryField
 from django_fastdev import fastdev_ignore
 from localflavor.ar.forms import ARProvinceSelect

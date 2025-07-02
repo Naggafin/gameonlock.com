@@ -104,19 +104,20 @@ document.addEventListener('alpine:init', () => {
 });
 
 function alertsStore() {
-    const store = Alpine.store('alertsState');
     return {
         get alerts() {
-            return store.alerts;
+            return Alpine.store('alertsState').alerts;
         },
-        dismiss: store.dismiss,
+        dismiss(alert) {
+            Alpine.store('alertsState').dismiss(alert);
+        },
         dismissLast() {
-            const visible = store.alerts.filter(a => a.isVisible);
+            const visible = this.alerts.filter(a => a.isVisible);
             if (visible.length) {
-                store.dismiss(visible[visible.length - 1]);
+                this.dismiss(visible[visible.length - 1]);
             }
         }
-    };
+    }
 }
 
 window.addEventListener('PreloaderFinished', () => {
@@ -131,3 +132,7 @@ sse.addEventListener('message', (event) => {
     Alpine.store('alertsState').add(msg);
 });
 </script>
+<section hx-ext="sse"
+         sse-connect="/sse/messages/"
+         sse-onmessage="handleMsg(event)">
+</section>

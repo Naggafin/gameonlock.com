@@ -1,4 +1,4 @@
-from ..models import BettingLine, Pick, Play
+from ..models import BettingLine, Play
 from ..munger import BettingLineMunger
 
 

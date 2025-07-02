@@ -118,6 +118,7 @@
         </div>
         {% block footer %}
             {% include 'peredion/elements/footer.html' %}
+            {% include 'notifications/alert.html' %}
             <div x-data="{ isActive: false, isFooterBottom: false, checkScroll() { const scroll = window.scrollY; const footerSection = document.querySelector('.footer').offsetTop; const footerOffset = footerSection - window.innerHeight; this.isActive = scroll > 1500; this.isFooterBottom = scroll > footerOffset; } }"
                  x-init="window.addEventListener('scroll', () => checkScroll()); checkScroll()">
                 <div class="back-to-top-btn">
@@ -131,6 +132,9 @@
         {% block js %}
             <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
             <script src="{% static 'js/htmx.min.js' %}"
+                    defer="true"
+                    nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% static 'js/sse.js' %}"
                     defer="true"
                     nonce="{{ request.csp_nonce }}"></script>
             {% django_htmx_script %}

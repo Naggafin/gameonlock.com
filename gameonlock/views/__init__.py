@@ -25,7 +25,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
-from django_tables2.views import SingleTableMixin
 
 from golpayment.filters import TransactionFilter
 from golpayment.models import Transaction

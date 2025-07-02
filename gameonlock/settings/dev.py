@@ -16,6 +16,8 @@ ALLOWED_HOSTS = ["*"]
 INTERNAL_IPS = ["*", "127.0.0.1", "localhost"]
 
 
+INSTALLED_APPS.insert(0, "daphne")
+
 if "test" not in sys.argv and not os.environ.get("PYTEST_CURRENT_TEST"):
 	INSTALLED_APPS.append("django_fastdev")  # noqa: F405
 	INSTALLED_APPS.append("debug_toolbar")  # noqa: F405
