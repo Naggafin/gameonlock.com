@@ -3,7 +3,7 @@
 {% block content %}
     <div class="dashboard-content"
          x-data="dashboard"
-         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalPayout: '{{ total_payout|default:0.00 }}', chartData: {{ chart|safe }} })">
+         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalPayout: '{{ total_payout|default:0.00 }}', chartData: {{ chart_data|safe }} })">
         <div class="container">
             <div class="row">
                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
@@ -22,7 +22,7 @@
                                  id="offcanvasExample"
                                  aria-labelledby="offcanvasExampleLabel">
                                 <div class="offcanvas-header">
-                                    <a href="{% url 'home' %}" class="offcanvas-logo">
+                                    <a href="{% url 'index' %}" class="offcanvas-logo">
                                         <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
                                              alt=""
                                              nonce="{{ request.csp_nonce }}">

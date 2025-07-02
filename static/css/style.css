@@ -21,60 +21,74 @@
 }
 
 
-.alert-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1050;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+#alerts {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1050;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
-.alert-item {
-  animation: fadeInSlideDown 0.5s, fadeOutSlideUp 0.5s 4.5s;
-  animation-fill-mode: forwards;
-}
-.alert-item.error {
-  background-color: #f44336;
-}
-.alert-item.info {
-  background-color: #2196f3;
-}
-.alert-item.warning {
-  background-color: #ff9800;
+#alerts .alert {
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    font-family: 'Asap, Arial, sans-serif';
+    transition: transform 0.3s ease;
+    min-width: 300px;
+    max-width: 400px;
 }
 
-.alert {
-  display: flex;
-  align-items: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+#alerts .alert:hover {
+    transform: translateY(-2px);
 }
 
-@keyframes fadeInSlideDown {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
+#alerts .alert .alert-icon {
+    font-size: 1.2rem;
+}
+
+#alerts .alert .alert-message {
+    flex-grow: 1;
+    font-size: 0.9rem;
+}
+
+#alerts .alert .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+#alerts .alert .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+#alerts .alert .alert-warning {
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    color: #856404;
+}
+
+#alerts .alert .alert-info {
+    background-color: #d1ecf1;
+    border-color: #bee5eb;
+    color: #0c5460;
+}
+
+#alerts .alert .btn-close {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: inherit;
+    opacity: 0.6;
+    cursor: pointer;
+}
+
+#alerts .alert .btn-close:hover {
     opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeOutSlideUp {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(20px);
-  }
 }
 
 

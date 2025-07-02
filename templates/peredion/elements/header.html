@@ -1,4 +1,4 @@
-{% load static i18n %}
+{% load static i18n gameonlock %}
 {% get_available_languages as languages %}
 {# TODO: header animations not work #}
 <header class="header header-fixed animated"
@@ -139,30 +139,11 @@
                                                   {% if request.path == url %}active{% endif %}"
                                            href="{{ url }}">{% trans 'about us' %}</a>
                                     </li>
-                                    <li class="nav-item dropdown">
-                                        {# TODO #}
-                                        {% if request.user.is_authticated %}
-                                            <a class="nav-link dropdown-toggle"
-                                               href="javascript:void(0);"
-                                               id="betDropdown"
-                                               role="button"
-                                               data-bs-toggle="dropdown"
-                                               aria-expanded="false">{% trans 'bets' %}</a>
-                                            <ul class="dropdown-menu" aria-labelledby="betDropdown">
-                                                <li>
-                                                    {% url 'sportsbetting:bet' as url %}
-                                                    <a class="dropdown-item" href="{{ url }}">{% trans 'all bets' %}</a>
-                                                </li>
-                                                <li>
-                                                    <a class="dropdown-item" href="javascript:void(0);">{% trans 'my plays' %}</a>
-                                                </li>
-                                            </ul>
-                                        {% else %}
-                                            {% url 'sportsbetting:bet' as url %}
-                                            <a class="nav-link
-                                                      {% if request.path == url %}active{% endif %}"
-                                               href="{{ url }}">{% trans 'bets' %}</a>
-                                        {% endif %}
+                                    <li class="nav-item">
+                                        {% url 'sportsbetting:bet' as url %}
+                                        <a class="nav-link
+                                                  {% if request.path == url %}active{% endif %}"
+                                           href="{{ url }}">{% trans 'bets' %}</a>
                                     </li>
                                     <li class="nav-item">
                                         {% url 'contact' as url %}
@@ -195,12 +176,8 @@
                                     </li>
                                     {% if request.user.is_authenticated %}
                                         <li class="nav-item dropdown ms-auto">
-                                            {% url 'dashboard' as dashboard_url %}
-                                            {% url 'play_history' as play_history_url %}
-                                            {% url 'transaction_history' as transaction_history_url %}
-                                            {% url 'settings' as settings_url %}
                                             <a class="nav-link dropdown-toggle
-                                                      {% if request.path in (dashboard_url, play_history_url, transaction_history_url, settings_url) %}active{% endif %}"
+                                                      {% if is_account_section_active %}active{% endif %}"
                                                href="javascript:void(0);"
                                                id="dashboardDropdown"
                                                role="button"
@@ -208,16 +185,16 @@
                                                aria-expanded="false">{% trans 'account' %}</a>
                                             <ul class="dropdown-menu" aria-labelledby="dashboardDropdown">
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ dashboard_url }}">{% trans 'dashboard' %}</a>
+                                                    <a class="dropdown-item" href="{% url 'dashboard' %}">{% trans 'dashboard' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ play_history_url }}">{% trans 'bet history' %}</a>
+                                                    <a class="dropdown-item" href="{% url 'play_history' %}">{% trans 'bet history' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ play_history_url }}">{% trans 'transaction history' %}</a>
+                                                    <a class="dropdown-item" href="{% url 'transaction_history' %}">{% trans 'transaction history' %}</a>
                                                 </li>
                                                 <li>
-                                                    <a class="dropdown-item" href="{{ settings_url }}">{% trans 'settings' %}</a>
+                                                    <a class="dropdown-item" href="{% url 'settings' %}">{% trans 'settings' %}</a>
                                                 </li>
                                             </ul>
                                         </li>

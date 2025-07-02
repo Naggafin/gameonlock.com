@@ -1,0 +1,61 @@
+{% load static i18n partials %}
+{% partialdef messages-section %}
+{% for message in messages %}
+    <div x-data="alert({ message: '{{ message|escapejs }}', type: '{{ message.level_tag|default:"info" }}', timeout:
+        {% if message.level == messages.SUCCESS %}
+            5000
+        {% elif message.level == messages.ERROR %}
+            0
+        {% else %}
+            3000
+        {% endif %}
+        })" x-show="isVisible" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 translate-y-4" class="alert" role="alert" data-aos="fade-up" data-aos-duration="500" data-aos-easing="ease-in" :class="`alert-${type}`" {% if request.htmx %}swap-oob="innerHTML:#alerts"{% endif %}>
+        <div class="d-flex align-items-center">
+            <div class="alert-icon me-2">
+                <i :class="{ 'fa-solid fa-circle-info': type === 'info', 'fa-solid fa-check-circle': type === 'success', 'fa-solid fa-exclamation-triangle': type === 'warning', 'fa-solid fa-times-circle': type === 'danger' }"></i>
+            </div>
+            <div class="alert-message" x-html="message"></div>
+        </div>
+        <button type="button"
+                class="btn-close"
+                aria-label="{% trans 'Close' %}"
+                @click="dismiss()"
+                x-bind:disabled="!isVisible">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+{% empty %}
+    <div x-show="false"></div>
+{% endfor %}
+{% endpartialdef %}
+<div id="alerts" x-data="alerts">{% partial messages-section %}</div>
+<script nonce="{{ request.csp_nonce }}">
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('alerts', () => ({
+            // Container component for managing multiple alerts
+        }));
+    
+        Alpine.data('alert', (config) => ({
+            isVisible: true,
+            message: config.message,
+            type: config.type,
+            timeout: config.timeout,
+            init() {
+                if (this.timeout > 0) {
+                    setTimeout(() => {
+                        this.dismiss();
+                    }, this.timeout);
+                }
+            },
+            dismiss() {
+                this.isVisible = false;
+                // Remove the alert from DOM after transition
+                setTimeout(() => {
+                    if (!this.isVisible) {
+                        this.$el.remove();
+                    }
+                }, 200);
+            }
+        }));
+    });
+</script>

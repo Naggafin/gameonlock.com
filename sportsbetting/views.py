@@ -4,7 +4,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import ListView, TemplateView, UpdateView
+from django.views.generic import TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
 from .forms import PickFormSet, PlayForm
@@ -34,8 +34,13 @@ class SportsBettingContextMixin:
 
 
 class BettingView(
-	LoginRequiredMixin, SportsBettingContextMixin, ListBreadcrumbMixin, TemplateView
+	LoginRequiredMixin,
+	SportsBettingContextMixin,
+	ListBreadcrumbMixin,
+	GameonlockMixin,
+	TemplateView,
 ):
+	title = _("Betting")
 	model = BettingLine
 	template_name = "peredion/playing-bet.html"
 	list_view_url = reverse_lazy("sportsbetting:bet")
@@ -109,10 +114,6 @@ class PlayCreateUpdateView(LoginRequiredMixin, UpdateView):
 	def form_invalid(self, form, formset=None):
 		messages.error(self.request, _("Error processing picks."))
 		return super().form_invalid(form)
-
-
-class PlayListView(LoginRequiredMixin, ListBreadcrumbMixin, ListView):
-	model = Play
 
 
 """

@@ -430,8 +430,8 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 
 # django-htmx-utils
 
-# HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "pixio/elements/alert.html"
-HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alert-container"
+HTMX_MESSAGES_MIDDLEWARE_TEMPLATE = "peredion/elements/alert.html"
+HTMX_MESSAGES_MIDDLEWARE_HTML_ID = "alerts"
 
 
 # django-silk

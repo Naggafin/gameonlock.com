@@ -22,8 +22,10 @@ from django.utils import timezone
 from django.utils.functional import SimpleLazyObject
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import ListView, TemplateView
-from django_tables2 import RequestConfig, SingleTableMixin
+from django.views.generic import TemplateView
+from django_filters.views import FilterView
+from django_tables2 import SingleTableMixin
+from django_tables2.views import SingleTableMixin
 from view_breadcrumbs import BaseBreadcrumbMixin
 
 from golpayment.filters import TransactionFilter
@@ -41,11 +43,17 @@ HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 logger = logging.getLogger(__name__)
 
 
-class BreadcrumbMixin(BaseBreadcrumbMixin):
+class GameonlockMixin(BaseBreadcrumbMixin):
 	home_label = '<i class="icon fa-solid fa-house"></i> %s' % _("Home")
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["title"] = self.title
+		return context
 
-class HomeView(SportsBettingContextMixin, TemplateView):
+
+class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
+	title = _("Home")
 	template_name = "peredion/index.html"
 
 	def get_context_data(self, **kwargs):
@@ -69,20 +77,15 @@ class HomeView(SportsBettingContextMixin, TemplateView):
 		return context
 
 
-class LoginView(BreadcrumbMixin, AllauthLoginView):
+class LoginView(GameonlockMixin, AllauthLoginView):
 	title = _("Sign In")
 
 	@property
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("account_login"))]
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
-		return context
 
-
-class SignupView(BreadcrumbMixin, AllauthSignupView):
+class SignupView(GameonlockMixin, AllauthSignupView):
 	title = _("Sign Up")
 
 	@property
@@ -93,15 +96,12 @@ class SignupView(BreadcrumbMixin, AllauthSignupView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
 		context["subtitle"] = _("Sign up to create an account")
 		context["region_choices"] = json.dumps(dict(get_all_region_choices()))
 		return context
 
 
-class DashboardView(
-	LoginRequiredMixin, BreadcrumbMixin, SingleTableMixin, TemplateView
-):
+class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 	title = _("Dashboard")
 	template_name = "peredion/dashboard/index.html"
 
@@ -111,7 +111,6 @@ class DashboardView(
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
 
 		user_plays = self.request.user.plays
 
@@ -173,43 +172,39 @@ class DashboardView(
 		return context
 
 
-class PlayHistoryView(LoginRequiredMixin, BreadcrumbMixin, ListView):
-	model = Play
+class PlayHistoryView(
+	LoginRequiredMixin, GameonlockMixin, SingleTableMixin, FilterView
+):
 	title = _("Bet History")
+	model = Play
+	table_class = PlayTable
+	filterset_class = PlayFilter
+	table_pagination = {"per_page": 10}
 	template_name = "peredion/dashboard/dashboard-bet-history.html"
 
 	def get_template_names(self):
 		if self.request.htmx:
-			return ["peredion/dashboard/dashboard-bet-history.html#bet-history-table"]
+			return ["django_tables2/table_fragment.html"]
 		return super().get_template_names()
 
 	@property
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("play_history"))]
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
 
-		filter = PlayFilter(self.request.GET, queryset=context["objects"])
-		table = PlayTable(filter.qs)
-		RequestConfig(self.request, paginate={"per_page": 10}).configure(table)
-
-		context["title"] = self.title
-		context["table"] = table
-		context["filter"] = filter
-		return context
-
-
-class TransactionHistoryView(LoginRequiredMixin, BreadcrumbMixin, ListView):
-	model = Transaction
+class TransactionHistoryView(
+	LoginRequiredMixin, GameonlockMixin, SingleTableMixin, FilterView
+):
 	title = _("Transaction History")
+	model = Transaction
+	table_class = TransactionTable
+	filterset_class = TransactionFilter
+	table_pagination = {"per_page": 10}
 	template_name = "peredion/dashboard/dashboard-transaction-history.html"
 
 	def get_template_names(self):
 		if self.request.htmx:
-			return [
-				"peredion/dashboard/dashboard-transaction-history.html#transaction-history-table"
-			]
+			return ["django_tables2/table_fragment.html"]
 		return super().get_template_names()
 
 	@property
@@ -221,30 +216,14 @@ class TransactionHistoryView(LoginRequiredMixin, BreadcrumbMixin, ListView):
 			)
 		]
 
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
 
-		filter = TransactionFilter(self.request.GET, queryset=context["objects"])
-		table = TransactionTable(filter.qs)
-		RequestConfig(self.request, paginate={"per_page": 10}).configure(table)
-
-		context["title"] = self.title
-		context["table"] = table
-		return context
-
-
-class SettingsView(LoginRequiredMixin, BreadcrumbMixin, TemplateView):
+class SettingsView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 	title = _("Settings")
 	template_name = "peredion/dashboard/dashboard-settings.html"
 
 	@property
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("settings"))]
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
-		return context
 
 
 @csrf_exempt
