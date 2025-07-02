@@ -26,7 +26,6 @@ from django.views.generic import TemplateView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 from django_tables2.views import SingleTableMixin
-from view_breadcrumbs import BaseBreadcrumbMixin
 
 from golpayment.filters import TransactionFilter
 from golpayment.models import Transaction
@@ -34,22 +33,14 @@ from golpayment.tables import TransactionTable
 from sportsbetting.filters import PlayFilter
 from sportsbetting.models import Game, Play
 from sportsbetting.tables import PlayTable
-from sportsbetting.views import SportsBettingContextMixin
+from sportsbetting.views.mixins import SportsBettingContextMixin
 
-from .forms import get_all_region_choices
+from ..forms import get_all_region_choices
+from .mixins import GameonlockMixin
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
 logger = logging.getLogger(__name__)
-
-
-class GameonlockMixin(BaseBreadcrumbMixin):
-	home_label = '<i class="icon fa-solid fa-house"></i> %s' % _("Home")
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
-		return context
 
 
 class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
