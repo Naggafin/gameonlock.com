@@ -125,14 +125,10 @@ window.addEventListener('PreloaderFinished', () => {
 });
 
 // SSE connection
-const sse = new EventSource('/sse/messages/');
+const sse = new EventSource('/sse/notifications/');
 
 sse.addEventListener('message', (event) => {
     const msg = JSON.parse(event.data);
     Alpine.store('alertsState').add(msg);
 });
 </script>
-<section hx-ext="sse"
-         sse-connect="/sse/messages/"
-         sse-onmessage="handleMsg(event)">
-</section>

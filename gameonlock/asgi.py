@@ -12,7 +12,7 @@ import os
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
-from django.urls import path
+from django.urls import re_path
 
 from notifications.routing import http_urlpatterns
 
@@ -23,7 +23,12 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter(
 	{
 		"http": AuthMiddlewareStack(
-			URLRouter(http_urlpatterns + [path("", django_asgi_app)])
+			URLRouter(
+				[
+					re_path(r"^sse/", URLRouter(http_urlpatterns)),
+					re_path(r"", django_asgi_app),
+				]
+			)
 		),
 	}
 )

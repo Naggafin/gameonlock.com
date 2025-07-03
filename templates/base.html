@@ -134,9 +134,6 @@
             <script src="{% static 'js/htmx.min.js' %}"
                     defer="true"
                     nonce="{{ request.csp_nonce }}"></script>
-            <script src="{% static 'js/sse.js' %}"
-                    defer="true"
-                    nonce="{{ request.csp_nonce }}"></script>
             {% django_htmx_script %}
             <script src="{% static 'js/alpine.min.js' %}"
                     defer="true"

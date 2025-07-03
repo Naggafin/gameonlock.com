@@ -32,7 +32,7 @@ DATABASES = {
 CACHES = {
 	"default": {
 		"BACKEND": "django_redis.cache.RedisCache",
-		"LOCATION": os.environ.get("REDIS_URL"),
+		"LOCATION": f"{os.environ.get('REDIS_URL')}/0",
 		"OPTIONS": {
 			"CLIENT_CLASS": "django_redis.client.DefaultClient",
 			"PARSER_CLASS": "redis.connection._HiredisParser",
@@ -51,16 +51,6 @@ STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesSto
 
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-
-# channels
-
-CHANNEL_LAYERS = {
-	"default": {
-		"BACKEND": "channels_redis.core.RedisChannelLayer",
-		"CONFIG": {"hosts": [("127.0.0.1", 6379)]},
-	},
-}
 
 
 # django-silk

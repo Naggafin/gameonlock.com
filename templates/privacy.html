@@ -4,11 +4,7 @@
 {% block content %}
     <main class="container py-5">
         <h1>{% trans "Privacy Policy" %}</h1>
-        <p>
-            {% blocktrans with last_updated=last_updated|date %}
-      Last updated: {{ last_updated }}
-    {% endblocktrans %}
-        </p>
+        <p>{% blocktrans with last_updated=last_updated|date %}Last updated: {{ last_updated }}{% endblocktrans %}</p>
         <p>
             {% blocktrans %}At <strong>Game On Lock</strong>, we value your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, store, and share your information when you use our website and services.{% endblocktrans %}
         </p>

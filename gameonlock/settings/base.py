@@ -373,6 +373,18 @@ SITE_VARS = {
 }
 
 
+# channel
+
+CHANNEL_LAYERS = {
+	"default": {
+		"BACKEND": "channels_redis.core.RedisChannelLayer",
+		"CONFIG": {
+			"hosts": [{"address": f"{os.environ.get('REDIS_URL')}/1"}],
+		},
+	}
+}
+
+
 # django-paypal
 
 PAYPAL_IDENTITY_TOKEN = os.environ.get("PAYPAL_IDENTITY_TOKEN", "test-identity-token")
