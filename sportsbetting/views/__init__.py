@@ -11,7 +11,6 @@ from gameonlock.views.mixins import GameonlockMixin
 
 from ..forms import PickFormSet, PlayForm
 from ..models import BettingLine, Pick, Play
-from ..munger import BettingLineMunger
 from ..util import calculate_play_stakes
 from .mixins import SportsBettingContextMixin
 

@@ -407,7 +407,14 @@ class Play(auto_prefetch.Model):
 		default_currency="USD",
 		validators=[MinMoneyValidator(settings.SPORTS["MIN_BET"])],
 	)
-	stakes = models.IntegerField(blank=True, null=True, editable=False)
+	stakes = MoneyField(
+		max_digits=10,
+		decimal_places=2,
+		default_currency="USD",
+		blank=True,
+		null=True,
+		editable=False,
+	)
 	placed_datetime = models.DateTimeField(auto_now=True)
 	paid = models.BooleanField(default=False, editable=False)
 	won = models.BooleanField(default=False)
