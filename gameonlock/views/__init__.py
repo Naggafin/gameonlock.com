@@ -6,16 +6,22 @@ from allauth.account.views import (
 	LoginView as AllauthLoginView,
 	SignupView as AllauthSignupView,
 )
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import (
 	Case,
 	Count,
 	DecimalField,
+	ExpressionWrapper,
+	F,
+	FloatField,
 	IntegerField,
 	Q,
 	Sum,
+	Value,
 	When,
 )
+from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.urls import reverse
 from django.utils import timezone
@@ -32,6 +38,7 @@ from golpayment.tables import TransactionTable
 from sportsbetting.filters import PlayFilter
 from sportsbetting.models import Game, Play
 from sportsbetting.tables import PlayTable
+from sportsbetting.utils import calculate_all_total_stakes
 from sportsbetting.views.mixins import SportsBettingContextMixin
 
 from ..forms import get_all_region_choices
@@ -105,19 +112,81 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 		user_plays = self.request.user.plays
 
 		# Aggregate totals
-		totals = user_plays.aggregate(
-			total_bets=Count("id"),
-			total_wins=Count(Case(When(won=True, then=1), output_field=IntegerField())),
-			total_payout=Sum(
-				Case(When(won=True, then="amount"), output_field=DecimalField())
+		sports_cfg = settings.SPORTS
+		totals = user_plays.annotate(
+			picks_count=Count("picks"),
+			stake_factor=ExpressionWrapper(
+				Value(sports_cfg["BASE_BET_STAKES"])
+				+ (
+					(F("picks_count") - sports_cfg["MIN_NUM_BETS"])
+					/ sports_cfg["BET_STEP"]
+				)
+				* sports_cfg["BET_MULTIPLIER"],
+				output_field=FloatField(),
 			),
+			stake_amount=ExpressionWrapper(
+				F("amount") * F("stake_factor"),
+				output_field=FloatField(),
+			),
+		).aggregate(
+			total_bets=Count("id"),
+			total_pending_bets=Count(
+				Case(
+					When(status=Play.STATES.pending, then=1),
+					output_field=IntegerField(),
+				)
+			),
+			total_wins=Count(Case(When(won=True, then=1), output_field=IntegerField())),
+			total_losses=Count(
+				Case(
+					When(Q(won=False) & Q(status=Play.STATES.completed), then=1),
+					output_field=IntegerField(),
+				)
+			),
+			total_deposit=Coalesce(Sum("amount"), 0.0),
+			total_payout=Coalesce(
+				Sum(
+					Case(
+						When(won=True, then=F("stake_amount")),
+						output_field=FloatField(),
+					)
+				),
+				0.0,
+			),
+			total_pending_stakes=Coalesce(
+				Sum(
+					Case(
+						When(status=Play.STATES.pending, then=F("stake_amount")),
+						output_field=FloatField(),
+					)
+				),
+				0.0,
+			),
+		)
+
+		# Calculate percentages (safely)
+		total = totals["total_bets"] or 0
+		win_pct = round((totals["total_wins"] / total) * 100) if total else 0
+		loss_pct = round((totals["total_losses"] / total) * 100) if total else 0
+
+		totals.update(
+			{
+				"win_pct": win_pct,
+				"loss_pct": loss_pct,
+			}
 		)
 
 		context.update(
 			{
 				"total_bets": totals["total_bets"],
+				"total_pending_bets": totals["total_pending_bets"],
 				"total_wins": totals["total_wins"],
-				"total_payout": totals["total_payout"] or "0.00",
+				"total_losses": totals["total_losses"],
+				"total_payout": totals["total_payout"],
+				"total_deposit": totals["total_deposit"],
+				"total_pending_stakes": totals["total_pending_stakes"],
+				"win_pct": total["win_pct"],
+				"loss_pct": total["loss_pct"],
 			}
 		)
 

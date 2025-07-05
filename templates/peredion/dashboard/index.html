@@ -1,180 +1,291 @@
 {% extends 'base.html' %}
 {% load static i18n django_tables2 humanize %}
+{% block banner %}
+    {% include 'peredion/dashboard/elements/banner.html' %}
+{% endblock %}
 {% block content %}
-    <div class="dashboard-content"
+    <div class="offcanvas offcanvas-start"
+         tabindex="-1"
+         id="offcanvasExample"
+         aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <a href="{% url 'index' %}" class="offcanvas-logo">
+                <img src="{% static 'peredion/images//logo/mobile-logo.png' %}"
+                     alt="{% trans 'Game-on-Lock' %}"
+                     nonce="{{ request.csp_nonce }}">
+            </a>
+            <button type="button"
+                    class="btn-offcanvas-reset text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="{% trans 'Close' %}">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="mainmenu-9">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        {% url 'dashboard' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'play_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'transaction_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
+                               style="font-size: 20px"></i>
+                        {% trans 'transaction history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'settings' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gear fa-lg"
+                               style="--fa-primary-opacity: 0.4;
+                                      --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="d-xl-block d-none">
+            <div class="db-menu">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        {% url 'dashboard' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'play_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'transaction_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
+                               style="font-size: 20px"></i>
+                        {% trans 'transaction history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'settings' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gear fa-lg"
+                               style="--fa-primary-opacity: 0.4;
+                                      --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-xl-none d-block">
+            <div class="db-offset-menu-control">
+                <span class="text">{% trans 'dashboard menu' %}</span>
+                <button class="btn-for-bs-offset"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasExample"
+                        aria-controls="offcanvasExample"
+                        id="offcanvasExampleLabel">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div id="dashboard-content"
          x-data="dashboard"
-         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalPayout: '{{ total_payout|default:0.00 }}', chartData: {{ chart_data|safe }} })">
-        <div class="container">
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                    <div class="dashboard-page">
-                        <div class="dashboard-sidebar">
-                            <button class="btn btn-primary sidebar-toggle-btn"
-                                    type="button"
-                                    data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasExample"
-                                    aria-controls="offcanvasExample"
-                                    @click="sidebarOpen = !sidebarOpen">
-                                <i class="fa-solid fa-bars"></i>
-                            </button>
-                            <div class="offcanvas offcanvas-start"
-                                 tabindex="-1"
-                                 id="offcanvasExample"
-                                 aria-labelledby="offcanvasExampleLabel">
-                                <div class="offcanvas-header">
-                                    <a href="{% url 'index' %}" class="offcanvas-logo">
-                                        <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
-                                             alt=""
-                                             nonce="{{ request.csp_nonce }}">
-                                    </a>
-                                    <button type="button"
-                                            class="btn-offcanvas-reset text-reset"
-                                            data-bs-dismiss="offcanvas"
-                                            aria-label="Close">
-                                        <i class="fa-solid fa-xmark"></i>
-                                    </button>
-                                </div>
-                                <div class="offcanvas-body">
-                                    <div class="mainmenu-9">
-                                        <ul class="navbar-nav">
-                                            <li class="nav-item">
-                                                {% url 'dashboard' as url %}
-                                                <a class="nav-link
-                                                          {% if request.path == url %}active{% endif %}"
-                                                   href="{{ url }}">
-                                                    <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                {% url 'play_history' as url %}
-                                                <a class="nav-link
-                                                          {% if request.path == url %}active{% endif %}"
-                                                   href="{{ url }}">
-                                                    <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                {% url 'transaction_history' as url %}
-                                                <a class="nav-link
-                                                          {% if request.path == url %}active{% endif %}"
-                                                   href="{{ url }}">
-                                                    <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
-                                                       style="font-size: 20px"></i>
-                                                {% trans 'transaction history' %}</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                {% url 'settings' as url %}
-                                                <a class="nav-link
-                                                          {% if request.path == url %}active{% endif %}"
-                                                   href="{{ url }}">
-                                                    <i class="fa-solid fa-gear fa-lg"
-                                                       style="--fa-primary-opacity: 0.4;
-                                                              --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
-                                            </li>
-                                        </ul>
-                                    </div>
+         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }}, chartData: {{ chart_data|safe }} })">
+        <div class="dashboard-statics">
+            <div class="container">
+                <div class="row g-lg-4 g-2">
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="" alt="" nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total bets' %}</span>
+                                <span class="descr" x-text="totalBets"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="" alt="" nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total pending bets' %}</span>
+                                <span class="descr" x-text="totalPendingBets"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="" alt="" nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total wins' %}</span>
+                                <span class="descr" x-text="totalWins"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="" alt="" nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total losses' %}</span>
+                                <span class="descr" x-text="totalLosses"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-2.png"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total profit' %}</span>
+                                <span class="descr" x-text="`$${totalProfit}`"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-4.png"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total payout' %}</span>
+                                <span class="descr" x-text="`$${totalPayout}`"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-3.png"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'total deposited' %}</span>
+                                <span class="descr" x-text="`$${totalDeposit}`"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-5.png"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'pending amount' %}</span>
+                                <span class="descr" x-text="`$${totalPendingStakes}`"></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% comment %}
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-6.png" alt="" nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'referral earning' %}</span>
+                                <span class="descr" x-text="`$${totalReferral}`"></span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endcomment %}
+                    <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
+                        <div class="single-statics">
+                            <div class="part-icon">
+                                <img src="assets/img/db-statics/image-8.png"
+                                     alt=""
+                                     nonce="{{ request.csp_nonce }}">
+                            </div>
+                            <div class="part-text">
+                                <span class="text">{% trans 'bet winning %' %}</span>
+                                <span class="descr" x-text="`${winPct}%`"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="db-elements">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="single-db-element">
+                            <h4 class="title">
+                                <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
+                                <span class="text">{% trans 'win & loss statistics' %}</span>
+                            </h4>
+                            <div id="chart" class="db-chart"></div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="single-db-element">
+                            <h4 class="title">
+                                <span class="icon"><i class="fa-solid fa-files"></i></span>
+                                <span class="text">{% trans 'my recent bets' %}</span>
+                            </h4>
+                            <div class="sports-body">
+                                <div class="table-responsive"
+                                     id="bet-history-table"
+                                     hx-get="{% url 'play_history' %}"
+                                     hx-trigger="load"
+                                     hx-swap="innerHTML">
+                                    <p>{% trans 'Loading bet history...' %}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="dashboard-main-content">
-                            <!-- Overview Section -->
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block"
-                                         id="overview"
-                                         data-aos="fade-up"
-                                         data-aos-duration="500">
-                                        <h3 class="section-heading">{% trans 'Overview' %}</h3>
-                                        <div class="row dashboard-stats">
-                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                <div class="card stat-card">
-                                                    <div class="card-body">
-                                                        <div class="stat-icon">
-                                                            <i class="fa-solid fa-dice"></i>
-                                                        </div>
-                                                        <div class="stat-content">
-                                                            <h6 class="card-title">{% trans 'Total Bets' %}</h6>
-                                                            <p class="card-text" x-text="totalBets"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                <div class="card stat-card">
-                                                    <div class="card-body">
-                                                        <div class="stat-icon">
-                                                            <i class="fa-solid fa-trophy"></i>
-                                                        </div>
-                                                        <div class="stat-content">
-                                                            <h6 class="card-title">{% trans 'Wins' %}</h6>
-                                                            <p class="card-text" x-text="totalWins"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
-                                                <div class="card stat-card">
-                                                    <div class="card-body">
-                                                        <div class="stat-icon">
-                                                            <i class="fa-solid fa-money-bill-wave"></i>
-                                                        </div>
-                                                        <div class="stat-content">
-                                                            <h6 class="card-title">{% trans 'Total Payout' %}</h6>
-                                                            <p class="card-text" x-text="`$${totalPayout}`"></p>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Chart -->
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div id="chart"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Bet History Section -->
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block"
-                                         id="bet-history"
-                                         data-aos="fade-up"
-                                         data-aos-duration="500">
-                                        <h3 class="section-heading">{% trans 'Bet History' %}</h3>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="table-responsive"
-                                                     id="bet-history-table"
-                                                     hx-get="{% url 'play_history' %}"
-                                                     hx-trigger="load"
-                                                     hx-swap="innerHTML">
-                                                    <p>{% trans 'Loading bet history...' %}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Transaction History Section -->
-                            <div class="row">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="section-block"
-                                         id="transaction-history"
-                                         data-aos="fade-up"
-                                         data-aos-duration="500">
-                                        <h3 class="section-heading">{% trans 'Transaction History' %}</h3>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="table-responsive"
-                                                     id="transaction-history-table"
-                                                     hx-get="{% url 'transaction_history' %}"
-                                                     hx-trigger="load"
-                                                     hx-swap="innerHTML">
-                                                    <p>{% trans 'Loading transaction history...' %}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="single-db-element">
+                            <h4 class="title">
+                                <span class="icon"><i class="fa-solid fa-files"></i></span>
+                                <span class="text">{% trans 'my recent transactions' %}</span>
+                            </h4>
+                            <div class="sports-body">
+                                <div class="table-responsive"
+                                     id="transaction-history-table"
+                                     hx-get="{% url 'transaction_history' %}"
+                                     hx-trigger="load"
+                                     hx-swap="innerHTML">
+                                    <p>{% trans 'Loading transaction history...' %}</p>
                                 </div>
                             </div>
                         </div>
@@ -189,96 +300,111 @@
     <script src="{% static 'js/apexcharts.js' %}" nonce="{{ request.csp_nonce }}"></script>
     <script nonce="{{ request.csp_nonce }}">
         document.addEventListener('alpine:init', () => {
-            Alpine.data('dashboard', () => ({
-                sidebarOpen: false,
-                totalBets: 0,
-                totalWins: 0,
-                totalPayout: '0.00',
-                chartData: {
-                    wins: [],
-                    losses: [],
-                    profit: []
-                },
-                init(data) {
-                    this.totalBets = data.totalBets;
-                    this.totalWins = data.totalWins;
-                    this.totalPayout = data.totalPayout;
-                    this.chartData = data.chartData;
-                    this.renderChart();
-                },
-                renderChart() {
-                    const options = {
-                        chart: {
-                            height: 276,
-                            type: "area",
-                            zoom: { enabled: false },
-                            toolbar: { show: false },
-                            fontFamily: 'Asap, Arial, sans-serif'
-                        },
-                        legend: { show: false },
-                        grid: {
-                            show: false,
-                            padding: { top: 0, right: 0, bottom: 0, left: -10 }
-                        },
-                        dataLabels: {
-                            enabled: false,
-                            style: {
-                                fontSize: '20px',
-                                fontFamily: 'Asap, Arial, sans-serif',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        series: [
-                            { name: "Win", data: this.chartData.wins },
-                            { name: "Loss", data: this.chartData.losses },
-                            { name: "Profit", data: this.chartData.profit }
-                        ],
-                        fill: {
-                            type: "gradient",
-                            gradient: {
-                                shadeIntensity: 1,
-                                opacityFrom: 0.45,
-                                opacityTo: 0.1,
-                                stops: [0, 90, 100]
-                            }
-                        },
-                        xaxis: {
-                            categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-                            labels: {
-                                style: {
-                                    colors: [],
-                                    fontSize: '14px',
-                                    fontFamily: 'Asap, Arial, sans-serif',
-                                    fontWeight: 500
-                                }
-                            },
-                            axisBorder: { show: false }
-                        },
-                        yaxis: {
-                            min: 0,
-                            max: Math.max(...this.chartData.wins, ...this.chartData.losses, ...this.chartData.profit, 1000),
-                            tickAmount: 5,
-                            labels: {
-                                style: {
-                                    colors: [],
-                                    fontSize: '14px',
-                                    fontFamily: 'Asap, Arial, sans-serif',
-                                    fontWeight: 500
-                                }
-                            }
-                        },
-                        responsive: [{
-                            breakpoint: 1400,
-                            options: {
-                                chart: { height: 256 },
-                                legend: { position: "bottom" }
-                            }
-                        }]
-                    };
-                    const chart = new ApexCharts(document.querySelector("#chart"), options);
-                    chart.render();
-                }
-            }));
-        });
+		    Alpine.data('dashboard', () => ({
+		        totalBets: 0,
+		        totalPendingBets: 0,
+		        totalWins: 0,
+		        totalLosses: 0,
+		        totalDeposit: 0.00,
+		        totalPayout: 0.00,
+		        totalPendingStakes: 0.00,
+		        chartData: {
+		            wins: [],
+		            losses: [],
+		            profit: []
+		        },
+		
+		        get totalProfit() {
+		            return (this.totalPayout - this.totalDeposit).toFixed(2);
+		        },
+		        get winPct() {
+		            const total = this.totalWins + this.totalLosses;
+		            return total > 0 ? ((this.totalWins / total) * 100).toFixed(2) : "0.00";
+		        },
+		
+		        init(data) {
+		            this.totalBets = data.totalBets;
+		            this.totalPendingBets = data.totalPendingBets;
+		            this.totalWins = data.totalWins;
+		            this.totalLosses = data.totalLosses;
+		            this.totalDeposit = data.totalDeposit;
+		            this.totalPayout = data.totalPayout;
+		            this.totalPendingStakes = data.totalPendingStakes;
+		            this.chartData = data.chartData;
+		            this.renderChart();
+		        },
+		
+		        renderChart() {
+		            const options = {
+		                chart: {
+		                    height: 276,
+		                    type: "area",
+		                    zoom: { enabled: false },
+		                    toolbar: { show: false },
+		                    fontFamily: 'Asap, Arial, sans-serif'
+		                },
+		                legend: { show: false },
+		                grid: {
+		                    show: false,
+		                    padding: { top: 0, right: 0, bottom: 0, left: -10 }
+		                },
+		                dataLabels: {
+		                    enabled: false,
+		                    style: {
+		                        fontSize: '20px',
+		                        fontFamily: 'Asap, Arial, sans-serif',
+		                        fontWeight: 'bold'
+		                    }
+		                },
+		                series: [
+		                    { name: "Win", data: this.chartData.wins },
+		                    { name: "Loss", data: this.chartData.losses },
+		                    { name: "Profit", data: this.chartData.profit }
+		                ],
+		                fill: {
+		                    type: "gradient",
+		                    gradient: {
+		                        shadeIntensity: 1,
+		                        opacityFrom: 0.45,
+		                        opacityTo: 0.1,
+		                        stops: [0, 90, 100]
+		                    }
+		                },
+		                xaxis: {
+		                    categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+		                    labels: {
+		                        style: {
+		                            fontSize: '14px',
+		                            fontFamily: 'Asap, Arial, sans-serif',
+		                            fontWeight: 500
+		                        }
+		                    },
+		                    axisBorder: { show: false }
+		                },
+		                yaxis: {
+		                    min: 0,
+		                    max: Math.max(...this.chartData.wins, ...this.chartData.losses, ...this.chartData.profit, 1000),
+		                    tickAmount: 5,
+		                    labels: {
+		                        style: {
+		                            fontSize: '14px',
+		                            fontFamily: 'Asap, Arial, sans-serif',
+		                            fontWeight: 500
+		                        }
+		                    }
+		                },
+		                responsive: [{
+		                    breakpoint: 1400,
+		                    options: {
+		                        chart: { height: 256 },
+		                        legend: { position: "bottom" }
+		                    }
+		                }]
+		            };
+		            const chart = new ApexCharts(document.querySelector("#chart"), options);
+		            chart.render();
+		        }
+		    }));
+		});
     </script>
 {% endblock %}
