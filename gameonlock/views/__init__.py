@@ -1,13 +1,23 @@
 import json
 import logging
 from datetime import timedelta
+from decimal import Decimal
 
 from allauth.account.views import (
 	LoginView as AllauthLoginView,
 	SignupView as AllauthSignupView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Case, Count, F, IntegerField, Q, Sum, When
+from django.db.models import (
+	Case,
+	Count,
+	DecimalField,
+	F,
+	IntegerField,
+	Q,
+	Sum,
+	When,
+)
 from django.db.models.functions import Coalesce
 from django.http import JsonResponse
 from django.urls import reverse
@@ -115,28 +125,29 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 					output_field=IntegerField(),
 				)
 			),
-			total_deposit=Coalesce(Sum("amount"), 0.0),
+			total_deposit=Coalesce(
+				Sum(
+					"amount", output_field=DecimalField(max_digits=10, decimal_places=2)
+				),
+				Decimal(0),
+			),
 			total_payout=Coalesce(
 				Sum(
 					Case(
 						When(won=True, then=F("stakes")),
-						output_field=MoneyField(
-							max_digits=10, decimal_places=2, default_currency="USD"
-						),
-					)
+						output_field=DecimalField(max_digits=10, decimal_places=2),
+					),
 				),
-				Money(0, "USD"),
+				Decimal(0),
 			),
 			total_pending_stakes=Coalesce(
 				Sum(
 					Case(
 						When(status=Play.STATES.pending, then=F("stakes")),
-						output_field=MoneyField(
-							max_digits=10, decimal_places=2, default_currency="USD"
-						),
-					)
+						output_field=DecimalField(max_digits=10, decimal_places=2),
+					),
 				),
-				Money(0, "USD"),
+				Decimal(0),
 			),
 		)
 
@@ -156,8 +167,8 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 				"total_payout": totals["total_payout"],
 				"total_deposit": totals["total_deposit"],
 				"total_pending_stakes": totals["total_pending_stakes"],
-				"win_pct": total["win_pct"],
-				"loss_pct": total["loss_pct"],
+				"win_pct": totals["win_pct"],
+				"loss_pct": totals["loss_pct"],
 			}
 		)
 

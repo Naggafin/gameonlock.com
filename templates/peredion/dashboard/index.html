@@ -10,7 +10,7 @@
          aria-labelledby="offcanvasExampleLabel">
         <div class="offcanvas-header">
             <a href="{% url 'index' %}" class="offcanvas-logo">
-                <img src="{% static 'peredion/images//logo/mobile-logo.png' %}"
+                <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
                      alt="{% trans 'Game-on-Lock' %}"
                      nonce="{{ request.csp_nonce }}">
             </a>
@@ -115,7 +115,7 @@
     </div>
     <div id="dashboard-content"
          x-data="dashboard"
-         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }}, chartData: {{ chart_data|safe }} })">
+         x-init="init({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }})">
         <div class="dashboard-statics">
             <div class="container">
                 <div class="row g-lg-4 g-2">
@@ -166,7 +166,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-2.png"
+                                <img src="{% static 'peredion/images/db-statics/image-2.png' %}"
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </div>
@@ -179,7 +179,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-4.png"
+                                <img src="{% static 'peredion/images/db-statics/image-4.png' %}"
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </div>
@@ -192,7 +192,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-3.png"
+                                <img src="{% static 'peredion/images/db-statics/image-3.png' %}"
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </div>
@@ -205,7 +205,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-5.png"
+                                <img src="{% static 'peredion/images/db-statics/image-5.png' %}"
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </div>
@@ -219,7 +219,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-6.png" alt="" nonce="{{ request.csp_nonce }}">
+                                <img src="{% static 'peredion/images/db-statics/image-6.png' %}" alt="" nonce="{{ request.csp_nonce }}">
                             </div>
                             <div class="part-text">
                                 <span class="text">{% trans 'referral earning' %}</span>
@@ -231,7 +231,7 @@
                     <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6">
                         <div class="single-statics">
                             <div class="part-icon">
-                                <img src="assets/img/db-statics/image-8.png"
+                                <img src="{% static 'peredion/images/db-statics/image-8.png' %}"
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </div>
@@ -297,7 +297,9 @@
 {% endblock %}
 {% block js %}
     {{ block.super }}
-    <script src="{% static 'js/apexcharts.js' %}" nonce="{{ request.csp_nonce }}"></script>
+    <script src="{% static 'peredion/js/apexcharts.js' %}"
+            nonce="{{ request.csp_nonce }}"></script>
+    <script id="chartData" nonce="{{ request.csp_nonce }}">{{ chart_data|safe }}</script>
     <script nonce="{{ request.csp_nonce }}">
         document.addEventListener('alpine:init', () => {
 		    Alpine.data('dashboard', () => ({
@@ -330,7 +332,7 @@
 		            this.totalDeposit = data.totalDeposit;
 		            this.totalPayout = data.totalPayout;
 		            this.totalPendingStakes = data.totalPendingStakes;
-		            this.chartData = data.chartData;
+		            this.chartData = document.getElementById('chartData').innerHTML;
 		            this.renderChart();
 		        },
 		
