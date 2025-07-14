@@ -1,0 +1,345 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block css %}
+    <!-- bootstrap -->
+    <link rel="stylesheet"
+          href="{% static 'bootstrap/css/bootstrap.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <!-- load all Font Awesome styles -->
+    <link rel="stylesheet"
+          href="{% static 'fontawesome/css/fontawesome.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <link rel="stylesheet"
+          href="{% static 'fontawesome/css/solid.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <link rel="stylesheet"
+          href="{% static 'fontawesome/css/brands.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <!-- overlay scrollbar css -->
+    <link rel="stylesheet"
+          href="{% static 'overlayscrollbars/css/overlayscrollbars.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <!-- aos css -->
+    <link href="{% static 'aos/css/aos.css' %}"
+          rel="stylesheet"
+          nonce="{{ request.csp_nonce }}">
+    <!-- main css -->
+    <link rel="stylesheet"
+          href="{% static 'peredion/dashboard/css/style.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <!-- animate css -->
+    <link rel="stylesheet"
+          href="{% static 'css/animate.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <link rel="stylesheet"
+          href="{% static 'css/style.css' %}"
+          nonce="{{ request.csp_nonce }}">
+{% endblock %}
+{% block header %}
+    <div class="offcanvas offcanvas-start"
+         tabindex="-1"
+         id="offcanvasExample"
+         aria-labelledby="offcanvasExampleLabel">
+        <div class="offcanvas-header">
+            <a href="{% url 'index' %}" class="offcanvas-logo">
+                <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
+                     alt="{% trans 'Game-on-Lock' %}"
+                     nonce="{{ request.csp_nonce }}">
+            </a>
+            <button type="button"
+                    class="btn-offcanvas-reset text-reset"
+                    data-bs-dismiss="offcanvas"
+                    aria-label="{% trans 'Close' %}">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="mainmenu-9">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        {% url 'dashboard' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'play_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'transaction_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
+                               style="font-size: 20px"></i>
+                        {% trans 'transaction history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'settings' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gear fa-lg"
+                               style="--fa-primary-opacity: 0.4;
+                                      --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {{ block.super }}
+{% endblock %}
+{% block banner %}
+    {% include 'peredion/dashboard/elements/banner.html' %}
+    <div class="container">
+        <div class="d-xl-block d-none">
+            <div class="db-menu">
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        {% url 'dashboard' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gauge fa-lg"></i>{% trans 'Dashboard' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'play_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-dice fa-lg"></i>{% trans 'bet history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'transaction_history' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-arrow-right-arrow-left fa-lg"
+                               style="font-size: 20px"></i>{% trans 'transaction history' %}</a>
+                    </li>
+                    <li class="nav-item">
+                        {% url 'settings' as url %}
+                        <a class="nav-link
+                                  {% if request.path == url %}active{% endif %}"
+                           href="{{ url }}">
+                            <i class="fa-solid fa-gear fa-lg"
+                               style="--fa-primary-opacity: 0.4;
+                                      --fa-secondary-opacity: 1"></i>{% trans 'Settings' %}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-xl-none d-block">
+            <div class="db-offset-menu-control">
+                <span class="text">{% trans 'dashboard menu' %}</span>
+                <button class="btn-for-bs-offset"
+                        type="button"
+                        data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasExample"
+                        aria-controls="offcanvasExample"
+                        id="offcanvasExampleLabel"
+                        x-data="{ isOpen: false }"
+                        @click="isOpen = !isOpen">
+                    <i class="fa-solid" :class="isOpen ? 'fa-bars-staggered' : 'fa-bars'"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('dashboard', (initialData) => ({
+                totalBets: initialData.totalBets || 0,
+                totalPendingBets: initialData.totalPendingBets || 0,
+                totalWins: initialData.totalWins || 0,
+                totalLosses: initialData.totalLosses || 0,
+                totalDeposit: initialData.totalDeposit || 0.00,
+                totalPayout: initialData.totalPayout || 0.00,
+                totalPendingStakes: initialData.totalPendingStakes || 0.00,
+                chartData: {
+                    wins: [],
+                    losses: [],
+                    profit: []
+                },
+
+                get totalProfit() {
+                    return (this.totalPayout - this.totalDeposit).toFixed(2);
+                },
+                get winPct() {
+                    const total = this.totalWins + this.totalLosses;
+                    return total > 0 ? ((this.totalWins / total) * 100).toFixed(2) : 0.00;
+                },
+                get formattedTotalDeposit() {
+                    return this.totalDeposit.toFixed(2);
+                },
+                get formattedTotalPayout() {
+                    return this.totalPayout.toFixed(2);
+                },
+                get formattedTotalPendingStakes() {
+                    return this.totalPendingStakes.toFixed(2);
+                },
+
+                init() {
+                    const chartEl = document.getElementById('chart-data');
+                    if (chartEl) {
+                        this.chartData = JSON.parse(chartEl.innerHTML);
+                        this.renderChart();
+                    }
+                },
+
+                renderChart() {
+                    const options = {
+                        chart: {
+                            height: 276,
+                            type: "area",
+                            zoom: {
+                                enabled: false
+                            },
+                            toolbar: {
+                                show: false
+                            },
+                            fontFamily: 'Asap, Arial, sans-serif'
+                        },
+                        legend: {
+                            show: false
+                        },
+                        grid: {
+                            show: false,
+                            padding: {
+                                top: 0,
+                                right: 0,
+                                bottom: 0,
+                                left: -10
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false,
+                            style: {
+                                fontSize: '20px',
+                                fontFamily: 'Asap, Arial, sans-serif',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        series: [{
+                            name: "Win",
+                            data: this.chartData.wins
+                        }, {
+                            name: "Loss",
+                            data: this.chartData.losses
+                        }, {
+                            name: "Profit",
+                            data: this.chartData.profit
+                        }],
+                        fill: {
+                            type: "gradient",
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.45,
+                                opacityTo: 0.1,
+                                stops: [0, 90, 100]
+                            }
+                        },
+                        xaxis: {
+                            categories: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+                            labels: {
+                                style: {
+                                    fontSize: '14px',
+                                    fontFamily: 'Asap, Arial, sans-serif',
+                                    fontWeight: 500
+                                }
+                            },
+                            axisBorder: {
+                                show: false
+                            }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: Math.max(...this.chartData.wins, ...this.chartData.losses, ...this.chartData.profit, 1000),
+                            tickAmount: 5,
+                            labels: {
+                                style: {
+                                    fontSize: '14px',
+                                    fontFamily: 'Asap, Arial, sans-serif',
+                                    fontWeight: 500
+                                }
+                            }
+                        },
+                        responsive: [{
+                            breakpoint: 1400,
+                            options: {
+                                chart: {
+                                    height: 256
+                                },
+                                legend: {
+                                    position: "bottom"
+                                }
+                            }
+                        }]
+                    };
+                    const chart = new ApexCharts(document.querySelector("#chart"), options);
+                    chart.render();
+                },
+
+                // Placeholder for settings title change (for settings.html)
+                updateSettingsTitle(tab) {
+                    // Example: Adapt for settings page
+                    // const settings = {
+                    //     'settings-privacy-tab': { icon: '{% static "peredion/images/icon/privacy.png" %}', text: 'Privacy Settings' },
+                    //     'settings-account-tab': { icon: '{% static "peredion/images/icon/account-settings.png" %}', text: 'Account Settings' },
+                    //     'default': { icon: '{% static "peredion/images/icon/edit-profile.png" %}', text: 'Edit Profile' }
+                    // };
+                    // const { icon, text } = settings[tab] || settings['default'];
+                    // this.settingsIcon = icon;
+                    // this.settingsText = text;
+                },
+
+                // Placeholder for date picker (for transaction_history.html)
+                initDatePickers() {
+                    // Requires MCDatepicker library
+                    // if (typeof MCDatepicker !== 'undefined') {
+                    //     const startPicker = MCDatepicker.create({
+                    //         el: '#started-date',
+                    //         dateFormat: 'DD/MM/YYYY',
+                    //         showCalendarDisplay: false,
+                    //         bodyType: 'inline',
+                    //         autoClose: true,
+                    //         closeOnBlur: true
+                    //     });
+                    //     startPicker.onOpen(() => {
+                    //         document.querySelector('#started-date')?.classList.add('calendar-open');
+                    //         document.querySelector('.calndr label[for="started-date"]')?.classList.add('open-label');
+                    //         document.querySelector('#end-date')?.classList.remove('calendar-open');
+                    //         document.querySelector('.calndr label[for="end-date"]')?.classList.remove('open-label');
+                    //     });
+                    //     startPicker.onClose(() => {
+                    //         document.querySelector('#started-date')?.classList.remove('calendar-open');
+                    //         document.querySelector('.calndr label[for="started-date"]')?.classList.remove('open-label');
+                    //     });
+                    //     startPicker.onSelect(() => {
+                    //         document.querySelector('#started-date')?.classList.add('selected-date');
+                    //         document.querySelector('.calndr label[for="started-date"]')?.classList.add('selected-label');
+                    //     });
+                    //     startPicker.onClear(() => {
+                    //         document.querySelector('#started-date')?.classList.remove('selected-date');
+                    //         document.querySelector('.calndr label[for="started-date"]')?.classList.remove('selected-label');
+                    //     });
+                    //     // Similar for endDatePicker
+                    // }
+                },
+
+                // Placeholder for wallet selection (for future wallet feature)
+                selectWallet(itemText) {
+                    // this.walletSelected = itemText;
+                    // document.querySelector('.wallet-select .dropdown-toggle')?.classList.add('selected-moment');
+                }
+            }));
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,53 @@
+/* =================================
+   Template Information:
+================================= */
+/* Template Name: PerediOn - Sports Prediction HTML Template
+   Author Name: Autworks
+   Author Account URL: https://themeforest.net/user/autworks
+   Date: 7th August 2023
+   Version: 2.0
+================================= */
+
+/* =================================
+   Index of CSS Sections:
+================================= */
+/* 1. Breakpoints
+   2. Variables
+   3. Global Styles
+   4. Normalize
+   5. Animation
+   6. Shapes
+   7. Glitch Effects
+   8. Header Styles
+   9. Footer Styles
+   10. Mobile Navigation Styles
+   11. Dashboard Layout Styles
+   12. Dashboard Header Styles
+   13. Dashboard Menu Styles
+   14. Dashboard Statistics Styles
+   15. Dashboard Element Styles
+================================= */
+
+
+// global assets scss
+@import "main/_breakpoints";
+@import "main/_variables";
+@import "main/_mixins";
+@import "main/_global";
+@import "main/_normalize";
+@import "main/_animation";
+@import "main/_shapes";
+
+//=Section scss
+
+/*========================================== 
+    01. Header 
+==========================================*/
+@import "sections/_header";
+@import "sections/_footer";
+@import "sections/_mobile-navigation";
+@import "sections/_db-layout";
+@import "sections/_db-header";
+@import "sections/_db-menu";
+@import "sections/_db-statics";
+@import "sections/_db-element";

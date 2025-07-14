@@ -1,0 +1,142 @@
+// dashboard statics
+.dashboard-statics {
+    margin-bottom: 60px;
+    @include media-breakpoint-down(xxl) {
+        margin-bottom: 50px;
+    }
+    @include media-breakpoint-down(md) {
+        margin-bottom: 40px;
+    }
+    @include media-breakpoint-down(mobile) {
+        .col-6 {
+            width: 100%;
+        }
+    }
+    .single-statics {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+        border-radius: 10px;
+        background: #FFF;
+        box-shadow: 0px 4px 15px 0px rgba(0, 0, 0, 0.08);
+        padding: 35px 30px;
+        &.referral-statics {
+            position: relative;
+            box-shadow: none;
+            &:after {
+                position: absolute;
+                content: '';
+                background: $gradient-1;
+                top: -12px;
+                right: -12px;
+                bottom: -60px;
+                left: -12px;
+                z-index: -1;
+                border-radius: 10px 10px 0 0;
+                @include media-breakpoint-down(xl) {
+                    top: -5px;
+                    right: -5px;
+                    bottom: -5px;
+                    left: -5px;
+                    z-index: -1;
+                    border-radius: 15px;
+                }
+                @include media-breakpoint-down(lg) {
+                    top: -2px;
+                    right: -2px;
+                    bottom: -2px;
+                    left: -2px;
+                    border-radius: 12px;
+                }
+            }
+        }
+        @include media-breakpoint-down(xxl) {
+            gap: 25px;
+            padding: 30px 25px;
+        }
+        @include media-breakpoint-down(lg) {
+            gap: 20px;
+            padding: 25px 20px;
+            align-items: flex-start;
+        }
+        @include media-breakpoint-down(md) {
+            align-items: flex-start;
+            padding: 25px 25px;
+        }
+        @include media-breakpoint-only(mobile) {
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+        }
+        @include media-breakpoint-down(mobile) {
+            gap: 20px;
+            padding: 20px;
+        }
+        .part-icon {
+            img {
+                width: 60px;
+                @include media-breakpoint-down(xxl) {
+                    width: 50px;
+                }
+                @include media-breakpoint-down(lg) {
+                    width: 40px;
+                }
+                @include media-breakpoint-down(md) {
+                    width: 40px;
+                }
+            }
+        }
+        .part-text {
+            @include media-breakpoint-only(mobile) {
+                text-align: center;
+            }
+            span {
+                display: block;
+                &.text {
+                    color: #5C6172;
+                    font-size: 18px;
+                    font-weight: 500;
+                    line-height: 30px;
+                    letter-spacing: 0.18px;
+                    text-transform: capitalize;
+                    margin: -7px 0 5px;
+                    @include media-breakpoint-down(lg) {
+                        font-size: 16px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        font-size: 17px;
+                        line-height: 29px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 16px;
+                        line-height: 28px;
+                        margin: -7px 0 0px;                    
+                    }
+                }
+                &.descr {
+                    font-size: 26px;
+                    font-weight: 600;
+                    line-height: 30px;
+                    letter-spacing: 0.26px;
+                    text-transform: capitalize;
+                    @include text-gradient-1;
+                    margin: 0 0 -6px;
+                    @include media-breakpoint-down(xxl) {
+                        font-size: 24px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        font-size: 22px;
+                        line-height: 26px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 20px;
+                        line-height: 24px;
+                    }
+                }
+            }
+        }
+    }
+}
+

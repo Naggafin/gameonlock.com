@@ -23,7 +23,7 @@
                  data-aos-delay="400"
                  nonce="{{ request.csp_nonce }}">
         </div>
-        <div class="container" x-data="registrationProcess">
+        <div class="container" x-data="signupProcess($store.signupConfig)">
             <div class="row justify-content-center">
                 <div class="col-xl-8 col-lg-9 col-md-11">
                     <div class="processing-steps"
@@ -147,11 +147,11 @@
                                   :class="{ 'was-validated': submitted }"
                                   @submit.prevent="submitForm">
                                 {% csrf_token %}
-                                <div x-show="formErrors.length"
+                                <div x-show="form.errors.length"
                                      class="alert alert-danger"
                                      role="alert"
                                      aria-live="polite">
-                                    <div x-text="formErrors.join(', ')"></div>
+                                    <div x-text="form.errors.join(', ')"></div>
                                 </div>
                                 <div class="form-all-step">
                                     <!-- Step 1: Basic Info -->
@@ -163,26 +163,26 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.username.id_for_label|add:"-error" %}
                                                     <label for="{{ form.username.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.username.label }}'"></span>
+                                                        <span>{{ form.username.label }}</span>
                                                     </label>
-                                                    {% render_field form.username ::class="{'is-invalid':formFields.username.errors.length}" x-model="formFields.username.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.username ::class="{'is-invalid':form.username.errors.length}" x-model="form.username.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.username.errors.length"
-                                                         x-text="formFields.username.errors.join(', ')"
+                                                         x-show="form.username.errors.length"
+                                                         x-text="form.username.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.email.id_for_label|add:"-error" %}
                                                     <label for="{{ form.email.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.email.label }}'"></span>
+                                                        <span>{{ form.email.label }}</span>
                                                     </label>
-                                                    {% render_field form.email ::class="{'is-invalid':formFields.email.errors.length}" x-model="formFields.email.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.email ::class="{'is-invalid':form.email.errors.length}" x-model="form.email.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.email.errors.length"
-                                                         x-text="formFields.email.errors.join(', ')"
+                                                         x-show="form.email.errors.length"
+                                                         x-text="form.email.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
@@ -197,82 +197,82 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.first_name.id_for_label|add:"-error" %}
                                                     <label for="{{ form.first_name.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.first_name.label }}'"></span>
+                                                        <span>{{ form.first_name.label }}</span>
                                                     </label>
-                                                    {% render_field form.first_name ::class="{'is-invalid':formFields.first_name.errors.length}" x-model="formFields.first_name.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.first_name ::class="{'is-invalid':form.first_name.errors.length}" x-model="form.first_name.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.first_name.errors.length"
-                                                         x-text="formFields.first_name.errors.join(', ')"
+                                                         x-show="form.first_name.errors.length"
+                                                         x-text="form.first_name.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.last_name.id_for_label|add:"-error" %}
                                                     <label for="{{ form.last_name.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.last_name.label }}'"></span>
+                                                        <span>{{ form.last_name.label }}</span>
                                                     </label>
-                                                    {% render_field form.last_name ::class="{'is-invalid':formFields.last_name.errors.length}" x-model="formFields.last_name.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.last_name ::class="{'is-invalid':form.last_name.errors.length}" x-model="form.last_name.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.last_name.errors.length"
-                                                         x-text="formFields.last_name.errors.join(', ')"
+                                                         x-show="form.last_name.errors.length"
+                                                         x-text="form.last_name.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.country.id_for_label|add:"-error" %}
                                                     <label for="{{ form.country.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.country.label }}'"></span>
+                                                        <span>{{ form.country.label }}</span>
                                                     </label>
-                                                    {% render_field form.country @change="updateRegions" ::class="{'is-invalid':formFields.country.errors.length}" x-model="formFields.country.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.country @change="updateRegions" ::class="{'is-invalid':form.country.errors.length}" x-model="form.country.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.country.errors.length"
-                                                         x-text="formFields.country.errors.join(', ')"
+                                                         x-show="form.country.errors.length"
+                                                         x-text="form.country.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3"
-                                                 x-show="formFields.region.choices.length"
+                                                 x-show="form.region.choices.length"
                                                  x-transition>
                                                 {% with error_label=form.region.id_for_label|add:"-error" %}
                                                     <label for="{{ form.region.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.region.label }}'"></span>
+                                                        <span>{{ form.region.label }}</span>
                                                     </label>
                                                     <select id="{{ form.region.id_for_label }}"
                                                             name="{{ form.region.html_name }}"
                                                             class="m-0"
-                                                            :class="{'is-invalid':formFields.region.errors.length}"
-                                                            x-model="formFields.region.value"
+                                                            :class="{'is-invalid':form.region.errors.length}"
+                                                            x-model="form.region.value"
                                                             aria-describedby="error_label">
                                                         <option value="">{% trans "Select Region" %}</option>
-                                                        <template x-for="region in formFields.region.choices" :key="region[0]">
+                                                        <template x-for="region in form.region.choices" :key="region[0]">
                                                             <option :value="region[0]" x-text="region[1]"></option>
                                                         </template>
                                                     </select>
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.region.errors.length"
-                                                         x-text="formFields.region.errors.join(', ')"
+                                                         x-show="form.region.errors.length"
+                                                         x-text="form.region.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.date_of_birth.id_for_label|add:"-error" %}
                                                     <label for="{{ form.date_of_birth.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.date_of_birth.label }}'"></span>
+                                                        <span>{{ form.date_of_birth.label }}</span>
                                                     </label>
                                                     <div class="birth-date-element">
-                                                        {% render_field form.date_of_birth @change="checkAge" ::class="{'is-invalid':formFields.date_of_birth.errors.length}" x-model="formFields.date_of_birth.value" x-init="flatpickr($el, { onChange: ([date]) => { formFields.date_of_birth.value = $el.value; checkAge(); } })" class="m-0" aria-describedby=error_label %}
+                                                        {% render_field form.date_of_birth @change="checkAge" ::class="{'is-invalid':form.date_of_birth.errors.length}" x-model="form.date_of_birth.value" x-init="flatpickr($el, { onChange: ([date]) => { form.date_of_birth.value = $el.value; checkAge(); } })" class="m-0" aria-describedby=error_label %}
                                                         <span class="caln-icon" aria-hidden="true">
                                                             <i class="fa-solid fa-calendar-days"></i>
                                                         </span>
                                                     </div>
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.date_of_birth.errors.length"
-                                                         x-text="formFields.date_of_birth.errors.join(', ')"
+                                                         x-show="form.date_of_birth.errors.length"
+                                                         x-text="form.date_of_birth.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
@@ -287,13 +287,13 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.phone_number.id_for_label|add:"-error" %}
                                                     <label for="{{ form.phone_number.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.phone_number.label }} {% trans "(Optional)" %}'"></span>
+                                                        <span>{{ form.phone_number.label }} {% trans "(Optional)" %}</span>
                                                     </label>
-                                                    {% render_field form.phone_number ::class="{'is-invalid':formFields.phone_number.errors.length}" x-model="formFields.phone_number.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.phone_number ::class="{'is-invalid':form.phone_number.errors.length}" x-model="form.phone_number.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.phone_number.errors.length"
-                                                         x-text="formFields.phone_number.errors.join(', ')"
+                                                         x-show="form.phone_number.errors.length"
+                                                         x-text="form.phone_number.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
@@ -301,13 +301,13 @@
                                                 {% with error_label=form.alternate_email_address.id_for_label|add:"-error" %}
                                                     <label for="{{ form.alternate_email_address.id_for_label }}"
                                                            class="form-label">
-                                                        <span x-text="'{{ form.alternate_email_address.label }} {% trans "(Optional)" %}'"></span>
+                                                        <span>{{ form.alternate_email_address.label }} {% trans "(Optional)" %}</span>
                                                     </label>
-                                                    {% render_field form.alternate_email_address ::class="{'is-invalid':formFields.alternate_email_address.errors.length}" x-model="formFields.alternate_email_address.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.alternate_email_address ::class="{'is-invalid':form.alternate_email_address.errors.length}" x-model="form.alternate_email_address.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.alternate_email_address.errors.length"
-                                                         x-text="formFields.alternate_email_address.errors.join(', ')"
+                                                         x-show="form.alternate_email_address.errors.length"
+                                                         x-text="form.alternate_email_address.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
@@ -322,26 +322,26 @@
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.password1.id_for_label|add:"-error" %}
                                                     <label for="{{ form.password1.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.password1.label }}'"></span>
+                                                        <span>{{ form.password1.label }}</span>
                                                     </label>
-                                                    {% render_field form.password1 @input="checkPasswordMatch" ::class="{'is-invalid':formFields.password1.errors.length}" x-model="formFields.password1.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.password1 @input="checkPasswordMatch" ::class="{'is-invalid':form.password1.errors.length}" x-model="form.password1.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.password1.errors.length"
-                                                         x-text="formFields.password1.errors.join(', ')"
+                                                         x-show="form.password1.errors.length"
+                                                         x-text="form.password1.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 mb-3">
                                                 {% with error_label=form.password2.id_for_label|add:"-error" %}
                                                     <label for="{{ form.password2.id_for_label }}" class="form-label">
-                                                        <span x-text="'{{ form.password2.label }}'"></span>
+                                                        <span>{{ form.password2.label }}</span>
                                                     </label>
-                                                    {% render_field form.password2 @input="checkPasswordMatch" ::class="{'is-invalid':formFields.password2.errors.length}" x-model="formFields.password2.value" class="m-0" aria-describedby=error_label %}
+                                                    {% render_field form.password2 @input="checkPasswordMatch" ::class="{'is-invalid':form.password2.errors.length}" x-model="form.password2.value" class="m-0" aria-describedby=error_label %}
                                                     <div id="{{ error_label }}"
                                                          class="invalid-feedback"
-                                                         x-show="formFields.password2.errors.length"
-                                                         x-text="formFields.password2.errors.join(', ')"
+                                                         x-show="form.password2.errors.length"
+                                                         x-text="form.password2.errors.join(', ')"
                                                          aria-live="polite"></div>
                                                 {% endwith %}
                                             </div>
@@ -349,27 +349,27 @@
                                                 <div class="agreement-article">
                                                     <div class="form-check form-check-inline mb-3">
                                                         {% with error_label=form.terms.id_for_label|add:"-error" %}
-                                                            {% render_field form.terms ::class="{'is-invalid':formFields.terms.errors.length}" class="form-check-input" x-model="formFields.terms.value" class="m-0" aria-describedby=error_label %}
+                                                            {% render_field form.terms ::class="{'is-invalid':form.terms.errors.length}" class="form-check-input" x-model="form.terms.value" class="m-0" aria-describedby=error_label %}
                                                             <label for="{{ form.terms.id_for_label }}">
-                                                                <span x-text="'{{ form.terms.label|safe }}'"></span>
+                                                                <span>{{ form.terms.label|safe }}</span>
                                                             </label>
                                                             <div id="{{ error_label }}"
                                                                  class="invalid-feedback"
-                                                                 x-show="formFields.terms.errors.length"
-                                                                 x-text="formFields.terms.errors.join(', ')"
+                                                                 x-show="form.terms.errors.length"
+                                                                 x-text="form.terms.errors.join(', ')"
                                                                  aria-live="polite"></div>
                                                         {% endwith %}
                                                     </div>
                                                     <div class="form-check form-check-inline mb-3">
                                                         {% with error_label=form.age.id_for_label|add:"-error" %}
-                                                            {% render_field form.age ::class="{'is-invalid':formFields.age.errors.length}" class="form-check-input" x-model="formFields.age.value" class="m-0" aria-describedby=error_label %}
+                                                            {% render_field form.age ::class="{'is-invalid':form.age.errors.length}" class="form-check-input" x-model="form.age.value" class="m-0" aria-describedby=error_label %}
                                                             <label for="{{ form.age.id_for_label }}">
-                                                                <span x-text="'{{ form.age.label }}'"></span>
+                                                                <span>{{ form.age.label }}</span>
                                                             </label>
                                                             <div id="{{ error_label }}"
                                                                  class="invalid-feedback"
-                                                                 x-show="formFields.age.errors.length"
-                                                                 x-text="formFields.age.errors.join(', ')"
+                                                                 x-show="form.age.errors.length"
+                                                                 x-text="form.age.errors.join(', ')"
                                                                  aria-live="polite"></div>
                                                         {% endwith %}
                                                     </div>
@@ -434,120 +434,307 @@
                 </div>
             </div>
         </div>
-        <script nonce="{{ request.csp_nonce }}">
-            document.addEventListener('alpine:init', () => {
-                Alpine.data('registrationProcess', () => ({
-                    REGIONS: {{ region_choices|safe }},
-                    currentStep: 0,
-                    submitted: false,
-                    formFields: {
-                        username: { value: '{{ form.username.value|default:"" }}', errors: [{% for error in form.username.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        email: { value: '{{ form.email.value|default:"" }}', errors: [{% for error in form.email.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        first_name: { value: '{{ form.first_name.value|default:"" }}', errors: [{% for error in form.first_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        last_name: { value: '{{ form.last_name.value|default:"" }}', errors: [{% for error in form.last_name.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        country: { value: '{{ form.country.initial|default:"US" }}', errors: [{% for error in form.country.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        region: { value: '{{ form.region.value|default:"" }}', choices: {{ region_choices|safe }}['{{ form.country.initial|default:"US" }}'] || [['', 'Select Region']], errors: [{% for error in form.region.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        date_of_birth: { value: '{{ form.date_of_birth.value|default:"" }}', errors: [{% for error in form.date_of_birth.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        phone_number: { value: '{{ form.phone_number.value|default:"" }}', errors: [{% for error in form.phone_number.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        alternate_email_address: { value: '{{ form.alternate_email_address.value|default:"" }}', errors: [{% for error in form.alternate_email_address.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        password1: { value: '', errors: [{% for error in form.password1.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        password2: { value: '', errors: [{% for error in form.password2.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        terms: { value: false, errors: [{% for error in form.terms.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] },
-                        age: { value: false, errors: [{% for error in form.age.errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}] }
-                    },
-                    formErrors: [{% for error in form.non_field_errors %}'{{ error|escapejs }}'{% if not forloop.last %},{% endif %}{% endfor %}],
-                    steps: [
-                        { title: '{% trans "Basic Info" %}' },
-                        { title: '{% trans "Personal Details" %}' },
-                        { title: '{% trans "Contact Info" %}' },
-                        { title: '{% trans "Security & Confirmation" %}' }
-                    ],
-                    canProceed: true,
-                    canSubmit: false,
-                    nextStep() {
-                        this.validateStep();
-                        if (this.currentStep < 3 && this.canProceed) this.currentStep++;
-
-                        // Scroll behavior
-                        const el = this.$refs.form;
-                        if (!el) return;
-
-                        const rect = el.getBoundingClientRect();
-                        const isVisible = (
-                            rect.top >= 0 &&
-                            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
-                        );
-
-                        if (!isVisible) {
-                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    },
-                    prevStep() {
-                        this.validateStep();
-                        if (this.currentStep > 0) this.currentStep--;
-                    },
-                    updateRegions() {
-                        this.formFields.region.choices = this.REGIONS[this.formFields.country.value] || [];
-                        this.formFields.region.value = '';
-                    },
-                    checkAge() {
-                        if (this.formFields.date_of_birth.value) {
-                            const dob = new Date(this.formFields.date_of_birth.value);
-                            const today = new Date();
-                            let age = today.getFullYear() - dob.getFullYear();
-                            const m = today.getMonth() - dob.getMonth();
-                            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
-                            this.formFields.date_of_birth.errors = (age < 18) ? ['{% trans "You must be at least 18 years old to register." %}'] : [];
-                        } else {
-                            this.formFields.date_of_birth.errors = ['{% trans "Date of Birth is required." %}'];
-                        }
-                    },
-                    checkPasswordMatch() {
-                        if (this.formFields.password1.value && this.formFields.password2.value) {
-                            this.formFields.password2.errors = (this.formFields.password1.value !== this.formFields.password2.value) ? ['{% trans "Passwords do not match." %}'] : this.formFields.password2.value ? [] : ['{% trans "Confirm Password is required." %}'];
-                        }
-                    },
-                    validateStep() {
-                        this.formErrors = this.formErrors.filter(error => !error.includes('Please complete all required fields'));
-                        if (this.currentStep === 0) {
-                            this.formFields.username.errors = this.formFields.username.value ? [] : ['{% trans "Username is required." %}'];
-                            this.formFields.email.errors = this.formFields.email.value ? [] : ['{% trans "Email is required." %}'];
-                            this.canProceed = this.formFields.username.errors.length === 0 && this.formFields.email.errors.length === 0;
-                        } else if (this.currentStep === 1) {
-                            this.formFields.first_name.errors = this.formFields.first_name.value ? [] : ['{% trans "First Name is required." %}'];
-                            this.formFields.last_name.errors = this.formFields.last_name.value ? [] : ['{% trans "Last Name is required." %}'];
-                            this.formFields.country.errors = this.formFields.country.value ? [] : ['{% trans "Country is required." %}'];
-                            this.formFields.region.errors = this.formFields.region.value ? [] : ['{% trans "Region is required." %}'];
-                            this.checkAge();
-                            this.canProceed = this.formFields.first_name.errors.length === 0 && this.formFields.last_name.errors.length === 0 &&
-                                              this.formFields.country.errors.length === 0 && this.formFields.region.errors.length === 0 &&
-                                              this.formFields.date_of_birth.errors.length === 0;
-                        } else if (this.currentStep === 2) {
-                            this.canProceed = true; // All fields optional
-                        } else if (this.currentStep === 3) {
-                            this.formFields.password1.errors = this.formFields.password1.value ? [] : ['{% trans "Password is required." %}'];
-                            this.checkPasswordMatch();
-                            this.formFields.terms.errors = this.formFields.terms.value ? [] : ['{% trans "You must agree to the terms and conditions." %}'];
-                            this.formFields.age.errors = this.formFields.age.value ? [] : ['{% trans "You must confirm you are at least 18 years old." %}'];
-                            this.canProceed = this.formFields.password1.errors.length === 0 && this.formFields.password2.errors.length === 0 &&
-                                              this.formFields.terms.errors.length === 0 && this.formFields.age.errors.length === 0;
-                            this.canSubmit = this.canProceed;
-                        }
-                    },
-                    submitForm(event) {
-                        this.submitted = true;
-                        this.validateStep();
-                        if (this.canSubmit) {
-                            event.target.submit();
-                        } else {
-                            this.formErrors = ['{% trans "Please complete all required fields and confirm terms and age." %}'];
-                            if (this.formFields.password1.value !== this.formFields.password2.value) {
-                                this.formErrors.push('{% trans "Passwords do not match." %}');
-                            }
-                        }
-                    }
-                }));
-            });
-        </script>
     </div>
+{% endblock %}
+{% block js %}
+    {{ block.super }}
+    {{ signup_config|json_script:"signup-config" }}
+    <script nonce="{{ request.csp_nonce }}">
+        document.addEventListener('alpine:init', () => {
+            const {
+                gettext
+            } = window;
+
+            // Register signupConfig store
+            Alpine.store('signupConfig', {
+                signupUrl: '/accounts/signup/',
+                regions: {},
+                form: {
+                    username: {
+                        value: '',
+                        errors: []
+                    },
+                    email: {
+                        value: '',
+                        errors: []
+                    },
+                    first_name: {
+                        value: '',
+                        errors: []
+                    },
+                    last_name: {
+                        value: '',
+                        errors: []
+                    },
+                    country: {
+                        value: 'US',
+                        errors: []
+                    },
+                    region: {
+                        value: '',
+                        choices: [],
+                        errors: []
+                    },
+                    date_of_birth: {
+                        value: '',
+                        errors: []
+                    },
+                    phone_number: {
+                        value: '',
+                        errors: []
+                    },
+                    alternate_email_address: {
+                        value: '',
+                        errors: []
+                    },
+                    password1: {
+                        value: '',
+                        errors: []
+                    },
+                    password2: {
+                        value: '',
+                        errors: []
+                    },
+                    terms: {
+                        value: false,
+                        errors: []
+                    },
+                    age: {
+                        value: false,
+                        errors: []
+                    },
+                    errors: []
+                },
+
+                init() {
+                    try {
+                        const config = JSON.parse(document.getElementById('signup-config').innerHTML || '{}');
+                        this.signupUrl = config.SIGNUP_URL || this.signupUrl;
+                        this.regions = config.REGIONS || {};
+                        this.form = {
+                            username: {
+                                value: config.FORM.username.value || '',
+                                errors: config.FORM.username.errors || []
+                            },
+                            email: {
+                                value: config.FORM.email.value || '',
+                                errors: config.FORM.email.errors || []
+                            },
+                            first_name: {
+                                value: config.FORM.first_name.value || '',
+                                errors: config.FORM.first_name.errors || []
+                            },
+                            last_name: {
+                                value: config.FORM.last_name.value || '',
+                                errors: config.FORM.last_name.errors || []
+                            },
+                            country: {
+                                value: config.FORM.country.value || 'US',
+                                errors: config.FORM.country.errors || []
+                            },
+                            region: {
+                                value: config.FORM.region.value || '',
+                                choices: config.REGIONS?.[config.FORM.country.value || 'US'] || [
+                                    ['', gettext('Select Region')]
+                                ],
+                                errors: config.FORM.region.errors || []
+                            },
+                            date_of_birth: {
+                                value: config.FORM.date_of_birth.value || '',
+                                errors: config.FORM.date_of_birth.errors || []
+                            },
+                            phone_number: {
+                                value: config.FORM.phone_number.value || '',
+                                errors: config.FORM.phone_number.errors || []
+                            },
+                            alternate_email_address: {
+                                value: config.FORM.alternate_email_address.value || '',
+                                errors: config.FORM.alternate_email_address.errors || []
+                            },
+                            password1: {
+                                value: '',
+                                errors: config.FORM.password1.errors || []
+                            },
+                            password2: {
+                                value: '',
+                                errors: config.FORM.password2.errors || []
+                            },
+                            terms: {
+                                value: false,
+                                errors: config.FORM?.terms?.errors || []
+                            },
+                            age: {
+                                value: false,
+                                errors: config.FORM?.age?.errors || []
+                            },
+                            errors: config.FORM.errors || []
+                        };
+                    } catch (error) {
+                        console.error('Failed to load registration config:', error);
+                        Alpine.store('alerts').add({
+                            message: gettext('Error loading registration form configuration.'),
+                            type: 'danger'
+                        });
+                    }
+                }
+            });
+
+            // Register signupProcess component
+            Alpine.data('signupProcess', (config) => ({
+                currentStep: 0,
+                submitted: false,
+                form: {
+                    ...config.form
+                },
+                steps: [{
+                    title: gettext("Basic Info")
+                }, {
+                    title: gettext("Personal Details")
+                }, {
+                    title: gettext("Contact Info")
+                }, {
+                    title: gettext("Security & Confirmation")
+                }],
+                canProceed: true,
+                canSubmit: false,
+                config: config,
+
+                init() {
+                    try {
+                        if (!window.flatpickr) {
+                            console.error('Flatpickr not loaded.');
+                            Alpine.store('alerts').add({
+                                message: gettext('Date picker unavailable. Please try again.'),
+                                type: 'danger'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Registration init error:', error);
+                        Alpine.store('alerts').add({
+                            message: gettext('Error initializing registration form.'),
+                            type: 'danger'
+                        });
+                    }
+                },
+
+                nextStep() {
+                    this.validateStep();
+                    if (this.currentStep < 3 && this.canProceed) {
+                        this.currentStep++;
+                        this.scrollToForm();
+                    }
+                },
+
+                prevStep() {
+                    this.validateStep();
+                    if (this.currentStep > 0) {
+                        this.currentStep--;
+                        this.scrollToForm();
+                    }
+                },
+
+                scrollToForm() {
+                    const el = this.$refs.form;
+                    if (!el) return;
+                    const rect = el.getBoundingClientRect();
+                    const isVisible = (
+                        rect.top >= 0 &&
+                        rect.bottom <= (window.innerHeight || document.documentElement.clientHeight)
+                    );
+                    if (!isVisible) {
+                        el.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                },
+
+                updateRegions() {
+                    this.form.region.choices = this.config.regions[this.form.country.value] || [
+                        ['', gettext('Select Region')]
+                    ];
+                    this.form.region.value = '';
+                },
+
+                checkAge() {
+                    if (this.form.date_of_birth.value) {
+                        const dob = new Date(this.form.date_of_birth.value);
+                        const today = new Date();
+                        let age = today.getFullYear() - dob.getFullYear();
+                        const m = today.getMonth() - dob.getMonth();
+                        if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+                        this.form.date_of_birth.errors = (age < 18) ?
+                            [gettext('You must be at least 18 years old to register.')] :
+                            [];
+                    } else {
+                        this.form.date_of_birth.errors = [gettext('Date of Birth is required.')];
+                    }
+                },
+
+                checkPasswordMatch() {
+                    if (this.form.password1.value && this.form.password2.value) {
+                        this.form.password2.errors = (this.form.password1.value !== this.form.password2.value) ?
+                            [gettext('Passwords do not match.')] :
+                            this.form.password2.value ? [] : [gettext('Confirm Password is required.')];
+                    }
+                },
+
+                validateStep() {
+                    this.form.errors = this.form.errors.filter(error => !error.includes(gettext('Please complete all required fields')));
+                    if (this.currentStep === 0) {
+                        this.form.username.errors = this.form.username.value ? [] : [gettext('Username is required.')];
+                        this.form.email.errors = this.form.email.value ? [] : [gettext('Email is required.')];
+                        this.canProceed = this.form.username.errors.length === 0 && this.form.email.errors.length === 0;
+                    } else if (this.currentStep === 1) {
+                        this.form.first_name.errors = this.form.first_name.value ? [] : [gettext('First Name is required.')];
+                        this.form.last_name.errors = this.form.last_name.value ? [] : [gettext('Last Name is required.')];
+                        this.form.country.errors = this.form.country.value ? [] : [gettext('Country is required.')];
+                        this.form.region.errors = this.form.region.value ? [] : [gettext('Region is required.')];
+                        this.checkAge();
+                        this.canProceed = this.form.first_name.errors.length === 0 &&
+                            this.form.last_name.errors.length === 0 &&
+                            this.form.country.errors.length === 0 &&
+                            this.form.region.errors.length === 0 &&
+                            this.form.date_of_birth.errors.length === 0;
+                    } else if (this.currentStep === 2) {
+                        this.canProceed = true;
+                    } else if (this.currentStep === 3) {
+                        this.form.password1.errors = this.form.password1.value ? [] : [gettext('Password is required.')];
+                        this.checkPasswordMatch();
+                        this.form.terms.errors = this.form.terms.value ? [] : [gettext('You must agree to the terms and conditions.')];
+                        this.form.age.errors = this.form.age.value ? [] : [gettext('You must confirm you are at least 18 years old.')];
+                        this.canProceed = this.form.password1.errors.length === 0 &&
+                            this.form.password2.errors.length === 0 &&
+                            this.form.terms.errors.length === 0 &&
+                            this.form.age.errors.length === 0;
+                        this.canSubmit = this.canProceed;
+                    }
+
+                    if (!this.canProceed) {
+                        Alpine.store('alerts').add({
+                            message: gettext('Please complete all required fields.'),
+                            type: 'danger'
+                        });
+                    }
+                },
+
+                submitForm(event) {
+                    this.submitted = true;
+                    this.validateStep();
+                    if (this.canSubmit) {
+                        event.target.submit();
+                    } else {
+                        this.form.errors = [gettext('Please complete all required fields and confirm terms and age.')];
+                        if (this.form.password1.value !== this.form.password2.value) {
+                            this.form.errors.push(gettext('Passwords do not match.'));
+                        }
+                        Alpine.store('alerts').add({
+                            message: gettext('Form submission failed. Please check errors.'),
+                            type: 'danger'
+                        });
+                    }
+                }
+            }));
+        });
+    </script>
 {% endblock %}

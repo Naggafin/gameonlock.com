@@ -1,0 +1,46 @@
+// shapes
+.shape-1 {
+    width: 652px;
+    height: 652px;
+    background: #29589A;
+    // filter: blur(207.5px);
+    filter: blur(100px) opacity(50%);
+    // -webkit-filter: blur(207.5px) opacity(100%);
+    // -moz-filter: blur(207.5px) opacity(50%);
+    @include media-breakpoint-down(lg) {
+        width: 452px;
+        height: 452px;
+    }
+    @include media-breakpoint-down(md) {
+        width: 300px;
+        height: 300px;
+    }
+    &.banner-shape {
+        position: absolute;
+        bottom: -34px;
+        left: -125px;
+        z-index: -2;
+        border-radius: 50%;
+    }
+}
+.shape-2 {
+    width: 464px;
+    height: 464px;
+    filter: blur(100px) opacity(25%);
+    background: #FB355E;
+    @include media-breakpoint-down(lg) {
+        width: 364px;
+        height: 364px;
+    }
+    @include media-breakpoint-down(md) {
+        width: 200px;
+        height: 200px;
+    }
+    &.banner-shape {
+        position: absolute;
+        top: -52px;
+        right: -100px;
+        z-index: -2;
+        border-radius: 50%;
+    }
+}

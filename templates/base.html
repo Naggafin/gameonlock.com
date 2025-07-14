@@ -130,6 +130,7 @@
             </div>
         {% endblock %}
         {% block js %}
+            <script src="{% url 'javascript-catalog' %}" nonce="{{ request.csp_nonce }}"></script>
             <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
             <script src="{% static 'js/htmx.min.js' %}"
                     defer="true"

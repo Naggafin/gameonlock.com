@@ -12,7 +12,7 @@ class MessagesSSEConsumer(AsyncHttpConsumer):
 			return
 
 		await self.send_headers(
-			[
+			headers=[
 				(b"Cache-Control", b"no-cache"),
 				(b"Content-Type", b"text/event-stream"),
 				(b"Transfer-Encoding", b"chunked"),

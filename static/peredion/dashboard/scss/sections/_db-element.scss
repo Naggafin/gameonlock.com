@@ -1,0 +1,2450 @@
+// dashboard elements
+.db-elements {
+    margin-bottom: 20px;
+    @include media-breakpoint-down(xxl) {
+        margin-bottom: 30px;
+    }
+}
+.single-db-element {
+    margin-bottom: 60px;
+    @include media-breakpoint-down(xxl) {
+        margin-bottom: 50px;
+    }
+    @include media-breakpoint-down(md) {
+        margin-bottom: 40px;
+    }
+    h4.title {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 34px;
+        letter-spacing: 0.48px;
+        text-transform: capitalize;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin: -7px 0 25px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid rgba($base-color, 0.1);
+        @include media-breakpoint-down(xxl) {
+            font-size: 22px;
+            line-height: 32px;
+        }
+        @include media-breakpoint-down(md) {
+            font-size: 20px;
+            line-height: 30px;
+            gap: 15px;
+        }
+        @include media-breakpoint-down(mobile) {
+            font-size: 18px;
+            line-height: 28px;
+        }
+        span {
+            &.icon {
+                &.wallet {
+                    img {
+                        width: 27px;
+                        margin-top: -8px;     
+                        @include media-breakpoint-down(xl) {
+                            width: 25px;
+                        }       
+                        @include media-breakpoint-down(lg) {
+                            width: 24px;
+                        }        
+                        @include media-breakpoint-down(md) {
+                            width: 22px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            width: 20px;
+                        }
+                    }
+                }
+                &.social {
+                    img {
+                        width: 24px;
+                        margin-top: -6px;
+                        @include media-breakpoint-down(xl) {
+                            width: 22px;
+                        }
+                    }
+                }
+                &.refer {
+                    img {
+                        width: 25px;
+                        margin-top: -8px;
+                        @include media-breakpoint-down(xl) {
+                            width: 23px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            width: 22px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            width: 20px;
+                        }
+                    }
+                }
+            }
+            &.text {
+                @include text-gradient-3;
+            }
+        }
+    }
+}
+// charts
+.db-chart {
+    border-radius: 0px 0px 15px 15px;
+    background: #FFF;
+    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+    padding: 10px 30px 20px 30px;
+    @include media-breakpoint-down(mobile) {
+        padding: 0 20px;
+        padding-right: 10px;
+    }
+}
+.apexcharts-yaxis {
+    transform: translate(9.47px, 0);
+}
+
+// user logs
+.user-logs {
+    border-radius: 0px 0px 15px 15px;
+    background: #FFF;
+    box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+    padding: 40px;
+    @include media-breakpoint-down(md) {
+        padding: 30px;
+    }
+    ul {
+        li {
+            margin-bottom: 26px;
+            position: relative;
+            padding-left: 26px;
+            @include media-breakpoint-down(xxl) {
+                margin-bottom: 21px;
+            }
+            @include media-breakpoint-down(md) {
+                margin-bottom: 17px;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 10px;
+                height: 10px;
+                background: $gradient-1;
+                opacity: .8;
+                border-radius: 10px;
+                @include media-breakpoint-down(mobile) {
+                    top: 8px;
+                    transform: none;
+                }
+            }
+            &:first-child {
+                margin-top: -7px;
+            }
+            &:last-child {
+                margin-bottom: -6px;
+            }
+            span {
+                font-size: 17px;
+                line-height: 27px;
+                @include media-breakpoint-down(md) {
+                    font-size: 16px;
+                    line-height: 26px;
+                }
+                &.text {
+                    color: #5C6172;
+                    font-weight: 500;
+                    letter-spacing: 0.18px;
+                    text-transform: capitalize;
+                    width: 200px;
+                    @include media-breakpoint-down(xl) {
+                        width: 160px;
+                    }
+                }
+                &.descr {
+                    font-weight: 600;
+                    letter-spacing: 1px;
+                    text-transform: capitalize;
+                    @include text-gradient-3;
+                    position: relative;
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        bottom: 6px;
+                        width: 100%;
+                        height: 1px;
+                        background: $gradient-2;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// recent bets 
+.sports-body {
+        padding: 40px;
+        padding-top: 0;
+        border-radius: 0px 0px 15px 15px;
+        background: #FFF;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+        @include media-breakpoint-down(xxl) {
+            padding: 30px;
+            padding-top: 0;
+        }
+        @include media-breakpoint-down(xl) {
+            
+        }
+        @include media-breakpoint-down(lg) {
+            border-radius: 0;
+            overflow: scroll;
+            &::-webkit-scrollbar {
+                width: 0px!important;
+                height: 6px;
+            }
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 20px;
+            padding-top: 0;
+        }
+        .playing-sports-all {
+            @include media-breakpoint-down(xl) {
+                width: 100%;
+            } 
+            @include media-breakpoint-down(lg) {
+                width: 830px;
+            }
+            .single-tournament {
+                .tournament-title {
+                    padding: 40px 0;
+                    position: relative;
+                    z-index: 2;
+                    @include media-breakpoint-down(xl) {
+                        font-size: 18px;
+                        line-height: 28px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        padding: 30px 0;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        font-size: 16px;
+                        line-height: 26px;
+                        margin-bottom: 0;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        width: 100%;
+                        height: 2px;
+                        background: url('../img/playing-bet/shape/line-shape-1.png') left top repeat-x;
+                        background-position: 1px;
+                        z-index: -1;
+                        @include media-breakpoint-down(mobile) {
+                            display: none;
+                        }
+                    }
+                    span.title-text {
+                        background: $white;
+                        padding-right: 30px;
+                        @include media-breakpoint-down(mobile) {
+                            padding-right: 0;
+                        }
+                    }
+                    span.match-quantity {
+                        float: right;
+                        background: $white;
+                        padding-left: 30px;
+                        @include media-breakpoint-down(mobile) {
+                            padding-left: 0;
+                        }
+                    }
+                }
+                .all-tournament-match {
+                    &.all-bet-history {
+                        .single-t-match {
+                            padding: 22px 45px 21px 30px;
+                            @include media-breakpoint-down(xxl) {
+                                padding: 17px 45px 16px 30px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                justify-content: space-between;
+                            }
+                            @include media-breakpoint-down(md) {
+                                padding: 12px 35px 11px 20px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                padding: 7px 30px 6px 15px;
+                            }
+                        }
+                    }
+                    .single-t-match {
+                        display: flex;
+                        justify-content: space-between;
+                        border: 1px solid rgba($base-color, 0.2);
+                        border-radius: 10px;
+                            padding: 15px 45px 14px 30px;
+                        align-items: center;
+                        margin-bottom: 20px;
+                        position: relative;
+                        .in-play-tag {
+                            background: $gradient-1;
+                            text-transform: uppercase;
+                            color: $white;
+                            font-size: 12px;
+                            position: absolute;
+                            font-weight: 600;
+                            left: -22px;
+                            padding: 0 10px;
+                            transform: rotate(-90deg);
+                            @include media-breakpoint-down(lg) {
+                                font-size: 9px;
+                                left: -19px;
+                            }
+                        }
+                        @include media-breakpoint-down(xxl) {
+                            padding: 10px 30px 10px 30px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            padding: 10px 25px 10px 25px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            flex-wrap: wrap;
+                            // padding: 15px;
+                            justify-content: flex-start;
+                            margin-bottom: 15px;
+                            column-gap: 35px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            padding: 15px;
+                            justify-content: space-between;
+                            padding-top: 10px;
+                        }
+                        &:last-child {
+                            margin-bottom: 0;
+                        }
+                        &:first-child {
+                            .flag-img, .event, .b-slip, .bet-type, .bet-amount, .b-odd,
+                            .date-n-time, .status, .bet-gateway, .trnx-id, .trnx-type {
+                                position: relative;
+                                &:after {
+                                    content: 'Country';
+                                    font-weight: 600;
+                                    font-size: 17px;
+                                    line-height: 19px;
+                                    color: $descr-color;
+                                    letter-spacing: 0.02em;  
+                                    position: absolute;  
+                                    top: -60px;
+                                    background: #fff;
+                                    z-index: 2;
+                                    padding: 0 10px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    width: max-content;
+                                    @include media-breakpoint-down(lg) {
+                                        top: -56px;
+                                    }
+                                    @include media-breakpoint-down(md) {
+                                        font-size: 16px;
+                                        line-height: 18px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -50px;
+                                    }
+                                }
+                            }    
+                            .event {
+                                &:after {
+                                    content: 'Event';
+                                    top: -66px;
+                                    left: -40px;
+                                    transform: none;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -61px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -50px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -50px;
+                                    }
+                                }
+                            }
+
+                            .b-slip {
+                                &:after {
+                                    content: 'Bet Slip';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -59px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .bet-type {
+                                &:after {
+                                    content: 'Type';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -59px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .bet-amount {
+                                &:after {
+                                    content: 'Bet';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -59px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .b-odd {
+                                &:after {
+                                    content: 'Odd';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -59px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            .date-n-time {
+                                &:after {
+                                    content: 'Date';    
+                                    top: -69px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -64px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -50px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -51px;
+                                    }
+                                }
+                            }
+                            .status {
+                                &:after {
+                                    content: 'Status';
+                                    top: -77px;
+                                    @include media-breakpoint-down(xxl) {
+                                        top: -72px;
+                                    }
+                                    @include media-breakpoint-down(lg) {
+                                        top: -59px;
+                                    }
+                                    @include media-breakpoint-down(mobile) {
+                                        top: -60px;
+                                    }
+                                }
+                            }
+                            
+                            &.bet-history {
+                                .trnx-type {
+                                    &:after {
+                                        content: 'Payment Decsription';
+                                        left: 80px;
+                                        top: -74px;
+                                        @include media-breakpoint-down(xxl) {
+                                            top: -68px;
+                                        }
+                                        @include media-breakpoint-down(lg) {
+                                            top: -59px;
+                                        }
+                                        @include media-breakpoint-down(md) {
+                                            top: -54px;
+                                        }
+                                        @include media-breakpoint-down(sm) {
+                                            top: -50px;
+                                        }
+                                    }
+                                }
+                                .bet-amount {
+                                    &:after {
+                                        content: 'Bet';
+                                    }
+                                }
+                                .trnx-id {
+                                    &:after {
+                                        content: 'Trnx ID';
+                                    }
+                                }
+                                .bet-gateway {
+                                    &:after {
+                                        content: 'Gateway';
+                                    }
+                                }   
+                                .date-n-time {
+                                    &:after {
+                                        content: 'Date';  
+                                        top: -70px;  
+                                        @include media-breakpoint-down(xxl) {
+                                            top: -64px;
+                                        }
+                                        @include media-breakpoint-down(lg) {
+                                            top: -55px;
+                                        }
+                                        @include media-breakpoint-down(md) {
+                                            top: -50px;
+                                        }
+                                        @include media-breakpoint-down(sm) {
+                                            top: -46px;
+                                        }
+                                    }
+                                }
+                                .bet-amount, .trnx-id, .bet-gateway{
+                                    &:after {
+                                        top: -78px;
+                                        @include media-breakpoint-down(xxl) {
+                                            top: -73px;
+                                        }
+                                        @include media-breakpoint-down(lg) {
+                                            top: -64px;
+                                        }
+                                        @include media-breakpoint-down(md) {
+                                            top: -59px;
+                                        }
+                                        @include media-breakpoint-down(sm) {
+                                            top: -55px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        .trnx-type {
+                            display: flex;
+                            align-items: center;
+                            gap: 15px;
+                            flex: 0 230px;
+                            @include media-breakpoint-down(xl) {
+                                flex: 0 210px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                // flex: auto;
+                            }
+                            span {
+                                &.icon {
+                                    width: 35px;
+                                    height: 35px;
+                                    color: $normal-green;
+                                    background: rgba(92, 97, 114, 0.1);
+                                    text-align: center;
+                                    line-height: 35px;
+                                    border-radius: 50%;
+                                    @include media-breakpoint-down(md) {
+                                        transform: scale(0.8);
+                                    }
+                                    &.down {
+                                        i {
+                                            @include text-gradient-1;
+                                        }
+                                    }
+                                }
+                                &.text {
+                                    color: rgba(22, 29, 53, 0.50);
+                                    font-size: 17px;
+                                    line-height: 27px;
+                                    font-weight: 600;
+                                    letter-spacing: 0.34px;
+                                    text-transform: capitalize;
+                                }
+                            }
+                        }
+                        .event {
+                            .part-team {
+                                display: flex;
+                                gap: 30px;
+                                .s-team {
+                                    display: flex;
+                                    flex-direction: row;
+                                    align-items: center;
+                                    gap: 10px;
+                                    &:first-child {
+                                        position: relative;
+                                        &:after {
+                                            position: absolute;
+                                            content: '';
+                                            right: -20px;
+                                            height: 1px;
+                                            width: 10px;
+                                            background: $gradient-2;
+                                            opacity: .5;
+                                        }
+                                    }
+                                    img.team-icon {
+                                        height: 22px;
+                                        width: auto;
+                                    }
+                                    span.team-name {
+                                        font-weight: 600;
+                                        font-size: 14px;
+                                        line-height: 24px;
+                                        letter-spacing: 0.01em;
+                                        @include text-gradient-3;
+                                        opacity: .8;
+                                    }
+                                }
+                            }
+                            .event-name {
+                                font-weight: 500;
+                                font-size: 14px;
+                                line-height: 24px;
+                                color: rgba($descr-color, 0.5);
+                                display: block;
+                                margin-bottom: -6px;
+                                margin-top: 7px;
+                                @include media-breakpoint-down(lg) {
+                                    margin-top: 2px;
+                                }
+                            }
+                        }
+                        .b-slip span.slip-number, .trnx-id span.trnx-id-number, .bet-gateway span.text, .bet-type span.text,
+                        .bet-amount span.text, .b-odd span.text{
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                @include text-gradient-3;
+                                @include media-breakpoint-down(lg) {              
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                        }
+                        .date-n-time {
+                            margin: -6px 0 -7px;
+                            span {
+                                display: block;
+                                font-weight: 600;
+                                font-size: 14px;
+                                line-height: 24px;;
+                                text-align: center;
+                                letter-spacing: 0.02em;
+                                text-transform: uppercase;
+                                &.date {
+                                    color: rgba($descr-color, 0.5);
+                                    margin-bottom: -4px;
+                                }
+                                &.time {
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                        .status {
+                            span {
+                                display: inline-block;
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                &.lost {
+                                    @include text-gradient-1;
+                                }
+                                &.win {
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                        .profit {
+                            span.text{
+                                font-weight: 600;
+                                font-size: 16px;
+                                line-height: 26px;
+                                letter-spacing: 0.05em;
+                                @include text-gradient-3;
+                                @include media-breakpoint-down(lg) {
+                                    font-size: 15px;
+                                    line-height: 25px;
+                                }
+                                &.lost {
+                                    position: relative;
+                                    &:after {
+                                        position: absolute;
+                                        content: '';
+                                        left: 0;
+                                        top: 50%;
+                                        width: 100%;
+                                        height: 1px;
+                                        background: $gradient-2;
+                                    }
+                                }
+                                &.win {
+                                    @include text-gradient-clear;
+                                    color: $normal-green;
+                                }
+                            }
+                        }
+                    }
+                }   
+            }
+            &.no-tabs-here {
+                .single-tournament {
+                    margin-bottom: 30px;
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+
+// pending bet slips
+.pending-slips-scrollable {
+    @include media-breakpoint-up(lg) {
+        padding-bottom: 16px;
+    }
+    .os-scrollbar-horizontal {
+        padding: 0;
+        height: 6px;
+        @include media-breakpoint-down(md) {
+            display: none;
+        }
+    }
+}
+.pending-slips {
+    display: flex;
+    gap: 8px;
+    @include media-breakpoint-down(lg) {
+        flex-wrap: wrap;
+    }
+    @include media-breakpoint-down(md) {
+        flex-wrap: nowrap;
+    }
+    @include media-breakpoint-down(mobile) {
+        flex-wrap: wrap;
+    }
+    .single-bs-card {
+        padding: 25px;
+        position: relative;
+        z-index: 2;
+        width: 300px;
+        flex: 1 0 300px;
+        @include media-breakpoint-down(lg) {
+            flex: none;
+            width: calc(50% - 4px);
+        }
+        @include media-breakpoint-down(md) {
+            flex: 1 0 300px;
+            width: 300px;
+        }
+        @include media-breakpoint-down(mobile) {
+            width: 100%;
+            flex: none;
+        }
+        &.disabled {
+            z-index: -1;
+            user-select: none;
+            .locked {
+                position: absolute;
+                z-index: 10;
+                color: $white;
+                text-align: center;
+                left: 50%;
+                top: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                font-size: 20px;
+                font-weight: 600;
+                letter-spacing: 1.1px;
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                @include media-breakpoint-down(md) {
+                    font-size: 17px;
+                }
+                i {
+                    font-size: 20px;
+                    margin-top: -2px;
+                }
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 50%;
+                background: url('../img/playing-bet/bet-slip/disabled.png') center center no-repeat;
+                background-position-y: top;
+                background-size: cover;
+                z-index: 5;
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 50%;
+                background: url('../img/playing-bet/bet-slip/disabled.png') center center no-repeat;
+                background-position-y: bottom;
+                background-size: cover;
+                z-index: 5;
+            }
+        }
+        &.hidden {
+            all: unset;
+            height: 0;
+            overflow: hidden;
+            width: 0;
+            visibility: hidden;
+        }
+        &.card-combo, &.card-system {
+            padding-bottom: 6px;
+        }
+        &:nth-last-child(2) {
+            margin-bottom: 0;
+        }
+        &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 50%;
+            background: url('../img/playing-bet/bet-slip/bs-card-bg.png') center center no-repeat;
+            background-position-y: top;
+            background-size: cover;
+            z-index: -1;
+        }
+        &:before {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50%;
+            background: url('../img/playing-bet/bet-slip/bs-card-bg.png') center center no-repeat;
+            background-position-y: bottom;
+            background-size: cover;
+            z-index: -1;
+        }
+        .bs-card-header {
+            border-bottom: 1px solid rgba(92, 97, 114, 0.1);;
+            span.tournament-name {
+                font-weight: 400;
+                font-size: 13px;
+                line-height: 23px;
+                text-transform: capitalize;
+                color: rgba(22, 29, 53, 0.5);
+                display: table;
+                margin: -6px 0 -4px;
+            }
+            .slct-place {
+                display: flex;
+                gap: 6px;
+                margin-bottom: 3px;
+                span.live-icon img {
+                    margin-bottom: -4px;
+                    margin-right: -3px;
+                }
+                span.team-name, span.bet-ratio {
+                    font-weight: 600;
+                    font-size: 15px;
+                    line-height: 18px;
+                    display: flex;
+                    align-items: center;
+                    letter-spacing: 0.02em;
+                    text-transform: capitalize;
+                    @include text-gradient-3;
+                }
+                span.attherate {
+                    font-weight: 600;
+                    font-size: 20px;
+                    line-height: 30px;
+                    letter-spacing: 0.02em;
+                    text-transform: capitalize;
+                    color: rgba($base-color, 0.5);
+                }
+            }
+            button.slip-dlt {
+                outline: none;
+                border: none;
+                background: transparent;
+                padding: 0;
+                width: 40px;
+                height: 40px;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                @include text-gradient-2;
+                &:after {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: $gradient-1;
+                    opacity: 0.1;
+                    border-radius: 2px;
+                }
+            }
+        }
+        .slct-match {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 24px;
+            color: rgba(22, 29, 53, 0.6);
+            display: flex;
+            gap: 5px;
+            margin: 5px 0 9px;
+            span.sports-category-icon {
+                width: 14px;
+                top: -1px;
+                position: relative;
+            }
+        }
+        .bs-card-footer {    
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            button.prd-btn-1 {
+                line-height: 30px;
+                height: 30px;
+                font-size: 14px;
+                line-height: 24px;
+                text-transform: capitalize;
+                font-weight: 500;
+                span.stake-number {
+                    margin-left: 3px;
+                }
+            }
+            .return-amount {
+                span {
+                    display: inline-block;
+                    &.text {
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 24px;
+                        text-transform: capitalize;
+                        color: rgba(22, 29, 53, 0.5);
+                    }
+                    &.number {
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 24px;
+                        text-transform: lowercase;
+                        @include text-gradient-3;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// transcation history 
+.tranx-history-nav {
+    margin-bottom: 30px;
+    .navbar {
+        padding: 0;
+        .navbar-nav {
+            justify-content: space-between;
+            gap: 5px;
+            width: 100%;
+            @include media-breakpoint-down(xl) {
+                justify-content: center;
+                // flex-wrap: wrap;
+            }
+            @include media-breakpoint-down(lg) {
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            .nav-item {
+                flex: auto;
+                text-align: center;
+                @include media-breakpoint-down(xl) {
+                    // flex: none;
+                }
+                button {
+                    outline: none;
+                    border: none;
+                    width: 100%;
+                    color: $white!important;
+                    &:before {
+                        opacity: 1!important;
+                    }
+                    i {
+                        color: $white!important;
+                    }
+                    &:focus {
+                        color: $white;
+                        box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+                        &:after {
+                            opacity: 0;
+                        }
+                        &:before {
+                            opacity: 1;
+                        }
+                        i {
+                            color: $white;
+                        }
+                    }
+                }
+                &.calndr {
+                    position: relative;
+                    @include media-breakpoint-down(sm) {
+                        flex: calc(50% - 5px);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        flex: 100%;
+                    }
+                }
+                label {
+                    font-size: 17px;
+                    color: rgba(22, 29, 53, 0.7);
+                    position: absolute;
+                    z-index: 3;
+                    right: 61px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    i {
+                        @include media-breakpoint-down(md) {
+                            font-size: 15px;
+                        }
+                        @include media-breakpoint-down(sm) {
+                            font-size: 14px;
+                        }
+                    }
+                    @include media-breakpoint-down(xxl) {
+                        right: 38px;
+                    }
+                    @include media-breakpoint-down(xl) {
+                        right: 26px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        right: 34px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        right: 62px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        right: 48px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        display: none;
+                    }
+                    &.selected-label {
+                        right: 79px;
+                        @include media-breakpoint-down(xxl) {
+                            right: 56px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            right: 44px;
+                        }
+                        @include media-breakpoint-down(lg) {
+                            right: 52px;
+                        }
+                        @include media-breakpoint-down(md) {
+                            right: 78px;
+                        }
+                        @include media-breakpoint-down(sm) {
+                            right: 63px;
+                        }
+                    }
+                    &.open-label {
+                        color: $white;
+                    }
+                }   
+                input#started-date {
+                    width: 100%;
+                    background: linear-gradient(144.14deg, rgba(77, 35, 63, 0.1) -11.44%, rgba(48, 90, 158, 0.1) 123.42%);
+                    border: none;
+                    box-shadow: none;
+                    color: rgba(22, 29, 53, 0.7);
+                    outline: none;
+                    transition: none;
+                    text-align: center;
+                    cursor: pointer;
+                    padding-right: 27px;
+                    padding-left: 0;
+                    &::placeholder {
+                        color: rgba(22, 29, 53, 0.7);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        padding-right: 0;
+                    }
+                    &.calendar-open {
+                        background: $gradient-1;
+                        color: $white;
+                        &::placeholder {
+                            color: $white;
+                        }
+                    }
+                    &.selected-date {
+                        border: 1px solid $secondary-color;
+                    }
+                }
+                input#end-date {
+                    width: 100%;
+                    background: linear-gradient(144.14deg, rgba(77, 35, 63, 0.1) -11.44%, rgba(48, 90, 158, 0.1) 123.42%);
+                    border: none;
+                    box-shadow: none;
+                    color: rgba(22, 29, 53, 0.7);
+                    outline: none;
+                    transition: none;
+                    text-align: center;
+                    cursor: pointer;
+                    padding-right: 27px;
+                    padding-left: 0;
+                    &::placeholder {
+                        color: rgba(22, 29, 53, 0.7);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        padding-right: 0;
+                    }
+                    &.calendar-open {
+                        background: $gradient-1;
+                        color: $white;
+                        &::placeholder {
+                            color: $white;
+                        }
+                    }
+                    &.selected-date {
+                        border: 1px solid $secondary-color;
+                    }
+                }
+                &.trnx-category {
+                    flex: 0 272.17px;
+                    @include media-breakpoint-down(xl) {
+                        flex: 0 232.17px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        flex: auto;
+                    }
+                    @include media-breakpoint-down(md) {
+                        flex: 0 222.17px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        flex: calc(50% - 5px);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        flex: 100%;
+                    }
+                    .selected {
+                        border: 1px solid $secondary-color;
+                    }
+                }
+                &.payment-gateway-i {
+                    flex: 0 226.22px;
+                    @include media-breakpoint-down(xl) {
+                        flex: 0 196.22px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        flex: auto;
+                    }
+                    @include media-breakpoint-down(md) {
+                        flex: 0 186.22px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        flex: calc(50% - 5px);
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        flex: 100%;
+                    }
+                    .selected {
+                        border: 1px solid $secondary-color;
+                    }
+                }
+                .dropdown-toggle {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    &:after, &:before {
+                        all: unset;
+                    }
+                    i {
+                        margin-left: 6px;
+                    }
+                }
+                .dropdown-menu {
+                    background: $gradient-2;
+                    border: none;
+                    box-shadow: 0px 4px 40px rgba(0, 0, 0, 0.25);
+                    @include transition($transition);
+                    border-radius: 0;
+                    overflow: hidden;
+                    margin-top: 0;
+                    // @include media-breakpoint-down(lg) {
+                    //     max-height: 0;
+                    //     margin-top: 0;
+                    //     padding: 0;
+                    //     background: $gradient-2;
+                    //     box-shadow: none;
+                    //     border-top-width: 0;
+                    //     display: grid;
+                    //     visibility: visible;
+                    //     width: 100% !important;
+                    //     transition: all .4s ease;
+                    // }
+                    @include media-breakpoint-down(lg) {
+                        position: absolute;
+                    }
+                    &.custom-dropdown {
+                        display: grid;
+                        grid-template-columns: auto auto;
+                        grid-gap: 1px;
+                        @include media-breakpoint-down(lg) {
+                            grid-template-columns: auto auto auto auto;
+                        }
+                        @include media-breakpoint-down(md) {
+                            grid-template-columns: auto auto auto;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            grid-template-columns: auto auto;
+                        }
+                        .dropdown-item {
+                            margin: 0;
+                        }
+                    }
+                    li {
+                        a.dropdown-item {
+                            background: $base-color;
+                            font-family: $heading-font;
+                            font-weight: 500;
+                            font-size: 16px;
+                            line-height: 26px;
+                            letter-spacing: 0.01em;
+                            text-transform: uppercase;
+                            color: $white;
+                            padding: 9px 30px 10px 32px;
+                            position: relative;
+                            margin-bottom: 1px;
+                            @include transition($transition);
+                            z-index: 2;
+                            @include media-breakpoint-down(xxl) {
+                                font-size: 15px;
+                                line-height: 25px;
+                                padding: 7px 30px 8px 32px;
+                            }
+                            @include media-breakpoint-down(xl) {
+                                font-size: 14px;
+                                line-height: 24px;
+                            }
+                            @include media-breakpoint-down(lg) {
+                                background: rgb(22 29 53 / 60%);
+                            }
+                            @include media-breakpoint-down(sm) {
+                                padding: 7px 20px 8px 22px;
+                            }
+                            &:after {
+                                position: absolute;
+                                content: '';
+                                left: 15px;
+                                top: 50%;
+                                width: 2px;
+                                height: 8px;
+                                background: $gradient-1;
+                                transform: translateY(-50%);
+                                @include transition($transition);
+                                opacity: 1;
+                                @include media-breakpoint-down(sm) {
+                                    left: 10px;
+                                    width: 1px;
+                                }
+                            }
+                            &:before {
+                                position: absolute;
+                                content: '';
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                background: $gradient-1;
+                                z-index: -1;
+                                opacity: 0;
+                                @include transition($transition);
+                            }
+                            &:hover, &:active, &.active {
+                                color: $white;
+                                &:after {
+                                    background: $white;
+                                    animation: opacity-to-hover .4s cubic-bezier(0.5, 0, 0.5, 1);
+                                }
+                                &:before {
+                                    opacity: 1;
+                                }
+                            }
+                            // &.active {
+                            //     background: transparent;
+                            //     &:after {
+                            //         opacity: 1;
+                            //     }
+                            //     &:hover {
+                            //         background: $white;
+                            //     }
+                            // }
+                        }
+                        .dropdown-divider {
+                            border-color: #fff;
+                            opacity: .3;
+                            margin: 0;
+                        }
+                        &:last-child {
+                            a.dropdown-item {
+                                margin-bottom: 0;
+                            }
+                        }
+                    }
+                }
+                .nav-link {
+                    font-weight: 600;
+                    font-size: 17px;
+                    line-height: 60px;
+                    letter-spacing: 0.34px;
+                    color: rgba($base-color, 0.7);
+                    text-transform: capitalize;
+                    background: transparent;
+                    position: relative;
+                    z-index: 2;
+                    @include transition($transition);
+                    height: 60px;
+                    padding: 0 0;
+                    @include media-breakpoint-down(xl) {
+                        padding: 0 0;
+                        height: 55px;
+                        line-height: 55px;
+                        font-size: 16px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        line-height: 45px;
+                        height: 45px;
+                        padding: 0 25px;
+                    }
+                    @include media-breakpoint-down(md) {
+                        line-height: 40px;
+                        height: 40px;
+                        padding: 0 15px;
+                        font-size: 14px;
+                    }
+                    &:after {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: -1;
+                        background: $gradient-2;
+                        opacity: .1;
+                        @include transition($transition);
+                    }
+                    &:before {
+                        position: absolute;
+                        content: '';
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        z-index: -1;
+                        background: $gradient-1;
+                        opacity: 0;
+                        @include transition($transition);
+                    }
+                    i {
+                        color: rgba(92, 97, 114, 0.8);
+                        position: relative;
+                        @include transition($transition);
+                        filter: contrast(1);
+                        @include media-breakpoint-down(xxl) {
+                            font-size: 18px!important;
+                        }
+                        @include media-breakpoint-down(md) {
+                            font-size: 16px!important;
+                        }
+                    }
+                    &.active, &:hover {
+                        color: $white;
+                        box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+                        &:after {
+                            opacity: 0;
+                        }
+                        &:before {
+                            opacity: 1;
+                        }
+                        i {
+                            color: $white;
+                        }
+                    }
+                    &[aria-expanded="false"] {
+                        transition: none;
+                        &:after {
+                            transition: none;       
+                        }
+                        &:before {
+                            transition: none;       
+                        }
+                        i {
+                            transition: none;       
+                        }
+                    }
+                    &[aria-expanded="true"] {
+                        color: $white;
+                        box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+                        &:after {
+                            opacity: 0;
+                        }
+                        &:before {
+                            opacity: 1;
+                        }
+                        i {
+                            color: $white;
+                        }
+                    }
+                }
+                &:first-child {
+                    .nav-link, .nav-link:after, .nav-link:before {
+                        border-radius: 50px 0 0 50px;
+                        @include media-breakpoint-down(xl) {
+                            border-radius: 0;
+                        }
+                    }
+                }
+                &:last-child {
+                    .nav-link, .nav-link:after, .nav-link:before {
+                        border-radius: 0 50px 50px 0;
+                        @include media-breakpoint-down(xl) {
+                            border-radius: 0;
+                        }
+                    }
+                }
+                @include media-breakpoint-down(mobile) {
+                    .nav-link, .nav-link:after, .nav-link:before {
+                        border-radius: 50px!important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// balance details 
+.all-balance {
+    .single-balance {
+        border-radius: 15px;
+        background: #FFF;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+        .part-currency {
+            position: relative;
+            padding: 30px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            @include media-breakpoint-only(lg) {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+            @include media-breakpoint-down(lg) {
+                padding: 20px;
+            }
+            @include media-breakpoint-only(sm) {
+                justify-content: center;
+            }
+            @include media-breakpoint-down(mobile) {
+                justify-content: center;
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                bottom: 0;
+                height: 1px;
+                width: 100%;
+                background: $gradient-2;
+                opacity: 0.15;
+            }
+            .icon {
+                img {
+                    width: 65px;
+                    @include media-breakpoint-down(xxl) {
+                        width: 60px;
+                    }
+                    @include media-breakpoint-only(lg) {
+                        width: 55px;
+                    }
+                    @include media-breakpoint-down(lg) {
+                        width: 50px;
+                    }
+                }
+            }
+            .info {
+                span {
+                    display: block;
+                    &.descr {
+                        color: rgba(92, 97, 114, 0.70);
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 24px;
+                        letter-spacing: 0.14px;
+                        text-transform: capitalize;
+                        margin: -6px 0 0px;
+                    }
+                    &.name {
+                        font-size: 22px;
+                        font-weight: 600;
+                        line-height: 32px;
+                        letter-spacing: 0.44px;
+                        text-transform: capitalize;
+                        @include text-gradient-3;
+                        margin-bottom: -8px;
+                        @include media-breakpoint-down(xxl) {
+                            font-size: 20px;
+                            line-height: 30px;
+                        }
+                    }
+                }
+            }
+        }
+        .part-balance {
+            padding: 40px 0 40px 0;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            @include media-breakpoint-down(xxl) {
+                padding: 30px 0 30px 0;
+                gap: 30px;
+            }
+            @include media-breakpoint-down(lg) {
+                flex-direction: row;
+                text-align: left;
+                justify-content: center;
+                padding: 25px 0 30px 0;
+            }
+            @include media-breakpoint-down(md) {
+                flex-direction: column;
+                text-align: center;
+            }
+            @include media-breakpoint-down(sm) {
+                flex-direction: row;
+                text-align: left;
+                justify-content: space-evenly;
+            }
+            @include media-breakpoint-down(mobile) {
+                flex-direction: column;
+                text-align: center;
+            }
+            .single-info {
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                span {
+                    display: block;
+                    &.descr {
+                        color: #5C6172;
+                        font-size: 18px;
+                        font-weight: 500;
+                        line-height: 28px; 
+                        letter-spacing: 0.18px;
+                        text-transform: capitalize;
+                        margin: -6px 0 3px;
+                        @include media-breakpoint-down(xxl) {
+                            font-size: 17px;
+                            line-height: 27px;
+                            margin: -6px 0 4px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            font-size: 16px;
+                            line-height: 26px;
+                            margin: -6px 0 3px;
+                        }
+                    }
+                    &.name {
+                        font-size: 26px;
+                        font-weight: 600;
+                        line-height: 36px; 
+                        letter-spacing: 0.26px;
+                        text-transform: capitalize;
+                        @include text-gradient-1;
+                        margin-bottom: -9px;
+                        @include media-breakpoint-down(xxl) {
+                            font-size: 24px;
+                            line-height: 34px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            font-size: 22px;
+                            line-height: 32px;
+                            margin-bottom: -8px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            font-size: 20px;
+                            line-height: 30px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// forms 
+.part-form {
+        padding: 40px;
+        box-shadow: 0px 4px 25px rgb(0 0 0 / 10%);
+        border-radius: 15px;
+        background: #fff;
+        @include media-breakpoint-down(sm) {
+            padding: 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 25px;
+        }
+        form {
+            .select-list {
+                margin-bottom: 30px;
+                    &.question-select {
+                        button {
+                            &.dropdown-toggle {
+                                position: relative;
+                                &:before {
+                                    position: absolute;
+                                    content: '';
+                                    width: 24px;
+                                    height: 1px;
+                                    background: rgba(11, 52, 72, 0.3);
+                                    left: calc(100% + 1px);
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                }
+                                @include media-breakpoint-down(mobile) {
+                                    &.selected-moment {
+                                        height: auto;
+                                        line-height: 23px;
+                                        padding: 10px 25px;
+                                        white-space: break-spaces;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .dropdown-toggle {
+                        height: 50px;
+                        width: 100%;
+                        border: 1px solid rgba(11, 52, 72, 0.3);
+                        border-radius: 50px;
+                        font-weight: 400;
+                        font-size: 17px;
+                        color: rgba($descr-color, .9);
+                        background: transparent;
+                        text-align: left;
+                        padding: 0 25px;
+                        position: relative;
+                        @include media-breakpoint-down(xxl) {
+                            height: 50px;
+                        }
+                        @include media-breakpoint-down(xl) {
+                            height: 45px;
+                            font-size: 16px;
+                        }
+                        @include media-breakpoint-down(md) {
+                            height: 40px;
+                        }
+                        @include media-breakpoint-down(sm) {
+                            height: 40px;
+                        }
+                        @include media-breakpoint-down(mobile) {
+                            height: 40px;
+                            font-size: 15px;
+                        }
+                        i {
+                            font-size: 15px;
+                            margin-left: 6px;
+                        }
+                        img.flag {
+                            width: 24px;
+                            margin-right: 10px;
+                            top: -1px;
+                            position: relative;
+                        }
+                        &:after {
+                            margin-left: 0;
+                            vertical-align: middle;
+                            border: none;
+                            content: '\f078';
+                            font-family: "Font Awesome 6 Pro";
+                            font-weight: 900;
+                            height: 100%;
+                            right: 0;
+                            position: absolute;
+                            width: 60px;
+                            text-align: center;
+                            border-left: 1px solid rgba(11, 52, 72, 0.3);
+                            top: 0;
+                            line-height: 50px;
+                            @include transition($transition);
+                            @include media-breakpoint-down(xxl) {
+                                width: 50px;
+                                line-height: 50px;
+                            }
+                            @include media-breakpoint-down(xl) {
+                                width: 45px;
+                                line-height: 45px;
+                                font-size: 15px;
+                            }
+                            @include media-breakpoint-down(md) {
+                                width: 40px;
+                                line-height: 40px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                font-size: 14px;
+                            }
+                            @include media-breakpoint-down(mobile) {
+                                width: 40px;
+                                line-height: 40px;
+                            }
+                        }
+                        &.selected-moment {
+                            @include media-breakpoint-down(mobile) {
+                                font-size: 15px;
+                            }
+                            // &:after {
+                            //     opacity: 0;
+                            //     visibility: hidden;
+                            // }
+                        }
+                    }
+                    .dropdown-menu {
+                        background: $gradient-2;
+                        border: none;
+                        border-radius: 0;
+                        .dropdown-item {
+                            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                            padding: 5px 40px 6px;
+                            font-size: 16px;
+                            font-weight: 400;
+                            color: rgba(255, 255, 255, 0.9);
+                            @include transition($transition);
+                            position: relative;
+                            @include media-breakpoint-down(mobile) {
+                                font-size: 16px;
+                                line-height: 24px;
+                                white-space: break-spaces;
+                            }
+                            &:first-child {
+                                border-top: 1px solid rgba(255, 255, 255, 0.05);
+                            }
+                            &:after {
+                                position: absolute;
+                                content: '';
+                                left: 20px;
+                                top: 50%;
+                                width: 2px;
+                                height: 10px;
+                                background: $gradient-1;
+                                transform: translateY(-50%);
+                                opacity: 1;
+                                @include transition($transition);
+                                @include media-breakpoint-down(lg) {
+                                    left: 10px;
+                                }
+                            }
+                            &:hover, &.active {
+                                color: rgba($descr-color, .9);
+                                background: #fff;
+                                &:after {
+                                    background: $base-color;
+                                }
+                            }
+                            i {
+                                font-size: 14px;
+                            }
+                            img.flag {
+                                width: 20px;
+                                margin-right: 10px;
+                                top: -2px;
+                                position: relative;
+                            }
+                        }
+                    }
+                }
+            label {
+                font-weight: 600;
+                font-size: 18px;
+                line-height: 28px;
+                text-transform: capitalize;
+                display: block;
+                margin: -7px 0 12px;
+                @include media-breakpoint-down(xl) {
+                    font-size: 17px;
+                    line-height: 27px;
+                    margin: -6px 0 12px;
+                }
+                @include media-breakpoint-down(sm) {
+                    font-size: 16px;
+                    line-height: 26px;
+                    margin: -7px 0 13px;
+                }
+                span {
+                    @include text-gradient-3;
+                    opacity: .8;
+                }
+            }
+            input, textarea {
+                width: 100%;
+                border: 1px solid rgba(11, 52, 72, 0.3);
+                border-radius: 50px;
+                font-weight: 400;
+                font-size: 17px;
+                line-height: 100%;
+                color: rgba($descr-color, .9);
+                padding: 0 25px;
+                margin-bottom: 30px;
+                @include media-breakpoint-down(xl) {
+                    font-size: 16px;
+                }
+                @include media-breakpoint-down(sm) {
+                    margin-bottom: 25px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    font-size: 15px;
+                    padding: 0 20px;
+                    margin-bottom: 20px;
+                }
+                &::placeholder {
+                    color: rgba($descr-color, .7);
+                }
+            } 
+            input {
+                height: 50px;
+                @include media-breakpoint-down(xl) {
+                    height: 45px;
+                }
+                @include media-breakpoint-down(md) {
+                    height: 40px;
+                }
+            }
+            textarea {
+                height: 180px;
+                padding-top: 18px;
+                padding-bottom: 18px;
+                display: grid;
+                resize: none;
+                line-height: 24px;
+                border-radius: 20px;
+                @include media-breakpoint-down(xxl) {
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    height: 160px;
+                }
+                @include media-breakpoint-down(xl) {
+                    padding-top: 13px;
+                    padding-bottom: 13px;
+                    height: 140px;
+                }
+                @include media-breakpoint-down(md) {
+                    border-radius: 15px;
+                }
+                @include media-breakpoint-down(sm) {
+                    height: 120px;
+                    padding-top: 10px;
+                    padding-bottom: 10px;
+                }
+                @include media-breakpoint-down(mobile) {
+                    padding-top: 8px;
+                    padding-bottom: 8px;
+                }
+            }
+            button.prd-btn-1 {
+                margin-top: 10px;
+                @include media-breakpoint-down(xxl) {
+                    margin-top: 0;
+                }
+            }
+            .part-submit {
+                display: flex;
+                align-items: center;
+                @include media-breakpoint-down(mobile) {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+                p {
+                    font-weight: 500;
+                    font-size: 15px;
+                    line-height: 25px;
+                    color: rgba($descr-color, 0.8);
+                    margin-top: -6px;
+                    margin-bottom: -7px;
+                    max-width: 60%;
+                    margin-left: 25px;
+                    @include media-breakpoint-down(sm) {
+                        font-size: 14px;
+                        line-height: 21px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        max-width: 100%;
+                        margin-left: 0;
+                        margin-top: 21px;
+                        margin-bottom: -6px;
+                    }
+                    a.reg-link {
+                        @include text-gradient-3;
+                        font-weight: 500;
+                    }
+                }
+            }
+        }
+    } 
+
+    // .withdraw-money
+.withdraw-money {
+    box-shadow: 0px 4px 25px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    .part-form {
+        border-radius: 0;
+        box-shadow: none;
+        background: none;
+    }
+    .all-balance .single-balance {
+        border-radius: 0;
+        box-shadow: none;
+        position: relative;
+        background: none;
+        .part-currency {
+            @include media-breakpoint-down(lg) {
+                padding: 35px;
+            }
+            @include media-breakpoint-down(md) {
+                padding: 27px 20px;
+            }
+            @include media-breakpoint-down(sm) {
+                padding: 20px 30px;
+            }
+        }
+        .part-balance {
+            padding: 48.5px 0;
+            @include media-breakpoint-down(xxl) {
+                padding: 52.5px 0;
+            }
+            @include media-breakpoint-down(xl) {
+                padding: 30.5px 0;
+            }
+            @include media-breakpoint-down(lg) {
+                flex-direction: column;
+                align-items: center;
+                padding: 48.5px 0;
+            }
+            @include media-breakpoint-down(sm) {
+                flex-direction: row;
+                padding: 28.5px 0;
+            }
+            @include media-breakpoint-down(mobile) {
+                flex-direction: column;
+            }
+        }
+        &:after {
+            position: absolute;
+            content: "";
+            left: 0;
+            bottom: 0;
+            height: 100%;
+            width: 1px;
+            background: linear-gradient(144.14deg, #4D233F -11.44%, #305B9F 123.42%);
+            opacity: 0.15;
+            @include media-breakpoint-down(sm) {
+                height: 1px;
+                width: 100%;
+                bottom: auto;
+                top: 0;
+            }
+        }
+    }
+}
+
+// referral
+.all-referral {
+    .col-6 {
+        @include media-breakpoint-down(mobile) {
+            width: 100%;
+        }
+    }
+    .single-referral {
+        border-radius: 15px;
+        background: #FFF;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+        padding: 40px 0;
+        text-align: center;
+        @include media-breakpoint-down(xxl) {
+            padding: 30px 0;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 25px 0;
+        }
+        &.referral-statics {
+            position: relative;
+            box-shadow: none;
+            &:after {
+                position: absolute;
+                content: '';
+                background: linear-gradient(48deg, #D03355 -5.11%, #FB7A6B 97.89%);
+                top: -70px;
+                right: -12px;
+                bottom: -12px;
+                left: -12px;
+                z-index: -1;
+                border-radius: 0 0 10px 10px;
+                @include media-breakpoint-down(xl) {
+                    top: -5px;
+                    right: -5px;
+                    bottom: -5px;
+                    left: -5px;
+                    z-index: -1;
+                    border-radius: 18px;
+                }
+                @include media-breakpoint-down(lg) {
+                    top: -2px;
+                    right: -2px;
+                    bottom: -2px;
+                    left: -2px;
+                }
+            }
+            &:before {
+                position: absolute;
+                content: '';
+                left: -12px;
+                top: -27px;
+                right: -12px;
+                height: 1.5px;
+                background: $white;
+                @include media-breakpoint-down(xl) {
+                    display: none;
+                }
+            }
+        }
+        span.title {
+            color:  rgba(92, 97, 114, 0.8);
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 28px; 
+            letter-spacing: 0.2px;
+            text-transform: capitalize;
+            display: block;
+            margin: -7px 0 10px;
+            @include media-breakpoint-down(xxl) {
+                margin: -6px 0 10px;
+            }
+            @include media-breakpoint-down(xl) {
+                margin: -6px 0 5px;
+            }
+            @include media-breakpoint-down(lg) {
+                font-size: 16px;
+                line-height: 26px;
+            }
+            @include media-breakpoint-down(mobile) {
+                margin: -6px 0 0px;
+            }
+        }
+        .descr {
+            display: flex;
+            gap: 10px;
+            margin-bottom: -8px;
+            text-align: center;
+            justify-content: center;
+            span {
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 34px; /* 125% */
+                letter-spacing: 0.24px;
+                text-transform: lowercase;
+                @include media-breakpoint-down(xxl) {
+                    font-size: 22px;
+                    line-height: 32px;
+                }
+                @include media-breakpoint-down(xl) {
+                    font-size: 20px;
+                    line-height: 30px;
+                }
+                &.text {
+                   
+                    @include text-gradient-1;
+                }
+                &.icon {
+                    color: $secondary-color;
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+}
+
+// refer friend 
+.refer-friend {
+    form {
+        position: relative;
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+            display: inline-block;
+        }
+        input {
+            width: 100%;
+            border: 1px solid rgba(11, 52, 72, 0.3);
+            border-radius: 60px;
+            font-weight: 400;
+            font-size: 18px;
+            letter-spacing: 0.01em;
+            color: rgba(92, 97, 114, 1);
+            padding: 0 30px;
+            height: 60px;
+            padding: 0 185px 0 30px;
+            @include media-breakpoint-down(xxl) {
+                height: 50px;
+                padding: 0 175px 0 30px;
+            }
+            @include media-breakpoint-down(xl) {
+                height: 45px;
+                font-size: 16px;
+            }
+            @include media-breakpoint-down(md) {
+                height: 40px;
+                padding: 0 155px 0 30px;
+            }
+            @include media-breakpoint-down(md) {
+                padding: 0 135px 0 30px;
+            }
+            @include media-breakpoint-down(mobile) {
+                padding: 0 20px 0 20px;
+                font-size: 15px;
+            }
+            &::placeholder {
+                color: rgba(92, 97, 114, 0.6);
+            }
+        }
+        .submit-btn {
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 60px;
+            box-shadow: 0px 9px 37px rgba(0, 0, 0, 0.2);
+            @include media-breakpoint-down(xxl) {
+                height: 50px;
+            }
+            @include media-breakpoint-down(xl) {
+                height: 45px;
+            }
+            @include media-breakpoint-down(md) {
+                height: 40px;
+            }
+            @include media-breakpoint-down(mobile) {
+                position: relative;
+                margin-top: 10px;
+            }
+        }
+    }
+}
+
+// social media 
+.social-links {
+    ul {
+        display: flex;
+        gap: 20px;
+        li {
+            a {
+                display: inline-block;
+                width: 55px;
+                height: 55px;
+                border-radius: 50%;
+                text-align: center;
+                line-height: 55px;
+                font-size: 16px;
+                color: #161D35;
+                position: relative;
+                z-index: 2;
+                border-radius: 50%;
+                @include media-breakpoint-down(xxl) {
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                }
+                @include media-breakpoint-down(xl) {
+                    width: 45px;
+                    height: 45px;
+                    line-height: 45px;
+                    font-size: 15px;
+                }
+                @include media-breakpoint-down(md) {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 14px;
+                }
+                &:after {
+                    position: absolute;
+                    content: '';
+                    left: -1px;
+                    top: -1px;
+                    right: -1px;
+                    bottom: -1px;
+                    background: $gradient-2;
+                    z-index: -2;
+                    border-radius: 50%;
+                }
+                &:before {
+                    position: absolute;
+                    content: '';
+                    left: 0;
+                    top: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: $white;
+                    z-index: -1;
+                    border-radius: 50%;
+                    opacity: 1;
+                    @include transition($transition);
+                }
+                &:hover {
+                    color: $white;
+                    &:before {
+                        opacity: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// settings 
+.settings-element {
+    .nav {
+        @include media-breakpoint-down(xl) {
+            margin-bottom: 20px;
+        }
+        @include media-breakpoint-down(lg) {
+            justify-content: space-between;
+        }
+        .nav-link {
+            text-align: left;
+            padding: 0;
+            position: relative;
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 27px;
+            letter-spacing: 0.34px;
+            text-transform: capitalize;
+            @include text-gradient-3;
+            padding: 17px 30px 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+            @include media-breakpoint-down(xl) {
+                margin-bottom: 0;
+                margin-right: 10px;
+            }
+            @include media-breakpoint-down(xxl) {
+                padding: 12px 30px 13px;
+            }
+            @include media-breakpoint-down(lg) {
+                margin-right: 0;
+            }
+            @include media-breakpoint-down(md) {
+                margin-bottom: 10px;
+            }
+            @include media-breakpoint-down(sm) {
+                padding: 12px 20px 13px;
+                font-size: 16px;
+                line-height: 26px;
+            }
+            i {
+                font-size: 18px;
+            }
+            &:last-child {
+                margin-bottom: 0;
+                @include media-breakpoint-down(xl) {
+                    margin-bottom: auto;
+                    margin-right: 0;
+                }
+                @include media-breakpoint-down(md) {
+                    margin-bottom: 0;
+                }
+            }
+            &:after {
+                position: absolute;
+                content: '';
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background: $gradient-2;
+                opacity: .1;
+                z-index: -1;
+                @include transition($transition);
+            }
+            &.active {
+                background-image: linear-gradient(144.14deg, #ffffff -11.44%, #ffffff 123.42%);
+                &:after {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+    // profile 
+    .profile-setting {
+        border-radius: 15px;
+        background: #FFF;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+        display: flex;
+        padding: 40px;
+        align-items: center;
+        gap: 40px;
+        @include media-breakpoint-down(lg) {
+            align-items: flex-start;
+        }
+        @include media-breakpoint-down(md) {
+            flex-direction: column;
+            padding: 30px;
+        }
+        .part-pic {
+            img {
+                width: 260px;
+                border-radius: 10px;
+                @include media-breakpoint-down(lg) {
+                    width: 140px;
+                }
+            }
+        }
+        .part-info {
+            flex: 1;
+            ul {
+                margin-top: -7px;
+                margin-bottom: -8px;
+                @include media-breakpoint-down(md) {
+                    margin-top: -6px;
+                    margin-bottom: -7px;                
+                }
+                li {
+                    border-bottom: 1px solid rgba($descr-color, 0.1);
+                    padding: 11px 0;
+                    &:first-child {
+                        padding-top: 0;
+                    }
+                    &:last-child {
+                        padding-bottom: 0;
+                        border-bottom: none;
+                    }
+                    span {
+                        &.property {
+                            color: #5C6172;
+                            font-size: 18px;
+                            font-weight: 500;
+                            line-height: 28px;
+                            letter-spacing: 0.4px;
+                            text-transform: capitalize;
+                            width: 207px;
+                            @include media-breakpoint-down(xxl) {
+                                font-size: 17px;
+                                line-height: 27px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                width: 150px;
+                                font-size: 16px;
+                                line-height: 26px;
+                            }
+                        }
+                        &.value {
+                            @include text-gradient-3;
+                            font-size: 18px;
+                            font-weight: 600;
+                            line-height: 28px;
+                            letter-spacing: 0.4px;
+                            opacity: .9;
+                            @include media-breakpoint-down(xxl) {
+                                font-size: 17px;
+                                line-height: 27px;
+                            }
+                            @include media-breakpoint-down(sm) {
+                                font-size: 16px;
+                                line-height: 26px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    // privacy 
+    .privacy-settings {
+        border-radius: 15px;
+        background: #FFF;
+        box-shadow: 0px 4px 25px 0px rgba(0, 0, 0, 0.10);
+        padding: 40px;
+        @include media-breakpoint-down(md) {
+            padding: 30px;
+        }
+        @include media-breakpoint-down(mobile) {
+            padding: 25px;
+        }
+        ul {
+            li {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba($descr-color, 0.1);
+                padding: 15px 0;
+                @include media-breakpoint-down(mobile) {
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 15px;
+                }
+                &:first-child {
+                    padding-top: 0;
+                }
+                &:last-child {
+                    padding-bottom: 0;
+                    border-bottom: none;
+                }
+                span.title {
+                    color: #5C6172;
+                    font-size: 18px;
+                    font-weight: 600;
+                    line-height: 28px;
+                    letter-spacing: 0.4px;
+                    text-transform: capitalize;
+                    @include media-breakpoint-down(md) {
+                        font-size: 17px;
+                        line-height: 27px;
+                    }
+                    @include media-breakpoint-down(sm) {
+                        font-size: 16px;
+                        line-height: 26px;
+                    }
+                    @include media-breakpoint-down(mobile) {
+                        margin-top: -7px;
+                        margin-bottom: -7px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+

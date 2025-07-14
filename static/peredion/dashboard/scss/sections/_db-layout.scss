@@ -1,0 +1,123 @@
+// dashboard layout
+.db-layout {
+    display: flex;
+    justify-content: center;
+    height: 100vh;
+    @media (min-width: 1920px)  {
+        width: 1920px;   
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    @media (min-width: 1620px) and (max-width: 1836px)  {
+        margin-left: 70px;
+    }
+    .os-scrollbar-handle {
+        width: 0;
+    }
+    .center-content {
+        flex: 1;
+        .scrollable {
+            height: calc(100% - 120px);
+            .os-content-glue {
+                width: 100%!important;
+            }
+        }
+        .db-layout-wrapper {
+            padding: 30px;
+        }
+        .header {
+            position: relative;
+            .top-bar {
+                padding-left: 30px;
+                padding-right: 30px;
+            }
+            .scalation {
+                .navbar-nav {
+                    justify-content: center;
+                    .nav-item {
+                        .nav-link {
+                            padding-left: 15px;
+                            padding-right: 15px;
+                        }
+                        &.version-changing-button {
+                            .nav-link {
+                                margin-left: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    .left-sidebar, .right-sidebar {
+        width: 16.04%;
+    }
+    .left-sidebar {
+        background: $gradient-2;
+        // @include media-breakpoint-down(1897px) {
+        //     width: 16.0%;
+        // }
+        // @media (min-width: 1886px) and (max-width: 1920px) {
+        //     width: 16.03%;
+        // }
+
+        // @media (max-width: 1600px) and (max-width: 1920px) {
+        //     width: 16.03%;
+        // }
+        // @media (min-width: 1620px) and (max-width: 1896px)  {
+        //     // display: none;
+        //     width: 4.04%;
+        //     overflow: hidden;
+        // }
+
+        @media (min-width: 1837px) and (max-width: 1896px)  {
+            width: 13.04%;
+            overflow: hidden;
+        }
+
+         @media (min-width: 1620px) and (max-width: 1836px)  {
+            width: 70px;
+            overflow: hidden;
+            position: fixed;
+            z-index: 55;
+            height: 100%;
+            left: 0;
+        }
+        @media (min-width: 1836px) and (max-width: 1872px)  {
+            .db-menu.style-2 .nav-pills .nav-link i {
+                width: 30px;
+            }
+        }
+        .logo {
+            height: 120px;
+            background: $base-color;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            a {
+                display: inline-block;
+                img {
+                    height: 50px;
+                    width: auto;
+                }
+            }
+        }
+    }
+    .right-sidebar {
+        height: max-content;
+        background: $gradient-2;
+        position: relative;
+        &:after {
+            position: absolute;
+            content: '';
+            left: 0;
+            bottom: -30px;
+            height: 100%;
+            width: 100%;
+            background: $gradient-2;
+            transform: skewY(10deg);
+            z-index: -1;
+        }
+    }
+}

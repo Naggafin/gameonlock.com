@@ -1,0 +1,57 @@
+// // mobile navigation 
+// .mobile-bottom-navigation {
+//     position: fixed;
+//     bottom: 20px;
+//     width: 350px;
+//     z-index: 555;
+//     left: 50%;
+//     transform: translateX(-50%);
+//     &:after {
+//         position: absolute;
+//         content: '';
+//         left: 0;
+//         top: 0;
+//         width: 100%;
+//         height: 100%;
+//         background: $gradient-1;
+//         z-index: -1;
+//         clip-path: polygon(100% 0, 100% 100%, 50% 90%, 0% 100%, 0 0, 50% 10%);
+//         border-radius: 100px;
+//     }
+
+
+//     .all-buttons {
+//         display: flex;
+//         justify-content: space-around;
+//         align-items: center;
+//         a.single-btn {
+//             color: $white;
+//         }
+//         button.middle-btn {
+//             background: $gradient-2;
+//             color: $white;
+//             width: 60px;
+//             height: 60px;
+//             border-radius: 50%;
+//             border: 1px solid rgb(255 255 255);
+//         }
+//     }
+// }
+
+// // temp style
+// .bet-slip {
+//     display: none;
+// }
+
+
+// <!-- mobile bottom navigation begin -->
+// <div class="mobile-bottom-navigation d-md-none d-sm-block">
+//     <div class="all-buttons">
+//         <a href="#" class="single-btn"><i class="fa-light fa-house"></i></a>
+//         <a href="#" class="single-btn"><i class="fa-light fa-address-book"></i></a>
+//         <button class="middle-btn"><i class="fa-light fa-clipboard-list"></i></button>
+//         <a href="#" class="single-btn"><i class="fa-light fa-magnifying-glass"></i></a>
+//         <a href="#" class="single-btn"><i class="fa-light fa-turn-up"></i></a>
+//     </div>
+// </div>
+// <!-- mobile bottom navigation end -->

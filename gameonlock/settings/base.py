@@ -365,11 +365,13 @@ SITE_VARS = {
 		"schedule_title": _("Next Schedule"),
 		"schedule_subtitle": _("All Upcoming Matches"),
 	},
-	"MIN_BET": SPORTS["MIN_BET"],
-	"MIN_NUM_BETS": SPORTS["MIN_NUM_BETS"],
-	"BASE_BET_STAKES": SPORTS["BASE_BET_STAKES"],
-	"BET_MULTIPLIER": SPORTS["BET_MULTIPLIER"],
-	"BET_STEP": SPORTS["BET_STEP"],
+	"bet_slip_config": {
+		"MIN_BET": SPORTS["MIN_BET"],
+		"MIN_NUM_BETS": SPORTS["MIN_NUM_BETS"],
+		"BASE_BET_STAKES": SPORTS["BASE_BET_STAKES"],
+		"BET_MULTIPLIER": SPORTS["BET_MULTIPLIER"],
+		"BET_STEP": SPORTS["BET_STEP"],
+	},
 }
 
 
@@ -458,7 +460,7 @@ CONTENT_SECURITY_POLICY = {
 	"EXCLUDE_URL_PREFIXES": [],
 	"DIRECTIVES": {
 		"default-src": [SELF],
-		"script-src": [SELF, NONCE, UNSAFE_EVAL, STRICT_DYNAMIC],
+		"script-src": [NONCE, UNSAFE_EVAL, STRICT_DYNAMIC],
 		"script-src-elem": [SELF, NONCE],
 		"style-src": [SELF, NONCE],
 		"style-src-elem": [SELF, UNSAFE_INLINE, "fonts.googleapis.com"],

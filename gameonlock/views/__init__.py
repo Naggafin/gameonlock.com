@@ -1,4 +1,3 @@
-import json
 import logging
 from datetime import timedelta
 from decimal import Decimal
@@ -28,8 +27,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
-from djmoney.models.fields import MoneyField
-from djmoney.money import Money
 
 from golpayment.filters import TransactionFilter
 from golpayment.models import Transaction
@@ -45,6 +42,13 @@ from .mixins import GameonlockMixin
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
 logger = logging.getLogger(__name__)
+
+
+def serialize_form(form):
+	form_data = {"errors": list(form.non_field_errors())}
+	for field in form:
+		form_data[field.name] = {"value": field.value(), "errors": list(field.errors)}
+	return form_data
 
 
 class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
@@ -92,7 +96,13 @@ class SignupView(GameonlockMixin, AllauthSignupView):
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		context["subtitle"] = _("Sign up to create an account")
-		context["region_choices"] = json.dumps(dict(get_all_region_choices()))
+
+		form = context["form"]
+		context["signup_config"] = {
+			"REGIONS": dict(get_all_region_choices()),
+			"SIGNUP_URL": reverse("account_signup"),
+			"FORM": serialize_form(form),
+		}
 		return context
 
 
@@ -198,18 +208,18 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 
 		# Fill chart data
 		chart_data = {
-			"chart_wins": [],
-			"chart_losses": [],
-			"chart_profit": [],
+			"wins": [],
+			"losses": [],
+			"profit": [],
 		}
 
 		for day in week_days:
 			stats = stats_by_date.get(day, {})
-			chart_data["chart_wins"].append(stats.get("wins", 0))
-			chart_data["chart_losses"].append(stats.get("losses", 0))
-			chart_data["chart_profit"].append(float(stats.get("profit", 0) or 0))
+			chart_data["wins"].append(stats.get("wins", 0))
+			chart_data["losses"].append(stats.get("losses", 0))
+			chart_data["profit"].append(float(stats.get("profit", 0) or 0))
 
-		context["chart_data"] = json.dumps(chart_data)
+		context["chart_data"] = chart_data
 		return context
 
 

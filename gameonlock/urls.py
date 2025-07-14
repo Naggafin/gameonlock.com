@@ -24,8 +24,9 @@ from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from django.urls import include, path
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
-from django.views.i18n import set_language
+from django.views.i18n import JavaScriptCatalog, set_language
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -80,6 +81,11 @@ internationalized_patterns = i18n_patterns(
 			},
 		),
 		name="privacy",
+	),
+	path(
+		"jsi18n/",
+		cache_page(86400, key_prefix="jsi18n")(JavaScriptCatalog.as_view()),
+		name="javascript-catalog",
 	),
 	path("", views.HomeView.as_view(), name="index"),
 	prefix_default_language=False,
