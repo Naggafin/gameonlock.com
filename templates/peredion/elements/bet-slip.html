@@ -223,6 +223,16 @@
 
         // Register betSlip component
         Alpine.data('betSlip', (config) => ({
+            minBet: config.minBet,
+            loginUrl: config.loginUrl,
+            baseBetStakes: config.baseBetStakes,
+            minNumBets: config.minNumBets,
+            betStep: config.betStep,
+            betMultiplier: config.betMultiplier,
+            submitUrl: config.submitUrl,
+            csrfToken: config.csrfToken,
+            isAuthenticated: config.isAuthenticated,
+
             isOpen: false,
             picks: [],
             amount: config.minBet || 0,
@@ -248,7 +258,7 @@
             clearSlip() {
                 Alpine.store('betSlip').clearPicks();
                 this.picks = [];
-                this.amount = config.minBet || 0;
+                this.amount = this.minBet;
             },
 
             removePick(index) {
@@ -259,8 +269,10 @@
             },
 
             calculateReturn() {
-                const multiplier = Math.floor(config.baseBetStakes +
-                    ((this.picks.length - config.minNumBets) / config.betStep) * config.betMultiplier);
+                const multiplier = Math.floor(
+                    this.baseBetStakes +
+                    ((this.picks.length - this.minNumBets) / this.betStep) * this.betMultiplier
+                );
                 return Math.max(this.amount * multiplier, 0).toFixed(2);
             },
 
@@ -269,9 +281,9 @@
             },
 
             async submitBet() {
-                if (this.amount < config.minBet || this.picks.length < config.minNumBets) {
+                if (this.amount < config.minBet || this.picks.length < this.minNumBets) {
                     Alpine.store('alerts').add({
-                        message: 'Validation failed: Minimum bet or picks not met.',
+                        message: gettext('Validation failed: Minimum bet or picks not met.'),
                         type: 'danger'
                     });
                     return;
@@ -289,11 +301,11 @@
                 };
 
                 try {
-                    const response = await fetch(config.submitUrl, {
+                    const response = await fetch(this.submitUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': config.csrfToken
+                            'X-CSRFToken': this.csrfToken
                         },
                         body: JSON.stringify(payload)
                     });
@@ -307,9 +319,9 @@
                         this.submitted = true;
                         Alpine.store('betSlip').clearPicks();
                         this.picks = [];
-                        this.amount = config.minBet || 0;
+                        this.amount = this.minBet;
                         Alpine.store('alerts').add({
-                            message: 'Bet placed successfully!',
+                            message: gettext('Bet placed successfully!'),
                             type: 'success'
                         });
                         setTimeout(() => {
@@ -318,14 +330,14 @@
                         }, 2000);
                     } else {
                         Alpine.store('alerts').add({
-                            message: `Bet submission failed: ${result.error || 'Unknown error'}`,
+                            message: gettext('Bet submission failed: ') + (result.error || gettext('Unknown error')),
                             type: 'danger'
                         });
                     }
-                } catch (error) {
-                    console.error('Error submitting bet:', error);
+                } catch (e) {
+                    console.error('Error submitting bet:', e);
                     Alpine.store('alerts').add({
-                        message: `Error submitting bet: ${error.message}`,
+                        message: gettext('Error submitting bet: ') + e.message,
                         type: 'danger'
                     });
                 }
@@ -333,11 +345,11 @@
 
             displayPick(pick) {
                 if (pick.type === 'sp') {
-                    return `${pick.team || 'N/A'} Spread`;
+                    return `${pick.team || gettext('N/A')} ${gettext('Spread')}`;
                 } else if (pick.type === 'uo') {
-                    return pick.is_over ? 'Over' : 'Under';
+                    return pick.is_over ? gettext('Over') : gettext('Under');
                 }
-                return 'Unknown Pick';
+                return gettext('Unknown Pick');
             }
         }));
     });

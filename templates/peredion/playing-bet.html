@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static i18n humanize partials %}
 {% load sportsbetting_tags %}
-{% load view_breadcrumbs %}
 {% partialdef bet-section-tab-content %}
 <div class="single-tournament">
     <div class="tournament-title">
@@ -16,24 +15,31 @@
                 <div>{{ line.game.start_datetime|date }}</div>
             {% endifchanged %}
             {% with game=line.game %}
-                <div class="single-t-match card mb-3 {% if line.game.is_finished %}finished {% elif line.game.has_started %}match-in-play {% endif %}" data-betting-line="{{ line.pk }}" data-game="{{ line.game.pk }}"
+                <div class="single-t-match {% if line.game.is_finished %}finished{% elif line.game.has_started %}match-in-play{% endif %}"
                     {# djlint:off #}
                      x-data="{
                          bettingLine: '{{ line.pk }}',
                          game: {
+                         	id: '{{ line.game.pk }}',
+                             start_datetime: new Date('{{ line.game.start_datetime.iso_format }}'),
                              away_team: '{{ line.game.away_team|escapejs }}',
                              home_team: '{{ line.game.home_team|escapejs }}',
+                             away_team_score: {{ line.game.away_team_score|default_if_none:'null' }},
+                             home_team_score: {{ line.game.home_team_score|default_if_none:'null' }},
                              away_team_pk: '{{ line.game.away_team.pk }}',
                              home_team_pk: '{{ line.game.home_team.pk }}',
-                             spread: '{% if line.is_pick %}P{% endif %}{{ line.spread|escapejs }}',
-                             over: '{{ line.over|default_if_none:''|escapejs }}',
-                             under: '{{ line.under|default_if_none:''|escapejs }}'
+                             spread: '{% if line.is_pick %}P{% endif %}{{ line.spread }}',
+                             over: {{ line.over|default_if_none:'null' }},
+                             under: {{ line.under|default_if_none:'null' }},
+                             hasStarted() {
+                             	return new Date() >= this.start_datetime;
+                             }
                          },
                          isPickSelected(type, value) {
                              const store = Alpine.store('betSlip');
-                             if (!store || !store.picks) return !value;
+                             if (!store || !store.picks) return false;
                              const pick = store.picks.find(p => p.betting_line === this.bettingLine);
-                             if (!pick) return !value;
+                             if (!pick) return false;
                              if (type === 'sp') return pick.type === 'sp' && pick.team === value;
                              if (type === 'uo') return pick.type === 'uo' && pick.is_over === (value === 'true');
                              return false;
@@ -43,143 +49,110 @@
                              if (!store) return;
                              if (team || isOver !== null) {
                                  store.addPick(this.bettingLine, type, team, isOver, this.game);
-                             } else {
-                                 store.removePick(this.bettingLine, type);
                              }
-                         }
+                         },
+                         clearPick(type) {
+						     const store = Alpine.store('betSlip');
+					 	    if (!store) return;
+						     if (type) store.removePick(this.bettingLine, type);
+						 }
                      }">
                     {# djlint:on #}
-                    <div class="card-body">
-                        <!-- Match Time Row -->
-                        <div class="match-time-row row mb-3 text-center">
-                            <div class="col-12">
-                                <span class="m-icon">
-                                    <i class="fa-solid fa-clock"></i>
-                                </span>
-                                <span class="m-date text-uppercase">{{ line.game.start_datetime|naturalday }}</span>
-                                <span class="m-time text-uppercase text-secondary">
-                                    {% if line.game.has_started %}
-                                        {% trans 'in-play' %}
-                                    {% else %}
-                                        {{ line.game.start_datetime|time }}
-                                    {% endif %}
-                                </span>
-                            </div>
-                        </div>
-                        <!-- Teams and Spread Row -->
-                        <div class="teams-row row mb-3 align-items-center">
-                            <div class="col-12 col-md-5 team-selection">
-                                <input id="select_team__{{ line.game.away_team.pk }}"
-                                       type="radio"
-                                       name="team__{{ line.pk }}"
-                                       value="{{ line.game.away_team.pk }}"
-                                       data-team="away"
-                                       class="d-none"
-                                       x-bind:checked="isPickSelected('sp', '{{ line.game.away_team.pk }}')"
-                                       x-on:change="addPick('sp', $event.target.value)"
-                                       {% if line.game.is_finished or line.game.has_started or line.picked_team %}disabled{% endif %}>
-                                <label for="select_team__{{ line.game.away_team.pk }}"
-                                       class="single-bet-place away w-100 text-center"
-                                       :class="{ 'placed': isPickSelected('sp', '{{ line.game.away_team.pk }}') }">
-                                    <p class="team-icon me-2">
-                                        <img src="{% if line.game.away_team.icon %}{{ line.game.away_team.icon.url }}{% endif %}"
-                                             alt="{{ line.game.away_team }}"
-                                             nonce="{{ request.csp_nonce }}"
-                                             class="rounded-circle">
-                                    </p>
-                                    <p class="team-name">{{ line.game.away_team }}</p>
-                                    {% if line.game.has_started %}<p class="team-score ms-2">{{ line.game.away_team_score }}</p>{% endif %}
-                                </label>
-                            </div>
-                            <div class="col-12 col-md-2 spread-box text-center">
-                                <input id="deselect_team__{{ line.game.pk }}"
-                                       type="radio"
-                                       name="team__{{ line.pk }}"
-                                       value=""
-                                       class="d-none"
-                                       x-bind:checked="isPickSelected('sp', '')"
-                                       x-on:change="addPick('sp', null)"
-                                       {% if line.game.is_finished or line.game.has_started or line.picked_team %}disabled{% endif %}>
-                                <label for="deselect_team__{{ line.game.pk }}"
-                                       class="bet-ratio badge text-dark">
-                                    {% if line.is_pick %}P{% endif %}
-                                    {{ line.spread }}
-                                </label>
-                            </div>
-                            <div class="col-12 col-md-5 team-selection">
-                                <input id="select_team__{{ line.game.home_team.pk }}"
-                                       type="radio"
-                                       name="team__{{ line.pk }}"
-                                       value="{{ line.game.home_team.pk }}"
-                                       data-team="home"
-                                       class="d-none"
-                                       x-bind:checked="isPickSelected('sp', '{{ line.game.home_team.pk }}')"
-                                       x-on:change="addPick('sp', $event.target.value)"
-                                       {% if line.game.is_finished or line.game.has_started or line.picked_team %}disabled{% endif %}>
-                                <label for="select_team__{{ line.game.home_team.pk }}"
-                                       class="single-bet-place home w-100 text-center"
-                                       :class="{ 'placed': isPickSelected('sp', '{{ line.game.home_team.pk }}') }">
-                                    <p class="team-icon me-2">
-                                        <img src="{% if line.game.home_team.icon %}{{ line.game.home_team.icon.url }}{% endif %}"
-                                             alt="{{ line.game.home_team }}"
-                                             nonce="{{ request.csp_nonce }}"
-                                             class="rounded-circle">
-                                    </p>
-                                    <p class="team-name">{{ line.game.home_team }}</p>
-                                    {% if line.game.has_started %}<p class="team-score ms-2">{{ line.game.home_team_score }}</p>{% endif %}
-                                </label>
-                            </div>
-                        </div>
-                        <!-- Under/Over Row -->
-                        {% if line.under or line.over %}
-                            <div class="under-over-row row justify-content-center">
-                                <div class="col-12">
-                                    <div class="btn-group w-100" role="group">
-                                        <input id="select_under__{{ line.game.pk }}"
-                                               type="radio"
-                                               name="over_under__{{ line.pk }}"
-                                               value="false"
-                                               data-over-under="{{ line.under }}"
-                                               class="d-none"
-                                               x-bind:checked="isPickSelected('uo', 'false')"
-                                               x-on:change="addPick('uo', null, false)"
-                                               {% if line.game.is_finished or line.game.has_started or line.picked_uo %}disabled{% endif %}>
-                                        <label for="select_under__{{ line.game.pk }}"
-                                               class="single-bet-place under btn btn-outline-secondary"
-                                               :class="{ 'active': isPickSelected('uo', 'false') }">
-                                            <span>{% trans 'under' %}</span>
-                                        </label>
-                                        <input id="deselect_uo__{{ line.game.pk }}"
-                                               type="radio"
-                                               name="over_under__{{ line.pk }}"
-                                               value=""
-                                               class="d-none"
-                                               x-bind:checked="isPickSelected('uo', '')"
-                                               x-on:change="addPick('uo', null, null)"
-                                               {% if line.game.is_finished or line.game.has_started or line.picked_uo %}disabled{% endif %}>
-                                        <label for="deselect_uo__{{ line.game.pk }}"
-                                               class="single-bet-place draw-box btn btn-light">
-                                            <span class="bet-ratio">{{ line.over }}</span>
-                                        </label>
-                                        <input id="select_over__{{ line.game.pk }}"
-                                               type="radio"
-                                               name="over_under__{{ line.pk }}"
-                                               value="true"
-                                               data-over-under="{{ line.over }}"
-                                               class="d-none"
-                                               x-bind:checked="isPickSelected('uo', 'true')"
-                                               x-on:change="addPick('uo', null, true)"
-                                               {% if line.game.is_finished or line.game.has_started or line.picked_uo %}disabled{% endif %}>
-                                        <label for="select_over__{{ line.game.pk }}"
-                                               class="single-bet-place over btn btn-outline-secondary"
-                                               :class="{ 'active': isPickSelected('uo', 'true') }">
-                                            <span>{% trans 'over' %}</span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="match-time">
+                        <span class="time-icon">
+                            <i class="fa-solid fa-clock"></i>
+                        </span>
+                        {% if line.game.has_started and not game.is_finished %}
+                            <span class="m-date">{{ line.game.start_datetime|time }}</span>
+                            <span class="m-in-play">{% trans 'in-play' %}</span>
+                        {% else %}
+                            <span class="m-date">{{ line.game.start_datetime|naturalday }}</span>
+                            <span class="m-time">{{ line.game.start_datetime|time }}</span>
                         {% endif %}
                     </div>
+                    <div class="playing-teams">
+                        <div class="single-team">
+                            <div class="team-descr">
+                                <span class="team-icon">
+                                    <img src="{% if line.game.away_team.icon %}{{ line.game.away_team.icon.url }}{% endif %}"
+                                         alt="{{ line.game.away_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name" x-text="game.away_team"></span>
+                            </div>
+                            <div class="team-score"
+                                 :class="{ 'up': game.away_team_score > game.home_team_score, 'down': game.away_team_score < game.home_team_score }"
+                                 x-if="game.away_team_score !== null"
+                                 x-text="game.away_team_score"></div>
+                        </div>
+                        <div class="single-team">
+                            <div class="team-descr">
+                                <span class="team-icon">
+                                    <img src="{% if line.game.home_team.icon %}{{ line.game.home_team.icon.url }}{% endif %}"
+                                         alt="{{ line.game.home_team }}"
+                                         nonce="{{ request.csp_nonce }}">
+                                </span>
+                                <span class="team-name">{{ line.game.home_team }}</span>
+                            </div>
+                            <div class="team-score"
+                                 :class="{ 'up': game.home_team_score > game.away_team_score, 'down': game.home_team_score < game.away_team_score }"
+                                 x-if="game.home_team_score !== null"
+                                 x-text="game.home_team_score"></div>
+                        </div>
+                    </div>
+                    <div class="placing-bet">
+                        <template x-if="game.spread">
+                            <div class="row">
+                                <button class="single-bet-place"
+                                        @click="addPick('sp', game.away_team_pk)"
+                                        :disabled="game.is_finished || game.has_started() || isPickSelected('sp', game.away_team_pk)">
+                                    <span class="bet-ratio"><i class="fa-solid fa-check-circle"
+   x-show="isPickSelected('sp', game.away_team_pk)"></i></span>
+                                    <span class="team-name" x-text="game.away_team"></span>
+                                </button>
+                                <button class="single-bet-place draw-box"
+                                        @click="clearPick('sp')"
+                                        :disabled="game.is_finished || game.has_started()">
+                                    <span class="bet-ratio" x-text="game.spread"></span>
+                                    <span class="team-name"
+                                          x-text="(isPickSelected('sp', game.away_team_pk) || isPickSelected('sp', game.home_team_pk)) ? '{% trans 'Clear selection' %}' : ''"></span>
+                                </button>
+                                <button class="single-bet-place"
+                                        @click="addPick('sp', game.home_team_pk)"
+                                        :disabled="game.is_finished || game.has_started() || isPickSelected('sp', game.home_team_pk)">
+                                    <span class="bet-ratio"><i class="fa-solid fa-check-circle"
+   x-show="isPickSelected('sp', game.home_team_pk)"></i></span>
+                                    <span class="team-name" x-text="game.home_team"></span>
+                                </button>
+                            </div>
+                        </template>
+                        <template x-if="game.under || game.over">
+                            <div class="row">
+                                <button class="single-bet-place"
+                                        @click="addPick('uo', null, false)"
+                                        :disabled="game.is_finished || game.has_started() || isPickSelected('uo', false)">
+                                    <span class="bet-ratio"><i class="fa-solid fa-check-circle" x-show="isPickSelected('uo', false)"></i></span>
+                                    <span class="team-name">{% trans 'Under' %} <span x-text="game.under"></span></span>
+                                </button>
+                                <button class="single-bet-place draw-box"
+                                        @click="clearPick('uo')"
+                                        :disabled="game.is_finished || game.has_started()">
+                                    <span class="bet-ratio"></span>
+                                    <span class="team-name"
+                                          x-text="(isPickSelected('uo', false) || isPickSelected('uo', true)) ? '{% trans 'Clear selection' %}' : ''"></span>
+                                </button>
+                                <button class="single-bet-place"
+                                        @click="addPick('uo', null, true)"
+                                        :disabled="game.is_finished || game.has_started() || isPickSelected('uo', true)">
+                                    <span class="bet-ratio"><i class="fa-solid fa-check-circle" x-show="isPickSelected('uo', true)"></i></span>
+                                    <span class="team-name">{% trans 'Over' %} <span x-text="game.over"></span></span>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                    <span class="bet-ratio-details">
+                        <a href="#TODO"><i class="fa-regular fa-angle-right"></i></a>
+                    </span>
                 </div>
             {% endwith %}
         {% endfor %}
@@ -227,50 +200,6 @@
 </div>
 {% endwith %}
 {% endpartialdef %}
-{% block js %}
-    {{ block.super }}
-    {% include 'peredion/elements/playing-bet.html' %}
-{% endblock %}
-{% block banner %}
-    <div class="prd-breadcrumb">
-        <div class="brd-shape">
-            <div class="brd-img brd-img-1"
-                 data-aos="fade-right"
-                 data-aos-delay="200"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
-                     alt=""
-                     nonce="{{ request.csp_nonce }}">
-            </div>
-            <div class="brd-img brd-img-2"
-                 data-aos="fade-left"
-                 data-aos-delay="200"
-                 data-aos-duration="500"
-                 data-aos-easing="ease-in">
-                <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
-                     alt=""
-                     nonce="{{ request.csp_nonce }}">
-            </div>
-        </div>
-        <div class="container">
-            <div class="brd-content">
-                <div data-aos="fade-up"
-                     data-aos-delay="200"
-                     data-aos-duration="500"
-                     data-aos-easing="ease-in">
-                    <span class="sub-title">{% trans 'bets' %}</span>
-                </div>
-                <h2 class="title"
-                    data-aos="fade-up"
-                    data-aos-delay="350"
-                    data-aos-duration="500"
-                    data-aos-easing="ease-in">{% trans 'Make Your Bet' %}</h2>
-                <div>{% render_breadcrumbs %}</div>
-            </div>
-        </div>
-    </div>
-{% endblock %}
 {% block content %}
     <div class="playing-bet placing-bet-page">
         <div class="global-shape style-3">

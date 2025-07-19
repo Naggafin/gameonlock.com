@@ -22,7 +22,8 @@ class BettingView(
 	GameonlockMixin,
 	TemplateView,
 ):
-	title = _("Betting")
+	title = _("bets")
+	subtitle = _("Make Your Bet")
 	model = BettingLine
 	template_name = "peredion/playing-bet.html"
 	list_view_url = reverse_lazy("sportsbetting:bet")

@@ -511,13 +511,13 @@
 
 /* Forms */
 .poklotto-form .part-form input[type="checkbox"] {
-	width: 50px;
-	height: 50px;
-	margin: 0;
+  width: 50px;
+  height: 50px;
+  margin: 0;
 }
 .poklotto-form .part-form input[type="checkbox"] + label {
-	margin: 0;
-	padding-left: 1rem;
+  margin: 0;
+  padding-left: 1rem;
 }
 .poklotto-form .part-form select {
   width: 100%;
@@ -771,4 +771,34 @@
 /* Bet slip */
 .bet-slip button.bet-slip-header:after {
   font-family: "Font Awesome 6 Free";
+}
+
+
+.tournament-title {
+  content: "Country";
+  font-weight: 600;
+  font-size: 17px;
+  line-height: 19px;
+  color: #5C6172;
+  letter-spacing: 0.02em;
+  position: absolute;
+  top: -60px;
+  background: #fff;
+  z-index: 2;
+  padding: 0 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.tournament-title tr {
+  background: #fff;
+  padding-right: 30px;
+}
+
+@media (max-width: 480px) {
+  .tournament-title tr {
+    padding-right: 0;
+  }
 }

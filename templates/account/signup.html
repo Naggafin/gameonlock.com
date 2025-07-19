@@ -6,11 +6,6 @@
           href="{% static 'flatpickr/css/flatpickr.min.css' %}"
           nonce="{{ request.csp_nonce }}">
 {% endblock %}
-{% block js %}
-    {{ block.super }}
-    <script src="{% static 'flatpickr/js/flatpickr.js' %}"
-            nonce="{{ request.csp_nonce }}"></script>
-{% endblock %}
 {% block content %}
     <div class="sign-up">
         <div class="global-shape style-3">
@@ -438,14 +433,11 @@
 {% endblock %}
 {% block js %}
     {{ block.super }}
+    <script src="{% static 'flatpickr/js/flatpickr.js' %}"
+            nonce="{{ request.csp_nonce }}"></script>
     {{ signup_config|json_script:"signup-config" }}
     <script nonce="{{ request.csp_nonce }}">
         document.addEventListener('alpine:init', () => {
-            const {
-                gettext
-            } = window;
-
-            // Register signupConfig store
             Alpine.store('signupConfig', {
                 signupUrl: '/accounts/signup/',
                 regions: {},
@@ -663,9 +655,7 @@
                         let age = today.getFullYear() - dob.getFullYear();
                         const m = today.getMonth() - dob.getMonth();
                         if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
-                        this.form.date_of_birth.errors = (age < 18) ?
-                            [gettext('You must be at least 18 years old to register.')] :
-                            [];
+                        this.form.date_of_birth.errors = (age < 18) ? [gettext('You must be at least 18 years old to register.')] : [];
                     } else {
                         this.form.date_of_birth.errors = [gettext('Date of Birth is required.')];
                     }
@@ -673,8 +663,7 @@
 
                 checkPasswordMatch() {
                     if (this.form.password1.value && this.form.password2.value) {
-                        this.form.password2.errors = (this.form.password1.value !== this.form.password2.value) ?
-                            [gettext('Passwords do not match.')] :
+                        this.form.password2.errors = (this.form.password1.value !== this.form.password2.value) ? [gettext('Passwords do not match.')] :
                             this.form.password2.value ? [] : [gettext('Confirm Password is required.')];
                     }
                 },

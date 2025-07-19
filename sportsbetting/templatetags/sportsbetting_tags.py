@@ -1,8 +1,10 @@
 import itertools
-from functools import cache
 
+from cache_memoize import cache_memoize
 from django import template
 from django.utils import timezone
+
+from ..models import BettingLine
 
 register = template.Library()
 
@@ -30,22 +32,18 @@ def int_filter(value):
 
 
 @register.simple_tag
-@cache
+@cache_memoize(
+	None, args_rewrite=lambda obj, state: f"{obj._meta.model_name}_{obj.pk}_{state}"
+)
 def num_betting_lines(obj, state=None):
-	# NOTE: we do this in a prefetch_related() efficient manner
-	if not state:
-		lines = [game.betting_line for game in obj.games.all()]
-	else:
+	lines = BettingLine.objects.filter(game__governing_body__sport=obj)
+	if state:
 		if state == "upcoming":
-			lines = [
-				game.betting_line for game in obj.games.all() if not game.has_started
-			]
+			lines = lines.filter(game__start_datetime__gt=timezone.now())
 		elif state == "in_play":
-			lines = [
-				game.betting_line
-				for game in obj.games.all()
-				if game.has_started and not game.is_finished
-			]
+			lines = lines.filter(
+				game__start_datetime__lte=timezone.now(), game__is_finished=False
+			)
 		elif state == "finished":
-			lines = [game.betting_line for game in obj.games.all() if game.is_finished]
-	return len(list(lines))
+			lines = lines.filter(game__is_finished=True)
+	return lines.count()

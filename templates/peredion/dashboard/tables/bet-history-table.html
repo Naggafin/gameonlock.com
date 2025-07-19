@@ -1,0 +1,201 @@
+{% load django_tables2 %}
+{% load i18n l10n %}
+{% block table-wrapper %}
+    <div class="table-container playing-sports-all no-tabs-here">
+        {% block table %}
+            <table {% render_attrs table.attrs class="single-tournament" %}>
+                {% block table.thead %}
+                    {% if table.show_header %}
+                        <thead {{ table.attrs.thead.as_html }} hx-boost="true">
+                            <tr>
+                                {% for column in table.columns %}
+                                    <th {{ column.attrs.th.as_html }} scope="col">
+                                        {% if column.orderable %}
+                                            <a href="{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}"
+                                               hx-target="closest .table-container"
+                                               hx-swap="outerHTML"
+                                               hx-indicator="closest .table-container"
+                                               hx-push-url="false">{{ column.header|safe }}</a>
+                                        {% else %}
+                                            {{ column.header|safe }}
+                                        {% endif %}
+                                    </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% endif %}
+                {% endblock table.thead %}
+                {% block table.tbody %}
+                    <tbody {{ table.attrs.tbody.as_html }}>
+                        {% for row in table.paginated_rows %}
+                            {% block table.tbody.row %}
+                                <tr {{ row.attrs.as_html }}>
+                                    {% for column, cell in row.items %}
+                                        <td {{ column.attrs.td.as_html }}>
+                                            {% if column.localize == None %}
+                                                {{ cell }}
+                                            {% else %}
+                                                {% if column.localize %}
+                                                    {{ cell|localize }}
+                                                {% else %}
+                                                    {{ cell|unlocalize }}
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                    {% endfor %}
+                                </tr>
+                                <template x-if="expandedRows.includes('{{ row.record.id }}')">
+                                    {% for pick in row.record.picks.all %}
+                                        <tr>
+                                            <td colspan="{{ table.columns|length }}">
+                                                <div class="d-flex ms-3"></div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </template>
+                            {% endblock table.tbody.row %}
+                        {% empty %}
+                            {% if table.empty_text %}
+                                {% block table.tbody.empty_text %}
+                                    <tr>
+                                        <td colspan="{{ table.columns|length }}">{{ table.empty_text }}</td>
+                                    </tr>
+                                {% endblock table.tbody.empty_text %}
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                {% endblock table.tbody %}
+                {% block table.tfoot %}
+                    {% if table.has_footer %}
+                        <tfoot {{ table.attrs.tfoot.as_html }}>
+                            <tr>
+                                {% for column in table.columns %}
+                                    <td {{ column.attrs.tf.as_html }}>{{ column.footer }}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                        </tfoot>
+                    {% endif %}
+                {% endblock table.tfoot %}
+            </table>
+        {% endblock table %}
+        {% block pagination %}
+            {% if table.page and table.paginator.num_pages > 1 %}
+                <nav aria-label="Table navigation">
+                    <ul class="pagination justify-content-center">
+                        {% if table.page.has_previous %}
+                            {% block pagination.previous %}
+                                <li class="previous page-item mx-1">
+                                    <a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}"
+                                       hx-target="closest .table-container"
+                                       hx-swap="outerHTML"
+                                       hx-indicator="closest .table-container"
+                                       hx-push-url="false"
+                                       @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
+                                       class="page-link">
+                                        <span aria-hidden="true">&laquo;</span>
+                                        {% trans 'previous' %}
+                                    </a>
+                                </li>
+                            {% endblock pagination.previous %}
+                        {% endif %}
+                        {% if table.page.has_previous or table.page.has_next %}
+                            {% block pagination.range %}
+                                {% for p in table.page|table_page_range:table.paginator %}
+                                    <li class="page-item
+                                               {% if table.page.number == p %}active{% endif %}
+                                               mx-1">
+                                        <a {% if p != '...' %}
+                                               href="{% querystring table.prefixed_page_field=p %}"
+                                           {% endif %}
+                                           hx-target="closest .table-container"
+                                           hx-swap="outerHTML"
+                                           hx-indicator="closest .table-container"
+                                           hx-push-url="false"
+                                           @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
+                                           class="page-link
+                                                  {% if table.page.number == p %}text-white{% endif %}">{{ p }}</a>
+                                    </li>
+                                {% endfor %}
+                            {% endblock pagination.range %}
+                        {% endif %}
+                        {% if table.page.has_next %}
+                            {% block pagination.next %}
+                                <li class="next page-item mx-1">
+                                    <a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}"
+                                       hx-target="closest .table-container"
+                                       hx-swap="outerHTML"
+                                       hx-indicator="closest .table-container"
+                                       hx-push-url="false"
+                                       @click="$root.scrollTo({top: 0, behavior: 'smooth'})"
+                                       class="page-link">
+                                        {% trans 'next' %}
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% endblock pagination.next %}
+                        {% endif %}
+                    </ul>
+                </nav>
+            {% endif %}
+        {% endblock pagination %}
+    </div>
+    <script nonce="{{ request.nonce }}">
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('betHistoryTable', () => ({
+                rows: {},
+                expandedRows: [],
+
+                init() {
+                    try {
+                        const rows = document.querySelectorAll('tr[data-play-id]');
+
+                        // Step 1: Group rows by data-play-id
+                        rows.forEach(row => {
+                            const playId = row.dataset.playId;
+                            if (!this.rows[playId])
+                                this.rows[playId] = [];
+                            this.rows[playId].push(row);
+                        });
+
+                        // Step 2: Only show the first row from each playId group
+                        for (const [playId, rows] of Object.entries(this.rows)) {
+                            if (rows.length > 0) {
+                                this.expandedRows.push(rows[0]);
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Bet history table initialization error:', error);
+                        Alpine.store('alerts').add({
+                            message: 'Error initializing bet slips table.',
+                            type: 'danger'
+                        });
+                    }
+                },
+
+                toggleRow(playId) {
+                    const rows = this.rows[playId];
+                    if (!rows || rows.length <= 1) return;
+
+                    const firstRow = rows[0];
+                    const restRows = rows.slice(1);
+
+                    const isExpanded = restRows.every(row => this.expandedRows.includes(row));
+
+                    // Always keep the first row; toggle others
+                    if (isExpanded) {
+                        this.displayedRows = this.displayedRows.filter(row => !restRows.includes(row));
+                    } else {
+                        this.displayedRows.push(...restRows);
+                    }
+                },
+
+                getOddsStyle(odds) {
+                    if (odds > 1.5) return '-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500;';
+                    if (odds > 1.0) return '-webkit-text-fill-color: rgb(77, 142, 83); font-weight: 500;';
+                    return '';
+                }
+            }));
+        });
+    </script>
+{% endblock table-wrapper %}

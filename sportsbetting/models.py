@@ -3,6 +3,7 @@ import logging
 import auto_prefetch
 from django.conf import settings
 from django.contrib import messages
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import F, Q
@@ -328,7 +329,7 @@ class Game(auto_prefetch.Model):
 	is_finished = models.BooleanField(default=False)
 	boxscore = models.CharField(max_length=100, null=True, editable=False)
 
-	@cached_property
+	@property
 	def has_started(self):
 		return timezone.now() > self.start_datetime
 
@@ -367,6 +368,18 @@ class BettingLine(auto_prefetch.Model):
 	over = models.IntegerField(blank=True, null=True)
 	under = models.IntegerField(blank=True, null=True)
 	is_draft = models.BooleanField(default=False)
+
+	def save(self, *args, **kwargs):
+		ret = super().save(*args, **kwargs)
+		# cache bust the 'num_betting_lines' function
+		game = self.game
+		governing_body = game.governing_body
+		sport = governing_body.sport
+		for obj in (game, governing_body, sport):
+			key = f"num_betting_lines_{obj._meta.model_name}_{obj.pk}_"
+			for state in ("upcoming", "in_play", "finished"):
+				cache.delete(key + state)
+		return ret
 
 	def __str__(self):
 		_str = _("%(sport)s: %(home_team)s vs %(away_team)s (%(spread)s)") % {
@@ -427,7 +440,7 @@ class Play(auto_prefetch.Model):
 	)
 
 	def __str__(self):
-		return _("Play %(id)d : %(user)s (Paid: %(paid)s; Won: %(won)s)") % {
+		return _("Bet slip %(id)d : %(user)s (Paid: %(paid)s; Won: %(won)s)") % {
 			"id": self.id,
 			"user": self.user,
 			"paid": self.paid,
@@ -435,8 +448,8 @@ class Play(auto_prefetch.Model):
 		}
 
 	class Meta(auto_prefetch.Model.Meta):
-		verbose_name = _("play")
-		verbose_name_plural = _("plays")
+		verbose_name = _("bet slip")
+		verbose_name_plural = _("bet slips")
 
 
 class Pick(auto_prefetch.Model):

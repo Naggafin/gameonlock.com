@@ -25,7 +25,7 @@
             <div class="d-flex align-items-center">
                 <div class="alert-icon me-2">
                     <i class="fa-solid"
-                       :class="{ 'fa-circle-info': alert.type === 'info', 'fa-check-circle': alert.type === 'success', 'fa-exclamation-triangle': alert.type === 'warning', 'fa-times-circle': alert.type === 'danger' }"></i>
+                       :class="{ 'fa-circle-info': alert.type === 'info', 'fa-check-circle': alert.type === 'success', 'fa-circle-exclamation': alert.type === 'warning', 'fa-exclamation-triangle': alert.type === 'danger' }"></i>
                 </div>
                 <div class="alert-message" x-html="alert.message"></div>
             </div>
@@ -41,142 +41,173 @@
 </div>
 {{ alert_config|json_script:"alert-config" }}
 <script nonce="{{ request.csp_nonce }}">
-    document.addEventListener('alpine:init', () => {
-    Alpine.store('alerts', {
-        alerts: [],
-        idCounter: 0,
-        ready: false,
-        sse: null,
-        config: {
-            sseUrl: '/sse/notifications/',
-            defaultTimeout: 10000,
-            timeouts: {
-                success: 10000,
-                info: 5000,
-                warning: 5000,
-                danger: 0
-            }
-        },
+    document.addEventListener("alpine:init", () => {
+        Alpine.store('alerts', {
+            alerts: [],
+            idCounter: 0,
+            ready: false,
+            sse: null,
+            config: {
+                sseUrl: '/sse/notifications/',
+                defaultTimeout: 10000,
+                timeouts: {
+                    success: 10000,
+                    info: 5000,
+                    warning: 5000,
+                    danger: 0
+                }
+            },
 
-        init() {
-            try {
-                // Load config from JSON script tag
-                const configData = JSON.parse(document.getElementById('alert-config')?.innerHTML || '{}');
-                this.config.sseUrl = configData.SSE_URL || this.config.sseUrl;
+            init() {
+                try {
+                    // Load config from JSON script tag
+                    const configData = JSON.parse(document.getElementById('alert-config')?.innerHTML || '{}');
+                    this.config.sseUrl = configData.SSE_URL || this.config.sseUrl;
 
-                // Initialize SSE connection
-                this.connectSSE();
-            } catch (error) {
-                console.error('Alerts store init error:', error);
-            }
-        },
+                    // Initialize SSE connection
+                    this.connectSSE();
+                } catch (error) {
+                    console.error('Alerts store init error:', error);
+                }
+            },
 
-        connectSSE() {
-            try {
-                this.sse = new EventSource(this.config.sseUrl);
-                this.sse.addEventListener('message', (event) => {
-                    try {
-                        const msg = JSON.parse(event.data);
-                        this.add({
-                            message: msg.message || 'No message provided',
-                            type: msg.type || 'info',
-                            timeout: msg.timeout || this.config.timeouts[msg.type] || this.config.defaultTimeout
-                        });
-                    } catch (error) {
-                        console.error('SSE message parse error:', error);
-                    }
+            async connectSSE() {
+                // Pre-check the SSE endpoint for 403
+                const response = await fetch(this.config.sseUrl, {
+                    method: 'HEAD',
+                    credentials: 'same-origin'
                 });
-                this.sse.onerror = () => {
-                    console.warn('SSE connection error. Attempting to reconnect in 5s...');
-                    this.sse.close();
-                    setTimeout(() => this.connectSSE(), 5000);
+
+                if (response.status === 403) {
+                    console.warn('SSE connection blocked: received 403 Forbidden. Aborting reconnection.');
+                    return;
+                }
+
+                try {
+                    this.sse = new EventSource(this.config.sseUrl);
+                    this.sse.addEventListener('message', (event) => {
+                        try {
+                            const msg = JSON.parse(event.data);
+                            this.add({
+                                message: msg.message || 'No message provided',
+                                type: msg.type || 'info',
+                                timeout: msg.timeout || this.config.timeouts[msg.type] || this.config.defaultTimeout
+                            });
+                        } catch (error) {
+                            console.error('SSE message parse error:', error);
+                        }
+                    });
+                    this.sse.onerror = () => {
+                        console.warn('SSE connection error. Attempting to reconnect in 5s...');
+                        this.sse.close();
+                        setTimeout(() => this.connectSSE(), 5000);
+                    };
+                } catch (error) {
+                    console.error('SSE connection error:', error);
+                }
+            },
+
+            add(message) {
+                const id = ++this.idCounter;
+                const alert = {
+                    id,
+                    message: message.message || 'No message provided',
+                    type: message.type || 'info',
+                    timeout: message.timeout ?? this.config.timeouts[message.type] ?? this.config.defaultTimeout,
+                    isVisible: false,
+                    isPaused: false,
+                    timer: null
                 };
-            } catch (error) {
-                console.error('SSE connection error:', error);
-            }
-        },
-
-        add(message) {
-            const id = ++this.idCounter;
-            const alert = {
-                id,
-                message: message.message || 'No message provided',
-                type: message.type || 'info',
-                timeout: message.timeout ?? this.config.timeouts[message.type] ?? this.config.defaultTimeout,
-                isVisible: false,
-                isPaused: false,
-                timer: null
-            };
-            this.alerts.push(alert);
-            if (this.ready) {
-                this.show(alert);
-            }
-        },
-
-        show(alert) {
-            alert.isVisible = true;
-            this.startAutoClose(alert);
-        },
-
-        dismiss(alert) {
-            alert.isVisible = false;
-            clearTimeout(alert.timer);
-            setTimeout(() => {
-                this.alerts = this.alerts.filter(a => a.id !== alert.id);
-            }, 300);
-        },
-
-        startAutoClose(alert) {
-            if (alert.timeout > 0) {
-                alert.timer = setTimeout(() => {
-                    if (!alert.isPaused) {
-                        this.dismiss(alert);
-                    }
-                }, alert.timeout);
-            }
-        },
-
-        pause(alert) {
-            alert.isPaused = true;
-            clearTimeout(alert.timer);
-        },
-
-        resume(alert) {
-            alert.isPaused = false;
-            this.startAutoClose(alert);
-        },
-
-        markReady() {
-            this.ready = true;
-            this.alerts.forEach(alert => {
-                if (!alert.isVisible) {
+                this.alerts.push(alert);
+                if (this.ready) {
                     this.show(alert);
                 }
-            });
-        }
-    });
+            },
 
-    Alpine.data('alerts', () => ({
-        get alerts() {
-            return Alpine.store('alerts').alerts;
-        },
-        dismiss(alert) {
-            Alpine.store('alerts').dismiss(alert);
-        },
-        pause(alert) {
-            Alpine.store('alerts').pause(alert);
-        },
-        resume(alert) {
-            Alpine.store('alerts').resume(alert);
-        },
-        dismissLast() {
-            const visible = this.alerts.filter(a => a.isVisible);
-            if (visible.length) {
-                this.dismiss(visible[visible.length - 1]);
+            show(alert) {
+                alert.isVisible = true;
+                this.startAutoClose(alert);
+            },
+
+            dismiss(alert) {
+                alert.isVisible = false;
+                clearTimeout(alert.timer);
+                setTimeout(() => {
+                    this.alerts = this.alerts.filter(a => a.id !== alert.id);
+                }, 300);
+            },
+
+            startAutoClose(alert) {
+                if (alert.timeout > 0) {
+                    alert.timer = setTimeout(() => {
+                        if (!alert.isPaused) {
+                            this.dismiss(alert);
+                        }
+                    }, alert.timeout);
+                }
+            },
+
+            pause(alert) {
+                alert.isPaused = true;
+                clearTimeout(alert.timer);
+            },
+
+            resume(alert) {
+                alert.isPaused = false;
+                this.startAutoClose(alert);
+            },
+
+            markReady() {
+                this.ready = true;
+                this.alerts.forEach(alert => {
+                    if (!alert.isVisible) {
+                        this.show(alert);
+                    }
+                });
             }
+        });
+
+        Alpine.data('alerts', () => ({
+            get alerts() {
+                return Alpine.store('alerts').alerts;
+            },
+            dismiss(alert) {
+                Alpine.store('alerts').dismiss(alert);
+            },
+            pause(alert) {
+                Alpine.store('alerts').pause(alert);
+            },
+            resume(alert) {
+                Alpine.store('alerts').resume(alert);
+            },
+            dismissLast() {
+                const visible = this.alerts.filter(a => a.isVisible);
+                if (visible.length) {
+                    this.dismiss(visible[visible.length - 1]);
+                }
+            }
+        }));
+    });
+    document.addEventListener("PreloaderFinished", () => {
+        function waitForAlpineStore(callback, maxAttempts = 50, delay = 100) {
+            let attempts = 0;
+
+            const check = () => {
+                if (window.Alpine && Alpine.store && Alpine.store('alerts')?.markReady) {
+                    callback();
+                } else if (attempts < maxAttempts) {
+                    attempts++;
+                    setTimeout(check, delay);
+                } else {
+                    console.warn('Alpine store "alerts" not available after waiting.');
+                }
+            };
+
+            check();
         }
-    }));
+
+        waitForAlpineStore(() => {
+            Alpine.store('alerts').markReady();
+        });
     });
-    });
-    document.addEventListener("PreloaderFinished", Alpine.store('alerts').markReady);
 </script>
