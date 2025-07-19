@@ -33,7 +33,7 @@ from golpayment.models import Transaction
 from golpayment.tables import TransactionTable
 from sportsbetting.filters import PlayFilter
 from sportsbetting.models import Game, Play
-from sportsbetting.tables import PlayTable
+from sportsbetting.tables import BetHistoryTable
 from sportsbetting.views.mixins import SportsBettingContextMixin
 
 from ..forms import get_all_region_choices
@@ -228,7 +228,7 @@ class PlayHistoryView(
 ):
 	title = _("Bet History")
 	model = Play
-	table_class = PlayTable
+	table_class = BetHistoryTable
 	filterset_class = PlayFilter
 	table_pagination = {"per_page": 10}
 	template_name = "peredion/dashboard/dashboard-bet-history.html"

@@ -7020,11 +7020,11 @@ ul {
 .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet {
   cursor: no-drop;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet a.single-bet-place {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet .single-bet-place {
   position: relative;
   pointer-events: none;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet a.single-bet-place:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.finished .placing-bet .single-bet-place:before {
   content: "";
   position: absolute;
   background: url("../images/playing-bet/lock-icon.png") center center no-repeat;
@@ -7401,7 +7401,7 @@ ul {
     display: none;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
   display: inline-block;
   background: linear-gradient(144.14deg, rgba(77, 35, 63, 0.05) -11.44%, rgba(48, 91, 159, 0.05) 123.42%);
   border-radius: 5px;
@@ -7411,64 +7411,64 @@ ul {
   padding: 16px 0;
 }
 @media (max-width: 1199.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
     width: 140px;
   }
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
     width: 140px;
   }
 }
 @media (max-width: 767.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
     width: 150px;
     padding: 11px 0;
   }
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
     width: 100%;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place {
     padding: 6px 0;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
   width: 120px;
 }
 @media (max-width: 1199.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
     width: 100px;
   }
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
     width: 80px;
   }
 }
 @media (max-width: 767.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
     width: 90px;
   }
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
     width: 60%;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.draw-box {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.draw-box {
     width: 100%;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.placed {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.placed {
   position: relative;
   z-index: 2;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.placed:after {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.placed:after {
   position: absolute;
   content: "";
   left: 0;
@@ -7479,23 +7479,23 @@ ul {
   z-index: -1;
   border-radius: 5px;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.placed span {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.placed span {
   display: block;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.placed span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.placed span.bet-ratio {
   background: unset;
   -webkit-text-fill-color: unset;
   -webkit-background-clip: unset;
   color: #fff;
   font-weight: 600;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place.placed span.team-name {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place.placed span.team-name {
   color: #fff;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span {
   display: block;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.bet-ratio {
   font-weight: 700;
   font-size: 16px;
   line-height: 26px;
@@ -7507,18 +7507,18 @@ ul {
   margin: -8px 0 5px;
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.bet-ratio {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.bet-ratio {
     font-size: 15px;
     line-height: 25px;
     margin-bottom: 0;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.bet-ratio {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.bet-ratio {
     margin: 0;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.team-name {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.team-name {
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
@@ -7528,13 +7528,13 @@ ul {
   margin: 0 0 -3px;
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.team-name {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.team-name {
     font-size: 13px;
     line-height: 15px;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet a.single-bet-place span.team-name {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match .placing-bet .single-bet-place span.team-name {
     display: none;
   }
 }
@@ -7603,10 +7603,10 @@ ul {
   -webkit-background-clip: text;
   background-image: linear-gradient(135.89deg, #D03355 -5.11%, #FB7A6B 97.89%);
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place {
   position: relative;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place:before {
   position: absolute;
   content: "";
   width: 15px;
@@ -7614,25 +7614,25 @@ ul {
   background-size: 15px 15px;
   animation: opacity-to-hover 2s infinite;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.up:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.up:before {
   right: 2px;
   top: 2px;
   background: url("../images/playing-bet/shape/up.png") right top no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.up:before {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.up:before {
     background-size: 10px 10px;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.up span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.up span.bet-ratio {
   color: #4D8E53;
   font-weight: 600;
   background: unset;
   -webkit-text-fill-color: unset;
   -webkit-background-clip: unset;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.down:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.down:before {
   right: 2px;
   bottom: 2px;
   background: url("../images/playing-bet/shape/down.png") right bottom no-repeat;
@@ -7640,38 +7640,38 @@ ul {
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.down:before {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.down:before {
     background-size: 10px 10px;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.down span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.down span.bet-ratio {
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-image: linear-gradient(135.89deg, #D03355 -5.11%, #FB7A6B 97.89%);
   font-weight: 700;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.up:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.up:before {
   background: url("../images/playing-bet/shape/up-placed.png") right top no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.up:before {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.up:before {
     background-size: 10px 10px;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.up span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.up span.bet-ratio {
   color: #72ff7f;
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.down:before {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.down:before {
   background: url("../images/playing-bet/shape/down-placed.png") right bottom no-repeat;
   background-size: 15px 15px;
 }
 @media (max-width: 991.98px) {
-  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.down:before {
+  .playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.down:before {
     background-size: 10px 10px;
   }
 }
-.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet a.single-bet-place.placed.down span.bet-ratio {
+.playing-bet .sports-expanded-list .sports-body .playing-sports-all .single-tournament .all-tournament-match .single-t-match.match-in-play .placing-bet .single-bet-place.placed.down span.bet-ratio {
   background: unset;
   -webkit-text-fill-color: unset;
   -webkit-background-clip: unset;

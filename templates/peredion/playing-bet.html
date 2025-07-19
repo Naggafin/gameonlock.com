@@ -15,13 +15,14 @@
                 <div>{{ line.game.start_datetime|date }}</div>
             {% endifchanged %}
             {% with game=line.game %}
-                <div class="single-t-match {% if line.game.is_finished %}finished{% elif line.game.has_started %}match-in-play{% endif %}"
+                <div class="single-t-match"
+                    :class="{ 'finished': game.is_finished, 'match-in-play': game.hasStarted() }"
                     {# djlint:off #}
                      x-data="{
                          bettingLine: '{{ line.pk }}',
                          game: {
                          	id: '{{ line.game.pk }}',
-                             start_datetime: new Date('{{ line.game.start_datetime.iso_format }}'),
+                             start_datetime: new Date('{{ line.game.start_datetime.isoformat }}'),
                              away_team: '{{ line.game.away_team|escapejs }}',
                              home_team: '{{ line.game.home_team|escapejs }}',
                              away_team_score: {{ line.game.away_team_score|default_if_none:'null' }},
@@ -31,6 +32,7 @@
                              spread: '{% if line.is_pick %}P{% endif %}{{ line.spread }}',
                              over: {{ line.over|default_if_none:'null' }},
                              under: {{ line.under|default_if_none:'null' }},
+                             is_finished: {{ line.game.is_finished|yesno:'true,false' }},
                              hasStarted() {
                              	return new Date() >= this.start_datetime;
                              }
@@ -40,6 +42,7 @@
                              if (!store || !store.picks) return false;
                              const pick = store.picks.find(p => p.betting_line === this.bettingLine);
                              if (!pick) return false;
+                             if (!value) return true;
                              if (type === 'sp') return pick.type === 'sp' && pick.team === value;
                              if (type === 'uo') return pick.type === 'uo' && pick.is_over === (value === 'true');
                              return false;
@@ -82,7 +85,7 @@
                             </div>
                             <div class="team-score"
                                  :class="{ 'up': game.away_team_score > game.home_team_score, 'down': game.away_team_score < game.home_team_score }"
-                                 x-if="game.away_team_score !== null"
+                                 x-show="game.away_team_score !== null"
                                  x-text="game.away_team_score"></div>
                         </div>
                         <div class="single-team">
@@ -96,7 +99,7 @@
                             </div>
                             <div class="team-score"
                                  :class="{ 'up': game.home_team_score > game.away_team_score, 'down': game.home_team_score < game.away_team_score }"
-                                 x-if="game.home_team_score !== null"
+                                 x-show="game.home_team_score !== null"
                                  x-text="game.home_team_score"></div>
                         </div>
                     </div>
@@ -104,22 +107,25 @@
                         <template x-if="game.spread">
                             <div class="row">
                                 <button class="single-bet-place"
+                                        :class="{ 'placed': isPickSelected('sp', game.away_team_pk)"
                                         @click="addPick('sp', game.away_team_pk)"
-                                        :disabled="game.is_finished || game.has_started() || isPickSelected('sp', game.away_team_pk)">
+                                        :disabled="game.is_finished || game.hasStarted() || isPickSelected('sp', game.away_team_pk)">
                                     <span class="bet-ratio"><i class="fa-solid fa-check-circle"
    x-show="isPickSelected('sp', game.away_team_pk)"></i></span>
                                     <span class="team-name" x-text="game.away_team"></span>
                                 </button>
                                 <button class="single-bet-place draw-box"
+                                        :class="{ 'placed': isPickSelected('sp')"
                                         @click="clearPick('sp')"
-                                        :disabled="game.is_finished || game.has_started()">
+                                        :disabled="game.is_finished || game.hasStarted()">
                                     <span class="bet-ratio" x-text="game.spread"></span>
                                     <span class="team-name"
-                                          x-text="(isPickSelected('sp', game.away_team_pk) || isPickSelected('sp', game.home_team_pk)) ? '{% trans 'Clear selection' %}' : ''"></span>
+                                          x-text="isPickSelected('sp') ? '{% trans 'Clear selection' %}' : ''"></span>
                                 </button>
                                 <button class="single-bet-place"
+                                        :class="{ 'placed': isPickSelected('sp', game.home_team_pk)"
                                         @click="addPick('sp', game.home_team_pk)"
-                                        :disabled="game.is_finished || game.has_started() || isPickSelected('sp', game.home_team_pk)">
+                                        :disabled="game.is_finished || game.hasStarted() || isPickSelected('sp', game.home_team_pk)">
                                     <span class="bet-ratio"><i class="fa-solid fa-check-circle"
    x-show="isPickSelected('sp', game.home_team_pk)"></i></span>
                                     <span class="team-name" x-text="game.home_team"></span>
@@ -129,21 +135,24 @@
                         <template x-if="game.under || game.over">
                             <div class="row">
                                 <button class="single-bet-place"
+                                        :class="{ 'placed': isPickSelected('uo', false) }"
                                         @click="addPick('uo', null, false)"
-                                        :disabled="game.is_finished || game.has_started() || isPickSelected('uo', false)">
+                                        :disabled="game.is_finished || game.hasStarted() || isPickSelected('uo', false)">
                                     <span class="bet-ratio"><i class="fa-solid fa-check-circle" x-show="isPickSelected('uo', false)"></i></span>
                                     <span class="team-name">{% trans 'Under' %} <span x-text="game.under"></span></span>
                                 </button>
                                 <button class="single-bet-place draw-box"
+                                        :class="{ 'placed': !isPickSelected('uo') }"
                                         @click="clearPick('uo')"
-                                        :disabled="game.is_finished || game.has_started()">
+                                        :disabled="game.is_finished || game.hasStarted()">
                                     <span class="bet-ratio"></span>
                                     <span class="team-name"
-                                          x-text="(isPickSelected('uo', false) || isPickSelected('uo', true)) ? '{% trans 'Clear selection' %}' : ''"></span>
+                                          x-text="isPickSelected('uo') ? '{% trans 'Clear selection' %}' : ''"></span>
                                 </button>
                                 <button class="single-bet-place"
+                                        :class="{ 'placed': isPickSelected('uo', true) }"
                                         @click="addPick('uo', null, true)"
-                                        :disabled="game.is_finished || game.has_started() || isPickSelected('uo', true)">
+                                        :disabled="game.is_finished || game.hasStarted() || isPickSelected('uo', true)">
                                     <span class="bet-ratio"><i class="fa-solid fa-check-circle" x-show="isPickSelected('uo', true)"></i></span>
                                     <span class="team-name">{% trans 'Over' %} <span x-text="game.over"></span></span>
                                 </button>

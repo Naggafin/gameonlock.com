@@ -40,7 +40,7 @@
     </template>
 </div>
 {{ alert_config|json_script:"alert-config" }}
-<script nonce="{{ request.csp_nonce }}">
+<script type="module" data-sse-client="{% static 'js/notifications/sse-client.js' %}" nonce="{{ request.csp_nonce }}">
     document.addEventListener("alpine:init", () => {
         Alpine.store('alerts', {
             alerts: [],
@@ -58,53 +58,43 @@
                 }
             },
 
-            init() {
+            async init() {
                 try {
-                    // Load config from JSON script tag
                     const configData = JSON.parse(document.getElementById('alert-config')?.innerHTML || '{}');
                     this.config.sseUrl = configData.SSE_URL || this.config.sseUrl;
-
-                    // Initialize SSE connection
-                    this.connectSSE();
+                    const createSharedSSE = await this.loadSSEClient();
+                    this.connectSSE(createSharedSSE);
                 } catch (error) {
                     console.error('Alerts store init error:', error);
                 }
             },
 
-            async connectSSE() {
-                // Pre-check the SSE endpoint for 403
-                const response = await fetch(this.config.sseUrl, {
-                    method: 'HEAD',
-                    credentials: 'same-origin'
-                });
+            async loadSSEClient() {
+                const config = document.querySelector('[data-sse-client]');
+                const path = config?.dataset?.sseClient || JSON.parse(config?.textContent || '{}')?.sseClientPath;
+                if (!path) throw new Error("Missing SSE client path");
+                const mod = await import(path);
+                return mod.default;
+            },
 
-                if (response.status === 403) {
-                    console.warn('SSE connection blocked: received 403 Forbidden. Aborting reconnection.');
-                    return;
-                }
-
-                try {
-                    this.sse = new EventSource(this.config.sseUrl);
-                    this.sse.addEventListener('message', (event) => {
+            connectSSE(createSharedSSE) {
+                this.sse = createSharedSSE(this.config.sseUrl, {
+                    onMessage: (data) => {
                         try {
-                            const msg = JSON.parse(event.data);
+                            const msg = JSON.parse(data);
                             this.add({
                                 message: msg.message || 'No message provided',
                                 type: msg.type || 'info',
                                 timeout: msg.timeout || this.config.timeouts[msg.type] || this.config.defaultTimeout
                             });
-                        } catch (error) {
-                            console.error('SSE message parse error:', error);
+                        } catch (err) {
+                            console.error('SSE message parse error:', err);
                         }
-                    });
-                    this.sse.onerror = () => {
-                        console.warn('SSE connection error. Attempting to reconnect in 5s...');
-                        this.sse.close();
-                        setTimeout(() => this.connectSSE(), 5000);
-                    };
-                } catch (error) {
-                    console.error('SSE connection error:', error);
-                }
+                    },
+                    onForbidden: () => {
+                        console.warn('SSE connection blocked: received 403 Forbidden.');
+                    }
+                });
             },
 
             add(message) {
