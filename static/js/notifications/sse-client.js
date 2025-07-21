@@ -1,5 +1,13 @@
+function getSharedWorkerPath() {
+    const config = document.querySelector('[data-sse-worker]');
+    const path = config?.dataset?.sseWorker || JSON.parse(config?.textContent || '{}')?.sseWorkerPath;
+    if (!path) throw new Error("Missing SSE worker path");
+    return path;
+}
+
+
 export default function createSharedSSE(url, { onMessage, onForbidden } = {}) {
-    const worker = new SharedWorker('./sse-worker.js');
+    const worker = new SharedWorker(getSharedWorkerPath());
     worker.port.start();
 
     worker.port.postMessage({ type: 'init', url });

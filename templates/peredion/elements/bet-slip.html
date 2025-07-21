@@ -1,18 +1,15 @@
 {% load static i18n %}
 {% load sportsbetting_tags %}
-<div class="bet-slip"
-     x-data="betSlip($store.betSlipConfig)"
-     x-init="init()"
-     x-cloak>
+<div class="bet-slip" x-data="betSlip" x-cloak>
     <!-- Header -->
     <button class="bet-slip-header"
-            @click="toggle()"
+            @click="toggle"
             type="button"
             :aria-expanded="isOpen"
             aria-controls="bet-slip-body">
         <span class="icon"><i class="fa-solid fa-clipboard-list"></i></span>
         <span class="text">{% trans 'Bet Slip' %}</span>
-        <span class="slip-quantity-badge" x-text="picks.length"></span>
+        <span class="slip-quantity-badge" x-text="store.picks.length"></span>
     </button>
     <!-- Body -->
     <div class="bet-slip-body"
@@ -28,7 +25,7 @@
         <div class="part-slip-header">
             <div class="all-bs-card">
                 <!-- Empty State -->
-                <div class="empty-card" x-show="picks.length === 0 && !submitted">
+                <div class="empty-card" x-show="store.picks.length === 0 && !submitted">
                     <img src="{% static 'peredion/images/playing-bet/bet-slip/empty-icon.png' %}"
                          alt=""
                          nonce="{{ request.csp_nonce }}">
@@ -48,14 +45,15 @@
                     <p>{% trans 'Check your bets in the dashboard.' %}</p>
                 </div>
                 <!-- Bet Cards -->
-                <template x-for="(pick, index) in picks" :key="pick.betting_line">
+                <template x-for="(pick, index) in store.picks"
+                          :key="`${pick.bettingLine}::${pick.type}`">
                     <div class="single-bs-card singleBS" x-show="!submitted">
                         <div class="bs-card-header">
-                            <span class="tournament-name" x-text="pick.game_data.league"></span>
+                            <span class="tournament-name" x-text="displayTournament(pick)"></span>
                             <div class="slct-place">
                                 <span class="team-name" x-text="displayPick(pick)"></span>
                             </div>
-                            <button class="slip-dlt" @click="removePick(index)">
+                            <button class="slip-dlt" @click="store.removePick(pick)">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
                         </div>
@@ -65,37 +63,38 @@
                                      alt=""
                                      nonce="{{ request.csp_nonce }}">
                             </span>
-                            <span class="team-1" x-text="pick.game_data.away_team"></span>
+                            <span class="team-1" x-text="pick.game.away_team"></span>
                             {% trans 'vs' %}
-                            <span class="team-2" x-text="pick.game_data.home_team"></span>
+                            <span class="team-2" x-text="pick.game.home_team"></span>
                         </div>
                     </div>
                 </template>
             </div>
         </div>
         <!-- Calculation and Submission -->
-        <div class="bet-slip-calculation" x-show="picks.length > 0 && !submitted">
+        <div class="bet-slip-calculation"
+             x-show="store.picks.length > 0 && !submitted">
             <div class="total-calc">
                 <div class="single-calc">
                     <span class="text">{% trans 'Total stake:' %}</span>
                     <input type="number"
-                           x-model="amount"
-                           :min="minBet"
+                           x-model="store.amount"
+                           :min="config.minBet"
                            step="0.01"
                            class="form-control d-inline w-auto"
-                           @change="saveAmount()">
+                           @change="store.saveBetSlip">
                 </div>
                 <div class="single-calc">
                     <span class="text">{% trans 'Total est. return:' %}</span>
-                    <span class="number total-est-return" x-text="calculateReturn()"></span>
+                    <span class="number total-est-return" x-text="calculateReturn"></span>
                 </div>
             </div>
             <div class="calc-finish">
                 {% if request.user.is_authenticated %}
                     <button class="prd-btn-1 medium"
-                            @click="submitBet()"
-                            :disabled="amount < minBet || picks.length < minNumBets">
-                        <span x-text="amount < minBet ? `{% trans 'Must bet at least' %} $${minBet.toFixed(2)}` : (picks.length < minNumBets ? `{% trans 'Must place at least' %} ${minNumBets} {% trans 'bets' %}` : '{% trans 'Place Bets' %}')"></span>
+                            @click="submitBet"
+                            :disabled="store.amount < config.minBet || store.picks.length < config.minNumBets">
+                        <span x-text="store.amount < config.minBet ? `{% trans 'Must bet at least' %} $${config.minBet.toFixed(2)}` : (store.picks.length < config.minNumBets ? `{% trans 'Must place at least' %} ${config.minNumBets} {% trans 'bets' %}` : '{% trans 'Place Bets' %}')"></span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
                 {% else %}
@@ -103,7 +102,7 @@
                         {% trans 'Log In To Place Bets' %} <i class="fa-solid fa-arrow-right"></i>
                     </a>
                 {% endif %}
-                <button class="calc-dlt" @click="clearSlip()">
+                <button class="calc-dlt" @click="store.clearBetSlip">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
@@ -113,175 +112,110 @@
 {{ bet_slip_config|json_script:"bet-slip-config" }}
 <script nonce="{{ request.csp_nonce }}">
     document.addEventListener('alpine:init', () => {
-        // Register betSlipConfig store
-        Alpine.store('betSlipConfig', {
-            minBet: 0,
-            baseBetStakes: 0,
-            minNumBets: 0,
-            betStep: 0,
-            betMultiplier: 0,
-            loginUrl: '',
-            submitUrl: '',
-            csrfToken: '',
-            isAuthenticated: false,
+        Alpine.store('betSlip', {
+            picks: [],
+            amount: 0,
+            config: {},
 
             init() {
                 try {
-                    const config = JSON.parse(document.getElementById('bet-slip-config')?.innerHTML || '{}');
-                    this.minBet = config.MIN_BET || 0;
-                    this.baseBetStakes = config.BASE_BET_STAKES || 0;
-                    this.minNumBets = config.MIN_NUM_BETS || 0;
-                    this.betStep = config.BET_STEP || 0;
-                    this.betMultiplier = config.BET_MULTIPLIER || 0;
-                    this.loginUrl = config.LOGIN_URL || '/accounts/login/';
-                    this.submitUrl = config.SUBMIT_URL || '/sportsbetting/play/create/';
-                    this.csrfToken = config.CSRF_TOKEN || '';
-                    this.isAuthenticated = config.IS_AUTHENTICATED || false;
+                    this.config = JSON.parse(document.getElementById('bet-slip-config').innerHTML);
                 } catch (error) {
                     console.error('Failed to load bet slip config:', error);
                 }
-            }
-        });
 
-        // Register betSlip store for picks
-        Alpine.store('betSlip', {
-            picks: [],
-
-            init() {
-                this.picks = this.loadPicks();
+                const betSlip = this.loadBetSlip();
+                this.picks = betSlip.picks;
+                this.amount = betSlip.amount;
             },
 
-            loadPicks() {
+            loadBetSlip() {
+                const _default = {
+                    picks: [],
+                    amount: 0
+                };
                 try {
-                    const slip = JSON.parse(localStorage.getItem('betslip') || '{"picks":[],"amount":' + (Alpine.store('betSlipConfig').minBet || 0) + '}');
-                    return (slip.picks || []).map(pick => ({
-                        ...pick,
-                        game_data: pick.game_data || {},
-                        betting_line: pick.betting_line || '',
-                        type: pick.type || '',
-                        team: pick.team || null,
-                        is_over: pick.is_over !== undefined ? pick.is_over : null,
-                        game: pick.game || null
-                    }));
+                    return JSON.parse(localStorage.getItem('betslip')) || _default;
                 } catch (error) {
                     console.error('Failed to load bet slip:', error);
-                    return [];
+                    return _default;
                 }
             },
 
-            savePicks(picks, amount) {
+            saveBetSlip() {
                 try {
+                    if (this.picks.length > 0) this.amount = Math.max(this.amount, this.config.minBet);
                     localStorage.setItem('betslip', JSON.stringify({
-                        picks: picks,
-                        amount: amount || Alpine.store('betSlipConfig').minBet
+                        picks: this.picks,
+                        amount: this.amount
                     }));
-                    window.dispatchEvent(new Event('betslip-updated'));
+                    window.dispatchEvent(new Event('betSlipUpdated'));
                 } catch (error) {
                     console.error('Failed to save bet slip:', error);
                 }
             },
 
-            addPick(bettingLine, type, team, isOver, gameData) {
-                if (!bettingLine || !type) {
-                    console.error('Invalid pick data: missing betting line or type', {
-                        bettingLine,
-                        type
-                    });
-                    return;
-                }
-                gameData = gameData || {};
-                const pick = {
-                    betting_line: bettingLine,
-                    type: type,
-                    team: team || null,
-                    is_over: isOver !== undefined ? isOver : null,
-                    game: gameData.game || null,
-                    game_data: gameData
-                };
-                this.picks = this.picks.filter(p => p.betting_line !== bettingLine);
-                this.picks.push(pick);
-                this.savePicks(this.picks, Alpine.store('betSlipConfig').minBet);
-            },
-
-            removePick(bettingLine, type) {
-                if (!bettingLine || !type) {
-                    console.error('Cannot remove pick: missing betting line or type', {
-                        bettingLine,
-                        type
-                    });
-                    return;
-                }
-                this.picks = this.picks.filter(p => !(p.betting_line === bettingLine && p.type === type));
-                this.savePicks(this.picks, Alpine.store('betSlipConfig').minBet);
-            },
-
-            clearPicks() {
+            clearBetSlip() {
                 this.picks = [];
-                this.savePicks(this.picks, Alpine.store('betSlipConfig').minBet);
+                this.amount = 0;
+                this.saveBetSlip();
+            },
+
+            addPick(pick) {
+                this.picks = this.picks.filter(p => !(p.bettingLine === pick.bettingLine && p.type === pick.type));
+                this.picks.push(pick);
+                this.saveBetSlip();
+            },
+
+            removePick(pick) {
+                this.picks = this.picks.filter(p => !(p.bettingLine === pick.bettingLine && p.type === pick.type));
+                this.saveBetSlip();
             }
         });
 
-        // Register betSlip component
-        Alpine.data('betSlip', (config) => ({
-            minBet: config.minBet,
-            loginUrl: config.loginUrl,
-            baseBetStakes: config.baseBetStakes,
-            minNumBets: config.minNumBets,
-            betStep: config.betStep,
-            betMultiplier: config.betMultiplier,
-            submitUrl: config.submitUrl,
-            csrfToken: config.csrfToken,
-            isAuthenticated: config.isAuthenticated,
-
+        Alpine.data('betSlip', () => ({
+            store: {},
+            config: {},
             isOpen: false,
-            picks: [],
-            amount: config.minBet || 0,
             submitted: false,
 
             init() {
-                try {
-                    this.picks = Alpine.store('betSlip').picks;
-                    const storedSlip = JSON.parse(localStorage.getItem('betslip') || '{}');
-                    this.amount = storedSlip.amount || config.minBet || 0;
-                    window.addEventListener('betslip-updated', () => {
-                        this.picks = Alpine.store('betSlip').picks;
-                    });
-                } catch (error) {
-                    console.error('Bet slip init error:', error);
-                }
+                this.store = Alpine.store('betSlip');
+                this.config = this.store.config;
             },
 
             toggle() {
                 this.isOpen = !this.isOpen;
             },
 
-            clearSlip() {
-                Alpine.store('betSlip').clearPicks();
-                this.picks = [];
-                this.amount = this.minBet;
+            displayTournament(pick) {
+                return 'TODO';
             },
 
-            removePick(index) {
-                const pick = this.picks[index];
-                if (pick) {
-                    Alpine.store('betSlip').removePick(pick.betting_line, pick.type);
+            displayPick(pick) {
+                if (pick.type === 'sp') {
+                    return `${pick.team || gettext('N/A')} ${gettext('Spread')}`;
+                } else if (pick.type === 'uo') {
+                    return pick.isOver ? gettext('Over') : gettext('Under');
                 }
+                return gettext('Unknown Pick');
             },
 
             calculateReturn() {
+                const store = this.store;
+                const config = this.config;
                 const multiplier = Math.floor(
-                    this.baseBetStakes +
-                    ((this.picks.length - this.minNumBets) / this.betStep) * this.betMultiplier
+                    config.baseBetStakes +
+                    ((store.picks.length - config.minNumBets) / config.betStep) * config.betMultiplier
                 );
-                return Math.max(this.amount * multiplier, 0).toFixed(2);
-            },
-
-            saveAmount() {
-                Alpine.store('betSlip').savePicks(this.picks, this.amount);
+                return Math.max(store.amount * multiplier, 0).toFixed(2);
             },
 
             async submitBet() {
-                if (this.amount < config.minBet || this.picks.length < this.minNumBets) {
+                const store = this.store;
+                const config = this.config;
+
+                if (store.amount < config.minBet || store.picks.length < config.minNumBets) {
                     Alpine.store('alerts').add({
                         message: gettext('Validation failed: Minimum bet or picks not met.'),
                         type: 'danger'
@@ -290,22 +224,16 @@
                 }
 
                 const payload = {
-                    amount: this.amount,
-                    picks: this.picks.map(pick => ({
-                        betting_line: pick.betting_line,
-                        pick_type: pick.type,
-                        team: pick.team,
-                        is_over: pick.is_over,
-                        game: pick.game
-                    }))
+                    amount: this.calculateReturn(),
+                    picks: store.picks
                 };
 
                 try {
-                    const response = await fetch(this.submitUrl, {
+                    const response = await fetch(config.submitUrl, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
-                            'X-CSRFToken': this.csrfToken
+                            'X-CSRFToken': config.csrfToken
                         },
                         body: JSON.stringify(payload)
                     });
@@ -317,16 +245,13 @@
                     const result = await response.json();
                     if (result.success) {
                         this.submitted = true;
-                        Alpine.store('betSlip').clearPicks();
-                        this.picks = [];
-                        this.amount = this.minBet;
+                        store.clearBetSlip();
                         Alpine.store('alerts').add({
                             message: gettext('Bet placed successfully!'),
                             type: 'success'
                         });
                         setTimeout(() => {
-                            this.submitted = false;
-                            this.clearSlip();
+                            store.submitted = false;
                         }, 2000);
                     } else {
                         Alpine.store('alerts').add({
@@ -341,15 +266,6 @@
                         type: 'danger'
                     });
                 }
-            },
-
-            displayPick(pick) {
-                if (pick.type === 'sp') {
-                    return `${pick.team || gettext('N/A')} ${gettext('Spread')}`;
-                } else if (pick.type === 'uo') {
-                    return pick.is_over ? gettext('Over') : gettext('Under');
-                }
-                return gettext('Unknown Pick');
             }
         }));
     });

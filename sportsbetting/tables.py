@@ -12,7 +12,7 @@ EVENT_COL_TEMPLATE = """
 {% load i18n %}
 {% if in_play %}
 	<span class="in-play-tag">{% trans 'in-play' %}</span>
-{% end if %}
+{% endif %}
 <div class="event">
 	<div class="part-team">
 		<div class="s-team">

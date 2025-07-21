@@ -40,7 +40,7 @@
     </template>
 </div>
 {{ alert_config|json_script:"alert-config" }}
-<script type="module" data-sse-client="{% static 'js/notifications/sse-client.js' %}" nonce="{{ request.csp_nonce }}">
+<script type="module" data-sse-client="{% static 'js/notifications/sse-client.js' %}" data-sse-worker="{% static 'js/notifications/sse-worker.js' %}" nonce="{{ request.csp_nonce }}">
     document.addEventListener("alpine:init", () => {
         Alpine.store('alerts', {
             alerts: [],
