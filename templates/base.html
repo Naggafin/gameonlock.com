@@ -130,21 +130,34 @@
             </div>
         {% endblock %}
         {% block js %}
-            <script src="{% url 'javascript-catalog' %}" nonce="{{ request.csp_nonce }}"></script>
-            <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}"></script>
+            <script src="{% url 'javascript-catalog' %}"
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
+            <script src="{% static 'js/main.js' %}" nonce="{{ request.csp_nonce }}" defer></script>
             <script src="{% static 'js/htmx.min.js' %}"
-                    defer="true"
-                    nonce="{{ request.csp_nonce }}"></script>
-            {% django_htmx_script %}
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
+            {% if debug %}
+                <script src="{% static 'django-htmx.js' %}"
+                        data-debug="{{ debug }}"
+                        nonce="{{ request.csp_nonce }}"
+                        defer></script>
+            {% endif %}
             <script src="{% static 'js/alpine.min.js' %}"
-                    defer="true"
-                    nonce="{{ request.csp_nonce }}"></script>
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
             <!-- bootstrap js -->
             <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
             <!-- overlayScrollbars js -->
             <script src="{% static 'overlayscrollbars/js/overlayscrollbars.browser.es6.min.js' %}"
-                    nonce="{{ request.csp_nonce }}"></script>
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
+            <!-- aos js -->
+            <script src="{% static 'aos/js/aos.js' %}"
+                    nonce="{{ request.csp_nonce }}"
+                    defer></script>
             <script nonce="{{ request.csp_nonce }}">
                 document.addEventListener("DOMContentLoaded", () => {
                     // Wait until the OverlayScrollbars global is available
@@ -168,10 +181,6 @@
 
                     waitForOverlayScrollbars();
                 });
-            </script>
-            <!-- aos js -->
-            <script src="{% static 'aos/js/aos.js' %}" nonce="{{ request.csp_nonce }}"></script>
-            <script nonce="{{ request.csp_nonce }}">
                 document.addEventListener("PreloaderFinished", () => {
                     // Wait until the AOS global is available
                     const waitForAOS = () => {
@@ -180,9 +189,7 @@
                         }
 
                         try {
-                            AOS.init({
-                                once: true
-                            });
+                            AOS.init({once: true});
                         } catch (e) {
                             console.error("AOS initialization failed:", e);
                         }

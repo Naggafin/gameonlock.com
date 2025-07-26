@@ -1,8 +1,7 @@
 {% extends 'peredion/dashboard/base.html' %}
 {% load static i18n django_tables2 humanize %}
 {% block content %}
-    <div id="dashboard-content"
-         x-data="dashboard({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }} })">
+    <div x-data="dashboard({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }} })">
         <div class="dashboard-statics">
             <div class="container">
                 <div class="row g-lg-4 g-2">
@@ -23,7 +22,7 @@
                                 <img src="" alt="" nonce="{{ request.csp_nonce }}">
                             </div>
                             <div class="part-text">
-                                <span class="text">{% trans 'total pending bets' %}</span>
+                                <span class="text">{% trans 'total pending' %}</span>
                                 <span class="descr" x-text="totalPendingBets"></span>
                             </div>
                         </div>
@@ -134,7 +133,7 @@
         <div class="db-elements">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-xl-12 col-lg-12">
                         <div class="single-db-element">
                             <h4 class="title">
                                 <span class="icon"><i class="fa-solid fa-chart-line"></i></span>
@@ -143,35 +142,33 @@
                             <div id="chart" class="db-chart"></div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-12 col-lg-12">
                         <div class="single-db-element">
                             <h4 class="title">
                                 <span class="icon"><i class="fa-solid fa-files"></i></span>
                                 <span class="text">{% trans 'my recent bets' %}</span>
                             </h4>
                             <div class="sports-body">
-                                <div class="table-responsive"
-                                     id="bet-history-table"
+                                <div id="bet-history-table"
                                      hx-get="{% url 'play_history' %}"
                                      hx-trigger="load"
-                                     hx-swap="innerHTML">
+                                     hx-swap="outerHTML">
                                     <p>{% trans 'Loading bet history...' %}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <div class="col-xl-12 col-lg-12">
                         <div class="single-db-element">
                             <h4 class="title">
                                 <span class="icon"><i class="fa-solid fa-files"></i></span>
                                 <span class="text">{% trans 'my recent transactions' %}</span>
                             </h4>
                             <div class="sports-body">
-                                <div class="table-responsive"
-                                     id="transaction-history-table"
+                                <div id="transaction-history-table"
                                      hx-get="{% url 'transaction_history' %}"
                                      hx-trigger="load"
-                                     hx-swap="innerHTML">
+                                     hx-swap="outerHTML">
                                     <p>{% trans 'Loading transaction history...' %}</p>
                                 </div>
                             </div>

@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from django.template import Template
+from django.template import engines
 from django.templatetags.l10n import localize
 from django.utils import timezone
 from django.utils.html import format_html
@@ -16,17 +16,17 @@ EVENT_COL_TEMPLATE = """
 <div class="event">
 	<div class="part-team">
 		<div class="s-team">
-			<img src="{{ home.logo.url }}"
+			<img src="{% if home.logo %}{{ home.logo.url }}{% endif %}"
 				 alt=""
 				 class="team-icon"
-				 nonce="{{ request.nonce }}">
+				 nonce="{{ request.csp_nonce }}">
 			<span class="team-name">{{ home }}</span>
 		</div>
 		<div class="s-team">
-			<img src="{{ away.logo.url }}"
+			<img src="{% if away.logo %}{{ away.logo.url }}{% endif %}"
 				 alt=""
 				 class="team-icon"
-				 nonce="{{ request.nonce }}">
+				 nonce="{{ request.csp_nonce }}">
 			<span class="team-name">{{ away }}</span>
 		</div>
 	</div>
@@ -54,6 +54,7 @@ class BetHistoryTable(tables.Table):
 	expand = tables.TemplateColumn(
 		verbose_name="",
 		template_code="""
+		{% load i18n %}
 		<button class="btn btn-link expand-toggle" 
 				@click="toggleRow" 
 				:aria-expanded="expandedRows.includes({{ record.id }})"
@@ -80,20 +81,23 @@ class BetHistoryTable(tables.Table):
 			"away": game.away_team,
 			"in_play": in_play,
 		}
-		return Template(EVENT_COL_TEMPLATE).render(context, self.request)
+
+		engine = engines["django"]
+		template = engine.from_string(EVENT_COL_TEMPLATE)
+		return template.render(context, request=self.request)
 
 	def render_placed_datetime(self, record):
 		date = record.placed_datetime.date()
 		time = record.placed_datetime.time()
 		return format_html(
 			"""<span class="date">{}</span>
-					  		<span class="time">{}</span>""",
+			   <span class="time">{}</span>""",
 			localize(date),
 			localize(time),
 		)
 
 	def render_bet_type(self, record):
-		pick_count = len(record.picks)
+		pick_count = len(record.picks.all())
 		value = _("Parlay") if pick_count > 1 else _("Single bet")
 		return mark_safe('<span class="text">%s</span>' % value)
 
@@ -126,12 +130,6 @@ class BetHistoryTable(tables.Table):
 			"verbose_name_plural": model._meta.verbose_name_plural
 		}
 		fields = ("event", "placed_datetime", "bet_type", "amount", "status", "expand")
-		attrs = {
-			"class": "single-tournament",
-			"x-data": "betHistoryTable",
-			"thead": {"class": "tournament-title"},
-			"tbody": {"class": "all-tournament-match"},
-		}
 		sequence = (
 			"event",
 			"placed_datetime",
@@ -140,6 +138,11 @@ class BetHistoryTable(tables.Table):
 			"status",
 			"expand",
 		)
+		attrs = {
+			"class": "single-tournament",
+			"thead": {"class": "tournament-title"},
+			"tbody": {"class": "all-tournament-match"},
+		}
 		row_attrs = {
 			"id": lambda record: f"{record._meta.model_name}_{record.id}",
 			"class": "single-t-match",

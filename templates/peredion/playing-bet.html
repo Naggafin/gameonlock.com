@@ -93,7 +93,7 @@
         <div class="single-team">
             <div class="team-descr">
                 <span class="team-icon">
-                    <img src="{% if line.game.away_team.icon %}{{ line.game.away_team.icon.url }}{% endif %}"
+                    <img src="{% if line.game.away_team.logo %}{{ line.game.away_team.logo.url }}{% endif %}"
                          alt="{{ line.game.away_team }}"
                          nonce="{{ request.csp_nonce }}">
                 </span>
@@ -107,7 +107,7 @@
         <div class="single-team">
             <div class="team-descr">
                 <span class="team-icon">
-                    <img src="{% if line.game.home_team.icon %}{{ line.game.home_team.icon.url }}{% endif %}"
+                    <img src="{% if line.game.home_team.logo %}{{ line.game.home_team.logo.url }}{% endif %}"
                          alt="{{ line.game.home_team }}"
                          nonce="{{ request.csp_nonce }}">
                 </span>

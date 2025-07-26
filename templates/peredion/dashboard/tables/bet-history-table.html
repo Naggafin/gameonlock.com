@@ -1,9 +1,55 @@
 {% load django_tables2 %}
 {% load i18n l10n %}
 {% block table-wrapper %}
-    <div class="table-container playing-sports-all no-tabs-here">
+    <div id="bet-history-table"
+        class="table-container playing-sports-all no-tabs-here"
+        {# djlint:off #}
+         x-data="{
+            rows: {},
+            expandedRows: [],
+
+            init() {
+                try {
+                    const rows = $root.querySelectorAll('tr[data-play-id]');
+                    rows.forEach(row => {
+                        const playId = row.dataset.playId;
+                        if (!this.rows[playId])
+                            this.rows[playId] = [];
+                        this.rows[playId].push(row);
+                    });
+                } catch (error) {
+                    console.error('Bet history table initialization error:', error);
+                    Alpine.store('alerts').add({
+                        message: 'Error initializing bet slips table.',
+                        type: 'danger'
+                    });
+                }
+            },
+
+            toggleRow(playId) {
+                const rows = this.rows[playId];
+                if (!rows || rows.length <= 1) return;
+
+                const firstRow = rows[0];
+                const restRows = rows.slice(1);
+
+                const isExpanded = restRows.every(row => this.expandedRows.includes(row));
+                if (isExpanded) {
+                    this.displayedRows = this.displayedRows.filter(row => !restRows.includes(row));
+                } else {
+                    this.displayedRows.push(...restRows);
+                }
+            },
+
+            getOddsStyle(odds) {
+                if (odds > 1.5) return '-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500;';
+                if (odds > 1.0) return '-webkit-text-fill-color: rgb(77, 142, 83); font-weight: 500;';
+                return '';
+            }
+        }">
+        {# djlint:on #}
         {% block table %}
-            <table {% render_attrs table.attrs class="single-tournament" %}>
+            <table {% render_attrs table.attrs %}>
                 {% block table.thead %}
                     {% if table.show_header %}
                         <thead {{ table.attrs.thead.as_html }} hx-boost="true">
@@ -144,55 +190,4 @@
             {% endif %}
         {% endblock pagination %}
     </div>
-    <script nonce="{{ request.nonce }}">
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('betHistoryTable', () => ({
-                rows: {},
-                expandedRows: [],
-
-                init() {
-                    try {
-                        const rows = document.querySelectorAll('tr[data-play-id]');
-
-                        // Step 1: Group rows by data-play-id
-                        rows.forEach(row => {
-                            const playId = row.dataset.playId;
-                            if (!this.rows[playId])
-                                this.rows[playId] = [];
-                            this.rows[playId].push(row);
-                        });
-                    } catch (error) {
-                        console.error('Bet history table initialization error:', error);
-                        Alpine.store('alerts').add({
-                            message: 'Error initializing bet slips table.',
-                            type: 'danger'
-                        });
-                    }
-                },
-
-                toggleRow(playId) {
-                    const rows = this.rows[playId];
-                    if (!rows || rows.length <= 1) return;
-
-                    const firstRow = rows[0];
-                    const restRows = rows.slice(1);
-
-                    const isExpanded = restRows.every(row => this.expandedRows.includes(row));
-
-                    // Always keep the first row; toggle others
-                    if (isExpanded) {
-                        this.displayedRows = this.displayedRows.filter(row => !restRows.includes(row));
-                    } else {
-                        this.displayedRows.push(...restRows);
-                    }
-                },
-
-                getOddsStyle(odds) {
-                    if (odds > 1.5) return '-webkit-text-fill-color: rgb(239, 102, 101); font-weight: 500;';
-                    if (odds > 1.0) return '-webkit-text-fill-color: rgb(77, 142, 83); font-weight: 500;';
-                    return '';
-                }
-            }));
-        });
-    </script>
 {% endblock table-wrapper %}
