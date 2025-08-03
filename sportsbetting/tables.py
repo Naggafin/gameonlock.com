@@ -36,31 +36,34 @@ EVENT_COL_TEMPLATE = """
 
 
 class BetHistoryTable(tables.Table):
-	event = tables.Column(verbose_name=_("Event"), empty_values=(), orderable=False)
+	event = tables.Column(
+		verbose_name=_("Event"),
+		empty_values=(),
+		attrs={"th": {"class": "text-start"}},
+		orderable=False,
+	)
 	placed_datetime = tables.DateTimeColumn(
-		verbose_name=_("Date & Time"), attrs={"td": {"class": "date-n-time"}}
+		verbose_name=_("Date"), attrs={"td": {"class": "date-n-time"}}
 	)
 	bet_type = tables.Column(
-		verbose_name=_("Bet Type"),
+		verbose_name=_("Type"),
 		empty_values=(),
 		orderable=False,
 		attrs={"td": {"class": "bet-type"}},
 	)
 	amount = tables.Column(
-		verbose_name=_("Bet Amount"), attrs={"td": {"class": "bet-amount"}}
+		verbose_name=_("Amount"), attrs={"td": {"class": "bet-amount"}}
 	)
 	# odds = tables.Column(verbose_name=_("Odds"), empty_values=(), orderable=False)
 	status = tables.Column(verbose_name=_("Status"), attrs={"td": {"class": "status"}})
 	expand = tables.TemplateColumn(
 		verbose_name="",
+		empty_values=(),
 		template_code="""
 		{% load i18n %}
-		<button class="btn btn-link expand-toggle" 
-				@click="toggleRow" 
-				:aria-expanded="expandedRows.includes({{ record.id }})"
-				aria-label="{% trans 'Toggle details for bet slip' %} {{ record.id }}">
+		<button class="btn btn-link">
 			<i class="fa-solid fa-chevron-down" 
-			   :class="{ 'fa-chevron-up': expandedRows.includes({{ record.id }}) }"></i>
+			   :class="{ 'fa-chevron-up': expandedRows.has({{ record.pk }}) }"></i>
 		</button>
 		""",
 		orderable=False,
@@ -140,12 +143,12 @@ class BetHistoryTable(tables.Table):
 		)
 		attrs = {
 			"class": "single-tournament",
-			"thead": {"class": "tournament-title"},
 			"tbody": {"class": "all-tournament-match"},
 		}
 		row_attrs = {
-			"id": lambda record: f"{record._meta.model_name}_{record.id}",
+			"id": lambda record: f"{record._meta.model_name}_{record.pk}",
 			"class": "single-t-match",
-			"x-show": lambda record: f"expandedRows.includes({record.id})",
-			"x-transition": "",
+			"@click": lambda record: f"toggleRow({record.pk})",
+			":aria-expanded": lambda record: f"expandedRows.has({record.pk})",
+			"aria-label": _("Toggle details for bet slip"),
 		}

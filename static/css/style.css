@@ -660,29 +660,113 @@
   font-family: "Font Awesome 6 Free";
 }
 /* Bet history table */
-.tournament-title {
-  content: "Country";
+table,
+thead,
+tr,
+th,
+td {
+  display: revert !important;
+}
+
+.sports-body .playing-sports-all table .flag-img::after,
+.sports-body .playing-sports-all table .event::after,
+.sports-body .playing-sports-all table .b-slip::after,
+.sports-body .playing-sports-all table .bet-type::after,
+.sports-body .playing-sports-all table .bet-amount::after,
+.sports-body .playing-sports-all table .b-odd::after,
+.sports-body .playing-sports-all table .date-n-time::after,
+.sports-body .playing-sports-all table .status::after,
+.sports-body .playing-sports-all table .bet-gateway::after,
+.sports-body .playing-sports-all table .trnx-id::after,
+.sports-body .playing-sports-all table .trnx-type::after {
+  content: none !important;
+}
+
+.sports-body .playing-sports-all table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 15px 20px;
+  overflow: hidden;
+}
+
+.sports-body .playing-sports-all table.single-tournament .tournament-title th {
+  text-align: center;
   font-weight: 600;
   font-size: 17px;
   line-height: 19px;
-  color: #5c6172;
+  color: #5C6172;
+  background-color: unset;
   letter-spacing: 0.02em;
+  padding: 15px 20px;
+}
+
+.sports-body .playing-sports-all table.single-tournament .tournament-title tr > th:first-child {
+  text-align: left;
+}
+
+.sports-body .playing-sports-all table.single-tournament .tournament-title th a,
+.sports-body .playing-sports-all table.single-tournament .tournament-title th span {
+  position: relative;
+  z-index: 1;
+}
+
+.sports-body .playing-sports-all table.single-tournament .tournament-title th a::before,
+.sports-body .playing-sports-all table.single-tournament .tournament-title th span::before {
+  content: "";
   position: absolute;
-  top: -60px;
-  background: #fff;
-  z-index: 2;
-  padding: 0 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: -moz-max-content;
-  width: max-content;
+  background: white;
+  z-index: -1;
+  width: 200%;
+  height: 100%;
+  left: -50%;
+  top: 50%;
+  transform: translateY(-50%);
 }
-.tournament-title tr {
-  background: #fff;
-  padding-right: 30px;
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match {
+  outline: 1px solid rgba(22, 29, 53, 0.2);
+  cursor: pointer;
 }
-@media (max-width: 480px) {
-  .tournament-title tr {
-    padding-right: 0;
-  }
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td {
+  padding: 12px 0;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 26px;
+  letter-spacing: 0.05em;
+}
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td:first-child {
+  padding-left: 30px;
+}
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td:last-child {
+  text-align: end;
+}
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td.date-n-time {
+  white-space: nowrap;
+}
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td.bet-type,
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td.bet-amount,
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match td.status {
+  text-align: center;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-image: linear-gradient(144.14deg, #4D233F -11.44%, #305B9F 123.42%);
+}
+
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match .in-play-tag {
+  transform: rotate(-90deg) translateY(50%);
+  transform-origin: left top;
+  top: 95%;
+}
+
+/* Style for the detailed match view inside td */
+.sports-body .playing-sports-all table.single-tournament .all-tournament-match tr.single-t-match div.single-t-match {
+  /* background: #2A304D; */
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
 }
