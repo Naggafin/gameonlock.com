@@ -99,7 +99,7 @@
             <div class="team-descr">
                 <span class="team-icon">
                     <img src="{% if line.game.away_team.logo %}{{ line.game.away_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                         alt="{{ line.game.away_team }}"
+                         alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
                 <span class="team-name" x-text="game.away_team"></span>
@@ -113,7 +113,7 @@
             <div class="team-descr">
                 <span class="team-icon">
                     <img src="{% if line.game.home_team.logo %}{{ line.game.home_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                         alt="{{ line.game.home_team }}"
+                         alt=""
                          nonce="{{ request.csp_nonce }}">
                 </span>
                 <span class="team-name">{{ line.game.home_team }}</span>

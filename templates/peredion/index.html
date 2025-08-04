@@ -249,7 +249,7 @@
                                             <div class="single-team">
                                                 <div class="team-icon">
                                                     <img src="{% if game.home_team.logo %}{{ game.home_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                                                         alt="{{ game.home_team.name }}"
+                                                         alt=""
                                                          nonce="{{ request.csp_nonce }}">
                                                 </div>
                                                 <span class="team-name">{{ game.home_team.name }}</span>
@@ -265,7 +265,7 @@
                                             <div class="single-team">
                                                 <div class="team-icon">
                                                     <img src="{% if game.away_team.logo %}{{ game.away_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                                                         alt="{{ game.away_team.name }}"
+                                                         alt=""
                                                          nonce="{{ request.csp_nonce }}">
                                                 </div>
                                                 <span class="team-name">{{ game.away_team.name }}</span>
@@ -339,7 +339,7 @@
                                     <div class="single-team">
                                         <div class="team-icon">
                                             <img src="{% if game.home_team.logo %}{{ game.home_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                                                 alt="{{ game.home_team.name }}"
+                                                 alt=""
                                                  nonce="{{ request.csp_nonce }}">
                                         </div>
                                         <span class="team-name">{{ game.home_team.name }}</span>
@@ -352,7 +352,7 @@
                                         <span class="team-name">{{ game.away_team.name }}</span>
                                         <div class="team-icon">
                                             <img src="{% if game.away_team.logo %}{{ game.away_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
-                                                 alt="{{ game.away_team.name }}"
+                                                 alt=""
                                                  nonce="{{ request.csp_nonce }}">
                                         </div>
                                     </div>

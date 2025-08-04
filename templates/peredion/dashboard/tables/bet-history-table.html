@@ -65,23 +65,23 @@
                                     {% endfor %}
                                 </tr>
                                 <template x-if="expandedRows.has({{ row.record.pk }})">
-                                    {% for pick in row.record.picks.all %}
-                                        <tr class="playing-bet">
-                                            <td class="sports-expanded-list" colspan="{{ table.columns|length }}">
-                                                <div class="sports-body">
-                                                    <div class="playing-sports-all">
-                                                        <div class="single-tournament">
-                                                            <div class="all-tournament-match">
+                                    <tr class="playing-bet">
+                                        <td class="sports-expanded-list" colspan="{{ table.columns|length }}">
+                                            <div class="sports-body">
+                                                <div class="playing-sports-all">
+                                                    <div class="single-tournament">
+                                                        <div class="all-tournament-match">
+                                                            {% for pick in row.record.picks.all %}
                                                                 {% with line=pick.betting_line game=pick.betting_line.game disabled=True %}
                                                                     {% include 'peredion/playing-bet.html#bet-section-tab-row' %}
                                                                 {% endwith %}
-                                                            </div>
+                                                            {% endfor %}
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </template>
                             {% endblock table.tbody.row %}
                         {% empty %}

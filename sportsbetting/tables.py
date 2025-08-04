@@ -11,33 +11,33 @@ from .models import Play
 EVENT_COL_TEMPLATE = """
 {% load i18n %}
 {% if in_play %}
-	<span class="in-play-tag">{% trans 'in-play' %}</span>
+    <span class="in-play-tag">{% trans 'in-play' %}</span>
 {% endif %}
 <div class="event">
-	<div class="part-team">
-		<div class="s-team">
-			<img src="{% if home.logo %}{{ home.logo.url }}{% endif %}"
-				 alt=""
-				 class="team-icon"
-				 nonce="{{ request.csp_nonce }}">
-			<span class="team-name">{{ home }}</span>
-		</div>
-		<div class="s-team">
-			<img src="{% if away.logo %}{{ away.logo.url }}{% endif %}"
-				 alt=""
-				 class="team-icon"
-				 nonce="{{ request.csp_nonce }}">
-			<span class="team-name">{{ away }}</span>
-		</div>
-	</div>
-	<span class="event-name">{% if game.league %}{{ game.league }}{% else %}{{ game.governing_body }}{% endif %}</span>
+    <div class="part-team">
+        <div class="s-team">
+            <img src="{% if home.logo %}{{ home.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
+                 alt=""
+                 class="team-icon"
+                 nonce="{{ request.csp_nonce }}">
+            <span class="team-name">{{ home }}</span>
+        </div>
+        <div class="s-team">
+            <img src="{% if away.logo %}{{ away.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
+                 alt=""
+                 class="team-icon"
+                 nonce="{{ request.csp_nonce }}">
+            <span class="team-name">{{ away }}</span>
+        </div>
+    </div>
+    <span class="event-name">{% if game.league %}{{ game.league }}{% else %}{{ game.governing_body }}{% endif %}</span>
 </div>
 """
 
 
 class BetHistoryTable(tables.Table):
 	event = tables.Column(
-		verbose_name=_("Event"),
+		verbose_name=_("Bet Slip"),
 		empty_values=(),
 		attrs={"th": {"class": "text-start"}},
 		orderable=False,
@@ -60,21 +60,27 @@ class BetHistoryTable(tables.Table):
 		verbose_name="",
 		empty_values=(),
 		template_code="""
-		{% load i18n %}
-		<button class="btn btn-link">
-			<i class="fa-solid" 
-			   :class="{ 'fa-chevron-down': !expandedRows.has({{ record.pk }}) }, 'fa-chevron-up': expandedRows.has({{ record.pk }}) }"></i>
-		</button>
-		""",
+        {% load i18n %}
+        <button class="btn btn-link">
+            <i class="fa-solid" 
+               :class="{
+                   'fa-chevron-down': !expandedRows.has({{ record.pk }}),
+                   'fa-chevron-up': expandedRows.has({{ record.pk }})
+               }"></i>
+        </button>
+        """,
 		orderable=False,
 	)
 
 	def render_event(self, record):
-		in_play = record.picks.filter(
+		picks = record.picks.select_related(
+			"betting_line__game__home_team", "betting_line__game__away_team"
+		).all()
+		in_play = picks.filter(
 			betting_line__game__start_datetime__lte=timezone.now(),
 			betting_line__game__is_finished=False,
 		).exists()
-		pick = record.picks.first()
+		pick = picks.first()
 		game = pick.betting_line.game
 		context = {
 			"play": record,
@@ -94,7 +100,7 @@ class BetHistoryTable(tables.Table):
 		time = record.placed_datetime.time()
 		return format_html(
 			"""<span class="date">{}</span>
-			   <span class="time">{}</span>""",
+               <span class="time">{}</span>""",
 			localize(date),
 			localize(time),
 		)
