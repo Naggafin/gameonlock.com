@@ -25,6 +25,9 @@
           nonce="{{ request.csp_nonce }}">
     <!-- main css -->
     <link rel="stylesheet"
+          href="{% static 'peredion/css/style.css' %}"
+          nonce="{{ request.csp_nonce }}">
+    <link rel="stylesheet"
           href="{% static 'peredion/dashboard/css/style.css' %}"
           nonce="{{ request.csp_nonce }}">
     <!-- animate css -->

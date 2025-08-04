@@ -62,8 +62,8 @@ class BetHistoryTable(tables.Table):
 		template_code="""
 		{% load i18n %}
 		<button class="btn btn-link">
-			<i class="fa-solid fa-chevron-down" 
-			   :class="{ 'fa-chevron-up': expandedRows.has({{ record.pk }}) }"></i>
+			<i class="fa-solid" 
+			   :class="{ 'fa-chevron-down': !expandedRows.has({{ record.pk }}) }, 'fa-chevron-up': expandedRows.has({{ record.pk }}) }"></i>
 		</button>
 		""",
 		orderable=False,

@@ -98,7 +98,7 @@
         <div class="single-team">
             <div class="team-descr">
                 <span class="team-icon">
-                    <img src="{% if line.game.away_team.logo %}{{ line.game.away_team.logo.url }}{% endif %}"
+                    <img src="{% if line.game.away_team.logo %}{{ line.game.away_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
                          alt="{{ line.game.away_team }}"
                          nonce="{{ request.csp_nonce }}">
                 </span>
@@ -112,7 +112,7 @@
         <div class="single-team">
             <div class="team-descr">
                 <span class="team-icon">
-                    <img src="{% if line.game.home_team.logo %}{{ line.game.home_team.logo.url }}{% endif %}"
+                    <img src="{% if line.game.home_team.logo %}{{ line.game.home_team.logo.url }}{% else %}{% static 'images/team-missing-logo.png' %}{% endif %}"
                          alt="{{ line.game.home_team }}"
                          nonce="{{ request.csp_nonce }}">
                 </span>
@@ -126,7 +126,7 @@
     </div>
     <div class="placing-bet">
         <template x-if="game.spread">
-            <div class="row">
+            <div class="row flex-nowrap">
                 <button class="single-bet-place"
                         :class="{ 'placed': isPickSelected('sp', game.away_team_pk) }"
                         @click="addPick('sp', game.away_team_pk, null)"
@@ -159,7 +159,7 @@
             </div>
         </template>
         <template x-if="game.under || game.over">
-            <div class="row">
+            <div class="row flex-nowrap">
                 <button class="single-bet-place"
                         :class="{ 'placed': isPickSelected('uo', false) }"
                         @click="addPick('uo', null, false)"
