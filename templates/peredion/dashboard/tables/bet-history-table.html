@@ -71,8 +71,8 @@
                                                 <div class="playing-sports-all">
                                                     <div class="single-tournament">
                                                         <div class="all-tournament-match">
-                                                            {% for pick in row.record.picks.all %}
-                                                                {% with line=pick.betting_line game=pick.betting_line.game disabled=True %}
+                                                            {% for grouped_pick in row.record.grouped_picks.values %}
+                                                                {% with picks=grouped_pick.picks line=grouped_pick.betting_line game=grouped_pick.betting_line.game disabled=True %}
                                                                     {% include 'peredion/playing-bet.html#bet-section-tab-row' %}
                                                                 {% endwith %}
                                                             {% endfor %}

@@ -3,7 +3,7 @@
 {% load sportsbetting_tags %}
 {% partialdef bet-section-tab-row %}
 <div class="single-t-match"
-    :class="{ 'finished': game.isFinished, 'match-in-play': game.hasStarted() }"
+    :class="{ 'finished': game.isFinished || disabled, 'match-in-play': game.hasStarted() }"
     {# djlint:off #}
          x-data="{
              disabled: {{ disabled|default:False|yesno:'true,false' }},
@@ -26,13 +26,14 @@
                      return new Date() >= this.start_datetime;
                  }
              },
+             picks: {{ picks|default:'[]' }},
              isPickSelected(type, value) {
-                 const store = Alpine.store('betSlip');
+                 let store = Alpine.store('betSlip');
 
-                 if (!store) return false;
+                 if (!store) store = this.picks;
 
                  const pick = store.picks.find(
-                     p => p.bettingLine === this.bettingLine && p.type === type
+                     p => p.betting_line === this.bettingLine && p.type === type
                  );
 
                  if (!pick) return false;
@@ -42,7 +43,7 @@
                      case 'sp':
                          return pick.team === value;
                      case 'uo':
-                         return pick.isOver === value;
+                         return pick.is_over === value;
                      default:
                          return false;
                  }
@@ -64,10 +65,10 @@
                  const store = Alpine.store('betSlip');
                  if (!store) return;
                  store.addPick({
-                     bettingLine: this.bettingLine,
+                     betting_line: this.bettingLine,
                      type: type,
                      team: team,
-                     isOver: isOver,
+                     is_over: isOver,
                      game: this.game
                  });
              },
@@ -76,7 +77,7 @@
                  const store = Alpine.store('betSlip');
                  if (!store) return;
                  store.removePick({
-                     bettingLine: this.bettingLine,
+                     betting_line: this.bettingLine,
                      type: type
                  });
              }
@@ -90,7 +91,7 @@
             <span class="m-date">{{ line.game.start_datetime|time }}</span>
             <span class="m-in-play">{% trans 'in-play' %}</span>
         {% else %}
-            <span class="m-date">{{ line.game.start_datetime|naturalday }}</span>
+            <span class="m-date">{{ line.game.start_datetime|naturalday:"j M" }}</span>
             <span class="m-time">{{ line.game.start_datetime|time }}</span>
         {% endif %}
     </div>

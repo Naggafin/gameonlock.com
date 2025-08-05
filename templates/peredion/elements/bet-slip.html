@@ -46,7 +46,7 @@
                 </div>
                 <!-- Bet Cards -->
                 <template x-for="(pick, index) in store.picks"
-                          :key="`${pick.bettingLine}::${pick.type}`">
+                          :key="`${pick.betting_line}::${pick.type}`">
                     <div class="single-bs-card singleBS" x-show="!submitted">
                         <div class="bs-card-header">
                             <span class="tournament-name" x-text="displayTournament(pick)"></span>
@@ -162,13 +162,13 @@
             },
 
             addPick(pick) {
-                this.picks = this.picks.filter(p => !(p.bettingLine === pick.bettingLine && p.type === pick.type));
+                this.picks = this.picks.filter(p => !(p.betting_line === pick.betting_line && p.type === pick.type));
                 this.picks.push(pick);
                 this.saveBetSlip();
             },
 
             removePick(pick) {
-                this.picks = this.picks.filter(p => !(p.bettingLine === pick.bettingLine && p.type === pick.type));
+                this.picks = this.picks.filter(p => !(p.betting_line === pick.betting_line && p.type === pick.type));
                 this.saveBetSlip();
             }
         });
@@ -196,7 +196,7 @@
                 if (pick.type === 'sp') {
                     return `${pick.team || gettext('N/A')} ${gettext('Spread')}`;
                 } else if (pick.type === 'uo') {
-                    return pick.isOver ? gettext('Over') : gettext('Under');
+                    return pick.is_over ? gettext('Over') : gettext('Under');
                 }
                 return gettext('Unknown Pick');
             },

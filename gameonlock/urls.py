@@ -31,6 +31,8 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
+import sportsbetting.urls
+
 from . import views
 
 admin.autodiscover()
@@ -39,6 +41,10 @@ admin.site.login = secure_admin_login(admin.site.login)
 allauth_urls = [
 	path(_("login/"), views.LoginView.as_view(), name="account_login"),
 	path(_("signup/"), views.SignupView.as_view(), name="account_signup"),
+]
+
+api_urls = [
+	path(r"sports/", include(sportsbetting.urls.apipatterns)),
 ]
 
 internationalized_patterns = i18n_patterns(
@@ -98,6 +104,7 @@ urlpatterns = [
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
 	path("payment/", include("golpayment.urls")),
+	path("api/", include((api_urls, "api"), namespace="api")),
 ] + internationalized_patterns
 
 

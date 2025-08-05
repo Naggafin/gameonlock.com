@@ -34,6 +34,7 @@ from golpayment.tables import TransactionTable
 from sportsbetting.filters import PlayFilter
 from sportsbetting.models import Game, Play
 from sportsbetting.tables import BetHistoryTable
+from sportsbetting.util import get_plays_with_grouped_picks
 from sportsbetting.views.mixins import SportsBettingContextMixin
 
 from ..forms import get_all_region_choices
@@ -237,6 +238,22 @@ class PlayHistoryView(
 		if self.request.htmx:
 			return ["django_tables2/table_fragment.html"]
 		return super().get_template_names()
+
+	def get_queryset(self):
+		queryset = (
+			super()
+			.get_queryset()
+			.filter(user=self.request.user)
+			.prefetch_related(
+				"picks__betting_line__game__home_team",
+				"picks__betting_line__game__away_team",
+			)
+		)
+		return queryset
+
+	def get_table_data(self):
+		data = super().get_table_data()
+		return get_plays_with_grouped_picks(data)
 
 	@property
 	def crumbs(self):
