@@ -12,6 +12,7 @@ from gameonlock.views.mixins import GameonlockMixin
 from ..forms import PickFormSet, PlayForm
 from ..models import BettingLine, Pick, Play
 from ..util import calculate_play_stakes
+from . import api  # noqa: F401
 from .mixins import SportsBettingContextMixin
 
 

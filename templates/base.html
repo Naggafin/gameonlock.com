@@ -138,7 +138,7 @@
                     nonce="{{ request.csp_nonce }}"
                     defer></script>
             {% if debug %}
-                <script src="{% static 'django-htmx.js' %}"
+                <script src="{% static 'django_htmx/django-htmx.js' %}"
                         data-debug="{{ debug }}"
                         nonce="{{ request.csp_nonce }}"
                         defer></script>

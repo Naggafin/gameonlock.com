@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from .models import Play
 
 EVENT_COL_TEMPLATE = """
-{% load i18n %}
+{% load static i18n %}
 {% if in_play %}
     <span class="in-play-tag">{% trans 'in-play' %}</span>
 {% endif %}

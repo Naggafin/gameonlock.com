@@ -1,5 +1,6 @@
 import json
 import logging
+from collections import defaultdict
 
 from django.conf import settings
 
@@ -22,19 +23,19 @@ def calculate_play_stakes(obj: Play) -> int:
 	return int(obj.amount * stakes)
 
 
-def get_plays_with_grouped_picks(plays):
-	for play in plays:
-		grouped_picks = {}
+def get_plays_with_grouped_picks(plays_queryset):
+	for play in plays_queryset:
+		grouped_picks = defaultdict(lambda: {"betting_line": None, "picks": []})
+
 		for pick in play.picks.all():
-			betting_line = pick.betting_line
-			if betting_line.pk not in grouped_picks:
-				grouped_picks[betting_line.pk] = {
-					"betting_line": betting_line,
-					"picks": [],
-				}
-			grouped_picks[betting_line.pk]["picks"].append(PickSerializer(pick).data)
-		grouped_picks[betting_line.pk]["picks"] = json.dumps(
-			grouped_picks[betting_line.pk]["picks"]
-		)
-		play.grouped_picks = grouped_picks
-	return plays
+			bl_id = pick.betting_line_id
+			if grouped_picks[bl_id]["betting_line"] is None:
+				grouped_picks[bl_id]["betting_line"] = pick.betting_line
+			grouped_picks[bl_id]["picks"].append(PickSerializer(pick).data)
+
+		for bl_id, group in grouped_picks.items():
+			group["picks"] = json.dumps(group["picks"])
+
+		play.grouped_picks = dict(grouped_picks)
+
+	return plays_queryset

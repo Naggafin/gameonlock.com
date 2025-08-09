@@ -7,9 +7,9 @@
     {# djlint:off #}
          x-data="{
              disabled: {{ disabled|default:False|yesno:'true,false' }},
-             bettingLine: '{{ line.pk }}',
+             bettingLine: {{ line.pk }},
              game: {
-                 id: '{{ line.game.pk }}',
+                 id: {{ line.game.pk }},
                  start_datetime: new Date('{{ line.game.start_datetime.isoformat }}'),
                  away_team: '{{ line.game.away_team|escapejs }}',
                  home_team: '{{ line.game.home_team|escapejs }}',
@@ -30,7 +30,7 @@
              isPickSelected(type, value) {
                  let store = Alpine.store('betSlip');
 
-                 if (!store) store = this.picks;
+                 if (!store) store = {picks: this.picks};
 
                  const pick = store.picks.find(
                      p => p.betting_line === this.bettingLine && p.type === type

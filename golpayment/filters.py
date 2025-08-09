@@ -1,9 +1,11 @@
-from django_filters import FilterSet
+import django_filters
 
 from .models import Transaction
 
 
-class TransactionFilter(FilterSet):
+class TransactionFilter(django_filters.FilterSet):
+	transaction_datetime = django_filters.DateFromToRangeFilter()
+
 	class Meta:
 		model = Transaction
-		fields = ["transaction_datetime", "type", "status"]
+		fields = ["transaction_datetime", "type", "method"]

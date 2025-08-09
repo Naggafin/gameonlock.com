@@ -1,5 +1,5 @@
 {% extends 'peredion/dashboard/base.html' %}
-{% load static i18n django_tables2 humanize %}
+{% load static i18n humanize %}
 {% block content %}
     <div x-data="dashboard({ totalBets: {{ total_bets|default:0 }}, totalPendingBets: {{ total_pending_bets|default:0 }}, totalWins: {{ total_wins|default:0 }}, totalLosses: {{ total_losses|default:0 }}, totalDeposit: {{ total_deposit|floatformat:2 }}, totalPayout: {{ total_payout|floatformat:2 }}, totalPendingStakes: {{ total_pending_stakes|floatformat:2 }} })">
         <div class="dashboard-statics">
