@@ -1,23 +1,12 @@
 import logging
 from datetime import timedelta
-from decimal import Decimal
 
 from allauth.account.views import (
 	LoginView as AllauthLoginView,
 	SignupView as AllauthSignupView,
 )
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import (
-	Case,
-	Count,
-	DecimalField,
-	F,
-	IntegerField,
-	Q,
-	Sum,
-	When,
-)
-from django.db.models.functions import Coalesce
+from django.db.models import Count, Q, Sum
 from django.http import JsonResponse
 from django.urls import reverse
 from django.utils import timezone
@@ -38,7 +27,7 @@ from sportsbetting.util import get_plays_with_grouped_picks
 from sportsbetting.views.mixins import SportsBettingContextMixin
 
 from ..forms import get_all_region_choices
-from .mixins import GameonlockMixin
+from .mixins import DashboardContextMixin, GameonlockMixin
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
@@ -107,7 +96,9 @@ class SignupView(GameonlockMixin, AllauthSignupView):
 		return context
 
 
-class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
+class DashboardView(
+	LoginRequiredMixin, DashboardContextMixin, GameonlockMixin, TemplateView
+):
 	title = _("Dashboard")
 	template_name = "peredion/dashboard/index.html"
 
@@ -117,71 +108,7 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-
 		user_plays = self.request.user.plays
-
-		# Aggregate totals
-		totals = user_plays.aggregate(
-			total_bets=Count("id"),
-			total_pending_bets=Count(
-				Case(
-					When(status=Play.STATES.pending, then=1),
-					output_field=IntegerField(),
-				)
-			),
-			total_wins=Count(Case(When(won=True, then=1), output_field=IntegerField())),
-			total_losses=Count(
-				Case(
-					When(Q(won=False) & Q(status=Play.STATES.completed), then=1),
-					output_field=IntegerField(),
-				)
-			),
-			total_deposit=Coalesce(
-				Sum(
-					"amount", output_field=DecimalField(max_digits=10, decimal_places=2)
-				),
-				Decimal(0),
-			),
-			total_payout=Coalesce(
-				Sum(
-					Case(
-						When(won=True, then=F("stakes")),
-						output_field=DecimalField(max_digits=10, decimal_places=2),
-					),
-				),
-				Decimal(0),
-			),
-			total_pending_stakes=Coalesce(
-				Sum(
-					Case(
-						When(status=Play.STATES.pending, then=F("stakes")),
-						output_field=DecimalField(max_digits=10, decimal_places=2),
-					),
-				),
-				Decimal(0),
-			),
-		)
-
-		# Calculate percentages (safely)
-		total = totals["total_bets"] or 0
-		totals["win_pct"] = round((totals["total_wins"] / total) * 100) if total else 0
-		totals["loss_pct"] = (
-			round((totals["total_losses"] / total) * 100) if total else 0
-		)
-
-		context.update(
-			{
-				"total_bets": totals["total_bets"],
-				"total_pending_bets": totals["total_pending_bets"],
-				"total_wins": totals["total_wins"],
-				"total_losses": totals["total_losses"],
-				"total_payout": totals["total_payout"],
-				"total_deposit": totals["total_deposit"],
-				"total_pending_stakes": totals["total_pending_stakes"],
-				"win_pct": totals["win_pct"],
-				"loss_pct": totals["loss_pct"],
-			}
-		)
 
 		# Prepare week range
 		today = timezone.now().date()
@@ -225,7 +152,11 @@ class DashboardView(LoginRequiredMixin, GameonlockMixin, TemplateView):
 
 
 class PlayHistoryView(
-	LoginRequiredMixin, GameonlockMixin, SingleTableMixin, FilterView
+	LoginRequiredMixin,
+	DashboardContextMixin,
+	GameonlockMixin,
+	SingleTableMixin,
+	FilterView,
 ):
 	title = _("Bet History")
 	model = Play
@@ -261,7 +192,11 @@ class PlayHistoryView(
 
 
 class TransactionHistoryView(
-	LoginRequiredMixin, GameonlockMixin, SingleTableMixin, FilterView
+	LoginRequiredMixin,
+	DashboardContextMixin,
+	GameonlockMixin,
+	SingleTableMixin,
+	FilterView,
 ):
 	title = _("Transaction History")
 	model = Transaction
@@ -285,7 +220,9 @@ class TransactionHistoryView(
 		]
 
 
-class SettingsView(LoginRequiredMixin, GameonlockMixin, TemplateView):
+class SettingsView(
+	LoginRequiredMixin, DashboardContextMixin, GameonlockMixin, TemplateView
+):
 	title = _("Settings")
 	template_name = "peredion/dashboard/dashboard-settings.html"
 

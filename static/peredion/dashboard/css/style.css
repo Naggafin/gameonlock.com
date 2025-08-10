@@ -5172,7 +5172,7 @@ ul {
 .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu.custom-dropdown .dropdown-item {
   margin: 0;
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item {
   background: #161D35;
   font-family: "Asap", sans-serif;
   font-weight: 500;
@@ -5188,29 +5188,29 @@ ul {
   z-index: 2;
 }
 @media (max-width: 1399.98px) {
-  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item {
+  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item {
     font-size: 15px;
     line-height: 25px;
     padding: 7px 30px 8px 32px;
   }
 }
 @media (max-width: 1199.98px) {
-  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item {
+  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item {
     font-size: 14px;
     line-height: 24px;
   }
 }
 @media (max-width: 991.98px) {
-  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item {
+  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item {
     background: rgba(22, 29, 53, 0.6);
   }
 }
 @media (max-width: 575.98px) {
-  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item {
+  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item {
     padding: 7px 20px 8px 22px;
   }
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:after {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:after {
   position: absolute;
   content: "";
   left: 15px;
@@ -5223,12 +5223,12 @@ ul {
   opacity: 1;
 }
 @media (max-width: 575.98px) {
-  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:after {
+  .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:after {
     left: 10px;
     width: 1px;
   }
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:before {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:before {
   position: absolute;
   content: "";
   left: 0;
@@ -5240,14 +5240,14 @@ ul {
   opacity: 0;
   transition: all 0.3s ease-in;
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:hover, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:active, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item.active {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:hover, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:active, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item.active {
   color: #fff;
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:hover:after, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:active:after, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item.active:after {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:hover:after, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:active:after, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item.active:after {
   background: #fff;
   animation: opacity-to-hover 0.4s cubic-bezier(0.5, 0, 0.5, 1);
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:hover:before, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item:active:before, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li a.dropdown-item.active:before {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:hover:before, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item:active:before, .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-item.active:before {
   opacity: 1;
 }
 .tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li .dropdown-divider {
@@ -5255,7 +5255,7 @@ ul {
   opacity: 0.3;
   margin: 0;
 }
-.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li:last-child a.dropdown-item {
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu li:last-child .dropdown-item {
   margin-bottom: 0;
 }
 .tranx-history-nav .navbar .navbar-nav .nav-item .nav-link {

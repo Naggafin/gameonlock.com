@@ -31,9 +31,11 @@
                            data-aos-delay="150"
                            data-aos-duration="500"
                            data-aos-easing="ease-in">
+                            {% blocktrans %}
                             This allows bettors to bet over or under the bookmaker's score,
                             <br />
                             and indicate what they believe the difference in points will be.
+                           {% endblocktrans %}
                         </p>
                         <ul class="importants-links">
                             <li class="single-link"
@@ -41,21 +43,14 @@
                                 data-aos-delay="200"
                                 data-aos-duration="500"
                                 data-aos-easing="ease-in">
-                                <a href="#0">policy</a>
+                                <a href="{% url 'privacy' %}">{% trans 'privacy policy' %}</a>
                             </li>
                             <li class="single-link"
                                 data-aos="fade-up"
                                 data-aos-delay="250"
                                 data-aos-duration="500"
                                 data-aos-easing="ease-in">
-                                <a href="#0">Terms</a>
-                            </li>
-                            <li class="single-link"
-                                data-aos="fade-up"
-                                data-aos-delay="300"
-                                data-aos-duration="500"
-                                data-aos-easing="ease-in">
-                                <a href="#0">license</a>
+                                <a href="{% url 'terms' %}">{% trans 'terms' %}</a>
                             </li>
                         </ul>
                     </div>
@@ -66,7 +61,10 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="footer-bottom-content">
-                <p class="copyright-text">Copyright © 2023. All Right Reserved By Peredion</p>
+                <p class="copyright-text">
+                    {% now "Y" as current_year %}
+                    {% blocktrans %}Copyright © {{ current_year }}. All Right Reserved By Game-on-Lock{% endblocktrans %}
+                </p>
                 <ul class="social-link">
                     <li class="single-social">
                         <a href="#0">
@@ -87,19 +85,19 @@
                 <div class="footer-menu">
                     <ul>
                         <li>
-                            <a href="index.html" class="single-menu">homepage</a>
+                            <a href="{% url 'index' %}" class="single-menu">{% trans 'home' %}</a>
                         </li>
                         <li>
-                            <a href="about.html" class="single-menu">About Us</a>
+                            <a href="#TODO" class="single-menu">{% trans 'about' %}</a>
                         </li>
                         <li>
-                            <a href="lotteries.html" class="single-menu">Lotteries</a>
+                            <a href="{% url 'sportsbetting:bet' %}" class="single-menu">{% trans 'bet' %}</a>
                         </li>
                         <li>
-                            <a href="blog-posts.html" class="single-menu">Blog</a>
+                            <a href="#TODO" class="single-menu">{% trans 'blog' %}</a>
                         </li>
                         <li>
-                            <a href="contact.html" class="single-menu">contact</a>
+                            <a href="#TODO" class="single-menu">{% trans 'contact' %}</a>
                         </li>
                     </ul>
                 </div>

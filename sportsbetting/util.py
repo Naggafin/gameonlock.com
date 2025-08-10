@@ -33,7 +33,7 @@ def get_plays_with_grouped_picks(plays_queryset):
 				grouped_picks[bl_id]["betting_line"] = pick.betting_line
 			grouped_picks[bl_id]["picks"].append(PickSerializer(pick).data)
 
-		for bl_id, group in grouped_picks.items():
+		for group in grouped_picks.values():
 			group["picks"] = json.dumps(group["picks"])
 
 		play.grouped_picks = dict(grouped_picks)

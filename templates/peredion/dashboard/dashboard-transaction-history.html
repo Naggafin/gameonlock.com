@@ -9,108 +9,109 @@
       hx-target="#transaction-history-table"
       hx-swap="outerHTML"
       x-ref="form"
-      x-data="{ type: '{{ request.GET.type|default:'' }}', method: '{{ request.GET.method|default:'' }}', start: '{{ request.GET.transaction_datetime_after|default:'' }}', end: '{{ request.GET.transaction_datetime_before|default:'' }}' }">
+      x-data="{ type: '{{ request.GET.type|default:'' }}', method: '{{ request.GET.method|default:'' }}', start: '{{ request.GET.transaction_datetime_after|default:'' }}', end: '{{ request.GET.transaction_datetime_before|default:'' }}', selected: '' }">
     <nav class="navbar navbar-expand-lg">
         <ul class="navbar-nav">
             <!-- DATE RANGE -->
             <li class="nav-item calndr">
-                <label for="date-range">
+                <label for="started-date">
                     <i class="fa-solid fa-calendars"></i>
                 </label>
+                {# djlint:off #}
                 <input
                     readonly
-                    id="date-range"
+                    id="started-date"
                     class="nav-link"
+                    type="button"
                     placeholder="{% trans 'Select date range' %}"
-                    {# djlint:off #}
-                        x-init="flatpickr($el, {
-                                   mode: 'range',
-                                   dateFormat: 'Y-m-d',
-                                   defaultDate: [start, end].filter(Boolean),
-                                   onClose: function(selectedDates, dateStr) {
-                                       if (selectedDates.length === 2) {
-                                           const [s, e] = dateStr.split(' {% trans 'to' %} ');
-                                           start = s; end = e;
-                                           $refs.startInput.value = s;
-                                           $refs.endInput.value = e;
-                                           $refs.startInput.dispatchEvent(new Event('change', { bubbles: true }));
-                                           $refs.endInput.dispatchEvent(new Event('change', { bubbles: true }));
-                                       }
+                    x-init="flatpickr($el, {
+                               mode: 'range',
+                               dateFormat: 'Y-m-d',
+                               defaultDate: [start, end].filter(Boolean),
+                               onClose: function(selectedDates, dateStr) {
+                                   if (selectedDates.length === 2) {
+                                       const [s, e] = dateStr.split(' {% trans 'to' %} ');
+                                       start = s; end = e;
+                                       $refs.startInput.value = s;
+                                       $refs.endInput.value = e;
+                                       $refs.startInput.dispatchEvent(new Event('change', { bubbles: true }));
+                                       $refs.endInput.dispatchEvent(new Event('change', { bubbles: true }));
                                    }
-                               })"
-                    {# djlint:on #}
+                               }
+                           })"
                     >
-                    <input type="hidden"
-                           name="transaction_datetime_after"
-                           x-model="start"
-                           x-ref="startInput">
-                    <input type="hidden"
-                           name="transaction_datetime_before"
-                           x-model="end"
-                           x-ref="endInput">
-                </li>
-                <!-- TRANSACTION TYPE DROPDOWN -->
-                <li class="nav-item dropdown trnx-category">
-                    <a class="nav-link dropdown-toggle"
-                       href="javascript:void(0);"
-                       id="transaction_category"
-                       role="button"
-                       data-bs-toggle="dropdown">
-                        <span class="text">{% trans 'Transaction category' %}</span> <i class="fa-solid fa-sort"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="transaction_category">
-                        {% for choice in filter.form.type.field.choices %}
-                            <li>
-                                <label class="dropdown-item" :class="{'active': type === '{{ choice.0 }}'}">
-                                    <input type="radio"
-                                           name="type"
-                                           value="{{ choice.0 }}"
-                                           x-model="type"
-                                           class="d-none">
-                                    {{ choice.1 }}
-                                </label>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <!-- PAYMENT METHOD DROPDOWN -->
-                <li class="nav-item dropdown payment-gateway-i">
-                    <a class="nav-link dropdown-toggle"
-                       href="javascript:void(0);"
-                       id="payment_method"
-                       role="button"
-                       data-bs-toggle="dropdown">
-                        <span class="text">{% trans 'Payment method' %}</span> <i class="fa-solid fa-sort"></i>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="payment_method">
-                        {% for choice in filter.form.method.field.choices %}
-                            <li>
-                                <label class="dropdown-item"
-                                       :class="{'active': method === '{{ choice.0 }}'}">
-                                    <input type="method"
-                                           name="type"
-                                           value="{{ choice.0 }}"
-                                           x-model="method"
-                                           class="d-none">
-                                    {{ choice.1 }}
-                                </label>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </li>
-                <!-- RESET -->
-                <li class="nav-item">
-                    <button type="button"
-                            class="nav-link"
-                            @click="type=''; method=''; start=''; end=''; $refs.form.dispatchEvent(new Event('change'));">
-                        <span class="d-xl-inline d-lg-none">{% trans 'Reset' %}</span>
-                        <span class="d-xxl-inline-block d-none">{% trans 'Filters' %}</span>
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </button>
-                </li>
-            </ul>
-        </nav>
-    </form>
+                <input type="hidden"
+                       name="transaction_datetime_after"
+                       x-model="start"
+                       x-ref="startInput">
+                <input type="hidden"
+                       name="transaction_datetime_before"
+                       x-model="end"
+                       x-ref="endInput">
+                {# djlint:on #}
+            </li>
+            <!-- TRANSACTION TYPE DROPDOWN -->
+            <li class="nav-item dropdown trnx-category">
+                <a class="nav-link dropdown-toggle"
+                   href="javascript:void(0);"
+                   id="transaction_category"
+                   role="button"
+                   data-bs-toggle="dropdown">
+                    <span class="text">{% trans 'Transaction category' %}</span> <i class="fa-solid fa-sort"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="transaction_category">
+                    {% for choice in filter.form.type.field.choices %}
+                        <li>
+                            <label class="dropdown-item" :class="{'active': type === '{{ choice.0 }}'}">
+                                <input type="radio"
+                                       name="type"
+                                       value="{{ choice.0 }}"
+                                       x-model="type"
+                                       class="d-none">
+                                {{ choice.1 }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <!-- PAYMENT METHOD DROPDOWN -->
+            <li class="nav-item dropdown payment-gateway-i">
+                <a class="nav-link dropdown-toggle"
+                   href="javascript:void(0);"
+                   id="payment_method"
+                   role="button"
+                   data-bs-toggle="dropdown">
+                    <span class="text">{% trans 'Payment method' %}</span> <i class="fa-solid fa-sort"></i>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="payment_method">
+                    {% for choice in filter.form.method.field.choices %}
+                        <li>
+                            <label class="dropdown-item"
+                                   :class="{'active': method === '{{ choice.0 }}'}">
+                                <input type="method"
+                                       name="type"
+                                       value="{{ choice.0 }}"
+                                       x-model="method"
+                                       class="d-none">
+                                {{ choice.1 }}
+                            </label>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <!-- RESET -->
+            <li class="nav-item">
+                <button type="button"
+                        class="nav-link"
+                        @click="type=''; method=''; start=''; end=''; $refs.form.dispatchEvent(new Event('change'));">
+                    <span class="d-xl-inline d-lg-none">{% trans 'Reset' %}</span>
+                    <span class="d-xxl-inline-block d-none">{% trans 'Filters' %}</span>
+                    <i class="fa-solid fa-rotate-right"></i>
+                </button>
+            </li>
+        </ul>
+    </nav>
+</form>
 {% endpartialdef %}
 {% block content %}
     <div class="db-elements">
