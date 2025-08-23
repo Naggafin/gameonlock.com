@@ -18,7 +18,8 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django_contact_form._akismet import _try_get_akismet_client
-from django_contact_form.views import AkismetContactForm, ContactFormView
+from django_contact_form.views import ContactFormView
+from django_contact_form.forms import AkismetContactForm
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
 from honeypot.decorators import check_honeypot
