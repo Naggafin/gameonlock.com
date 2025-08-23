@@ -18,7 +18,10 @@ from sportsbetting.models import Play
 
 
 class GameonlockMixin(BaseBreadcrumbMixin):
-	home_label = '<i class="icon fa-solid fa-house"></i> %s' % _("Home")
+	home_label = (
+		'<span class="icon"><i class="fa-solid fa-house"></i></span> <span class="text">%s</span>'
+		% _("Home")
+	)
 
 	@property
 	def crumbs(self):

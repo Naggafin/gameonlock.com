@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block meta %}
+    {{ block.super }}
+    <meta http-equiv="refresh" content="10;url=/" />
+{% endblock %}
+{% block banner %}
+    <div class="prd-breadcrumb">
+        <div class="brd-shape">
+            <div class="brd-img brd-img-1"
+                 data-aos="fade-right"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-1.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
+            </div>
+            <div class="brd-img brd-img-2"
+                 data-aos="fade-left"
+                 data-aos-delay="200"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <img src="{% static 'peredion/images/breadcrumb/brd-img-2.png' %}"
+                     alt=""
+                     nonce="{{ request.csp_nonce }}">
+            </div>
+        </div>
+        <div class="container">
+            <div class="brd-content">
+                <div data-aos="fade-up"
+                     data-aos-delay="200"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <span class="sub-title">{% trans 'ERROR 404' %}</span>
+                </div>
+                <h2 class="title"
+                    data-aos="fade-up"
+                    data-aos-delay="350"
+                    data-aos-duration="500"
+                    data-aos-easing="ease-in">{% trans 'This page is broken, keep going...' %}</h2>
+                <div class="page-direction">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="{% url 'index' %}"><span class="icon"><i class="fa-solid fa-house"></i></span> <span class="text">{% trans 'Home' %}</span></a>
+                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">
+                                <span class="icon"><i class="fa-solid fa-caret-right fa-xl"></i></span>
+                                <span class="text">{% trans 'Error 404' %}</span>
+                            </li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    <div class="error">
+        <div class="global-shape style-3">
+            <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+                 alt=""
+                 data-aos="fade-left"
+                 data-aos-duration="500"
+                 data-aos-offset="200"
+                 data-aos-easing="ease-in"
+                 data-aos-delay="400"
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 col-lg-9 col-md-10">
+                    <div class="part-img"
+                         data-aos="fade-up"
+                         data-aos-delay="100"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <img src="{% static 'peredion/images/error/error-image.png' %}"
+                             alt=""
+                             nonce="{{ request.csp_nonce }}">
+                    </div>
+                    <div class="part-text">
+                        <div class="section-title"
+                             data-aos="fade-up"
+                             data-aos-delay="100"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <h3 class="sub-title">{% trans 'Error 404' %}</h3>
+                            <h2 class="title">{% trans 'The page you’re looking for is now beyond our reach.' %}</h2>
+                        </div>
+                        <p data-aos="fade-up"
+                           data-aos-delay="100"
+                           data-aos-duration="500"
+                           data-aos-easing="ease-in"
+                           x-data="{ seconds: 10 }"
+                           x-init="setInterval(() => seconds--, 1000)">
+                            {% trans 'Let’s get you back home in <span class="back-time" x-text="seconds"></span>...' %}
+                            <img src="{% static 'peredion/images/error/vector.png' %}"
+                                 alt=""
+                                 nonce="{{ request.csp_nonce }}">
+                        </p>
+                        <div class="error-page-menu"
+                             data-aos="fade-up"
+                             data-aos-delay="100"
+                             data-aos-duration="500"
+                             data-aos-easing="ease-in">
+                            <ul>
+                                <li>
+                                    <a href="{% url 'index' %}" class="single-menu">{% trans 'home' %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'about' %}" class="single-menu">{% trans 'about us' %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'sportsbetting:bet' %}" class="single-menu">{% trans 'bets' %}</a>
+                                </li>
+                                <li>
+                                    {# TODO: direct to wagtail articles; detect active #}
+                                    <a href="javascript:void(0);" class="single-menu">{% trans 'blog' %}</a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'contact' %}" class="single-menu">{% trans 'contact us' %}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

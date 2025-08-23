@@ -1,0 +1,7 @@
+You have received a new message through the contact form on {{ site }}.
+
+From: {{ name }} <{{ email }}>
+Subject: {{ subject }}
+
+Message:
+{{ body }}

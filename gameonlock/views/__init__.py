@@ -9,7 +9,8 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Count, Q, Sum
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
+from django.shortcuts import render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.decorators import method_decorator
@@ -18,9 +19,11 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
 from django_contact_form._akismet import _try_get_akismet_client
-from django_contact_form.views import ContactFormView
 from django_contact_form.forms import AkismetContactForm
+from django_contact_form.views import ContactFormView
 from django_filters.views import FilterView
+from django_htmx.http import retarget, trigger_client_event
+from django_ratelimit.decorators import ratelimit
 from django_tables2 import SingleTableMixin
 from honeypot.decorators import check_honeypot
 
@@ -73,6 +76,7 @@ class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
 		return context
 
 
+@method_decorator(ratelimit(key="user_or_ip", rate="10/m"), name="post")
 @method_decorator(check_honeypot, name="post")
 class ContactView(GameonlockMixin, ContactFormView):
 	title = _("Contact Us")
@@ -88,17 +92,26 @@ class ContactView(GameonlockMixin, ContactFormView):
 		except ImproperlyConfigured:
 			return super().get_form_class()
 
-	def get_form(self, form_class=None):
-		form = super().get_form(form_class=form_class)
-		form.template_name = "peredion/forms/contact_form.html"
-		return form
+	def form_invalid(self, form):
+		response = super().form_invalid(form)
+		if self.request.htmx:
+			response = render(
+				self.request, "peredion/forms/contact_form.html", {"form": form}
+			)
+		return response
 
 	def form_valid(self, form):
-		response = super().form_valid(form)  # still send the email, etc.
+		response = super().form_valid(form)
 		messages.success(self.request, _("Submission received!") + " &#x1F389;")
 		if self.request.htmx:
-			response = HttpResponse(status=204)
-			response["HX-Trigger"] = "contactSuccess"
+			content = render(
+				self.request,
+				"peredion/contact.html#form-submitted",
+			)
+			response = trigger_client_event(
+				retarget(content, "#contact-form"),
+				"contactSuccess",
+			)
 		return response
 
 	@property

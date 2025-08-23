@@ -5,40 +5,41 @@
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}">
     <head>
-        <!-- Meta -->
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="keywords"
-              content="{% if page %}
-                           {{ page.seo_keywords }}
-                       {% else %}
-                           {{ seo_keywords|default:'' }}
-                       {% endif %}" />
-        <meta name="description"
-              content="{% if page %}
-                           {{ page.seo_description }}
-                       {% else %}
-                           {{ seo_description|default:'' }}
-                       {% endif %}" />
-        <meta property="og:title"
-              content="{% if page %}
-                           {{ page.seo_title }}
-                       {% else %}
-                           {{ seo_title|default:'' }}
-                       {% endif %}" />
-        <meta property="og:description"
-              content="{% if page %}
-                           {{ page.seo_description }}
-                       {% else %}
-                           {{ page.seo_description|default:'' }}
-                       {% endif %}" />
-        <meta property="og:image"
-              content="{% if page %}
-                           {{ page.seo_image }}
-                       {% else %}
-                           {{ seo_image|default:'' }}
-                       {% endif %}" />
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block meta %}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta name="keywords"
+                  content="{% if page %}
+                               {{ page.seo_keywords }}
+                           {% else %}
+                               {{ seo_keywords|default:'' }}
+                           {% endif %}" />
+            <meta name="description"
+                  content="{% if page %}
+                               {{ page.seo_description }}
+                           {% else %}
+                               {{ seo_description|default:'' }}
+                           {% endif %}" />
+            <meta property="og:title"
+                  content="{% if page %}
+                               {{ page.seo_title }}
+                           {% else %}
+                               {{ seo_title|default:'' }}
+                           {% endif %}" />
+            <meta property="og:description"
+                  content="{% if page %}
+                               {{ page.seo_description }}
+                           {% else %}
+                               {{ page.seo_description|default:'' }}
+                           {% endif %}" />
+            <meta property="og:image"
+                  content="{% if page %}
+                               {{ page.seo_image }}
+                           {% else %}
+                               {{ seo_image|default:'' }}
+                           {% endif %}" />
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% endblock %}
         <title>
             {% if page %}
                 {{ page.title }}

@@ -65,6 +65,7 @@ internationalized_patterns = i18n_patterns(
 	),
 	path(_("dashboard/settings/"), views.SettingsView.as_view(), name="settings"),
 	path(_("contact/"), views.ContactView.as_view(), name="contact"),
+	path(_("about/"), TemplateView(template_name="todo").as_view(), name="about"),
 	path(
 		_("terms/"),
 		TemplateView.as_view(

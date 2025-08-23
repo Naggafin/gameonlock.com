@@ -1,6 +1,16 @@
 {% extends 'base.html' %}
 {% load static i18n partials honeypot %}
 {% partialdef form-submitted %}
+<div class="text-center py-5">
+    <div class="mb-3">
+        <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+    </div>
+    <h3 class="fw-semibold mb-3">{% trans 'Thank you!' %}</h3>
+    <p class="lead mb-4">{% trans "Your message has been sent successfully. We'll be in touch soon!" %}</p>
+    <p class="text-muted small">
+        {% trans 'If you need to reach us urgently, please use the contact details provided below.' %}
+    </p>
+</div>
 {% endpartialdef %}
 {% block modal %}
     <div class="modal micromodal-slide"
@@ -16,7 +26,7 @@
                     <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
                 </header>
                 <main class="modal__content">
-                    <p>{% trans 'Your message has been received. We'll get back to you soon.' %}</p>
+                    <p>{% trans "Your message has been received. We'll get back to you soon." %}</p>
                 </main>
             </div>
         </div>
@@ -44,10 +54,12 @@
                                   x-data="{ submitting: false }">
                                 {% csrf_token %}
                                 {% render_honeypot_field "phone" %}
-                                <div class="form-fields">{{ form }}</div>
+                                <div class="form-fields">{% include 'peredion/forms/contact_form.html' %}</div>
                                 <button type="submit" class="prd-btn-1" :disabled="submitting">
                                     <span x-show="submitting">
-                                        {% trans 'submitting...' %} <i class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></i>
+                                        {% trans 'submitting...' %} <i class="spinner-border spinner-border-sm"
+    role="status"
+    aria-hidden="true"></i>
                                     </span>
                                     <span x-show="!submitting">
                                         {% trans 'submit' %} <i class="fa-solid fa-arrow-right"></i>
@@ -189,20 +201,20 @@
     <script src="{% static 'js/confetti.browser.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
     <script nonce="{{ request.csp_nonce }}">
-  document.addEventListener("DOMContentLoaded", MicroModal.init);
-  document.body.addEventListener("contactSuccess", function () {
-    MicroModal.show("contact-success-modal");
-
-    if (window.confetti) {
-      confetti({
-        particleCount: 150,
-        spread: 70,
-        origin: { y: 0.6 }
+      document.addEventListener("DOMContentLoaded", MicroModal.init);
+      document.body.addEventListener("contactSuccess", function () {
+        MicroModal.show("contact-success-modal");
+    
+        if (window.confetti) {
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
+    
+        const form = document.querySelector("#contact-form");
+        if (form) form.reset();
       });
-    }
-
-    const form = document.querySelector("#contact-form");
-    if (form) form.reset();
-  });
     </script>
 {% endblock %}
