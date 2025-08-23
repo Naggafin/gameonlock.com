@@ -20,6 +20,7 @@ django-money
 # django-oscar  # For future e-commerce/shop features, not used in MVP
 django-paypal  # Required for payment integration (MVP)
 django-phonenumber-field[phonenumbers]
+django-ratelimit
 django-redis
 django-silk
 django-taggit
@@ -58,5 +59,6 @@ sorl-thumbnail
 uv
 wagtail  # Required for CMS (MVP)
 wagtail-localize
+wagtail-newsletter
 wheel
 Whoosh  # Used when running in dev/testing mode

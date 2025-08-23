@@ -94,8 +94,7 @@
                     <div class="single-element">
                         <h4 class="title">{% trans 'phone' %}</h4>
                         <ul>
-                            <li>+96 847-930-0570</li>
-                            <li>+96 603-221-6491</li>
+                            <li>TODO</li>
                         </ul>
                     </div>
                     <div class="single-element"
@@ -105,8 +104,7 @@
                          data-aos-easing="ease-in">
                         <h4 class="title">{% trans 'email' %}</h4>
                         <ul>
-                            <li>JameMorgan@armyspy.com</li>
-                            <li>WalterBBarry@rhyta.com</li>
+                            <li>TODO</li>
                         </ul>
                     </div>
                     <div class="single-element"
@@ -116,9 +114,7 @@
                          data-aos-easing="ease-in">
                         <h4 class="title">{% trans 'head office' %}</h4>
                         <ul>
-                            <li>1051 Agriculture Lane</li>
-                            <li>Miami, Florida(FL), 33179</li>
-                            <li>305-249-1601</li>
+                            <li>TODO</li>
                         </ul>
                     </div>
                 </div>
@@ -164,26 +160,28 @@
                              data-aos-delay="100"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            <h3 class="sub-title">get our newsletter</h3>
-                            <h2 class="title">Stay Tuned with Us</h2>
+                            <h3 class="sub-title">{% trans 'get our newsletter' %}</h3>
+                            <h2 class="title">{% trans 'Stay Tuned with Us' %}</h2>
                         </div>
                         <p data-aos="fade-up"
                            data-aos-delay="200"
                            data-aos-duration="500"
                            data-aos-easing="ease-in">
                             {% blocktrans %}
-                                Subscribe to <span class="p-bold">Game-on-Lock‘</span>‘s newsletter and never miss
+                                Subscribe to <span class="p-bold">Game-on-Lock</span>'s newsletter and never miss
                                 <br />
                                 our latest business newses.
                                 Our newsletter is sent once a week, every monday.
-                               {% endblocktrans %}
+                            {% endblocktrans %}
                         </p>
-                        <form data-aos="fade-up"
+                        <form action="TODO"
+                              method="post"
+                              data-aos="fade-up"
                               data-aos-delay="250"
                               data-aos-duration="500"
                               data-aos-easing="ease-in">
                             <input type="text" placeholder="{% trans 'Ex: yourmail@address.com' %}">
-                            <button class="prd-btn-1 submit-btn">
+                            <button type="submit" class="prd-btn-1 submit-btn">
                                 {% trans 'Subscribe' %} <i class="fa-sharp fa-solid fa-paper-plane"></i>
                             </button>
                         </form>

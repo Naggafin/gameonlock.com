@@ -44,6 +44,8 @@ INSTALLED_APPS = [
 	"gameonlock",
 	"sportsbetting",
 	"golpayment",
+	"notifications",
+	"newsletter",
 	# django
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -106,6 +108,7 @@ INSTALLED_APPS = [
 	"wagtail",
 	"wagtail_localize",
 	"wagtail_localize.locales",
+	"wagtail_newsletter",
 	# other 3rd party dependencies
 	"cachalot",
 	"celery",
@@ -330,6 +333,8 @@ LOGGING = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
+# Wagtail Newsletter backend (we'll create a custom backend to use local SMTP)
+WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "newsletter.backends.local_smtp.LocalSMTPBackend"
 
 DEFAULT_FROM_EMAIL = "no-reply@gameonlock.com"
 NOTIFY_EMAILS = ["admin@gameonlock.com"]
