@@ -6,9 +6,11 @@ django-auto-prefetch
 django-cachalot
 django-cache-memoize
 django-celery-beat
+django-contact-form[akismet]
 django-countries[pyuca]
 django-debug-toolbar
 django-guardian
+django-honeypot
 django-htmx
 django-import-export
 django-localflavor

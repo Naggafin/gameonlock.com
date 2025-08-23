@@ -128,6 +128,8 @@ INSTALLED_APPS = [
 	"django_countries",
 	"view_breadcrumbs",
 	"csp",
+	"django_contact_form",
+	"honeypot",
 ]
 
 SITE_ID = 1
@@ -140,10 +142,7 @@ MIDDLEWARE = [
 	"django.middleware.common.CommonMiddleware",
 	"django.middleware.csrf.CsrfViewMiddleware",
 	"django.contrib.auth.middleware.AuthenticationMiddleware",
-	"htmx_utils.middleware.HtmxDebugMiddleware",
 	"django_htmx.middleware.HtmxMiddleware",
-	"htmx_utils.middleware.HtmxRedirectMiddleware",
-	# "htmx_utils.middleware.HtmxMessagesMiddleware",
 	"django.contrib.messages.middleware.MessageMiddleware",
 	"django.middleware.clickjacking.XFrameOptionsMiddleware",
 	"allauth.account.middleware.AccountMiddleware",
@@ -151,6 +150,7 @@ MIDDLEWARE = [
 	"wagtail.contrib.redirects.middleware.RedirectMiddleware",
 	"django.contrib.flatpages.middleware.FlatpageFallbackMiddleware",
 	"django_user_agents.middleware.UserAgentMiddleware",
+	"notifications.middleware.SSEMessageMiddleware",
 ]
 
 ROOT_URLCONF = "gameonlock.urls"
@@ -170,7 +170,6 @@ TEMPLATES = [
 				# "oscar.apps.checkout.context_processors.checkout",
 				# "oscar.apps.communication.notifications.context_processors.notifications",
 				# "oscar.core.context_processors.metadata",
-				# "htmx_utils.context_processors.htmx_utils_context",
 				"gameonlock.context.site_vars",
 			],
 		},
@@ -473,6 +472,11 @@ CONTENT_SECURITY_POLICY = {
 		"report-uri": "/csp-report/",
 	},
 }
+
+
+# django-honeypot
+
+HONEYPOT_FIELD_NAME = "phone"
 
 
 # django-debug-toolbar

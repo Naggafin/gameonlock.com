@@ -434,7 +434,8 @@
 {% block js %}
     {{ block.super }}
     <script src="{% static 'flatpickr/js/flatpickr.js' %}"
-            nonce="{{ request.csp_nonce }}"></script>
+            nonce="{{ request.csp_nonce }}"
+            defer></script>
     {{ signup_config|json_script:"signup-config" }}
     <script nonce="{{ request.csp_nonce }}">
         document.addEventListener('alpine:init', () => {

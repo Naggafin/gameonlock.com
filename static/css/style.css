@@ -770,3 +770,19 @@ td {
   padding: 10px;
   margin-bottom: 10px;
 }
+
+/* Bet history filter */
+.tranx-history-nav .navbar .navbar-nav .nav-item .dropdown-menu {
+  width: 100%;
+}
+.tranx-history-nav .navbar .navbar-nav .nav-item label {
+  transform: none !important;
+  right: auto !important;
+  top: auto !important;
+}
+.tranx-history-nav .navbar .navbar-nav .nav-item:last-child {
+  flex-grow: unset !important;
+}
+.tranx-history-nav .navbar .navbar-nav .nav-item:last-child .nav-link, .tranx-history-nav .navbar .navbar-nav .nav-item:last-child .nav-link::after, .tranx-history-nav .navbar .navbar-nav .nav-item:last-child .nav-link::before {
+  width: 91px;
+}

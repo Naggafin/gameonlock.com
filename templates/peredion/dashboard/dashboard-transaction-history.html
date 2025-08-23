@@ -1,5 +1,5 @@
 {% extends 'peredion/dashboard/base.html' %}
-{% load i18n django_tables2 partials %}
+{% load static i18n django_tables2 partials %}
 {% partialdef filter-form %}
 <form method="get"
       action="{% url 'transaction_history' %}"
@@ -9,12 +9,12 @@
       hx-target="#transaction-history-table"
       hx-swap="outerHTML"
       x-ref="form"
-      x-data="{ type: '{{ request.GET.type|default:'' }}', method: '{{ request.GET.method|default:'' }}', start: '{{ request.GET.transaction_datetime_after|default:'' }}', end: '{{ request.GET.transaction_datetime_before|default:'' }}', selected: '' }">
+      x-data="{ type: '{{ request.GET.type|default:'' }}', method: '{{ request.GET.method|default:'' }}', start: '{{ request.GET.transaction_datetime_after|default:'' }}', end: '{{ request.GET.transaction_datetime_before|default:'' }}', calendarOpen: false }">
     <nav class="navbar navbar-expand-lg">
         <ul class="navbar-nav">
             <!-- DATE RANGE -->
             <li class="nav-item calndr">
-                <label for="started-date">
+                <label :class="{ 'open-label': calendarOpen }" for="started-date">
                     <i class="fa-solid fa-calendars"></i>
                 </label>
                 {# djlint:off #}
@@ -22,24 +22,37 @@
                     readonly
                     id="started-date"
                     class="nav-link"
+                    :class="{ 'calendar-open': calendarOpen }"
                     type="button"
-                    placeholder="{% trans 'Select date range' %}"
-                    x-init="flatpickr($el, {
-                               mode: 'range',
-                               dateFormat: 'Y-m-d',
-                               defaultDate: [start, end].filter(Boolean),
-                               onClose: function(selectedDates, dateStr) {
-                                   if (selectedDates.length === 2) {
-                                       const [s, e] = dateStr.split(' {% trans 'to' %} ');
-                                       start = s; end = e;
-                                       $refs.startInput.value = s;
-                                       $refs.endInput.value = e;
-                                       $refs.startInput.dispatchEvent(new Event('change', { bubbles: true }));
-                                       $refs.endInput.dispatchEvent(new Event('change', { bubbles: true }));
-                                   }
-                               }
-                           })"
-                    >
+                    value="{% trans 'Select date range' %}"
+                    x-init="
+                        const initPicker = () => {
+                            if (typeof flatpickr !== 'function') {
+                                return setTimeout(initPicker, 50);
+                            }
+                            flatpickr($el, {
+                                mode: 'range',
+                                dateFormat: 'Y-m-d',
+                                defaultDate: [start, end].filter(Boolean),
+                                onClose(selectedDates, dateStr) {
+                                    $data.calendarOpen = false;
+                                    if (selectedDates.length === 2) {
+                                        const [s, e] = dateStr.split(' {% trans 'to' %} ');
+                                        start = s; end = e;
+                                        $refs.startInput.value = s;
+                                        $refs.endInput.value = e;
+                                        $refs.startInput.dispatchEvent(new Event('change', { bubbles: true }));
+                                        $refs.endInput.dispatchEvent(new Event('change', { bubbles: true }));
+                                    }
+                                },
+                                onOpen() {
+                                    $data.calendarOpen = true;
+                                }
+                            });
+                        };
+                        initPicker();
+                    "
+                >
                 <input type="hidden"
                        name="transaction_datetime_after"
                        x-model="start"
@@ -113,6 +126,12 @@
     </nav>
 </form>
 {% endpartialdef %}
+{% block css %}
+    {{ block.super }}
+    <link rel="stylesheet"
+          href="{% static 'flatpickr/css/flatpickr.min.css' %}"
+          nonce="{{ request.csp_nonce }}">
+{% endblock %}
 {% block content %}
     <div class="db-elements">
         <div class="container">
@@ -130,4 +149,10 @@
             </div>
         </div>
     </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'flatpickr/js/flatpickr.js' %}"
+            nonce="{{ request.csp_nonce }}"
+            defer></script>
+    {{ block.super }}
 {% endblock %}

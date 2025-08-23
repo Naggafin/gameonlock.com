@@ -50,8 +50,6 @@ api_urls = [
 internationalized_patterns = i18n_patterns(
 	path(_("accounts/"), include((allauth_urls, "custom_allauth"))),
 	path(_("accounts/"), include("allauth.urls")),
-	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
-	path(_("pages/"), include(wagtail_urls)),
 	path(_("sports/"), include("sportsbetting.urls")),
 	# path(_("shop/"), include(apps.get_app_config("oscar").urls[0])),
 	path(_("dashboard/"), views.DashboardView.as_view(), name="dashboard"),
@@ -66,6 +64,7 @@ internationalized_patterns = i18n_patterns(
 		name="transaction_history",
 	),
 	path(_("dashboard/settings/"), views.SettingsView.as_view(), name="settings"),
+	path(_("contact/"), views.ContactView.as_view(), name="contact"),
 	path(
 		_("terms/"),
 		TemplateView.as_view(
@@ -93,6 +92,8 @@ internationalized_patterns = i18n_patterns(
 		cache_page(86400, key_prefix="jsi18n")(JavaScriptCatalog.as_view()),
 		name="javascript-catalog",
 	),
+	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
+	path(_("pages/"), include(wagtail_urls)),
 	path("", views.HomeView.as_view(), name="index"),
 	prefix_default_language=False,
 )

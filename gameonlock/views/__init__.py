@@ -5,17 +5,23 @@ from allauth.account.views import (
 	LoginView as AllauthLoginView,
 	SignupView as AllauthSignupView,
 )
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Count, Q, Sum
-from django.http import JsonResponse
-from django.urls import reverse
+from django.http import HttpResponse, JsonResponse
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.decorators import method_decorator
 from django.utils.functional import SimpleLazyObject
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import TemplateView
+from django_contact_form._akismet import _try_get_akismet_client
+from django_contact_form.views import AkismetContactForm, ContactFormView
 from django_filters.views import FilterView
 from django_tables2 import SingleTableMixin
+from honeypot.decorators import check_honeypot
 
 from golpayment.filters import TransactionFilter
 from golpayment.models import Transaction
@@ -64,6 +70,39 @@ class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
 			)[:3]
 		)
 		return context
+
+
+@method_decorator(check_honeypot, name="post")
+class ContactView(GameonlockMixin, ContactFormView):
+	title = _("Contact Us")
+	subtitle = _("Get in touch by simply dropping a message")
+	success_url = reverse_lazy("contact")
+	template_name = "peredion/contact.html"
+
+	def get_form_class(self):
+		try:
+			if not _try_get_akismet_client():
+				raise ImproperlyConfigured
+			return AkismetContactForm
+		except ImproperlyConfigured:
+			return super().get_form_class()
+
+	def get_form(self, form_class=None):
+		form = super().get_form(form_class=form_class)
+		form.template_name = "peredion/forms/contact_form.html"
+		return form
+
+	def form_valid(self, form):
+		response = super().form_valid(form)  # still send the email, etc.
+		messages.success(self.request, _("Submission received!") + " &#x1F389;")
+		if self.request.htmx:
+			response = HttpResponse(status=204)
+			response["HX-Trigger"] = "contactSuccess"
+		return response
+
+	@property
+	def crumbs(self):
+		return [('<span class="text">%s</span>' % self.title, reverse("contact"))]
 
 
 class LoginView(GameonlockMixin, AllauthLoginView):
