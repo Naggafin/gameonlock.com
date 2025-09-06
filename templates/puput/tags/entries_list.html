@@ -1,0 +1,27 @@
+{% load i18n wagtailimages_tags puput_tags %}
+{% for entry in entries %}
+    {% if forloop.first or forloop.counter0|divisibleby:2 %}<li class="recent-posts">{% endif %}
+        <div class="single-recent-post">
+            {% if entry.header_image %}
+                {% image entry.header_image fill-300x450 as header_image %}
+                <div class="part-img">
+                    <img alt="{{ entry.header_image.title }}"
+                         src="{{ header_image.url }}"
+                         nonce="{{ request.csp_nonce }}">
+                </div>
+            {% endif %}
+            <div class="part-text">
+                <h5 class="post-title">
+                    <a href="{% entry_url entry blog_page %}">{{ entry.title }}</a>
+                </h5>
+                <div class="post-stats">
+                    <span class="text">
+                        {# TODO: author url #}
+                        by <a class="posted-by" href="#">{{ entry.owner.username }}</a>
+                    </span>
+                    <span class="text">{{ entry.date|date:"SHORT_DATE_FORMAT" }}</span>
+                </div>
+            </div>
+        </div>
+        {% if forloop.counter0|add:1|divisibleby:2 or forloop.last %}</li>{% endif %}
+{% endfor %}

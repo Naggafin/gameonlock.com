@@ -91,7 +91,7 @@ OSCAR_URL_SCHEMA = "http"
 
 
 # wagtail
-WAGTAILADMIN_BASE_URL = OSCAR_URL_SCHEMA + "://www.gameonlock.com"
+WAGTAILADMIN_BASE_URL = OSCAR_URL_SCHEMA + "://localhost:8000"
 
 
 HAYSTACK_CONNECTIONS = {

@@ -112,7 +112,8 @@
                             aria-label="{% trans 'Toggle navigation' %}"
                             x-data="{ isOpen: false }"
                             x-on:click="isOpen = !isOpen">
-                        <i x-bind:class="isOpen ? 'fa-solid fa-bars-staggered' : 'fa-light fa-bars'"></i>
+                        <i class="fa-solid"
+                           :class="{ 'fa-bars-staggered': isOpen, 'fa-bars': !isOpen }"></i>
                     </button>
                 </div>
             </div>

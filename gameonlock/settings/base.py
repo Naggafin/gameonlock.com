@@ -97,6 +97,9 @@ INSTALLED_APPS = [
 	# wagtail
 	"wagtail.contrib.forms",
 	"wagtail.contrib.redirects",
+	"wagtail.contrib.legacy.richtext",
+	"wagtail.contrib.sitemaps",
+	"wagtail.contrib.routable_page",
 	"wagtail.embeds",
 	"wagtail.sites",
 	"wagtail.users",
@@ -109,6 +112,7 @@ INSTALLED_APPS = [
 	"wagtail_localize",
 	"wagtail_localize.locales",
 	"wagtail_newsletter",
+	"puput",
 	# other 3rd party dependencies
 	"cachalot",
 	"celery",
@@ -133,6 +137,7 @@ INSTALLED_APPS = [
 	"csp",
 	"django_contact_form",
 	"honeypot",
+	"yesglot",
 ]
 
 SITE_ID = 1
@@ -379,6 +384,13 @@ SITE_VARS = {
 }
 
 
+# wagtail / puput
+
+WAGTAIL_SITE_NAME = _("Game-on-Lock Blog")
+PUPUT_AS_PLUGIN = True
+PUPUT_COMMENTS_PROVIDER = "puput.comments.DjangoCommentsProvider"
+
+
 # channel
 
 CHANNEL_LAYERS = {
@@ -501,3 +513,9 @@ LOGGING["loggers"]["nplusone"] = {  # noqa: F405
 	"handlers": ["console"],
 	"level": logging.WARN,
 }
+
+
+# yesglot
+
+YESGLOT_LLM_MODEL = (os.getenv("YESGLOT_LLM_MODEL"),)
+YESGLOT_API_KEY = (os.getenv("YESGLOT_API_KEY"),)

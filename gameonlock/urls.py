@@ -27,6 +27,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog, set_language
+from puput import urls as puput_urls
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
@@ -94,7 +95,8 @@ internationalized_patterns = i18n_patterns(
 		name="javascript-catalog",
 	),
 	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
-	path(_("pages/"), include(wagtail_urls)),
+	path("", include(wagtail_urls)),
+	path("", include(puput_urls)),
 	path("", views.HomeView.as_view(), name="index"),
 	prefix_default_language=False,
 )
@@ -103,7 +105,9 @@ urlpatterns = [
 	path("admin/", admin.site.urls),
 	path("csp-report/", views.csp_report_view, name="csp_report"),
 	path("i18n/set_language/", set_language, name="set_language"),
-	path("cms/", include(wagtailadmin_urls)),
+	path(
+		"cms/", include(wagtailadmin_urls)
+	),  # TODO: how to protect login w/ allauth the same django admin is?
 	path("documents/", include(wagtaildocs_urls)),
 	path("payment/", include("golpayment.urls")),
 	path("api/", include((api_urls, "api"), namespace="api")),

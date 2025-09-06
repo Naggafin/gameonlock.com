@@ -6,7 +6,9 @@ django-auto-prefetch
 django-cachalot
 django-cache-memoize
 django-celery-beat
+django-comments-xtd
 django-contact-form[akismet]
+django-contrib-comments
 django-countries[pyuca]
 django-debug-toolbar
 django-guardian
@@ -44,6 +46,7 @@ pillow
 pip
 psycopg[c]
 psycopg_pool
+puput
 pycountry
 pytest
 python-dateutil
@@ -62,3 +65,4 @@ wagtail-localize
 wagtail-newsletter
 wheel
 Whoosh  # Used when running in dev/testing mode
+yesglot

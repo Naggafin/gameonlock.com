@@ -38,6 +38,12 @@
                            {% else %}
                                {{ seo_image|default:'' }}
                            {% endif %}" />
+            <meta property="og:url"
+                  content="{% if page %}
+                               {{ page.get_full_url }}
+                           {% else %}
+                               {{ request.build_absolute_uri }}
+                           {% endif %}">
             <meta name="viewport" content="width=device-width, initial-scale=1">
         {% endblock %}
         <title>
@@ -74,7 +80,7 @@
             <link href="{% static 'aos/css/aos.css' %}"
                   rel="stylesheet"
                   nonce="{{ request.csp_nonce }}">
-            <!-- main css -->
+            <!-- peredion css -->
             <link rel="stylesheet"
                   href="{% static 'peredion/css/style.css' %}"
                   nonce="{{ request.csp_nonce }}">
@@ -82,6 +88,7 @@
             <link rel="stylesheet"
                   href="{% static 'css/animate.min.css' %}"
                   nonce="{{ request.csp_nonce }}">
+            <!-- main css -->
             <link rel="stylesheet"
                   href="{% static 'css/style.css' %}"
                   nonce="{{ request.csp_nonce }}">
@@ -101,12 +108,7 @@
         {% block preloader %}
             {% include 'peredion/elements/preloader.html' %}
         {% endblock %}
-        {% block modal %}
-            <div id="modalContainer"
-                 @htmx:before-swap="if ($event.detail.target == $el) {const modalElem = $el.querySelector('.modal'); if (!!modalElem) {const modal = bootstrap.Modal.getOrCreateInstance(modalElem);modal.hide();}}"
-                 @htmx:after-swap="if ($event.detail.target == $el) {const modalElem = $el.querySelector('.modal'); const modal = bootstrap.Modal.getOrCreateInstance(modalElem);modal.show();}"
-                 x-data></div>
-        {% endblock %}
+        {% block modal %}{% endblock %}
         {% block header %}
             {% include 'peredion/elements/bet-slip.html' %}
             {% include 'peredion/elements/header.html' %}

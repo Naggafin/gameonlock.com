@@ -1,5 +1,12 @@
-{% load static i18n view_breadcrumbs %}
-<div class="prd-breadcrumb">
+{% load static i18n view_breadcrumbs wagtailroutablepage_tags wagtailimages_tags %}
+<div class="prd-breadcrumb overflow-hidden">
+    {% if page and page.header_image %}
+        {% image page.header_image fill-1500x250 as header_image %}
+        <img class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
+             alt="{{ page.header_image.title }}"
+             src="{{ header_image.url }}"
+             nonce="{{ request.csp_nonce }}">
+    {% endif %}
     <div class="brd-shape">
         <div class="brd-img brd-img-1"
              data-aos="fade-right"
@@ -45,7 +52,27 @@
                     {{ subtitle|default:'' }}
                 {% endif %}
             </h2>
-            <div class="page-direction">{% render_breadcrumbs %}</div>
+            <div class="page-direction">
+                {% if not page %}
+                    {% render_breadcrumbs %}
+                {% else %}
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            {% for ancestor in page.get_ancestors.inclusive.live %}
+                                {% if not url or forloop.counter == breadcrumbs_total %}
+                                    <li class="breadcrumb-item
+                                               {% if forloop.counter == breadcrumbs_total %}active{% endif %}"
+                                        {% if forloop.counter == breadcrumbs_total %}aria-current="page"{% endif %}>{{ ancestor.title|safe }}</li>
+                                {% else %}
+                                    <li class="breadcrumb-item">
+                                        <a href="{{ ancestor.url }}">{{ ancestor.title|safe }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        </ol>
+                    </nav>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
