@@ -13,21 +13,23 @@
 </div>
 {% endpartialdef %}
 {% block modal %}
-    <div class="modal micromodal-slide"
+    <div class="modal fade"
          id="contact-success-modal"
+         tabindex="-1"
+         aria-labelledby="contactSuccessModalLabel"
          aria-hidden="true">
-        <div class="modal__overlay" tabindex="-1" data-micromodal-close>
-            <div class="modal__container"
-                 role="dialog"
-                 aria-modal="true"
-                 aria-labelledby="modal-title">
-                <header class="modal__header">
-                    <h2 id="modal-title">&#x1F973; {% trans 'Thanks for reaching out!' %}</h2>
-                    <button class="modal__close" aria-label="Close modal" data-micromodal-close></button>
-                </header>
-                <main class="modal__content">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="contactSuccessModalLabel">&#x1F973; {% trans 'Thanks for reaching out!' %}</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="{% trans 'Close' %}"></button>
+                </div>
+                <div class="modal-body">
                     <p>{% trans "Your message has been received. We'll get back to you soon." %}</p>
-                </main>
+                </div>
             </div>
         </div>
     </div>
@@ -194,14 +196,13 @@
 {% endblock %}
 {% block js %}
     {{ block.super }}
-    <script src="{% static 'js/micromodal.min.js' %}"
-            nonce="{{ request.csp_nonce }}"></script>
     <script src="{% static 'js/confetti.browser.min.js' %}"
             nonce="{{ request.csp_nonce }}"></script>
     <script nonce="{{ request.csp_nonce }}">
-      document.addEventListener("DOMContentLoaded", MicroModal.init);
       document.body.addEventListener("contactSuccess", function () {
-        MicroModal.show("contact-success-modal");
+        var modalEl = document.getElementById("contact-success-modal");
+        var modal = new bootstrap.Modal(modalEl);
+        modal.show();
     
         if (window.confetti) {
           confetti({

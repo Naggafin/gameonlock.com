@@ -1,4 +1,4 @@
-{% load static i18n django_htmx puput_tags %}
+{% load static i18n django_htmx puput_tags wagtailmetadata_tags %}
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_available_languages as languages %}
 <!DOCTYPE html>
@@ -7,42 +7,21 @@
         {% block meta %}
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-            <meta name="keywords"
-                  content="{% if page %}
-                               {{ page.seo_keywords }}
-                           {% else %}
-                               {{ seo_keywords|default:'' }}
-                           {% endif %}" />
-            <meta name="title"
-                  content="{% block meta_title %}
-                               {% if page %}
-                                   {% if page.seo_title %}
-                                       {{ page.seo_title }}
-                                   {% else %}
-                                       {{ page.title }}
-                                   {% endif %}
-                               {% else %}
-                                   {{ title }}
-                               {% endif %}
-                           {% endblock meta_title %}" />
-            <meta name="description"
-                  content="{% block meta_description %}
-                               {% if page %}
-                                   {{ page.search_description }}
-                               {% else %}
-                                   {{ seo_description|default:'' }}
-                               {% endif %}
-                           {% endblock meta_description %}" />
-            {% block social_share %}
-            {% endblock social_share %}
+            {% if not self %}
+                <meta name="keywords" content="{{ seo_keywords|default:'' }}" />
+                <meta name="title" content="{{ title }}" />
+                <meta name="description" content="{{ seo_description|default:'' }}" />
+            {% else %}
+                {% meta_tags %}
+            {% endif %}
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <link rel="canonical"
                   href="{% block canonical %}{% canonical_url %}{% endblock canonical %}" />
         {% endblock %}
         <title>
             {% block title %}
-                {% if page %}
-                    {{ page.title }}
+                {% if self %}
+                    {{ self.title }}
                 {% else %}
                     {{ title }}
                 {% endif %}

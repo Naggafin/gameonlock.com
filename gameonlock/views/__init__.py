@@ -73,6 +73,15 @@ class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
 				start_datetime__gt=timezone.now()
 			)[:3]
 		)
+		context["home_page"] = {
+			"about_title": _("About us"),
+			"about_subtitle": _("We provide the most reliable & legal betting"),
+			"about_content": "",
+			"bet_title": _("Available Bets"),
+			"bet_subtitle": _("Choose Your Match & Place A Bet"),
+			"schedule_title": _("Next Schedule"),
+			"schedule_subtitle": _("All Upcoming Matches"),
+		}
 		return context
 
 

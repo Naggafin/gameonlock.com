@@ -8,15 +8,16 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 from wagtail_newsletter.models import NewsletterPageMixin
+from wagtailmetadata.models import MetadataPageMixin, WagtailImageMetadataMixin
 
+from gameonlock.views.mixins import GameonlockMixin
 from sportsbetting.models import Game
-
-from .views.mixins import GameonlockMixin, SportsBettingContextMixin
+from sportsbetting.views.mixins import SportsBettingContextMixin
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
 
-class HomePage(SportsBettingContextMixin, GameonlockMixin, Page):
+class HomePage(SportsBettingContextMixin, GameonlockMixin, MetadataPageMixin, Page):
 	about_title = models.CharField(max_length=255, default="About us", blank=True)
 	about_subtitle = models.CharField(
 		max_length=255,
@@ -67,6 +68,7 @@ class HomePage(SportsBettingContextMixin, GameonlockMixin, Page):
 				if count == 0:
 					break
 			upcoming_entries[sport] = tmp
+
 		context.update(
 			{
 				"home_page": self,
@@ -118,7 +120,7 @@ class BlogPageAbstract(BlogAbstract):
 		abstract = True
 
 
-class EntryPageAbstract(NewsletterPageMixin, EntryAbstract):
+class EntryPageAbstract(NewsletterPageMixin, WagtailImageMetadataMixin, EntryAbstract):
 	class Meta:
 		abstract = True
 

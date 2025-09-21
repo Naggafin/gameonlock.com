@@ -96,7 +96,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-6 col-xl-none col-lg-none col-md-block d-flex align-items-center">
-                    <a href="{% url 'index' %}" class="mobile-logo">
+                    <a href="/" class="mobile-logo">
                         <img src="{% static 'peredion/images/logo/mobile-logo.png' %}"
                              alt="{% trans 'logo' %}"
                              nonce="{{ request.csp_nonce }}">
@@ -128,10 +128,9 @@
                             <div class="col-xl-5 col-lg-5">
                                 <ul class="navbar-nav nn-left">
                                     <li class="nav-item">
-                                        {% url 'index' as url %}
                                         <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'home' %}</a>
+                                                  {% if request.path == '/' %}active{% endif %}"
+                                           href="/">{% trans 'home' %}</a>
                                     </li>
                                     <li class="nav-item">
                                         {# TODO: this should direct to a wagtail page #}
@@ -156,7 +155,7 @@
                             </div>
                             <div class="col-2 col-lg-2 d-xl-block d-lg-block d-md-none">
                                 <div class="logo">
-                                    <a href="{% url 'index' %}">
+                                    <a href="/">
                                         <img src="{% static 'peredion/images/logo/logo-1.png' %}"
                                              alt="{% trans 'logo' %}"
                                              nonce="{{ request.csp_nonce }}">

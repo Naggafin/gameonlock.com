@@ -60,8 +60,9 @@ ruff
 slippers
 sorl-thumbnail
 uv
-wagtail  # Required for CMS (MVP)
+wagtail
 wagtail-localize
+wagtail-metadata
 wagtail-newsletter
 wheel
 Whoosh  # Used when running in dev/testing mode

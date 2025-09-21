@@ -45,7 +45,6 @@ INSTALLED_APPS = [
 	"sportsbetting",
 	"golpayment",
 	"notifications",
-	"newsletter",
 	# django
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -112,6 +111,7 @@ INSTALLED_APPS = [
 	"wagtail_localize",
 	"wagtail_localize.locales",
 	"wagtail_newsletter",
+	"wagtailmetadata",
 	"puput",
 	# other 3rd party dependencies
 	"cachalot",
@@ -361,16 +361,6 @@ SPORTS = {
 
 
 SITE_VARS = {
-	# TODO: These are locale context variables used on the homepage. Ideally, they should be manageable via Wagtail when the homepage is redone as a Page object, not here.
-	"home_page": {
-		"about_title": _("About us"),
-		"about_subtitle": _("We provide the most reliable & legal betting"),
-		"about_content": "",
-		"bet_title": _("Available Bets"),
-		"bet_subtitle": _("Choose Your Match & Place A Bet"),
-		"schedule_title": _("Next Schedule"),
-		"schedule_subtitle": _("All Upcoming Matches"),
-	},
 	"bet_slip_config": {
 		"MIN_BET": SPORTS["MIN_BET"],
 		"MIN_NUM_BETS": SPORTS["MIN_NUM_BETS"],
@@ -396,6 +386,7 @@ PUPUT_ENTRY_MODEL = "gameonlock.pages.EntryPageAbstract"
 WAGTAIL_NEWSLETTER_FROM_NAME = "Game on Lock"
 WAGTAIL_NEWSLETTER_REPLY_TO = DEFAULT_FROM_EMAIL
 WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
+WAGTAILMETADATA_IMAGE_FILTER = "fill-1200x630"
 
 
 # channel
@@ -472,7 +463,7 @@ SILKY_INTERCEPT_PERCENT = 25
 # django-csp
 
 CONTENT_SECURITY_POLICY = {
-	"EXCLUDE_URL_PREFIXES": [],
+	"EXCLUDE_URL_PREFIXES": ["/cms/"],
 	"DIRECTIVES": {
 		"default-src": [SELF],
 		"script-src": [NONCE, UNSAFE_EVAL, STRICT_DYNAMIC],
