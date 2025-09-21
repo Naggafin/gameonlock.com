@@ -384,12 +384,19 @@ SITE_VARS = {
 }
 
 
-# wagtail / puput
+# wagtail / puput / newsletter
 
 WAGTAIL_SITE_NAME = _("Game-on-Lock Blog")
+WAGTAIL_I18N_ENABLED = True
+WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
+# WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 PUPUT_AS_PLUGIN = True
 PUPUT_COMMENTS_PROVIDER = "puput.comments.DjangoCommentsProvider"
 PUPUT_BLOG_MODEL = "gameonlock.pages.BlogPageAbstract"
+PUPUT_ENTRY_MODEL = "gameonlock.pages.NewsletterEntryAbstract"
+WAGTAIL_NEWSLETTER_FROM_NAME = "Game on Lock"
+WAGTAIL_NEWSLETTER_REPLY_TO = "noreply@gameonlock.com"
+WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
 
 
 # channel
@@ -450,14 +457,6 @@ OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
 OSCAR_BASKET_COOKIE_OPEN = "gameonlock_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
-
-
-# wagtail
-
-WAGTAIL_SITE_NAME = "Game-on-Lock"
-WAGTAIL_I18N_ENABLED = True
-WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
-# WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
 
 
 # django-silk

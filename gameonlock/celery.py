@@ -15,8 +15,10 @@ app.conf.beat_schedule = {
 		"task": "sportsbetting.tasks.fetch_and_store_team_data",
 		"schedule": crontab(minute=0, hour="*/1"),  # Runs every hour
 	},
-	"monthly-newsletter": {
-		"task": "newsletter.tasks.create_and_send_monthly_newsletter",
-		"schedule": crontab(day_of_month=1, hour=9, minute=0),
+	"send-monthly-digest": {
+		"task": "gameonlock.tasks.generate_and_send_monthly_digest",
+		"schedule": crontab(
+			day_of_month=1, hour=9, minute=0
+		),  # 1st of each month at 9am
 	},
 }
