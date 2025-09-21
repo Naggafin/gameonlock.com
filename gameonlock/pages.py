@@ -2,93 +2,83 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils import timezone
+from django.utils.functional import SimpleLazyObject
 from puput.abstracts import BlogAbstract, EntryAbstract
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
-from wagtailnewsletter.models import NewsletterPageMixin
+from wagtail_newsletter.models import NewsletterPageMixin
 
-from sportsbetting.models import Game, Sport
+from sportsbetting.models import Game
+
+from .views.mixins import GameonlockMixin, SportsBettingContextMixin
+
+HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
 
-class HomePage(Page):
-	template = "peredion/index.html"
-
-	about_title = models.CharField(
-		blank=True,
-		default="About us",
-		max_length=255,
-		help_text="Write a title for the about section",
-	)
+class HomePage(SportsBettingContextMixin, GameonlockMixin, Page):
+	about_title = models.CharField(max_length=255, default="About us", blank=True)
 	about_subtitle = models.CharField(
-		blank=True,
-		default="We provide the most reliable & legal betting",
 		max_length=255,
-		help_text="Write a subtitle for the about section",
+		default="We provide the most reliable & legal betting",
+		blank=True,
 	)
 	about_content = RichTextField(
-		blank=True, max_length=255, help_text="Write content for the about section"
+		features=["bold", "italic", "link"], blank=True, default=""
 	)
 
-	bet_title = models.CharField(
-		blank=True,
-		default="Available Bets",
-		max_length=255,
-		help_text="Write a title for the bet section",
-	)
+	bet_title = models.CharField(max_length=255, default="Available Bets", blank=True)
 	bet_subtitle = models.CharField(
-		blank=True,
-		default="Choose Your Match & Place A Bet",
-		max_length=255,
-		help_text="Write a subtitle for the bet section",
+		max_length=255, default="Choose Your Match & Place A Bet", blank=True
 	)
 
 	schedule_title = models.CharField(
-		blank=True,
-		default="Next Schedule",
-		max_length=255,
-		help_text="Write a title for the schedule section",
+		max_length=255, default="Next Schedule", blank=True
 	)
 	schedule_subtitle = models.CharField(
-		blank=True,
-		default="All Upcoming Matches",
-		max_length=255,
-		help_text="Write a subtitle for the schedule section",
+		max_length=255, default="All Upcoming Matches", blank=True
 	)
 
 	content_panels = Page.content_panels + [
-		MultiFieldPanel(
-			[
-				FieldPanel("about_title"),
-				FieldPanel("about_subtitle"),
-				FieldPanel("about_content"),
-			],
-			heading="About section",
-		),
-		MultiFieldPanel(
-			[
-				FieldPanel("bet_title"),
-				FieldPanel("bet_subtitle"),
-			],
-			heading="Bet previews section",
-		),
-		MultiFieldPanel(
-			[
-				FieldPanel("schedule_title"),
-				FieldPanel("schedule_subtitle"),
-			],
-			heading="Schedule preview section",
-		),
+		# About section
+		FieldPanel("about_title"),
+		FieldPanel("about_subtitle"),
+		FieldPanel("about_content"),
+		# Bet section
+		FieldPanel("bet_title"),
+		FieldPanel("bet_subtitle"),
+		# Schedule section
+		FieldPanel("schedule_title"),
+		FieldPanel("schedule_subtitle"),
 	]
 
-	def get_context(self, request):
-		context = super().get_context(request)
-		context["sports"] = Sport.objects.prefetch_related(
-			"governing_bodies__leagues__games__betting_lines",
-			"governing_bodies__leagues__games__betting_lines__home_team",
-			"governing_bodies__leagues__games__betting_lines__away_team",
-		).all()
-		context["games"] = Game.objects.prefetch_related("home_team", "away_team").all()
+	template = "peredion/index.html"
+
+	def get_context(self, request, *args, **kwargs):
+		context = super().get_context(request, *args, **kwargs)
+
+		upcoming_entries = context.get("upcoming_entries", {})
+		for sport, lines_dict in upcoming_entries.items():
+			count = HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT
+			tmp = {}
+			for key, lines in lines_dict.items():
+				tmp[key] = lines[:count]
+				count -= len(tmp[key])
+				if count == 0:
+					break
+			upcoming_entries[sport] = tmp
+		context.update(
+			{
+				"home_page": self,
+				"upcoming_entries": upcoming_entries,
+				"upcoming_games": SimpleLazyObject(
+					lambda: Game.objects.select_related(
+						"home_team", "away_team"
+					).filter(start_datetime__gt=timezone.now())[:3]
+				),
+			}
+		)
+
 		return context
 
 
@@ -124,10 +114,29 @@ class BlogPageAbstract(BlogAbstract):
 
 		return context
 
-
-class NewsletterEntryAbstract(NewsletterPageMixin, EntryAbstract):
 	class Meta:
 		abstract = True
+
+
+class EntryPageAbstract(NewsletterPageMixin, EntryAbstract):
+	class Meta:
+		abstract = True
+
+
+class NewsletterIndexPage(Page):
+	"""
+	An index page to hold all newsletter (digest) pages.
+	"""
+
+	subpage_types = ["gameonlock.MonthlyDigestPage"]  # only allow digests inside
+
+	parent_page_types = ["wagtailcore.Page"]  # can live at the root, or under HomePage
+
+	# Optionally, add some context if you want a frontend listing
+	def get_context(self, request):
+		context = super().get_context(request)
+		context["digests"] = self.get_children().live().order_by("-first_published_at")
+		return context
 
 
 class MonthlyDigestPage(NewsletterPageMixin, Page):
@@ -142,9 +151,7 @@ class MonthlyDigestPage(NewsletterPageMixin, Page):
 	# Auto-populated field with rendered HTML (optional)
 	compiled_html = models.TextField(blank=True, editable=False)
 
-	parent_page_types = [
-		"wagtailnewsletter.NewsletterIndexPage"
-	]  # or your own index page
+	parent_page_types = ["gameonlock.NewsletterIndexPage"]
 
 	@classmethod
 	def generate_for_month(cls, year, month):

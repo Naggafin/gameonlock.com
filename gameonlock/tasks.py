@@ -1,10 +1,10 @@
 # blog/tasks.py
 from celery import shared_task
 from django.utils import timezone
-from wagtail.models import Page
 from wagtailnewsletter.utils import send_campaign
 
 from .models import MonthlyDigestPage
+from .utils import get_or_create_newsletter_index
 
 
 @shared_task
@@ -23,7 +23,7 @@ def generate_and_send_monthly_digest():
 	html = digest.render_digest(entries)
 
 	# Publish under a NewsletterIndexPage
-	parent = Page.objects.type(MonthlyDigestPage.parent_page_types[0]).first()
+	parent = get_or_create_newsletter_index()
 	parent.add_child(instance=digest)
 	digest.save_revision().publish()
 

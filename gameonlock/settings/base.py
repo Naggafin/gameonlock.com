@@ -338,9 +338,6 @@ LOGGING = {
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
 
-# Wagtail Newsletter backend (we'll create a custom backend to use local SMTP)
-WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "newsletter.backends.local_smtp.LocalSMTPBackend"
-
 DEFAULT_FROM_EMAIL = "no-reply@gameonlock.com"
 NOTIFY_EMAILS = ["admin@gameonlock.com"]
 
@@ -383,6 +380,8 @@ SITE_VARS = {
 	},
 }
 
+MIGRATION_MODULES = {"puput": "gameonlock.puput_migrations"}
+
 
 # wagtail / puput / newsletter
 
@@ -393,9 +392,9 @@ WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 PUPUT_AS_PLUGIN = True
 PUPUT_COMMENTS_PROVIDER = "puput.comments.DjangoCommentsProvider"
 PUPUT_BLOG_MODEL = "gameonlock.pages.BlogPageAbstract"
-PUPUT_ENTRY_MODEL = "gameonlock.pages.NewsletterEntryAbstract"
+PUPUT_ENTRY_MODEL = "gameonlock.pages.EntryPageAbstract"
 WAGTAIL_NEWSLETTER_FROM_NAME = "Game on Lock"
-WAGTAIL_NEWSLETTER_REPLY_TO = "noreply@gameonlock.com"
+WAGTAIL_NEWSLETTER_REPLY_TO = DEFAULT_FROM_EMAIL
 WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
 
 

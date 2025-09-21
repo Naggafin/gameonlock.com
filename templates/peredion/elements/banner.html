@@ -1,5 +1,5 @@
 {% load static i18n view_breadcrumbs wagtailroutablepage_tags wagtailimages_tags %}
-<div class="prd-breadcrumb overflow-hidden">
+<div class="prd-breadcrumb">
     {% if page and page.header_image %}
         {% image page.header_image fill-1500x250 as header_image %}
         <img class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
