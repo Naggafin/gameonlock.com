@@ -389,6 +389,7 @@ SITE_VARS = {
 WAGTAIL_SITE_NAME = _("Game-on-Lock Blog")
 PUPUT_AS_PLUGIN = True
 PUPUT_COMMENTS_PROVIDER = "puput.comments.DjangoCommentsProvider"
+PUPUT_BLOG_MODEL = "gameonlock.pages.BlogPageAbstract"
 
 
 # channel

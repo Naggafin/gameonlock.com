@@ -1,4 +1,6 @@
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
+from puput.abstracts import BlogAbstract
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.models import Page
@@ -84,4 +86,37 @@ class HomePage(Page):
 			"governing_bodies__leagues__games__betting_lines__away_team",
 		).all()
 		context["games"] = Game.objects.prefetch_related("home_team", "away_team").all()
+		return context
+
+
+class BlogPageAbstract(BlogAbstract):
+	def get_context(self, request, *args, **kwargs):
+		context = super().get_context(*args, **kwargs)
+
+		paginator = Paginator(self.entries, 10)
+		page = request.GET.get("page")
+		try:
+			page_obj = paginator.page(page)
+		except PageNotAnInteger:
+			page_obj = paginator.page(1)
+		except EmptyPage:
+			page_obj = paginator.page(paginator.num_pages)
+
+		# window size
+		current = page_obj.number
+		total = paginator.num_pages
+		window = 3  # how many pages to show above/below current
+
+		# Build range
+		start = max(current - window, 1)
+		end = min(current + window, total) + 1
+		page_range = range(start, end)
+
+		context.update(
+			{
+				"page_obj": page_obj,
+				"page_range": page_range,
+			}
+		)
+
 		return context

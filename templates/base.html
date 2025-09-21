@@ -1,5 +1,4 @@
-{% load static i18n %}
-{% load django_htmx %}
+{% load static i18n django_htmx puput_tags %}
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 {% get_available_languages as languages %}
 <!DOCTYPE html>
@@ -14,45 +13,42 @@
                            {% else %}
                                {{ seo_keywords|default:'' }}
                            {% endif %}" />
+            <meta name="title"
+                  content="{% block meta_title %}
+                               {% if page %}
+                                   {% if page.seo_title %}
+                                       {{ page.seo_title }}
+                                   {% else %}
+                                       {{ page.title }}
+                                   {% endif %}
+                               {% else %}
+                                   {{ title }}
+                               {% endif %}
+                           {% endblock meta_title %}" />
             <meta name="description"
-                  content="{% if page %}
-                               {{ page.seo_description }}
-                           {% else %}
-                               {{ seo_description|default:'' }}
-                           {% endif %}" />
-            <meta property="og:title"
-                  content="{% if page %}
-                               {{ page.seo_title }}
-                           {% else %}
-                               {{ seo_title|default:'' }}
-                           {% endif %}" />
-            <meta property="og:description"
-                  content="{% if page %}
-                               {{ page.seo_description }}
-                           {% else %}
-                               {{ page.seo_description|default:'' }}
-                           {% endif %}" />
-            <meta property="og:image"
-                  content="{% if page %}
-                               {{ page.seo_image }}
-                           {% else %}
-                               {{ seo_image|default:'' }}
-                           {% endif %}" />
-            <meta property="og:url"
-                  content="{% if page %}
-                               {{ page.get_full_url }}
-                           {% else %}
-                               {{ request.build_absolute_uri }}
-                           {% endif %}">
+                  content="{% block meta_description %}
+                               {% if page %}
+                                   {{ page.search_description }}
+                               {% else %}
+                                   {{ seo_description|default:'' }}
+                               {% endif %}
+                           {% endblock meta_description %}" />
+            {% block social_share %}
+            {% endblock social_share %}
             <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="canonical"
+                  href="{% block canonical %}{% canonical_url %}{% endblock canonical %}" />
         {% endblock %}
         <title>
-            {% if page %}
-                {{ page.title }}
-            {% else %}
-                {{ title }}
-            {% endif %}
-        | {% trans 'Game-on-Lock' %}</title>
+            {% block title %}
+                {% if page %}
+                    {{ page.title }}
+                {% else %}
+                    {{ title }}
+                {% endif %}
+                | {% trans 'Game-on-Lock' %}
+            {% endblock %}
+        </title>
         <link rel="shortcut icon"
               type="image/x-icon"
               href="{% static 'images/favicon.ico' %}"

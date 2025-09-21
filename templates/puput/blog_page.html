@@ -1,0 +1,233 @@
+{% extends 'puput/base.html' %}
+{% load static i18n humanize wagtailcore_tags wagtailroutablepage_tags wagtailimages_tags puput_tags %}
+{% block title %}
+    {% if search_term %}
+        {{ search_term }} | {{ blog_page.title }}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock title %}
+{% block meta_title %}
+    {% if search_term %}
+        {% trans 'Entries for' %} {{ search_type }} {{ search_term }}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock meta_title %}
+{% block meta_description %}
+    {% if search_term %}
+        {% trans 'Entries for' %} {{ search_type }} {{ search_term }}
+    {% else %}
+        {{ block.super }}
+    {% endif %}
+{% endblock meta_description %}
+{% block social_share %}
+    {% image blog_page.header_image fill-800x450 as share_image %}
+    <meta property="og:title" content="{{ blog_page.title }}" />
+    <meta property="og:description" content="{{ blog_page.description }}" />
+    <meta property="og:url" content="{% canonical_url %}" />
+    {% if blog_page.header_image %}
+        <meta property="og:image" content="{% image_url share_image.url %}" />
+        <meta property="og:image:width" content="800" />
+        <meta property="og:image:height" content="450" />
+        <meta name="twitter:image" content="{% image_url share_image.url %}" />
+    {% endif %}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ blog_page.title }}" />
+    <meta name="twitter:description" content="{{ blog_page.description }}" />
+{% endblock social_share %}
+{% block blog_content %}
+    <div class="blog-entries">
+        <div class="global-shape style-3">
+            <img src="{% static 'peredion/images/shapes/shape-1.png' %}"
+                 alt=""
+                 data-aos="fade-left"
+                 data-aos-duration="500"
+                 data-aos-offset="200"
+                 data-aos-easing="ease-in"
+                 data-aos-delay="400"
+                 nonce="{{ request.csp_nonce }}">
+        </div>
+        <div class="container">
+            {% if search_term %}
+                <div class="row">{% trans 'Entries for' %} {{ search_type }} "{{ search_term }}"</div>
+            {% endif %}
+            <div class="row g-4">
+                <div class="col-xl-8 col-lg-12">
+                    <div class="row g-4">
+                        {% for entry in entries %}
+                            {% entry_url entry blog_page as post_url %}
+                            {% cycle '' 'right-sided-img' as rowclass silent %}
+                            <article class="col-xl-12 col-lg-12 col-md-6"
+                                     data-aos="fade-up"
+                                     data-aos-delay="100"
+                                     data-aos-duration="500"
+                                     data-aos-easing="ease-in">
+                                <div class="single-blog
+                                            {% if not forloop.last %}
+                                                {{ rowclass }}
+                                            {% else %}
+                                                vertical-style
+                                            {% endif %}">
+                                    <section class="part-img">
+                                        {% if entry.header_image %}
+                                            {% image entry.header_image fill-800x400 as header_image %}
+                                            <img src="{{ header_image.url }}"
+                                                 alt="{{ entry.header_image.title }}"
+                                                 nonce="{{ request.csp_nonce }}">
+                                        {% endif %}
+                                    </section>
+                                    <section class="part-text">
+                                        <span class="post-category">
+                                            {% if entry.categories.count > 0 %}{{ entry.categories.first }}{% endif %}
+                                        </span>
+                                        <h3 class="blog-post-title">
+                                            <a href="{{ entry.url }}">{{ entry.title }}</a>
+                                        </h3>
+                                        <p>
+                                            {% if entry.excerpt %}
+                                                {{ entry.excerpt|richtext }}
+                                            {% else %}
+                                                {{ entry.body|richtext|truncatewords_html:70 }}
+                                            {% endif %}
+                                        </p>
+                                        <div class="post-info-stats">
+                                            <a href="{% routablepageurl blog_page 'entries_by_author' entry.owner.username %}"
+                                               class="post-creator">
+                                                <div class="creator-pic">
+                                                    {% comment %}
+                                                        TODO: author pic
+                                                        <img src="assets/img/blog/user-1.jpg" alt="" nonce="{{ request.csp_nonce }}">
+                                                    {% endcomment %}
+                                                </div>
+                                                <span class="creator-name">{{ entry.author }}</span>
+                                            </a>
+                                            <span class="posting-time">{{ entry.date|naturalday }}</span>
+                                            {% if entry.tags.count > 0 %}
+                                                <div>
+                                                    {% for tag in entry.tags.all %}
+                                                        <a class="badge text-bg-secondary"
+                                                           href="{% routablepageurl blog_page "entries_by_tag" tag.slug %}">#{{ tag }}</a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    </section>
+                                </div>
+                            </article>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% if paginator.num_pages > 1 %}
+                    <div class="pok-pagination"
+                         data-aos="fade-up"
+                         data-aos-delay="100"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <ul>
+                            {% if page_obj.has_previous %}
+                                <li>
+                                    <a href="{% querystring page=page_obj.previous_page_number %}"><i class="fa-solid fa-angle-left"></i></a>
+                                </li>
+                            {% endif %}
+                            {% if 1 not in page_range %}
+                                <li>
+                                    <a href="{% querystring page=1 %}">1</a>
+                                </li>
+                                <li class="dotted">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </li>
+                            {% endif %}
+                            {% for num in page_range %}
+                                {% if num == page_obj.number %}
+                                    <li>
+                                        <a href="{% querystring page=num %}" class="active">{{ num|stringformat:"02d" }}</a>
+                                    </li>
+                                {% else %}
+                                    <li>
+                                        <a href="{% querystring page=num %}">{{ num|stringformat:"02d" }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if total_pages not in page_range %}
+                                <li class="dotted">
+                                    <i class="fa-solid fa-ellipsis"></i>
+                                </li>
+                                <li>
+                                    <a href="{% querystring page=total_pages %}">{{ total_pages }}</a>
+                                </li>
+                            {% endif %}
+                            {% if page_obj.has_next %}
+                                <li>
+                                    <a href="{% querystring page=page_obj.next_page_number %}"><i class="fa-solid fa-angle-right"></i></a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="pok-sidebar"
+         data-aos="fade-up"
+         data-aos-delay="150"
+         data-aos-duration="500"
+         data-aos-easing="ease-in">
+        <div class="row">
+            <div class="col-xl-4 col-lg-12"
+                 data-aos="fade-up"
+                 data-aos-delay="250"
+                 data-aos-duration="500"
+                 data-aos-easing="ease-in">
+                <div class="single-element recent-postss">
+                    <h4 class="title">{% trans 'Recent posts' %}</h4>
+                    <ul class="recent-post-slider owl-carousel owl-theme">
+                        {% recent_entries blog_page.num_last_entries %}
+                    </ul>
+                </div>
+            </div>
+            <div class="col-xl-8 col-lg-12">
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-6"
+                         data-aos="fade-up"
+                         data-aos-delay="300"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <div class="single-element posts-category">
+                            <h4 class="title">{% trans 'posts category' %}</h4>
+                            <ul class="category-list">
+                                {% categories_list %}
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-6"
+                         data-aos="fade-up"
+                         data-aos-delay="300"
+                         data-aos-duration="500"
+                         data-aos-easing="ease-in">
+                        <div class="single-element tag-lines">
+                            <h4 class="title">{% trans 'posts tag' %}</h4>
+                            <ul class="tag-words">
+                                {% tags_list %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="search-bar-element"
+                     data-aos="fade-up"
+                     data-aos-delay="100"
+                     data-aos-duration="500"
+                     data-aos-easing="ease-in">
+                    <form name="search_form"
+                          method="get"
+                          action="{% routablepageurl blog_page 'entries_search' %}">
+                        <input type="search" name="q" placeholder="{% trans 'Search' %}">
+                        <button type="submit">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
