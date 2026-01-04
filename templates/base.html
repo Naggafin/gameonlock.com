@@ -8,9 +8,10 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <meta http-equiv="X-UA-Compatible" content="IE=edge" />
             {% if not self %}
-                <meta name="keywords" content="{{ seo_keywords|default:'' }}" />
-                <meta name="title" content="{{ title }}" />
-                <meta name="description" content="{{ seo_description|default:'' }}" />
+                <meta name="title" content="{{ page.title }}" />
+                {% if page.meta %}
+                    {% for key, value in page.meta.items %}<meta property="{{ key }}" content="{{ value }}">{% endfor %}
+                {% endif %}
             {% else %}
                 {% meta_tags %}
             {% endif %}
@@ -23,7 +24,7 @@
                 {% if self %}
                     {{ self.title }}
                 {% else %}
-                    {{ title }}
+                    {{ page.title }}
                 {% endif %}
                 | {% trans 'Game-on-Lock' %}
             {% endblock %}

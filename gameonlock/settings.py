@@ -30,21 +30,28 @@ from dotenv import load_dotenv
 # from oscar.defaults import *  # noqa: F403
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 load_dotenv(BASE_DIR / ".env")
 
 
-ADMIN_EMAIL = "webmaster@gameonlock.com"
+# Quick-start development settings - unsuitable for production
+# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.getenv(
+	"SECRET_KEY", "*j_o2lfiu(ajl*z2m!m4*$aqiaulxaqyedwluc6)c2p1)az1%z"
+)
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = os.getenv("DEBUG", True)
+
+ALLOWED_HOSTS = []
 
 
 # Application definition
 
 INSTALLED_APPS = [
-	"gameonlock",
-	"sportsbetting",
-	"golpayment",
-	"notifications",
 	# django
 	"django.contrib.admin",
 	"django.contrib.auth",
@@ -55,37 +62,6 @@ INSTALLED_APPS = [
 	"django.contrib.sites",
 	"django.contrib.flatpages",
 	"django.contrib.humanize",
-	# oscar
-	# "oscar.config.Shop",
-	# "oscar.apps.analytics.apps.AnalyticsConfig",
-	# "oscar.apps.checkout.apps.CheckoutConfig",
-	# "oscar.apps.address.apps.AddressConfig",
-	# "oscar.apps.shipping.apps.ShippingConfig",
-	# "oscar.apps.catalogue.apps.CatalogueConfig",
-	# "oscar.apps.catalogue.reviews.apps.CatalogueReviewsConfig",
-	# "oscar.apps.communication.apps.CommunicationConfig",
-	# "oscar.apps.partner.apps.PartnerConfig",
-	# "oscar.apps.payment.apps.PaymentConfig",
-	# "oscar.apps.basket.apps.BasketConfig",
-	# "oscar.apps.offer.apps.OfferConfig",
-	# "oscar.apps.order.apps.OrderConfig",
-	# "oscar.apps.customer.apps.CustomerConfig",
-	# "oscar.apps.search.apps.SearchConfig",
-	# "oscar.apps.voucher.apps.VoucherConfig",
-	# "oscar.apps.wishlists.apps.WishlistsConfig",
-	# "oscar.apps.dashboard.apps.DashboardConfig",
-	# "oscar.apps.dashboard.reports.apps.ReportsDashboardConfig",
-	# "oscar.apps.dashboard.users.apps.UsersDashboardConfig",
-	# "oscar.apps.dashboard.orders.apps.OrdersDashboardConfig",
-	# "oscar.apps.dashboard.catalogue.apps.CatalogueDashboardConfig",
-	# "oscar.apps.dashboard.offers.apps.OffersDashboardConfig",
-	# "oscar.apps.dashboard.partners.apps.PartnersDashboardConfig",
-	# "oscar.apps.dashboard.pages.apps.PagesDashboardConfig",
-	# "oscar.apps.dashboard.ranges.apps.RangesDashboardConfig",
-	# "oscar.apps.dashboard.reviews.apps.ReviewsDashboardConfig",
-	# "oscar.apps.dashboard.vouchers.apps.VouchersDashboardConfig",
-	# "oscar.apps.dashboard.communications.apps.CommunicationsDashboardConfig",
-	# "oscar.apps.dashboard.shipping.apps.ShippingDashboardConfig",
 	# allauth
 	"allauth",
 	"allauth.account",
@@ -116,29 +92,37 @@ INSTALLED_APPS = [
 	# other 3rd party dependencies
 	"cachalot",
 	"celery",
+	"csp",
 	"django_celery_beat",
-	"modelcluster",
-	"taggit",
+	"django_contact_form",
+	"django_countries",
+	"django_extensions",
+	"django_htmx",
+	"django_tables2",
+	"django_user_agents",
 	"guardian",
+	"haystack",
+	"honeypot",
+	"modelcluster",
 	"paypal.standard.ipn",
 	"paypal.standard.pdt",
-	"widget_tweaks",
 	"slippers",
-	"haystack",
-	"treebeard",
 	"sorl.thumbnail",
-	"django_tables2",
 	"template_partials",
-	"django_htmx",
-	"django_user_agents",
-	"django_extensions",
-	"django_countries",
+	"taggit",
+	"treebeard",
 	"view_breadcrumbs",
-	"csp",
-	"django_contact_form",
-	"honeypot",
-	"yesglot",
+	"widget_tweaks",
+	# "yesglot",
+	# core apps
+	"gameonlock",
+	"golpayment",
+	"notifications",
+	"sportsbetting",
 ]
+
+if DEBUG is True:
+	INSTALLED_APPS += ["django_fastdev", "debug_toolbar", "nplusone.ext.django", "silk"]
 
 SITE_ID = 1
 
@@ -160,6 +144,15 @@ MIDDLEWARE = [
 	"django_user_agents.middleware.UserAgentMiddleware",
 	"notifications.middleware.SSEMessageMiddleware",
 ]
+
+if DEBUG is True:
+	try:
+		index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1
+	except ValueError:
+		index = 0
+	MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")
+	MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")
+	MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
 
 ROOT_URLCONF = "gameonlock.urls"
 
@@ -186,6 +179,61 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "gameonlock.wsgi.application"
 ASGI_APPLICATION = "gameonlock.asgi.application"
+
+
+# Database
+# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+
+DATABASES = {
+	"default": {
+		"ENGINE": "django.db.backends.sqlite3",
+		"NAME": BASE_DIR / "db.sqlite3",
+		"ATOMIC_REQUESTS": True,
+	}
+}
+
+if DEBUG is False:
+	DATABASES = {
+		"default": {
+			"ENGINE": "django.db.backends.postgresql",
+			"NAME": os.environ.get("DB_NAME"),
+			"USER": os.environ.get("DB_USER"),
+			"PASSWORD": os.environ.get("DB_PASSWORD"),
+			"HOST": os.environ.get("DB_HOST"),
+			"PORT": os.environ.get("DB_PORT"),
+			"ATOMIC_REQUESTS": True,
+		},
+	}
+
+
+# Cache
+# https://docs.djangoproject.com/en/6.0/topics/cache
+
+CACHES = {
+	"default": {
+		"BACKEND": "django.core.cache.backends.dummy.DummyCache",
+	}
+}
+
+if DEBUG is False:
+	CACHES = {
+		"default": {
+			"BACKEND": "django_redis.cache.RedisCache",
+			"LOCATION": f"{os.environ.get('REDIS_URL')}/0",
+			"OPTIONS": {
+				"CLIENT_CLASS": "django_redis.client.DefaultClient",
+				"PARSER_CLASS": "redis.connection._HiredisParser",
+			},
+			"KEY_PREFIX": "gameonlock",
+		},
+	}
+
+	SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+	SESSION_CACHE_ALIAS = "default"
+
+	CACHE_MIDDLEWARE_ALIAS = "default"
+	CACHE_MIDDLEWARE_SECONDS = 86400
+	CACHE_MIDDLEWARE_KEY_PREFIX = "gameonlock"
 
 
 # Password validation
@@ -239,6 +287,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
+STATICFILES_STORAGE = (
+	"django.contrib.staticfiles.storage.StaticFilesStorage"
+	if DEBUG is True
+	else "django.contrib.staticfiles.storage.StaticFilesStorage"
+)
+
 STATICFILES_FINDERS = [
 	"django.contrib.staticfiles.finders.FileSystemFinder",
 	"django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -257,6 +311,25 @@ MEDIA_URL = "media/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Email
+
+ADMINS = [("Nevin Coutu", "nevincoutu@gmail.com")]
+MANAGERS = []
+DEFAULT_FROM_EMAIL = "Game-on-Lock <noreply@gameonlock.com>"
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+if DEBUG is False:
+	EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+	EMAIL_HOST = "localhost"
+	EMAIL_PORT = 25
+	EMAIL_USE_TLS = False
+	EMAIL_USE_SSL = False
+	EMAIL_HOST_USER = ""
+	EMAIL_HOST_PASSWORD = ""
+	SERVER_EMAIL = DEFAULT_FROM_EMAIL  # used for error emails
 
 
 # Telegram
@@ -336,10 +409,7 @@ LOGGING = {
 }
 
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000
-
-DEFAULT_FROM_EMAIL = "no-reply@gameonlock.com"
-NOTIFY_EMAILS = ["admin@gameonlock.com"]
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000  # TODO: why did I do this?
 
 
 SPORTS = {
@@ -375,7 +445,7 @@ MIGRATION_MODULES = {"puput": "gameonlock.puput_migrations"}
 
 # wagtail / puput / newsletter
 
-WAGTAIL_SITE_NAME = _("Game-on-Lock Blog")
+WAGTAIL_SITE_NAME = _("Game-on-Lock")
 WAGTAIL_I18N_ENABLED = True
 WAGTAIL_CONTENT_LANGUAGES = LANGUAGES
 # WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'txt', 'xlsx', 'zip']
@@ -387,18 +457,28 @@ WAGTAIL_NEWSLETTER_FROM_NAME = "Game on Lock"
 WAGTAIL_NEWSLETTER_REPLY_TO = DEFAULT_FROM_EMAIL
 WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
 WAGTAILMETADATA_IMAGE_FILTER = "fill-1200x630"
+WAGTAILADMIN_BASE_URL = (
+	"http://localhost:8000" if DEBUG is True else "https://www.gameonlock.com"
+)
 
 
 # channel
 
 CHANNEL_LAYERS = {
 	"default": {
-		"BACKEND": "channels_redis.core.RedisChannelLayer",
-		"CONFIG": {
-			"hosts": [{"address": f"{os.environ.get('REDIS_URL')}/1"}],
-		},
-	}
+		"BACKEND": "channels.layers.InMemoryChannelLayer",
+	},
 }
+
+if DEBUG is False:
+	CHANNEL_LAYERS = {
+		"default": {
+			"BACKEND": "channels_redis.core.RedisChannelLayer",
+			"CONFIG": {
+				"hosts": [{"address": f"{os.environ.get('REDIS_URL')}/1"}],
+			},
+		}
+	}
 
 
 # django-paypal
@@ -408,6 +488,7 @@ PAYPAL_IDENTITY_TOKEN = os.environ.get("PAYPAL_IDENTITY_TOKEN", "test-identity-t
 
 # django-allauth
 
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "HTTP" if DEBUG is True else "HTTPS"
 ACCOUNT_FORMS = {"signup": "gameonlock.forms.SignupForm"}
 ACCOUNT_LOGIN_METHOD = {"email", "username"}
 SOCIALACCOUNT_PROVIDERS = {
@@ -447,6 +528,31 @@ OSCAR_FROM_EMAIL = DEFAULT_FROM_EMAIL
 OSCAR_BASKET_COOKIE_OPEN = "gameonlock_open_basket"
 OSCAR_DEFAULT_CURRENCY = "USD"
 OSCAR_GOOGLE_ANALYTICS_ID = None
+OSCAR_URL_SCHEMA = "http" if DEBUG is True else "https"
+
+
+# machina
+
+HAYSTACK_CONNECTIONS = {
+	"default": {
+		"ENGINE": "haystack.backends.whoosh_backend.WhooshEngine",
+		"PATH": BASE_DIR / "whoosh_index",  # noqa: F405
+		"EXCLUDED_INDEXES": [
+			# "oscar.apps.search.search_indexes.ProductIndex",
+			# "oscar_apps.search.search_indexes.CoreProductIndex",
+		],
+	},
+}
+
+if DEBUG is False:
+	# TODO: need to update haystack engine; solr is old
+	HAYSTACK_CONNECTIONS = {
+		"default": {
+			"ENGINE": "haystack.backends.solr_backend.SolrEngine",
+			"URL": os.getenv("SOLR_URL"),
+			"INCLUDE_SPELLING": True,
+		},
+	}
 
 
 # django-silk

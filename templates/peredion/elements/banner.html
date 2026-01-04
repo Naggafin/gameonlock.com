@@ -1,9 +1,9 @@
 {% load static i18n view_breadcrumbs wagtailroutablepage_tags wagtailimages_tags %}
 <div class="prd-breadcrumb">
-    {% if page and page.header_image %}
-        {% image page.header_image fill-1500x250 as header_image %}
+    {% if self and self.header_image %}
+        {% image self.header_image fill-1500x250 as header_image %}
         <img class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
-             alt="{{ page.header_image.title }}"
+             alt="{{ self.header_image.title }}"
              src="{{ header_image.url }}"
              nonce="{{ request.csp_nonce }}">
     {% endif %}
@@ -33,27 +33,15 @@
                  data-aos-delay="200"
                  data-aos-duration="500"
                  data-aos-easing="ease-in">
-                <span class="sub-title">
-                    {% if page %}
-                        {{ page.title }}
-                    {% else %}
-                        {{ title }}
-                    {% endif %}
-                </span>
+                <span class="sub-title">{{ page.title }}</span>
             </div>
             <h2 class="title"
                 data-aos="fade-up"
                 data-aos-delay="350"
                 data-aos-duration="500"
-                data-aos-easing="ease-in">
-                {% if page %}
-                    {{ page.subtitle|default:'' }}
-                {% else %}
-                    {{ subtitle|default:'' }}
-                {% endif %}
-            </h2>
+                data-aos-easing="ease-in">{{ page.subtitle|default:'' }}</h2>
             <div class="page-direction">
-                {% if not page %}
+                {% if not self %}
                     {% render_breadcrumbs %}
                 {% else %}
                     <nav aria-label="breadcrumb">

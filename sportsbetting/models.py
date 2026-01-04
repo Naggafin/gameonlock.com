@@ -22,10 +22,8 @@ logger = logging.getLogger(__name__)
 class Sport(models.Model):
 	key = models.CharField(
 		max_length=100,
-		blank=True,
-		null=True,
 		editable=False,
-		help_text="An identifier for the sport, if provided.",
+		help_text="An identifier for the sport.",
 	)
 	name = models.CharField(
 		max_length=100,
@@ -37,11 +35,9 @@ class Sport(models.Model):
 		null=True,
 		help_text="Optional description of the sport.",
 	)
-	# is_active = models.BooleanField(default=False, help_text="Check/uncheck to show/hide this sport in the website.")
 	slug_name = models.SlugField(
-		blank=True,
-		null=True,
 		editable=False,
+		unique=True,
 		help_text="A unique slug for the sport, if provided.",
 	)
 
@@ -59,11 +55,6 @@ class Sport(models.Model):
 				fields=["key"],
 				condition=Q(key__isnull=False),
 				name="unique_sport_key_when_not_null",
-			),
-			models.UniqueConstraint(
-				fields=["slug_name"],
-				condition=Q(slug_name__isnull=False),
-				name="unique_slug_name_when_not_null",
 			),
 		]
 

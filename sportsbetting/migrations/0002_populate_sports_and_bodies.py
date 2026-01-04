@@ -1,7 +1,7 @@
 import requests
 from django.conf import settings
 from django.db import migrations
-from requests.exceptions import ConnectionError
+from slugify import slugify
 
 
 def create_sports_fixtures(apps, schema_editor):
@@ -16,8 +16,8 @@ def create_sports_fixtures(apps, schema_editor):
 		)
 		response.raise_for_status()
 		sports_data = response.json()
-	except ConnectionError:
-		return
+	except Exception as e:
+		raise Exception("Failed to create initial sports data") from e
 
 	# Process JSON data to extract sports and governing bodies with keys
 	sports = {}
@@ -56,6 +56,7 @@ def create_sports_fixtures(apps, schema_editor):
 	for sport_name, sport_data in sports.items():
 		Sport.objects.get_or_create(
 			name=sport_name,
+			slug_name=slugify(sport_name),
 			defaults={"key": sport_data["key"]},
 		)
 

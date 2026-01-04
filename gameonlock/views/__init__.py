@@ -36,8 +36,9 @@ from sportsbetting.tables import BetHistoryTable
 from sportsbetting.util import get_plays_with_grouped_picks
 from sportsbetting.views.mixins import SportsBettingContextMixin
 
+from .. import settings
 from ..forms import get_all_region_choices
-from .mixins import DashboardContextMixin, GameonlockMixin
+from .mixins import BreadcrumbMixin, DashboardContextMixin
 
 HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
 
@@ -51,7 +52,7 @@ def serialize_form(form):
 	return form_data
 
 
-class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
+class HomeView(SportsBettingContextMixin, BreadcrumbMixin, TemplateView):
 	title = _("Home")
 	template_name = "peredion/index.html"
 
@@ -73,7 +74,9 @@ class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
 				start_datetime__gt=timezone.now()
 			)[:3]
 		)
-		context["home_page"] = {
+
+		context["page"] = {
+			"title": self.title,
 			"about_title": _("About us"),
 			"about_subtitle": _("We provide the most reliable & legal betting"),
 			"about_content": "",
@@ -81,15 +84,30 @@ class HomeView(SportsBettingContextMixin, GameonlockMixin, TemplateView):
 			"bet_subtitle": _("Choose Your Match & Place A Bet"),
 			"schedule_title": _("Next Schedule"),
 			"schedule_subtitle": _("All Upcoming Matches"),
+			"meta": {
+				"description": "",
+				"keywords": "",
+				"og:title": self.title,
+				"og:description": "",
+				"og:type": "website",
+				"og:url": "",
+				"og:image": "",
+				"og:site_name": settings.WAGTAIL_SITE_NAME,
+				"twitter:card": "summary_large_image",
+				"twitter:title": self.title,
+				"twitter:description": "",
+				"twitter:image": "",
+				# "twitter:site": "@YourTwitterHandle",
+				# "twitter:creator": "@CreatorTwitterHandle",
+			},
 		}
 		return context
 
 
 @method_decorator(ratelimit(key="user_or_ip", rate="10/m"), name="post")
 @method_decorator(check_honeypot, name="post")
-class ContactView(GameonlockMixin, ContactFormView):
+class ContactView(BreadcrumbMixin, ContactFormView):
 	title = _("Contact Us")
-	subtitle = _("Get in touch by simply dropping a message")
 	success_url = reverse_lazy("contact")
 	template_name = "peredion/contact.html"
 
@@ -127,16 +145,62 @@ class ContactView(GameonlockMixin, ContactFormView):
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("contact"))]
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		upcoming_entries = context["upcoming_entries"]
+		for sport, lines_dict in upcoming_entries.items():
+			count = HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT
+			tmp = {}
+			for key, lines in lines_dict.items():
+				tmp[key] = lines[:count]
+				count -= len(tmp[key])
+				if count == 0:
+					break
+			upcoming_entries[sport] = tmp
+		context["upcoming_entries"] = upcoming_entries
+		context["upcoming_games"] = SimpleLazyObject(
+			lambda: Game.objects.select_related("home_team", "away_team").filter(
+				start_datetime__gt=timezone.now()
+			)[:3]
+		)
 
-class LoginView(GameonlockMixin, AllauthLoginView):
+		context["page"] = {
+			"title": self.title,
+			"subtitle": _("Get in touch by simply dropping a message"),
+			"meta": {
+				"description": "",
+				"keywords": "",
+				"og:title": self.title,
+				"og:description": "",
+				"og:type": "website",
+				"og:url": "",
+				"og:image": "",
+				"og:site_name": settings.WAGTAIL_SITE_NAME,
+				"twitter:card": "summary_large_image",
+				"twitter:title": self.title,
+				"twitter:description": "",
+				"twitter:image": "",
+				# "twitter:site": "@YourTwitterHandle",
+				# "twitter:creator": "@CreatorTwitterHandle",
+			},
+		}
+		return context
+
+
+class LoginView(BreadcrumbMixin, AllauthLoginView):
 	title = _("Sign In")
 
 	@property
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("account_login"))]
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["page"] = {"title": self.title}
+		return context
 
-class SignupView(GameonlockMixin, AllauthSignupView):
+
+class SignupView(BreadcrumbMixin, AllauthSignupView):
 	title = _("Sign Up")
 
 	@property
@@ -147,7 +211,6 @@ class SignupView(GameonlockMixin, AllauthSignupView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		context["subtitle"] = _("Sign up to create an account")
 
 		form = context["form"]
 		context["signup_config"] = {
@@ -155,11 +218,16 @@ class SignupView(GameonlockMixin, AllauthSignupView):
 			"SIGNUP_URL": reverse("account_signup"),
 			"FORM": serialize_form(form),
 		}
+
+		context["page"] = {
+			"title": self.title,
+			"subtitle": _("Sign up to create an account"),
+		}
 		return context
 
 
 class DashboardView(
-	LoginRequiredMixin, DashboardContextMixin, GameonlockMixin, TemplateView
+	LoginRequiredMixin, DashboardContextMixin, BreadcrumbMixin, TemplateView
 ):
 	title = _("Dashboard")
 	template_name = "peredion/dashboard/index.html"
@@ -210,13 +278,15 @@ class DashboardView(
 			chart_data["profit"].append(float(stats.get("profit", 0) or 0))
 
 		context["chart_data"] = chart_data
+
+		context["page"] = {"title": self.title}
 		return context
 
 
 class PlayHistoryView(
 	LoginRequiredMixin,
 	DashboardContextMixin,
-	GameonlockMixin,
+	BreadcrumbMixin,
 	SingleTableMixin,
 	FilterView,
 ):
@@ -252,11 +322,16 @@ class PlayHistoryView(
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("play_history"))]
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["page"] = {"title": self.title}
+		return context
+
 
 class TransactionHistoryView(
 	LoginRequiredMixin,
 	DashboardContextMixin,
-	GameonlockMixin,
+	BreadcrumbMixin,
 	SingleTableMixin,
 	FilterView,
 ):
@@ -281,9 +356,14 @@ class TransactionHistoryView(
 			)
 		]
 
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["page"] = {"title": self.title}
+		return context
+
 
 class SettingsView(
-	LoginRequiredMixin, DashboardContextMixin, GameonlockMixin, TemplateView
+	LoginRequiredMixin, DashboardContextMixin, BreadcrumbMixin, TemplateView
 ):
 	title = _("Settings")
 	template_name = "peredion/dashboard/dashboard-settings.html"
@@ -291,6 +371,11 @@ class SettingsView(
 	@property
 	def crumbs(self):
 		return [('<span class="text">%s</span>' % self.title, reverse("settings"))]
+
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		context["page"] = {"title": self.title}
+		return context
 
 
 @csrf_exempt

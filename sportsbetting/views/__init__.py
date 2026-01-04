@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
-from gameonlock.views.mixins import GameonlockMixin
+from gameonlock.views.mixins import BreadcrumbMixin
 
 from ..forms import PickFormSet, PlayForm
 from ..models import BettingLine, Pick, Play
@@ -20,7 +20,7 @@ class BettingView(
 	LoginRequiredMixin,
 	SportsBettingContextMixin,
 	ListBreadcrumbMixin,
-	GameonlockMixin,
+	BreadcrumbMixin,
 	TemplateView,
 ):
 	title = _("bets")

@@ -40,8 +40,8 @@
                          data-aos-delay="100"
                          data-aos-duration="500"
                          data-aos-easing="ease-in">
-                        <h3 class="sub-title">{{ home_page.about_title }}</h3>
-                        <h2 class="title">{{ home_page.about_subtitle }}</h2>
+                        <h3 class="sub-title">{{ page.about_title }}</h3>
+                        <h2 class="title">{{ page.about_subtitle }}</h2>
                     </div>
                     <div class="part-bottom">
                         <div class="part-descr"
@@ -49,7 +49,7 @@
                              data-aos-delay="150"
                              data-aos-duration="500"
                              data-aos-easing="ease-in">
-                            {{ home_page.about_content|safe }}
+                            {{ page.about_content|safe }}
                             <a href="{% url 'sportsbetting:bet' %}" class="prd-btn-1">{% trans 'Bet NOW' %} <i class="fa-solid fa-arrow-right"></i></a>
                         </div>
                     </div>
@@ -83,8 +83,8 @@
              data-aos-delay="100"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <h3 class="sub-title">{{ home_page.bet_title }}</h3>
-            <h2 class="title">{{ home_page.bet_subtitle }}</h2>
+            <h3 class="sub-title">{{ page.bet_title }}</h3>
+            <h2 class="title">{{ page.bet_subtitle }}</h2>
         </div>
         <div class="sports-menu scrollable-menu"
              data-aos="fade-up"
@@ -93,33 +93,21 @@
              data-aos-easing="ease-in"
              data-overlayscrollbars-initialize>
             <ul class="nav nav-pills" id="sports-tab" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active"
-                            id="sports-all-tab"
-                            data-bs-toggle="pill"
-                            data-bs-target="#sports-all"
-                            type="button"
-                            role="tab"
-                            aria-controls="sports-all"
-                            aria-selected="true">
-                        <span class="sport-icon">
-                            <img src="{% static 'peredion/images/playing-bet/sports-icon/all-sports.png' %}"
-                                 alt="{% trans 'All sports' %}"
-                                 nonce="{{ request.csp_nonce }}">
-                        </span>
-                        <span class="sport-name">{% trans 'All Sports' %}</span>
-                    </button>
-                </li>
                 {% for sport in upcoming_entries %}
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link"
+                        <button class="nav-link
+                                       {% if forloop.first %}active{% endif %}"
                                 id="sports-{{ sport.slug_name }}-tab"
                                 data-bs-toggle="pill"
                                 data-bs-target="#sports-{{ sport.slug_name }}"
                                 type="button"
                                 role="tab"
                                 aria-controls="sports-{{ sport.slug_name }}"
-                                aria-selected="false">
+                                aria-selected="{% if forloop.first %}
+                                                   true
+                                               {% else %}
+                                                   false
+                                               {% endif %}">
                             <span class="sports-icon">
                                 <img src="{% static 'peredion/images/playing-bet/sports-icon/'|add:sport.slug_name|add:'.png' %}"
                                      alt="{{ sport }}"
@@ -137,64 +125,11 @@
              data-aos-delay="200"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            {% with game_state='upcoming' %}
-                <div class="tab-pane fade show active"
-                     id="sports-all"
-                     role="tabpanel"
-                     aria-labelledby="sports-all-tab">
-                    <div class="accordion accordion-flush sports-accordion"
-                         id="accordion-all-matches">
-                        {% for sport, lines_dict in upcoming_entries.items %}
-                            <div class="accordion-item
-                                        {% if forloop.first %}single-sports-item{% endif %}">
-                                <h2 class="accordion-header" id="{{ sport.slug_name }}-matches">
-                                    <button class="accordion-button sports-header
-                                                   {% if not forloop.first %}collapsed{% endif %}"
-                                            type="button"
-                                            data-bs-toggle="collapse"
-                                            data-bs-target="#flush-{{ sport.slug_name }}-matches"
-                                            aria-expanded="{% if forloop.first %}
-                                                               true
-                                                           {% else %}
-                                                               false
-                                                           {% endif %}"
-                                            aria-controls="flush-{{ sport.slug_name }}-matches">
-                                        <span class="single-sports-icon">
-                                            <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
-                                                 alt="{{ sport }}"
-                                                 nonce="{{ request.csp_nonce }}">
-                                        </span>
-                                        <span class="single-sports-name">{{ sport }} ({% num_betting_lines sport game_state %})</span>
-                                        <span class="single-sports-img">
-                                            <img src="{% static 'peredion/images/playing-bet/'|add:sport.slug_name|add:'-bg.png' %}"
-                                                 alt=""
-                                                 nonce="{{ request.csp_nonce }}">
-                                        </span>
-                                    </button>
-                                </h2>
-                                <div id="flush-{{ sport.slug_name }}-matches"
-                                     class="accordion-collapse collapse sports-expanded-list
-                                            {% if forloop.first %}show{% endif %}"
-                                     aria-labelledby="{{ sport.slug_name }}-matches"
-                                     data-bs-parent="#accordion-all-matches">
-                                    <div class="accordion-body sports-body">
-                                        <div class="playing-sports-all">
-                                            {% for governing_body__league, lines in lines_dict.items %}
-                                                {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
-                                                    {% include "peredion/playing-bet.html#bet-section-tab-content" %}
-                                                {% endwith %}
-                                            {% endfor %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
-                {% for sport, lines_dict in upcoming_entries.items %}
+            {% for sport, lines_dict in upcoming_entries.items %}
+                {% with game_state='upcoming' active=forloop.first %}
                     {% include "peredion/playing-bet.html#bet-section-tab" %}
-                {% endfor %}
-            {% endwith %}
+                {% endwith %}
+            {% endfor %}
         </div>
         <div class="see-all-sports-btn-cover"
              data-aos="fade-up"
@@ -222,8 +157,8 @@
              data-aos-delay="100"
              data-aos-duration="500"
              data-aos-easing="ease-in">
-            <h3 class="sub-title">{{ home_page.schedule_title }}</h3>
-            <h2 class="title">{{ home_page.schedule_subtitle }}</h2>
+            <h3 class="sub-title">{{ page.schedule_title }}</h3>
+            <h2 class="title">{{ page.schedule_subtitle }}</h2>
         </div>
         <div class="row">
             <div class="col-xl-6 col-lg-8 col-md-8 order-md-1 order-2"

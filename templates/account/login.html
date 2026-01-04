@@ -29,24 +29,12 @@
                                     </div>
                                 {% endif %}
                                 <div class="row">
-                                    <div class="col-xl-12">
-                                        <label for="id_login">
-                                            <span>{% trans "Email or Username" %}</span>
-                                        </label>
-                                        {{ form.login }}
-                                    </div>
-                                    <div class="col-xl-12">
-                                        <label for="id_password">
-                                            <span>{% trans "Password" %}</span>
-                                        </label>
-                                        {{ form.password }}
-                                    </div>
+                                    <div class="col-xl-12">{{ form.login }}</div>
+                                    <div class="col-xl-12">{{ form.password }}</div>
                                     <div class="col-xl-12">
                                         <div class="d-flex align-items-center ps-2 pb-4">
                                             {{ form.remember }}
-                                            <label for="id_remember">
-                                                <span>{% trans "Remember Me" %}</span>
-                                            </label>
+                                            <label for="{{ form.remember.id_for_label }}">{{ form.remember.label }}</label>
                                         </div>
                                     </div>
                                 </div>
@@ -58,7 +46,7 @@
                                         {% url 'account_signup' as url %}
                                         {% blocktrans %}
                                             No account with <span style="word-break: keep-all;">Game-on-Lock?</span><br />
-                                            <a href="{{ url }}" class="reg-link">Register</a> here to sign up.
+                                            <a href="{{ url }}" class="reg-link">Register</a> to sign up.
                                         {% endblocktrans %}
                                     </p>
                                 </div>
@@ -114,7 +102,9 @@
                                 <h2 class="title">
                                     <span>
                                         {% blocktrans %}
-                                            Sign In & Start Betting<br />with Just One Click
+                                            Sign In & Start Betting
+                                            <br>
+                                            with Just One Click
                                         {% endblocktrans %}
                                     </span>
                                 </h2>

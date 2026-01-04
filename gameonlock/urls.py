@@ -28,7 +28,6 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView
 from django.views.i18n import JavaScriptCatalog, set_language
 from puput import urls as puput_urls
-from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.admin.views.account import LoginView as WagtailLoginView
 from wagtail.documents import urls as wagtaildocs_urls
@@ -40,13 +39,14 @@ from . import views
 admin.autodiscover()
 admin.site.login = secure_admin_login(admin.site.login)
 
+
 allauth_urls = [
 	path(_("login/"), views.LoginView.as_view(), name="account_login"),
 	path(_("signup/"), views.SignupView.as_view(), name="account_signup"),
 ]
 
 api_urls = [
-	path(r"sports/", include(sportsbetting.urls.apipatterns)),
+	path("sports/", include(sportsbetting.urls.apipatterns)),
 ]
 
 internationalized_patterns = i18n_patterns(
@@ -96,8 +96,8 @@ internationalized_patterns = i18n_patterns(
 		name="javascript-catalog",
 	),
 	# path(_('search/'), search_views.search, name='search'), # TODO: Implement Wagtail search capability
-	path("", include(wagtail_urls)),
-	path("", include(puput_urls)),
+	path(_("blog/"), include(puput_urls)),
+	path("", views.HomeView.as_view(), name="index"),
 	prefix_default_language=False,
 )
 

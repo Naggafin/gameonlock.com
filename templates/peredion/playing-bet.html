@@ -190,23 +190,6 @@
     </span>
 </div>
 {% endpartialdef %}
-{% partialdef bet-section-tab-content %}
-<div class="single-tournament">
-    <div class="tournament-title">
-        <span class="title-text">{{ governing_body }}
-            {% if league %}{{ league }}{% endif %}
-        </span>
-        <span class="match-quantity">({{ lines|length }})</span>
-    </div>
-    <div class="all-tournament-match">
-        {% for line in lines %}
-            {% with game=line.game %}
-                {% partial bet-section-tab-row %}
-            {% endwith %}
-        {% endfor %}
-    </div>
-</div>
-{% endpartialdef %}
 {% partialdef bet-section-tab %}
 {# djlint:off #}
 {% with suffix=tab.num|default:""|yesno:"-{{ tab.num }},," %}
@@ -237,9 +220,15 @@
             <div class="sports-body">
                 <div class="playing-sports-all no-tabs-here">
                     {% for governing_body__league, lines in lines_dict.items %}
-                        {% with governing_body=governing_body__league.0 league=governing_body__league.1 %}
-                            {% partial bet-section-tab-content %}
-                        {% endwith %}
+                        <div class="single-tournament">
+                            <div class="all-tournament-match">
+                                {% for line in lines %}
+                                    {% with game=line.game %}
+                                        {% partial bet-section-tab-row %}
+                                    {% endwith %}
+                                {% endfor %}
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

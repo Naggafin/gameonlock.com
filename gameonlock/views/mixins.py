@@ -17,7 +17,7 @@ from view_breadcrumbs import BaseBreadcrumbMixin
 from sportsbetting.models import Play
 
 
-class GameonlockMixin(BaseBreadcrumbMixin):
+class BreadcrumbMixin(BaseBreadcrumbMixin):
 	home_label = (
 		'<span class="icon"><i class="fa-solid fa-house"></i></span> <span class="text">%s</span>'
 		% _("Home")
@@ -26,11 +26,6 @@ class GameonlockMixin(BaseBreadcrumbMixin):
 	@property
 	def crumbs(self):
 		return []
-
-	def get_context_data(self, **kwargs):
-		context = super().get_context_data(**kwargs)
-		context["title"] = self.title
-		return context
 
 
 class DashboardContextMixin:

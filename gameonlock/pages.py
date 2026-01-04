@@ -2,86 +2,10 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db import models
 from django.template.loader import render_to_string
 from django.utils import timezone
-from django.utils.functional import SimpleLazyObject
 from puput.abstracts import BlogAbstract, EntryAbstract
-from wagtail.admin.panels import FieldPanel
-from wagtail.fields import RichTextField
 from wagtail.models import Page
 from wagtail_newsletter.models import NewsletterPageMixin
-from wagtailmetadata.models import MetadataPageMixin, WagtailImageMetadataMixin
-
-from gameonlock.views.mixins import GameonlockMixin
-from sportsbetting.models import Game
-from sportsbetting.views.mixins import SportsBettingContextMixin
-
-HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT = 5
-
-
-class HomePage(SportsBettingContextMixin, GameonlockMixin, MetadataPageMixin, Page):
-	about_title = models.CharField(max_length=255, default="About us", blank=True)
-	about_subtitle = models.CharField(
-		max_length=255,
-		default="We provide the most reliable & legal betting",
-		blank=True,
-	)
-	about_content = RichTextField(
-		features=["bold", "italic", "link"], blank=True, default=""
-	)
-
-	bet_title = models.CharField(max_length=255, default="Available Bets", blank=True)
-	bet_subtitle = models.CharField(
-		max_length=255, default="Choose Your Match & Place A Bet", blank=True
-	)
-
-	schedule_title = models.CharField(
-		max_length=255, default="Next Schedule", blank=True
-	)
-	schedule_subtitle = models.CharField(
-		max_length=255, default="All Upcoming Matches", blank=True
-	)
-
-	content_panels = Page.content_panels + [
-		# About section
-		FieldPanel("about_title"),
-		FieldPanel("about_subtitle"),
-		FieldPanel("about_content"),
-		# Bet section
-		FieldPanel("bet_title"),
-		FieldPanel("bet_subtitle"),
-		# Schedule section
-		FieldPanel("schedule_title"),
-		FieldPanel("schedule_subtitle"),
-	]
-
-	template = "peredion/index.html"
-
-	def get_context(self, request, *args, **kwargs):
-		context = super().get_context(request, *args, **kwargs)
-
-		upcoming_entries = context.get("upcoming_entries", {})
-		for sport, lines_dict in upcoming_entries.items():
-			count = HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT
-			tmp = {}
-			for key, lines in lines_dict.items():
-				tmp[key] = lines[:count]
-				count -= len(tmp[key])
-				if count == 0:
-					break
-			upcoming_entries[sport] = tmp
-
-		context.update(
-			{
-				"home_page": self,
-				"upcoming_entries": upcoming_entries,
-				"upcoming_games": SimpleLazyObject(
-					lambda: Game.objects.select_related(
-						"home_team", "away_team"
-					).filter(start_datetime__gt=timezone.now())[:3]
-				),
-			}
-		)
-
-		return context
+from wagtailmetadata.models import WagtailImageMetadataMixin
 
 
 class BlogPageAbstract(BlogAbstract):

@@ -28,9 +28,8 @@ django-silk
 django-taggit
 django-template-partials
 django-user-agents
-django>=5.1
+django>5.2,<6.0
 djangorestframework  # Required for API endpoints (MVP)
-djlint
 git+https://github.com/boxed/django-fastdev.git
 git+https://github.com/mozilla/django-csp.git
 git+https://github.com/Naggafin/django-extensions.git
@@ -38,12 +37,8 @@ git+https://github.com/Naggafin/django-htmx-utils.git
 git+https://github.com/Naggafin/django-view-breadcrumbs.git@improvements
 git+https://github.com/Naggafin/django-widget-tweaks.git@render-field-bindings-fix
 hiredis
-isort
-jwt
 nplusone
 parameterized
-pillow
-pip
 psycopg[c]
 psycopg_pool
 puput
@@ -56,10 +51,7 @@ python-telegram-handler
 redis
 requests
 requests-oauthlib
-ruff
-slippers
 sorl-thumbnail
-uv
 wagtail
 wagtail-localize
 wagtail-metadata
