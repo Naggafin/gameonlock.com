@@ -12,7 +12,11 @@ class BettingLineMunger:
 			self.picks[pick.betting_line_id][pick.type] = pick
 
 	def categorize_and_sort(self) -> Tuple[Dict, Dict, Dict]:
-		entries = defaultdict(lambda: defaultdict(lambda: defaultdict(list)))
+		entries = {
+			"upcoming": defaultdict(lambda: defaultdict(list)),
+			"in_play": defaultdict(lambda: defaultdict(list)),
+			"finished": defaultdict(lambda: defaultdict(list)),
+		}
 
 		for line in self.betting_lines:
 			game = line.game
@@ -36,15 +40,15 @@ class BettingLineMunger:
 
 			entries[line.segment][sport][(governing_body, league)].append(line)
 
-			# Sort sports by total number of betting_lines
-			for segment, sports in entries.items():
-				entries[segment] = dict(
-					sorted(
-						sports.items(),
-						key=lambda pair: sum(len(lines) for lines in pair[1].values()),
-						reverse=True,
-					)
+		# Sort sports by total number of betting_lines
+		for segment, sports in entries.items():
+			entries[segment] = dict(
+				sorted(
+					sports.items(),
+					key=lambda pair: sum(len(lines) for lines in pair[1].values()),
+					reverse=True,
 				)
+			)
 
 		return (
 			entries["upcoming"],

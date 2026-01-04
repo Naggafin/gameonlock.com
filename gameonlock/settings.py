@@ -413,6 +413,9 @@ LOGGING = {
 }
 
 
+MIGRATION_MODULES = {"puput": "gameonlock.puput_migrations"}
+
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000  # TODO: why did I do this?
 
 
@@ -432,19 +435,6 @@ SPORTS = {
 	"BET_MULTIPLIER": 5,
 	"BET_STEP": 1,
 }
-
-
-SITE_VARS = {
-	"bet_slip_config": {
-		"MIN_BET": SPORTS["MIN_BET"],
-		"MIN_NUM_BETS": SPORTS["MIN_NUM_BETS"],
-		"BASE_BET_STAKES": SPORTS["BASE_BET_STAKES"],
-		"BET_MULTIPLIER": SPORTS["BET_MULTIPLIER"],
-		"BET_STEP": SPORTS["BET_STEP"],
-	},
-}
-
-MIGRATION_MODULES = {"puput": "gameonlock.puput_migrations"}
 
 
 # wagtail / puput / newsletter

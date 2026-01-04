@@ -19,6 +19,7 @@
 .close-button:focus {
   outline: 2px solid #007bff;
 }
+
 .alerts-container {
   position: fixed;
   bottom: 20px;
@@ -78,6 +79,7 @@
 .alerts-container .alert .btn-close:hover {
   opacity: 1;
 }
+
 .htmx-indicator {
   display: none;
 }
@@ -87,10 +89,12 @@
   z-index: 2000;
   pointer-events: none;
 }
+
 [x-cloak],
 .require-js {
   display: none !important;
 }
+
 /** bet slip **/
 .bet-slip-body {
   display: none; /* Hidden by default, overridden by x-show */
@@ -98,6 +102,9 @@
 .bet-slip-body[x-show] {
   display: block; /* Ensure x-show works */
 }
+
+
+
 /****** bootstrap overrides *******/
 /* Override Bootstrap color variables */
 :root {
@@ -120,6 +127,7 @@
   /* Border colors */
   --bs-border-color: rgba(22, 29, 53, 0.2);
 }
+
 /* Button styles with gradients */
 .btn-primary {
   background: linear-gradient(
@@ -250,6 +258,7 @@
   border-color: #1a213b;
   color: #fff;
 }
+
 /* Outline buttons */
 .btn-outline-primary {
   border-color: var(--bs-primary);
@@ -279,6 +288,7 @@
   border-color: var(--bs-secondary);
   color: #fff;
 }
+
 /* Text and background classes */
 .text-primary {
   color: var(--bs-primary) !important;
@@ -328,6 +338,7 @@
 .bg-dark {
   background-color: rgb(22, 29, 53) !important;
 }
+
 /* Disabled states for buttons */
 .btn:disabled,
 .btn.disabled {
@@ -344,16 +355,25 @@
 .is-invalid ~ .invalid-feedback {
   display: block;
 }
+
+
+
 /****** peredion overrides *******/
 /* Bet rows */
 .placing-bet {
   flex-direction: column;
+}
+.playing-bet .sports-menu .nav {
+  gap: 0 !important;
 }
 .single-t-match.finished,
 .single-t-match.match-in-play {
   opacity: 0.7;
   cursor: not-allowed;
 }
+
+
+
 /* Forms */
 .poklotto-form .part-form input[type="checkbox"] {
   width: 50px;
@@ -410,6 +430,9 @@
     height: 40px;
   }
 }
+
+
+
 /* Navbar */
 .header
   .mainmenu
@@ -420,6 +443,9 @@
   .nav-link.dropdown-toggle::after {
   font-family: "Font Awesome 6 Free";
 }
+
+
+
 /* Breadcrumbs */
 .breadcrumb-item + .breadcrumb-item::before {
   font-family: "Font Awesome 6 Free";
@@ -469,6 +495,9 @@
   font-weight: 500;
   letter-spacing: 0.03em;
 }
+
+
+
 /* Sign up */
 .sign-up .poklotto-form .part-form form .agreement-article {
   margin-top: 1.5rem;
@@ -655,10 +684,16 @@
 .sign-up .part-form .part-connect-social-info ul li:last-child a {
   margin-right: 0;
 }
+
+
+
 /* Bet slip */
 .bet-slip button.bet-slip-header:after {
   font-family: "Font Awesome 6 Free";
 }
+
+
+
 /* Bet history table */
 table,
 thead,

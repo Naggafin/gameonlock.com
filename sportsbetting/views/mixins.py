@@ -23,7 +23,7 @@ class SportsBettingContextMixin:
 			.annotate(
 				segment=Case(
 					When(game__start_datetime__gt=now, then=Value("upcoming")),
-					When(is_finished=True, then=Value("finished")),
+					When(game__is_finished=True, then=Value("finished")),
 					default=Value("in_play"),
 					output_field=CharField(),
 				)
