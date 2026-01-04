@@ -4,13 +4,11 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core import serializers
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from faker import Faker
-from slugify import slugify
 
-from sportsbetting.models import GoverningBody, League, Pick, Sport, Team
+from sportsbetting.models import GoverningBody, League, Pick, Sport
 
 User = get_user_model()
 
@@ -81,312 +79,162 @@ class Command(BaseCommand):
 		used_combinations = set()  # To track unique constraints
 
 		# Sport fixtures
-		queryset = Sport.objects.all()
-		if queryset.exists():
-			data = serializers.serialize("json", queryset)
-			objs = json.loads(data)
-			sports = {i["pk"]: i for i in objs}
-		else:
-			sports = {}
-			for i, sport in enumerate(SPORTS, 1):
-				sport = {
-					"model": "sportsbetting.Sport",
-					"pk": i,
-					"fields": {
-						"name": sport["name"],
-						"description": sport["description"],
-						"slug_name": slugify(sport["name"]),
-					},
-				}
-				sports[i] = sport
-				fixtures.append(sport)
+		sports = list(Sport.objects.all())
+		governing_bodies = list(GoverningBody.objects.select_related("sport"))
 
-		# GoverningBody fixtures
-		queryset = GoverningBody.objects.all()
-		if queryset.exists():
-			data = serializers.serialize("json", queryset)
-			objs = json.loads(data)
-			governing_bodies = {i["pk"]: i for i in objs}
-		else:
-			governing_bodies = {}
-			for i, gb_name in enumerate(GOVERNING_BODIES, 1):
-				sport = random.choice(list(sports.values()))
-				gb = {
-					"model": "sportsbetting.GoverningBody",
-					"pk": i,
-					"fields": {
-						"sport": sport["pk"],
-						"name": gb_name,
-						"type": random.choice([t[0] for t in GoverningBody.TYPES]),
-					},
-				}
-				governing_bodies[i] = gb
-				fixtures.append(gb)
+		if not sports or not governing_bodies:
+			raise RuntimeError(
+				"Sports and GoverningBodies must exist. "
+				"Run migrations before generating fixtures."
+			)
 
 		# League fixtures
-		queryset = League.objects.all()
-		if queryset.exists():
-			data = serializers.serialize("json", queryset)
-			objs = json.loads(data)
-			league_names = {i["pk"]: i for i in objs}
-		else:
-			leagues = {}
-			for gb in governing_bodies.values():
-				league_names = LEAGUE_NAMES.copy()
-				for _ in range(2):
-					id = len(leagues) + 1
-					name = f"{league_names.pop(random.randint(0, len(league_names) - 1))} {gb['pk']}"
-					league = {
-						"model": "sportsbetting.League",
-						"pk": id,
-						"fields": {
-							"governing_body": gb["pk"],
-							"name": name,
-							"region": random.choice([r[0] for r in League.REGIONS]),
-						},
-					}
-					leagues[id] = league
-					fixtures.append(league)
+		leagues = {}
 
-		# Division fixtures
-		"""
-        division_count = 0
-        for league['pk'] in range(1, league_count + 1):
-            for _ in range(2):  # 2 divisions per league
-                division_count += 1
-                fixtures.append(
-                    {
-                        "model": "sportsbetting.Division",
-                        "pk": division_count,
-                        "fields": {
-                            "league": league['pk'],
-                            "name": f"{DIVISION_NAMES[division_count % len(DIVISION_NAMES)]} {league['pk']}",
-                            "hierarchy_level": random.randint(1, 3),
-                        },
-                    }
-                )
-        """
+		for gb in governing_bodies:
+			for i in range(2):  # 2 leagues per governing body
+				league_id = len(leagues) + 1
+				league = {
+					"model": "sportsbetting.League",
+					"pk": league_id,
+					"fields": {
+						"governing_body": gb.pk,
+						"name": f"{gb.name} League {i + 1}",
+						"region": random.choice([r[0] for r in League.REGIONS]),
+					},
+				}
+				leagues[league_id] = league
+				fixtures.append(league)
 
 		# Team fixtures
-		queryset = Team.objects.all()
-		if queryset.exists():
-			data = serializers.serialize("json", queryset)
-			objs = json.loads(data)
-			teams = {i["pk"]: i for i in objs}
-		else:
-			teams = {}
-			used_combinations = set()  # Reset used_combinations for clarity
-			max_attempts = 100  # Prevent infinite loops
-			for league in leagues.values():
-				for _ in range(4):
-					attempt = 0
-					while attempt < max_attempts:
-						id = len(teams) + 1
-						location = random.choice(TEAM_LOCATIONS)
-						name = f"{location} {random.choice(TEAM_MASCOTS)}"
-						# Use lowercase name for uniqueness check to match database constraint
-						if (name.lower(), league["pk"]) not in used_combinations:
-							used_combinations.add((name.lower(), league["pk"]))
-							team = {
-								"model": "sportsbetting.Team",
-								"pk": id,
-								"fields": {
-									"governing_body": league["fields"][
-										"governing_body"
-									],
-									"league": league["pk"],
-									"name": name,
-									"location": location,
-									"founding_year": random.randint(1900, 2023),
-								},
-							}
-							teams[id] = team
-							fixtures.append(team)
-							break
-						attempt += 1
-					else:
-						self.stdout.write(
-							self.style.WARNING(
-								f"Could not generate unique team name for league {league['pk']} after {max_attempts} attempts."
-							)
-						)
+		teams = {}
+		used_team_names = set()
 
-		# Player fixtures
-		"""
-        player_count = 0
-        for team_id in range(1, team_count + 1):
-            for _ in range(5):  # 5 players per team
-                player_count += 1
-                teams = {
-                    i["pk"]: i for i in fixtures if i["model"] == "sportsbetting.Team"
-                }
-                leagues = {
-                    i["pk"]: i for i in fixtures if i["model"] == "sportsbetting.League"
-                }
-                governing_bodies = {
-                    i["pk"]: i
-                    for i in fixtures
-                    if i["model"] == "sportsbetting.GoverningBody"
-                }
-                sports = {
-                    i["pk"]: i for i in fixtures if i["model"] == "sportsbetting.Sport"
-                }
-                league['pk'] = teams[team_id]["fields"]["league"]
-                governing_body_id = leagues[league['pk']]["fields"]["governing_body"]
-                sport_id = governing_bodies[governing_body_id]["fields"]["sport"]
-                sport_name = sports[sport_id]["fields"]["name"]
-                fixtures.append(
-                    {
-                        "model": "sportsbetting.Player",
-                        "pk": player_count,
-                        "fields": {
-                            "team": team_id,
-                            "name": fake.name(),
-                            "position": random.choice(POSITIONS[sport_name]),
-                            "jersey_number": random.randint(1, 99),
-                        },
-                    }
-                )
-        """
+		for league in leagues.values():
+			for _ in range(4):
+				while True:
+					location = random.choice(TEAM_LOCATIONS)
+					mascot = random.choice(TEAM_MASCOTS)
+					name = f"{location} {mascot}"
+					key = (name.lower(), league["pk"])
+					if key not in used_team_names:
+						used_team_names.add(key)
+						break
+
+				team_id = len(teams) + 1
+				team = {
+					"model": "sportsbetting.Team",
+					"pk": team_id,
+					"fields": {
+						"governing_body": league["fields"]["governing_body"],
+						"league": league["pk"],
+						"name": name,
+						"location": location,
+						"founding_year": random.randint(1950, 2020),
+					},
+				}
+				teams[team_id] = team
+				fixtures.append(team)
 
 		# Game fixtures
 		games = {}
+		used_games = set()
+
 		for league in leagues.values():
-			gb = governing_bodies[league["fields"]["governing_body"]]
-			for _ in range(10):
-				base_datetime = timezone.now()
+			league_teams = [
+				t for t in teams.values() if t["fields"]["league"] == league["pk"]
+			]
 
-				while True:
-					filtered_teams = [
-						team
-						for team in teams.values()
-						if team["fields"]["governing_body"] == gb["pk"]
-						and team["fields"]["league"] == league["pk"]
-					]
-					home_team = filtered_teams.pop(
-						random.randint(0, len(filtered_teams) - 1)
-					)
-					away_team = filtered_teams.pop(
-						random.randint(0, len(filtered_teams) - 1)
-					)
-					game_key = (
-						home_team["pk"],
-						away_team["pk"],
-						str(base_datetime.date()),
-					)
-					if game_key in used_combinations:
-						continue
-					break
-				used_combinations.add(game_key)
+			for _ in range(random.randint(3, 5)):
+				home, away = random.sample(league_teams, 2)
+				start = timezone.now() + timedelta(days=random.randint(-3, 10))
 
-				id = len(games) + 1
-				start_datetime = base_datetime + timedelta(days=random.randint(0, 30))
-				has_started = start_datetime < timezone.now()
-				is_finished = random.choice([True, False]) if has_started else False
+				key = (home["pk"], away["pk"], start.date())
+				if key in used_games:
+					continue
+				used_games.add(key)
+
+				game_id = len(games) + 1
+				is_finished = start < timezone.now() and random.choice([True, False])
+
 				game = {
 					"model": "sportsbetting.Game",
-					"pk": id,
+					"pk": game_id,
 					"fields": {
-						"governing_body": gb["pk"],
+						"governing_body": league["fields"]["governing_body"],
 						"league": league["pk"],
-						"home_team": home_team["pk"],
-						"away_team": away_team["pk"],
+						"home_team": home["pk"],
+						"away_team": away["pk"],
 						"location": fake.city(),
-						"start_datetime": start_datetime.isoformat(),
+						"start_datetime": start.isoformat(),
 						"is_finished": is_finished,
-						"home_team_score": random.randint(0, 100)
-						if has_started
-						else None,
-						"away_team_score": random.randint(0, 100)
-						if has_started
-						else None,
-						"winner": random.choice([home_team["pk"], away_team["pk"]])
+						"home_team_score": random.randint(0, 50)
 						if is_finished
 						else None,
-						"boxscore": None,  # Optional, nullable
+						"away_team_score": random.randint(0, 50)
+						if is_finished
+						else None,
+						"winner": random.choice([home["pk"], away["pk"]])
+						if is_finished
+						else None,
 					},
 				}
-				games[id] = game
+				games[game_id] = game
 				fixtures.append(game)
 
 		# BettingLine fixtures
 		betting_lines = {}
+
 		for game in games.values():
-			over_under = True if random.random() > 0.50 else False
-			if over_under:
-				under = 101
-				over = random.randint(31, 100)
-				while under > over:
-					under = random.randint(30, 100)
-			id = len(betting_lines) + 1
+			bl_id = len(betting_lines) + 1
 			betting_line = {
 				"model": "sportsbetting.BettingLine",
-				"pk": id,
+				"pk": bl_id,
 				"fields": {
 					"game": game["pk"],
-					"spread": round(random.uniform(-10, 10)),
-					"is_pick": random.choice([True, False]),
-					"over": over if over_under else None,
-					"under": under if over_under else None,
+					"spread": round(random.uniform(-7, 7), 1),
+					"is_pick": True,
+					"over": random.randint(40, 100),
+					"under": random.randint(30, 90),
 				},
 			}
-			betting_lines[id] = betting_line
+			betting_lines[bl_id] = betting_line
 			fixtures.append(betting_line)
 
 		# Play and Pick fixtures (assuming 2 users exist)
+		users = list(User.objects.filter(is_active=True)[:2])
 		plays = {}
-		users = User.objects.filter(is_active=True)
-		for _ in range(5 * len(users)):
-			id = len(plays) + 1
-			user = random.choice(users)
-			play = {
-				"model": "sportsbetting.Play",
-				"pk": id,
-				"fields": {
-					"user": user.pk,
-					"amount": f"{random.uniform(10, 1000):.2f}",
-					"placed_datetime": timezone.now().isoformat(),
-				},
-			}
-			plays[id] = play
-			fixtures.append(play)
-
 		picks = {}
-		for play in plays.values():
-			unique_pick = set()
-			for _ in range(4):
-				while True:
-					betting_line = random.choice(list(betting_lines.values()))
-					game = games[betting_line["fields"]["game"]]
-					type = random.choice([t[0] for t in Pick.TYPES])
-					pick_key = (play["pk"], betting_line["pk"], type)
-					if pick_key not in unique_pick:
-						break
-				unique_pick.add(pick_key)
 
-				id = len(picks) + 1
-				pick = {
-					"model": "sportsbetting.Pick",
-					"pk": id,
+		for user in users:
+			for _ in range(2):  # 2 plays per user
+				play_id = len(plays) + 1
+				play = {
+					"model": "sportsbetting.Play",
+					"pk": play_id,
 					"fields": {
-						"play": play["pk"],
-						"betting_line": betting_line["pk"],
-						"type": type,
-						"team": random.choice(
-							[
-								game["fields"]["home_team"],
-								game["fields"]["away_team"],
-							]
-						)
-						if type == Pick.TYPES.spread
-						else None,
-						"is_over": random.choice([True, False])
-						if type == Pick.TYPES.under_over
-						else None,
+						"user": user.pk,
+						"amount": "50.00",
+						"placed_datetime": timezone.now().isoformat(),
 					},
 				}
-				picks[id] = pick
-				fixtures.append(pick)
+				plays[play_id] = play
+				fixtures.append(play)
+
+				for bl in random.sample(list(betting_lines.values()), 2):
+					pick_id = len(picks) + 1
+					pick = {
+						"model": "sportsbetting.Pick",
+						"pk": pick_id,
+						"fields": {
+							"play": play_id,
+							"betting_line": bl["pk"],
+							"type": Pick.TYPES.under_over,
+							"is_over": random.choice([True, False]),
+						},
+					}
+					picks[pick_id] = pick
+					fixtures.append(pick)
 
 		return fixtures
 

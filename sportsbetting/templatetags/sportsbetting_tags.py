@@ -33,7 +33,7 @@ def int_filter(value):
 
 @register.simple_tag
 @cache_memoize(
-	None, args_rewrite=lambda obj, state: f"{obj._meta.model_name}_{obj.pk}_{state}"
+	3600, args_rewrite=lambda obj, state: f"{obj._meta.model_name}_{obj.pk}_{state}"
 )
 def num_betting_lines(obj, state=None):
 	lines = BettingLine.objects.filter(game__governing_body__sport=obj)

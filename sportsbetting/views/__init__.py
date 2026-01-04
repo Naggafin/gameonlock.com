@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views.generic import TemplateView, UpdateView
 from view_breadcrumbs.generic import ListBreadcrumbMixin
 
+from gameonlock import settings
 from gameonlock.views.mixins import BreadcrumbMixin
 
 from ..forms import PickFormSet, PlayForm
@@ -23,14 +24,14 @@ class BettingView(
 	BreadcrumbMixin,
 	TemplateView,
 ):
-	title = _("bets")
-	subtitle = _("Make Your Bet")
+	title = _("Bets")
 	model = BettingLine
 	template_name = "peredion/playing-bet.html"
 	list_view_url = reverse_lazy("sportsbetting:bet")
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
+
 		context["tabs"] = [
 			{
 				"id": "upcoming",
@@ -51,6 +52,28 @@ class BettingView(
 				"entries": context["finished_entries"],
 			},
 		]
+
+		context["page"] = {
+			"title": self.title,
+			"subtitle": _("Make Your Bet"),
+			"meta": {
+				"description": "",
+				"keywords": "",
+				"og:title": self.title,
+				"og:description": "",
+				"og:type": "website",
+				"og:url": "",
+				"og:image": "",
+				"og:site_name": settings.WAGTAIL_SITE_NAME,
+				"twitter:card": "summary_large_image",
+				"twitter:title": self.title,
+				"twitter:description": "",
+				"twitter:image": "",
+				# "twitter:site": "@YourTwitterHandle",
+				# "twitter:creator": "@CreatorTwitterHandle",
+			},
+		}
+
 		return context
 
 

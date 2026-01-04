@@ -122,7 +122,9 @@ INSTALLED_APPS = [
 ]
 
 if DEBUG is True:
-	INSTALLED_APPS += ["django_fastdev", "debug_toolbar", "nplusone.ext.django", "silk"]
+	INSTALLED_APPS += [
+		"django_fastdev"
+	]  # , "debug_toolbar", "nplusone.ext.django", "silk"]
 
 SITE_ID = 1
 
@@ -145,6 +147,7 @@ MIDDLEWARE = [
 	"notifications.middleware.SSEMessageMiddleware",
 ]
 
+"""
 if DEBUG is True:
 	try:
 		index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1
@@ -153,6 +156,7 @@ if DEBUG is True:
 	MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")
 	MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")
 	MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
+"""
 
 ROOT_URLCONF = "gameonlock.urls"
 

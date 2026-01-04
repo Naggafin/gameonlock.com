@@ -185,8 +185,9 @@
             </div>
         </template>
     </div>
-    <span class="bet-ratio-details">
-        <a href="#TODO"><i class="fa-regular fa-angle-right"></i></a>
+    <span class="bet-ratio-details"
+          :class="{ 'd-none': isPickSelected('sp') || isPickSelected('uo') }">
+        <i class="fa-regular fa-angle-left"></i>
     </span>
 </div>
 {% endpartialdef %}
@@ -200,8 +201,7 @@
      role="tabpanel"
      aria-labelledby="sports-{{ sport.slug_name }}-tab{{ suffix }}">
     <div class="single-sports-item">
-        <h2 class="accordion-header"
-            id="{{ sport.slug_name }}-matches{{ suffix }}">
+        <h2 class="accordion-header">
             <div class="sports-header">
                 <span class="single-sports-icon">
                     <img src="{% static 'peredion/images/playing-bet/icon/'|add:sport.slug_name|add:'.png' %}"
@@ -255,14 +255,19 @@
                 <ul class="nav nav-pills" id="bet-tab" role="tablist">
                     {% for tab in tabs %}
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link"
+                            <button class="nav-link
+                                           {% if forloop.first %}active{% endif %}"
                                     id="bet-upcoming-tab"
                                     data-bs-toggle="pill"
                                     data-bs-target="#bet-{{ tab.id }}"
                                     type="button"
                                     role="tab"
                                     aria-controls="bet-{{ tab.id }}"
-                                    aria-selected="false">
+                                    aria-selected="{% if forloop.first %}
+                                                       true
+                                                   {% else %}
+                                                       false
+                                                   {% endif %}">
                                 {% if tab.id == 'inplay' %}<i class="fa-solid fa-signal-stream"></i>{% endif %}
                                 {% trans tab.name %}
                             </button>
@@ -303,7 +308,7 @@
                                         </button>
                                     </li>
                                 {% empty %}
-                                    <li class="nav-item">{% trans "No sports available" %}</li>
+                                    <li class="nav-item">{% trans "No active sports available" %}</li>
                                 {% endfor %}
                             </ul>
                         </div>
