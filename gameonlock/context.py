@@ -7,7 +7,7 @@ def site_vars(request):
 	context = {}
 	context["alert_config"] = {"SSE_URL": "/sse/notifications/"}
 	context["bet_slip_config"] = {
-		"minBet": settings.SPORTS["MIN_BET"],
+		"minBet": float(settings.SPORTS["MIN_BET"].amount),
 		"minNumBets": settings.SPORTS["MIN_NUM_BETS"],
 		"baseBetStakes": settings.SPORTS["BASE_BET_STAKES"],
 		"betMultiplier": settings.SPORTS["BET_MULTIPLIER"],

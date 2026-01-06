@@ -147,8 +147,9 @@ MIDDLEWARE = [
 	"notifications.middleware.SSEMessageMiddleware",
 ]
 
-"""
 if DEBUG is True:
+	MIDDLEWARE.append("htmx_utils.middleware.HtmxDebugMiddleware")
+	"""
 	try:
 		index = MIDDLEWARE.index("csp.middleware.CSPMiddleware") + 1
 	except ValueError:
@@ -156,7 +157,7 @@ if DEBUG is True:
 	MIDDLEWARE.insert(index, "debug_toolbar.middleware.DebugToolbarMiddleware")
 	MIDDLEWARE.insert(0, "nplusone.ext.django.NPlusOneMiddleware")
 	MIDDLEWARE.insert(0, "silk.middleware.SilkyMiddleware")
-"""
+	"""
 
 ROOT_URLCONF = "gameonlock.urls"
 

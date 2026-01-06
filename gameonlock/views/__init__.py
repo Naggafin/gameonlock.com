@@ -111,6 +111,10 @@ class ContactView(BreadcrumbMixin, ContactFormView):
 	success_url = reverse_lazy("contact")
 	template_name = "peredion/contact.html"
 
+	def post(self, *args, **kwargs):
+		breakpoint()
+		return super().post(*args, **kwargs)
+
 	def get_form_class(self):
 		try:
 			if not _try_get_akismet_client():
@@ -147,23 +151,6 @@ class ContactView(BreadcrumbMixin, ContactFormView):
 
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
-		upcoming_entries = context["upcoming_entries"]
-		for sport, lines_dict in upcoming_entries.items():
-			count = HOMEPAGE_MAX_LINE_ENTRIES_PER_SPORT
-			tmp = {}
-			for key, lines in lines_dict.items():
-				tmp[key] = lines[:count]
-				count -= len(tmp[key])
-				if count == 0:
-					break
-			upcoming_entries[sport] = tmp
-		context["upcoming_entries"] = upcoming_entries
-		context["upcoming_games"] = SimpleLazyObject(
-			lambda: Game.objects.select_related("home_team", "away_team").filter(
-				start_datetime__gt=timezone.now()
-			)[:3]
-		)
-
 		context["page"] = {
 			"title": self.title,
 			"subtitle": _("Get in touch by simply dropping a message"),

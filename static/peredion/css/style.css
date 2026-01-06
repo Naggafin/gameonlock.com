@@ -2124,7 +2124,7 @@ ul {
 .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu.custom-dropdown .dropdown-item {
   margin: 0;
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item {
   background: #161D35;
   font-family: "Asap", sans-serif;
   font-weight: 500;
@@ -2140,29 +2140,29 @@ ul {
   z-index: 2;
 }
 @media (max-width: 1399.98px) {
-  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item {
+  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item {
     font-size: 15px;
     line-height: 25px;
     padding: 7px 30px 8px 32px;
   }
 }
 @media (max-width: 1199.98px) {
-  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item {
+  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item {
     font-size: 14px;
     line-height: 24px;
   }
 }
 @media (max-width: 991.98px) {
-  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item {
+  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item {
     background: rgba(22, 29, 53, 0.6);
   }
 }
 @media (max-width: 575.98px) {
-  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item {
+  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item {
     padding: 7px 20px 8px 22px;
   }
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:after {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:after {
   position: absolute;
   content: "";
   left: 15px;
@@ -2175,12 +2175,12 @@ ul {
   opacity: 1;
 }
 @media (max-width: 575.98px) {
-  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:after {
+  .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:after {
     left: 10px;
     width: 1px;
   }
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:before {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:before {
   position: absolute;
   content: "";
   left: 0;
@@ -2192,14 +2192,14 @@ ul {
   opacity: 0;
   transition: all 0.3s ease-in;
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:hover, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:active, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item.active {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:hover, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:active, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item.active {
   color: #fff;
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:hover:after, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:active:after, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item.active:after {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:hover:after, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:active:after, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item.active:after {
   background: #fff;
   animation: opacity-to-hover 0.4s cubic-bezier(0.5, 0, 0.5, 1);
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:hover:before, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item:active:before, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li a.dropdown-item.active:before {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:hover:before, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item:active:before, .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-item.active:before {
   opacity: 1;
 }
 .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li .dropdown-divider {
@@ -2207,7 +2207,7 @@ ul {
   opacity: 0.3;
   margin: 0;
 }
-.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li:last-child a.dropdown-item {
+.header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown .dropdown-menu li:last-child .dropdown-item {
   margin-bottom: 0;
 }
 .header .mainmenu .navbar .scalation .navbar-nav .nav-item.dropdown:hover .dropdown-menu {
@@ -6598,10 +6598,8 @@ ul {
   flex-direction: column;
   align-items: center;
 }
-.playing-bet .sports-menu .nav .nav-item .nav-link span {
+.playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon {
   display: block;
-}
-.playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon {
   width: 100px;
   height: 100px;
   background: linear-gradient(0deg, #FFFFFF, #FFFFFF), linear-gradient(144.14deg, rgba(77, 35, 63, 0.08) -11.44%, rgba(48, 91, 159, 0.08) 123.42%);
@@ -6615,59 +6613,62 @@ ul {
   transition: all 0.3s ease-in;
 }
 @media (max-width: 1399.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon {
     width: 90px;
     height: 90px;
   }
 }
 @media (max-width: 1199.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon {
     width: 80px;
     height: 80px;
   }
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon {
     width: 70px;
     height: 70px;
     margin-bottom: 11px;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon {
     width: 60px;
     height: 60px;
     margin-bottom: 6px;
   }
 }
-.playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon img {
+.playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon img {
   position: absolute;
   right: 12px;
   bottom: 12px;
   width: 76px;
-  height: auto;
-  max-width: none;
+  height: 76px;
 }
 @media (max-width: 1399.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon img {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon img {
     width: 70px;
+    height: 70px;
     right: 10px;
     bottom: 10px;
   }
 }
 @media (max-width: 1199.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon img {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon img {
     width: 60px;
+    height: 60px;
   }
 }
 @media (max-width: 575.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon img {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon img {
     width: 50px;
+    height: 50px;
   }
 }
 @media (max-width: 479.98px) {
-  .playing-bet .sports-menu .nav .nav-item .nav-link span.sport-icon img {
+  .playing-bet .sports-menu .nav .nav-item .nav-link .sport-icon img {
     width: 45px;
+    height: 45px;
     right: 7.5px;
     bottom: 7.5px;
   }
@@ -6698,7 +6699,7 @@ ul {
     margin-bottom: -6px;
   }
 }
-.playing-bet .sports-menu .nav .nav-item .nav-link.active span.sport-icon {
+.playing-bet .sports-menu .nav .nav-item .nav-link.active .sport-icon {
   box-shadow: 0px 4px 5px rgba(255, 15, 0, 0.2);
 }
 .playing-bet .sports-menu .nav .nav-item .nav-link.active span.sport-name {

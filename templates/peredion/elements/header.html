@@ -133,23 +133,16 @@
                                            href="/">{% trans 'home' %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        {# TODO: this should direct to a wagtail page #}
-                                        {% url 'about' as url %}
-                                        <a class="nav-link
-                                                  {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'about us' %}</a>
-                                    </li>
-                                    <li class="nav-item">
                                         {% url 'sportsbetting:bet' as url %}
                                         <a class="nav-link
                                                   {% if request.path == url %}active{% endif %}"
                                            href="{{ url }}">{% trans 'bets' %}</a>
                                     </li>
                                     <li class="nav-item">
-                                        {% url 'contact' as url %}
+                                        {% url 'about' as url %}
                                         <a class="nav-link
                                                   {% if request.path == url %}active{% endif %}"
-                                           href="{{ url }}">{% trans 'contact us' %}</a>
+                                           href="{{ url }}">{% trans 'about us' %}</a>
                                     </li>
                                 </ul>
                             </div>
@@ -164,6 +157,12 @@
                             </div>
                             <div class="col-xl-5 col-lg-5">
                                 <ul class="navbar-nav nn-right">
+                                    <li class="nav-item">
+                                        {% url 'contact' as url %}
+                                        <a class="nav-link
+                                                  {% if request.path == url %}active{% endif %}"
+                                           href="{{ url }}">{% trans 'contact us' %}</a>
+                                    </li>
                                     <li class="nav-item dropdown">
                                         {# TODO: direct to wagtail articles; detect active #}
                                         <a class="nav-link" href="javascript:void(0);">{% trans 'blog' %}</a>
@@ -195,6 +194,12 @@
                                                 </li>
                                                 <li>
                                                     <a class="dropdown-item" href="{% url 'settings' %}">{% trans 'settings' %}</a>
+                                                </li>
+                                                <li>
+                                                    <form action="{% url 'account_logout' %}" method="post">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="dropdown-item">{% trans 'log out' %}</button>
+                                                    </form>
                                                 </li>
                                             </ul>
                                         </li>
