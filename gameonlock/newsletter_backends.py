@@ -1,8 +1,8 @@
 from django.core.mail import EmailMultiAlternatives
-from wagtail_newsletter.backends.base import BaseCampaignBackend
+from wagtail_newsletter.campaign_backends import CampaignBackend
 
 
-class LocalSMTPBackend(BaseCampaignBackend):
+class LocalSMTPBackend(CampaignBackend):
 	"""
 	Simple backend to send newsletters via Django's EmailBackend (self-hosted SMTP)
 	"""

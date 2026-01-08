@@ -5,10 +5,10 @@ from django.utils import timezone
 from puput.abstracts import BlogAbstract, EntryAbstract
 from wagtail.models import Page
 from wagtail_newsletter.models import NewsletterPageMixin
-from wagtailmetadata.models import WagtailImageMetadataMixin
+from wagtailmetadata.models import MetadataPageMixin
 
 
-class BlogPageAbstract(BlogAbstract):
+class BlogPageAbstract(MetadataPageMixin, BlogAbstract):
 	def get_context(self, request, *args, **kwargs):
 		context = super().get_context(*args, **kwargs)
 
@@ -31,12 +31,7 @@ class BlogPageAbstract(BlogAbstract):
 		end = min(current + window, total) + 1
 		page_range = range(start, end)
 
-		context.update(
-			{
-				"page_obj": page_obj,
-				"page_range": page_range,
-			}
-		)
+		context.update({"page_obj": page_obj, "page_range": page_range})
 
 		return context
 
@@ -44,7 +39,7 @@ class BlogPageAbstract(BlogAbstract):
 		abstract = True
 
 
-class EntryPageAbstract(NewsletterPageMixin, WagtailImageMetadataMixin, EntryAbstract):
+class EntryPageAbstract(NewsletterPageMixin, MetadataPageMixin, EntryAbstract):
 	class Meta:
 		abstract = True
 

@@ -30,6 +30,7 @@ from django.views.i18n import JavaScriptCatalog, set_language
 from puput import urls as puput_urls
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.admin.views.account import LoginView as WagtailLoginView
+from wagtail.contrib.sitemaps.views import sitemap
 from wagtail.documents import urls as wagtaildocs_urls
 
 import sportsbetting.urls
@@ -112,6 +113,7 @@ urlpatterns = [
 	),
 	path("cms/", include(wagtailadmin_urls)),
 	path("documents/", include(wagtaildocs_urls)),
+	path("sitemap.xml", sitemap),
 	path("payment/", include("golpayment.urls")),
 	path("api/", include((api_urls, "api"), namespace="api")),
 ] + internationalized_patterns

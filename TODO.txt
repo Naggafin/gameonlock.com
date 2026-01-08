@@ -1,2 +1,4 @@
 Breadcrumbs carot needs work
 there is a scroll hiccup the sports tab under index.html (probably playing-bet.html too)
+routablepageurl tag has issues where base_url is None instead of str; how to fix without changing wagtail?
+local smtp newsletter backend

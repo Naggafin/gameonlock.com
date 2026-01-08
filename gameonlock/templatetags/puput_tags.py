@@ -1,4 +1,3 @@
-from django.db.models import Count, Q
 from puput.models import Category
 from puput.templatetags.puput_tags import *  # noqa: F403
 
@@ -9,10 +8,10 @@ def categories_list(context, categories_qs=None):
 	if categories_qs:
 		categories = categories_qs.all()
 	else:
-		categories = Category.objects.with_uses(blog_page).filter(parent=None)
-	context["categories"] = categories.annotate(
-		post_count=Count(
-			"categoryentrypage__page", filter=Q(blogpage__live=True), distinct=True
-		)
-	)
+		categories = Category.objects.with_uses(
+			blog_page
+		).filter(
+			parent=None
+		)  # TODO: .annotate(post_count=Count("categoryentrypage__page", filter=Q(blogpage__live=True), distinct=True))
+	context["categories"] = categories
 	return context

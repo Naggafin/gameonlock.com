@@ -2,7 +2,7 @@
 {% for category in categories %}
     <li>
     <a href="{% routablepageurl blog_page "entries_by_category" category.slug %}"><span class="cl-cat">{{ category.name }}</span>
-    <span class="q-numb">({{ category.post_count }})</span></a>
+    <span class="q-numb">(TODO)</span></a>
 </li>
 {% empty %}
 {% trans 'No categories yet' %}

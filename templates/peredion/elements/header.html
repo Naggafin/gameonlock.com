@@ -1,4 +1,4 @@
-{% load static i18n gameonlock %}
+{% load static i18n gameonlock wagtailcore_tags %}
 {% get_available_languages as languages %}
 {# TODO: header animations not work #}
 <header class="header header-fixed animated"
@@ -164,8 +164,10 @@
                                            href="{{ url }}">{% trans 'contact us' %}</a>
                                     </li>
                                     <li class="nav-item dropdown">
-                                        {# TODO: direct to wagtail articles; detect active #}
-                                        <a class="nav-link" href="javascript:void(0);">{% trans 'blog' %}</a>
+                                        {% pageurl blog as url %}
+                                        <a class="nav-link
+                                                  {% if request.path == url %}active{% endif %}"
+                                           href="{{ url }}">{% trans 'blog' %}</a>
                                     </li>
                                     <li class="nav-item">
                                         {% url 'faq' as url %}

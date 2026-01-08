@@ -46,17 +46,12 @@
                 {% else %}
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            {% for ancestor in page.get_ancestors.inclusive.live %}
-                                {% if not url or forloop.counter == breadcrumbs_total %}
-                                    <li class="breadcrumb-item
-                                               {% if forloop.counter == breadcrumbs_total %}active{% endif %}"
-                                        {% if forloop.counter == breadcrumbs_total %}aria-current="page"{% endif %}>{{ ancestor.title|safe }}</li>
-                                {% else %}
-                                    <li class="breadcrumb-item">
-                                        <a href="{{ ancestor.url }}">{{ ancestor.title|safe }}</a>
-                                    </li>
-                                {% endif %}
+                            {% for ancestor in self.get_ancestors.live %}
+                                <li class="breadcrumb-item">
+                                    <a href="{{ ancestor.url }}">{{ ancestor.title|safe }}</a>
+                                </li>
                             {% endfor %}
+                            <li class="breadcrumb-item active" aria-current="page">{{ self.title|safe }}</li>
                         </ol>
                     </nav>
                 {% endif %}

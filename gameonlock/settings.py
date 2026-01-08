@@ -417,7 +417,7 @@ LOGGING = {
 MIGRATION_MODULES = {"puput": "gameonlock.puput_migrations"}
 
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000  # TODO: why did I do this?
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10_000  # NOTE: wagtail recommends this
 
 
 SPORTS = {
@@ -448,9 +448,9 @@ PUPUT_AS_PLUGIN = True
 PUPUT_COMMENTS_PROVIDER = "puput.comments.DjangoCommentsProvider"
 PUPUT_BLOG_MODEL = "gameonlock.pages.BlogPageAbstract"
 PUPUT_ENTRY_MODEL = "gameonlock.pages.EntryPageAbstract"
-WAGTAIL_NEWSLETTER_FROM_NAME = "Game on Lock"
+WAGTAIL_NEWSLETTER_FROM_NAME = "Game-on-Lock"
 WAGTAIL_NEWSLETTER_REPLY_TO = DEFAULT_FROM_EMAIL
-WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
+# TODO: WAGTAIL_NEWSLETTER_CAMPAIGN_BACKEND = "gameonlock.newsletter_backends.LocalSMTPBackend"
 WAGTAILMETADATA_IMAGE_FILTER = "fill-1200x630"
 WAGTAILADMIN_BASE_URL = (
 	"http://localhost:8000" if DEBUG is True else "https://www.gameonlock.com"
